@@ -10,7 +10,7 @@
 
 #include "MSAControlFreak.h"
 
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
 
 	}

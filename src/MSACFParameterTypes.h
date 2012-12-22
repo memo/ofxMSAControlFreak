@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
 		namespace Types {
 			

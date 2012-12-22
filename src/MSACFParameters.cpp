@@ -15,7 +15,7 @@
 //#include <boost/property_tree/json_parser.hpp>
 #include <boost/foreach.hpp>
 
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
 
 		Parameters::Parameters(string name) {

@@ -10,7 +10,7 @@
 
 #include "MSACFParameter.h"
 
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
 
 		
@@ -30,7 +30,6 @@ namespace MSA {
 		//			for(int i=0; i<_controllers.size(); i++) _controllers[i]->checkValueHasChanged();
 		//		}
 		
-		
 		void Parameter::writeToPropertyTree(boost::property_tree::ptree& pt) {
 			printf("Parameter::writeToPropertyTree %s\n", _path.c_str());
 			pt.put(_path, "PARAMETER");
@@ -46,6 +45,5 @@ namespace MSA {
 			setRange(pt.get<float>(_path + kPathDivider + "min"), pt.get<float>(_path + kPathDivider + "max"));
 			setValue(pt.get<float>(_path + kPathDivider + "value"));
 		}
-		
 	}
 }

@@ -17,7 +17,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
 		
 		

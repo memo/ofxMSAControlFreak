@@ -12,7 +12,7 @@
 
 #include <map>
 
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
 		namespace Types {
 			struct case_insensitive_compare {

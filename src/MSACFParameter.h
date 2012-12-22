@@ -7,20 +7,11 @@
 #include "MSACore.h"
 #include "MSACFController.h"
 #include "MSACFParameterTypes.h"
+
 #include <boost/property_tree/ptree.hpp>
 
-
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
-		
-	
-		
-//#define Types::kFloat		"FLOAT"
-//#define Types::kInt		"INT"
-//#define Types::kToggle		"TOGGLE"
-//#define Types::kBang		"BANG"
-//		typedef std::string Types::Index;
-		
 		
 #define kPathDivider	'.'
 		
@@ -68,7 +59,8 @@ namespace MSA {
 			
 			virtual void writeToPropertyTree(boost::property_tree::ptree& pt);
 			virtual void readFromPropertyTree(boost::property_tree::ptree& pt);
-			
+            
+            
 		protected:
 			Types::Index			_valueTypeIndex;
 			float					_min, _max, _value;
@@ -188,7 +180,7 @@ namespace MSA {
 		}
 		
 		void Parameter::setNormalized(float norm) {
-			setValue(lerp(_min, _max, norm));
+			setValue(ofLerp(_min, _max, norm));
 		}
 		
 		float Parameter::normalized() const {
@@ -197,28 +189,28 @@ namespace MSA {
 		}
 		
 		void Parameter::setMappedFrom(float value, float imin, float imax) {
-			setValue(lmap(value, imin, imax, _min, _max));
+			setValue(ofMap(value, imin, imax, _min, _max));
 		}
 		
 		float Parameter::mappedTo(float newMin, float newMax) const {
-			return lmap(_value, _min, _max, newMin, newMax);
+			return ofMap(_value, _min, _max, newMin, newMax);
 		}
 		
 		
 		void Parameter::setValue(float f) {
 			switch(_valueTypeIndex) {
 				case Types::kFloat:
-					_value = _isClamped ? math<float>::clamp(f, _min, _max) : (float)f;
+					_value = _isClamped ? ofClamp(f, _min, _max) : (float)f;
 					break;
 					
 				case Types::kInt:
 				case Types::kNamedIndex:
-					_value = _isClamped ? math<int>::clamp(f, _min, _max) : (int)f;
+					_value = _isClamped ? ofClamp(f, _min, _max) : (int)f;
 					break;
 					
 				case Types::kToggle:
 				case Types::kBang:
-					_value = _isClamped ? math<bool>::clamp(f, _min, _max) : (bool)f;
+					_value = _isClamped ? ofClamp(f, _min, _max) : (bool)f;
 					break;
 					
 				default:

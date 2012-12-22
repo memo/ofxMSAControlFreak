@@ -12,7 +12,7 @@
 #include "MSACFParameter.h"
 #include "MSACFParameters.h"
 
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
 		
 		class GuiBase {

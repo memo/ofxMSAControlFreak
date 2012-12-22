@@ -2,15 +2,13 @@
 #include "MSAGuiGL.h"
 #include "MSAControlFreak.h"
 
-using namespace MSA;
+using namespace msa;
 using namespace ControlFreak;
 
 // for demonstrating adding any drawable object (that extends ofBaseDraw);
 ofVideoGrabber		vidGrabber;
 unsigned char * 	videoInverted;
 ofTexture			videoTexture;
-
-Color color;
 
 Parameters params;
 
@@ -26,46 +24,46 @@ void testApp::setup(){
 	
 	gui.setDefaultKeys(true);
 	gui.setDraw(true);
-	
-	
+		
 	// ADD variables and controls programmatically like below
 	// OR just hand edit XML / JSON / INI file and the schema will be loaded and gui constructed
-	
 	params.setName("My Settings");
 	
 	params.addFloat("float1");
-//	string labels[] = {"first option", "another option", "yet anothing option", "even more", "and last one"};
-//	params.addNamedIndex("a dropdown", 5, labels);
-//	params.addInt("int1");
-//	params.addToggle("bool1");
-//	params.addBang("trigger");
-//	
-//	params.startGroup("vision");		// now this becomes the activeGroup
-//	params.addToggle("enabled");
-//	params.addFloat("brightness").setRange(0, 100);
-//	params.addFloat("contrast").setRange(-100, 100);
-//	params.addInt("deviceid").setRange(0, 10);
-//	params.addToggle("flip x");
-//	params.addToggle("flip y");
-//	params.addToggle("bang");
-//	
-//	params.startGroup("optical flow");
-//	params.addToggle("enabled");
-//	params.addFloat("velMult").setRange(0, 10);
-//	params.addInt("windowSize").setRange(1, 3);
-//	params.endGroup();	// optical flow
-//	params.endGroup();	// vision
-//	
-//	
-//	params.startGroup("particles");
-//	params.addToggle("enabled");
-//	params.addInt("count").setRange(100, 200);
-//	params.addFloat("maxSpeed").setRange(0, 100);
-//	params.endGroup();
-//	
-//	params.addFloat("float2").setRange(0, 10);
-//	params.addInt("int2").setRange(10, 20);
-//	params.addToggle("bool2");
+    params.addFloat("float2");
+
+	string labels[] = {"first option", "another option", "yet anothing option", "even more", "and last one"};
+	params.addNamedIndex("a dropdown", 5, labels);
+	params.addInt("int1");
+	params.addToggle("bool1");
+	params.addBang("trigger");
+	
+	params.startGroup("vision");		// now this becomes the activeGroup
+	params.addToggle("enabled");
+	params.addFloat("brightness").setRange(0, 100);
+	params.addFloat("contrast").setRange(-100, 100);
+	params.addInt("deviceid").setRange(0, 10);
+	params.addToggle("flip x");
+	params.addToggle("flip y");
+	params.addToggle("bang");
+	
+	params.startGroup("optical flow");
+	params.addToggle("enabled");
+	params.addFloat("velMult").setRange(0, 10);
+	params.addInt("windowSize").setRange(1, 3);
+	params.endGroup();	// optical flow
+	params.endGroup();	// vision
+	
+	
+	params.startGroup("particles");
+	params.addToggle("enabled");
+	params.addInt("count").setRange(100, 200);
+	params.addFloat("maxSpeed").setRange(0, 100);
+	params.endGroup();
+	
+	params.addFloat("float2").setRange(0, 10);
+	params.addInt("int2").setRange(10, 20);
+	params.addToggle("bool2");
 
 //	params.loadFromInfo();
 }	
@@ -99,7 +97,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	ofBackground(color.r * 255, color.g * 255.0f, color.b * 255.0);
+//	ofBackground(color.r * 255, color.g * 255.0f, color.b * 255.0);
 	
 	gui.draw();
 }

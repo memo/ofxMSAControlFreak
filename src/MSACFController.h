@@ -6,7 +6,7 @@
 
 #include "MSACore.h"
 
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
 		
 		class Parameter;

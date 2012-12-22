@@ -11,7 +11,7 @@
 #include "MSACFParameter.h"
 
 
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
 		
 		void Controller::setParam(Parameter *param) {

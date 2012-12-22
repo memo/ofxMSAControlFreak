@@ -12,7 +12,7 @@
 #include "MSACFParameter.h"
 
 
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
 		
 		// todo: keep max, in sync with labels.size()
@@ -28,7 +28,6 @@ namespace MSA {
 			
 			void writeToPropertyTree(boost::property_tree::ptree& pt);
 			void readFromPropertyTree(boost::property_tree::ptree& pt);
-
 //			template<typename T> operator T() const;			// cast operator
 //			template<typename T> T operator=(const T & value);	// assignment operator
 

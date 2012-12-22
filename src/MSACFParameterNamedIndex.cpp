@@ -10,8 +10,7 @@
 #include "MSACFParameterNamedIndex.h"
 #include <boost/foreach.hpp>
 
-
-namespace MSA {
+namespace msa {
 	namespace ControlFreak {
 		
 		void ParameterNamedIndex::writeToPropertyTree(boost::property_tree::ptree& pt) {
@@ -39,7 +38,6 @@ namespace MSA {
 			}
 			
 		}
-
 		
 	}
 }
