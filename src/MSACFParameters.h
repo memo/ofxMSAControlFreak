@@ -10,7 +10,7 @@
 #pragma once
 
 #include "MSACore.h"
-#include "MSACFParameter.h"
+#include "MSACFParameterT.h"
 #include "MSACFParameterNamedIndex.h"
 #include "MSACFGuiBase.h"
 #include <stack>

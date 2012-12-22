@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "MSACFParameter.h"
+#include "MSACFParameterT.h"
 #include "MSACFParameters.h"
 
 namespace msa {
@@ -23,7 +23,7 @@ namespace msa {
 		protected:
 			
 			// add this parameter to the Gui
-			virtual void addParameter(Parameter *param) = 0;
+//			virtual void addParameter(Parameter *param) = 0;
 			
 			virtual void startGroup(string name) {};
 			virtual void endGroup() {};

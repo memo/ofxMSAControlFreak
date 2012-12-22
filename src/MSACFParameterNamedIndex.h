@@ -1,15 +1,8 @@
-/*
- *  MSACFParameterIndex.h
- *  MSA demo msalibs2
- *
- *  Created by Memo Akten on 07/11/2010.
- *  Copyright 2010 MSA Visuals Ltd. All rights reserved.
- *
- */
+
 
 #pragma once
 
-#include "MSACFParameter.h"
+#include "MSACFParameterT.h"
 
 
 namespace msa {
@@ -17,11 +10,14 @@ namespace msa {
 		
 		// todo: keep max, in sync with labels.size()
 		
-		class ParameterNamedIndex : public Parameter {
+		class ParameterNamedIndex : public ParameterT<int> {
 		public:
 			
 			friend class Parameters;
-
+			
+			ParameterNamedIndex(string path="", int value=0) : ParameterT<int>(path, value, 0, 1) {
+				setClamp(false);
+			}
 			
 			inline vector<string>& labels();
 			inline string selectedLabel() const;
@@ -33,11 +29,6 @@ namespace msa {
 
 			
 		protected:
-			ParameterNamedIndex(Parameters *parent, string path, int value)
-			: Parameter(parent, path, Types::kNamedIndex, 0, 1, value) {
-				setClamp(false);
-			}
-			
 			vector<string> _labels;
 
 		};

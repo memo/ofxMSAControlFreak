@@ -9,18 +9,18 @@
 namespace msa {
 	namespace ControlFreak {
 		
-		class Parameter;
+		class ParameterT;
 		
 		class Controller {
 		public:
-			void setParam(Parameter *param);			
+//			void setParam(Parameter *param);			
 //			void checkValueHasChanged();
 			
 			virtual void updateController()	= 0;
 			virtual string toString()	= 0;
 			
 		protected:
-			Parameter	*_param;
+			ParameterT	*_param;
 //			float		_oldValue;
 			
 			Controller() {}

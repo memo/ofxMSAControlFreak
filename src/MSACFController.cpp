@@ -8,15 +8,15 @@
  */
 
 #include "MSACFController.h"
-#include "MSACFParameter.h"
+#include "MSACFParameterT.h"
 
 
 namespace msa {
 	namespace ControlFreak {
 		
-		void Controller::setParam(Parameter *param) {
-			_param = param;
-		}
+//		void Controller::setParam(Parameter *param) {
+//			_param = param;
+//		}
 		
 		
 //		void Controller::checkValueHasChanged() {
