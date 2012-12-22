@@ -1,5 +1,5 @@
 /*
- *  MSAControlFreak.cpp
+ *  MSACF.cpp
  *  MSA demo msalibs2
  *
  *  Created by Memo Akten on 01/10/2010.
