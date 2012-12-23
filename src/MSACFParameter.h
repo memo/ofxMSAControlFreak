@@ -1,5 +1,5 @@
 
-// protected constructor, can only be created via Parameters
+// protected constructor, can only be created via ParameterGroup
 
 
 #pragma once
@@ -15,15 +15,14 @@ namespace msa {
 		
 #define kPathDivider	'.'
 		
-		class Parameters;
+		class ParameterGroup;
 		
 		class Parameter {
 		public:
 			
-			friend class Parameters;
+			friend class ParameterGroup;
 			
-			virtual ~Parameter() {
-			}
+			virtual ~Parameter() {}
 			
 			inline string path() const;
 			inline string name() const;		// return name
@@ -35,21 +34,21 @@ namespace msa {
 			inline float min() const;
 			inline float max() const;
 			inline float value() const;
-			inline void setValue(float f);
+			inline Parameter& setValue(float f);
 			
 			inline Types::Index valueType() const;
 			inline string valueTypeName() const;
 			
-			inline void setClamp(bool b);			// enable or disable clamping
+			inline Parameter& setClamp(bool b);			// enable or disable clamping
 			inline bool isClamped() const;			// returns whether clamp is enabled or not
 			
 			template<typename T> operator T() const;			// cast operator
 			template<typename T> T operator=(const T & value);	// assignment operator
 			
-			inline void setNormalized(float norm);				// input 0...1 number, maps to range
+			inline Parameter& setNormalized(float norm);				// input 0...1 number, maps to range
 			inline float normalized() const;					// return 0...1 number mapped from range
 			
-			inline void setMappedFrom(float value, float imin, float imax);
+			inline Parameter& setMappedFrom(float value, float imin, float imax);
 			inline float mappedTo(float newMin, float newMax) const;	// returns value mapped to new range
 
 			
@@ -68,10 +67,10 @@ namespace msa {
 			string					_name;
 			bool					_isClamped;
 			vector<Controller*>		_controllers;
-			Parameters			*_parent;
+			ParameterGroup			*_parent;
 			
 
-			Parameter(Parameters *parent, string path, Types::Index typeIndex, float min, float max, float value)
+			Parameter(ParameterGroup *parent, string path, Types::Index typeIndex, float min, float max, float value)
 			: _parent(parent), _path(path), _min(min), _max(max), _value(value) {
 				printf("Parameter::Parameter %s\n", _path.c_str());
 				
@@ -83,22 +82,26 @@ namespace msa {
 				_name = lastDividerPos == string::npos ? _path : _path.substr(lastDividerPos+1);
 			}
 
-			inline void setValueType(Types::Index type);
-			inline void setValueType(string s);
+			inline Parameter& setValueType(Types::Index type);
+			inline Parameter& setValueType(string s);
 			
 			// used by all setters for common setting behaviour
 		};
 		
 		
-		//------------------------------------------------------------
+        //--------------------------------------------------------------
+        //--------------------------------------------------------------
+        //--------------------------------------------------------------
 		string Parameter::path() const {
 			return _path;
 		}
 		
+        //--------------------------------------------------------------
 		string Parameter::name() const {
 			return _name;
 		}
 		
+        //--------------------------------------------------------------
 		string Parameter::fullName() const {
 			string s;
 			for(int i=0; i<_controllers.size(); i++) s += "[" + _controllers[i]->toString() + "]";
@@ -106,6 +109,7 @@ namespace msa {
 		}
 		
 		
+        //--------------------------------------------------------------
 		Parameter& Parameter::setRange(float vmin, float vmax) {
 			_min = vmin;
 			_max = vmax;
@@ -113,28 +117,34 @@ namespace msa {
 			return *this;
 		}
 		
+        //--------------------------------------------------------------
 		float Parameter::min() const {
 			return _min;
 		}
 		
+        //--------------------------------------------------------------
 		float Parameter::max() const {
 			return _max;
 		}
 		
+        //--------------------------------------------------------------
 		float Parameter::value() const {
 			return _value;
 		}
 		
+        //--------------------------------------------------------------
 		Types::Index Parameter::valueType() const {
 			return _valueTypeIndex;
 		}
 		
+        //--------------------------------------------------------------
 		string Parameter::valueTypeName() const {
 			return nameForIndex(_valueTypeIndex);
 		}
 
 
-		void Parameter::setValueType(Types::Index type) {
+        //--------------------------------------------------------------
+		Parameter& Parameter::setValueType(Types::Index type) {
 			_valueTypeIndex = type;
 			switch(_valueTypeIndex) {
 				case Types::kToggle:
@@ -153,51 +163,66 @@ namespace msa {
 					assert(false);
 					
 			}
+            return *this;
 		}
 		
-		void Parameter::setValueType(string s) {
+        //--------------------------------------------------------------
+		Parameter& Parameter::setValueType(string s) {
 			setValueType(Types::indexForName(s));
+            return *this;
 		}
 
 
 		
-		void Parameter::setClamp(bool b) {
+        //--------------------------------------------------------------
+		Parameter& Parameter::setClamp(bool b) {
 			_isClamped = b;
 			if(_isClamped) setValue(_value);	// clamp immediately
+            return *this;
 		}
 		
+        //--------------------------------------------------------------
 		bool Parameter::isClamped() const {
 			return _isClamped;
 		}
 		
 		
+        //--------------------------------------------------------------
 		template<typename T> Parameter::operator T() const {
 			return (T)_value;
 		}
 		
+        //--------------------------------------------------------------
 		template<typename T> T Parameter::operator=(const T & value) {
 			setValue(value);
 		}
 		
-		void Parameter::setNormalized(float norm) {
+        //--------------------------------------------------------------
+		Parameter& Parameter::setNormalized(float norm) {
 			setValue(ofLerp(_min, _max, norm));
+            return *this;
 		}
 		
+        //--------------------------------------------------------------
 		float Parameter::normalized() const {
 			float norm = (_value - _min) / (_max - _min);
 			return norm;
 		}
 		
-		void Parameter::setMappedFrom(float value, float imin, float imax) {
+        //--------------------------------------------------------------
+		Parameter& Parameter::setMappedFrom(float value, float imin, float imax) {
 			setValue(ofMap(value, imin, imax, _min, _max));
+            return *this;
 		}
 		
+        //--------------------------------------------------------------
 		float Parameter::mappedTo(float newMin, float newMax) const {
 			return ofMap(_value, _min, _max, newMin, newMax);
 		}
 		
 		
-		void Parameter::setValue(float f) {
+        //--------------------------------------------------------------
+		Parameter& Parameter::setValue(float f) {
 			switch(_valueTypeIndex) {
 				case Types::kFloat:
 					_value = _isClamped ? ofClamp(f, _min, _max) : (float)f;
@@ -219,6 +244,7 @@ namespace msa {
 			}
 			//				checkValueHasChanged();
 			updateControllers();
+            return *this;
 		}
 		
 		

@@ -12,8 +12,7 @@
 #include "MSACore.h"
 #include "MSACFParameter.h"
 #include "MSACFParameterNamedIndex.h"
-#include "MSACFGuiBase.h"
-#include <stack>
+//#include "MSACFGuiBase.h"
 
 #include <boost/property_tree/ptree.hpp>
 
@@ -22,15 +21,16 @@ namespace msa {
 		
 		
 		// container for multiple parameters and groups
-		class Parameters {
+		class ParameterGroup {
 		public:
 			
-			Parameters(string name = "My Parameters");
-			~Parameters();
+			ParameterGroup(string name = "My ParameterGroup");
+			~ParameterGroup();
 			
 			void setName(string s);
 			string name();
 			
+            // groups can contain subgroups
 			void startGroup(string name="");
 			void endGroup();
 
@@ -41,11 +41,15 @@ namespace msa {
 			Parameter& addToggle(string name, bool defaultValue = false);
 			Parameter& addBang(string name, bool defaultValue = false);
 			ParameterNamedIndex& addNamedIndex(string name, int count = 0, string* labels = NULL, int defaultValue = 0);
+            //            Parameter& addVec2(string name);
+            //            Parameter& addVec3(string name);
+            //            Parameter& addVec4(string name);
+            //            Parameter& addColor(string name);
 			
 			
-			inline int numParams();
-			inline Parameter& operator[](string name);		// access by name
-			inline Parameter& operator[](int index);		// access by index
+			int numParams();
+			Parameter& operator[](string name);		// access by name
+			Parameter& operator[](int index);		// access by index
 			
 			
 			// if name is omitted, last used name is used (by default same as group name)
@@ -60,21 +64,19 @@ namespace msa {
 //			bool saveToJSON(string filename = "");
 //			bool loadFromJSON(string filename = "");
 
-
 //			void checkValueHasChanged();
 //			void updateControllers(bool doChildGroups = true);		// update all controllers
 			
-			
 			// GUI based functions
-			void setGui(GuiBase& gui);		// all parameters & groups will be reflected in this Gui
-			GuiBase* gui();					// return reference to the gui
+//			void setGui(GuiBase& gui);		// all parameters & groups will be reflected in this Gui
+//			GuiBase* gui();					// return reference to the gui
 			
 			
 		protected:
 			string			_name;
 			string			_filename;
 			stack<string>	_pathStack;	// keep track of stack of groups when creating
-			GuiBase			*_gui;
+//			GuiBase			*_gui;
 			
 			string makePath(string parent, string child);	// concatenate paths, add divider if need be
 			string addToPath(string name);		//make full path out of name (using _currentPath)
@@ -91,22 +93,6 @@ namespace msa {
 			map<string, Parameter*>	_paramMap;		// map for all parameters
 			vector<Parameter*>		_paramArr;		// array needed to access sequentially (for displaying in gui)
 		};
-
-		
-		//------------------------------------------------------------
-
-		int Parameters::numParams() {
-			assert(_paramArr.size() == _paramMap.size());	// probably tried to add a parameter with the same name (in the same group)
-			return _paramMap.size();
-		}
-		
-		Parameter& Parameters::operator[](string name) {
-			return *_paramMap[name];
-		}
-		
-		Parameter& Parameters::operator[](int index) {
-			return *_paramArr[index];
-		}
 
 	}
 }

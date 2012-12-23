@@ -10,14 +10,14 @@
 #pragma once
 
 #include "MSACFParameter.h"
-#include "MSACFParameters.h"
+#include "MSACFParameterGroup.h"
 
 namespace msa {
 	namespace ControlFreak {
 		
 		class GuiBase {
 			
-			friend class Parameters;
+			friend class ParameterGroup;
 			
 			
 		protected:

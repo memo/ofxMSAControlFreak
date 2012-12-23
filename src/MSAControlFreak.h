@@ -33,8 +33,8 @@
  Parameter::applyPreset(name, time);					// apply preset (if it exists) in time seconds
  Parameter::savePreset(name);						// save current value as preset with name
  
- Parameters::applyPreset(name, time);						// apply preset (if it exists) to all parameters in group, in time seconds
- Parameters::savePreset(name);							// save current value for all parameters in group as preset with name
+ ParameterGroup::applyPreset(name, time);						// apply preset (if it exists) to all parameters in group, in time seconds
+ ParameterGroup::savePreset(name);							// save current value for all parameters in group as preset with name
  
  Global::applyPreset(name, time);					// apply preset (if it exists) to all parameters in all groups, in time seconds
  Global::savePreset(name);							// save current value for all parameters in all groups as preset with name
@@ -55,7 +55,7 @@
 
 #include "MSACFParameter.h"
 #include "MSACFController.h"
-#include "MSACFParameters.h"
+#include "MSACFParameterGroup.h"
 
 namespace msa {
 	namespace ControlFreak {

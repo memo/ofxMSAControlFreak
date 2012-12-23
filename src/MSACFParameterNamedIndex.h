@@ -20,7 +20,7 @@ namespace msa {
 		class ParameterNamedIndex : public Parameter {
 		public:
 			
-			friend class Parameters;
+			friend class ParameterGroup;
 
 			
 			inline vector<string>& labels();
@@ -33,7 +33,7 @@ namespace msa {
 
 			
 		protected:
-			ParameterNamedIndex(Parameters *parent, string path, int value)
+			ParameterNamedIndex(ParameterGroup *parent, string path, int value)
 			: Parameter(parent, path, Types::kNamedIndex, 0, 1, value) {
 				setClamp(false);
 			}
