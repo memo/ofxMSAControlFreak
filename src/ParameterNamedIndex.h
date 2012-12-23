@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "ofxMSAControlFreak/src/Parameter.h"
+#include "ofxMSAControlFreak/src/ParameterNumbers.h"
 
 
 namespace msa {
@@ -17,7 +17,7 @@ namespace msa {
 		
 		// todo: keep max, in sync with labels.size()
 		
-		class ParameterNamedIndex : public Parameter {
+		class ParameterNamedIndex : public  ParameterInt {
 		public:
 			
 			friend class ParameterGroup;
@@ -26,41 +26,20 @@ namespace msa {
             ParameterNamedIndex& setLabels(vector<string>& labels);
             ParameterNamedIndex& setLabels(int count, ...);
 			
-			inline vector<string>& labels();
-			inline string selectedLabel() const;
+			vector<string>& labels();
+			string selectedLabel() const;
 			
-            virtual void writeSchemaToXml(ofxXmlSettings &xml);
-            virtual void readSchemaFromXml(ofxXmlSettings &xml);
+            // from Parameter
+            virtual void writeToXml(ofxXmlSettings &xml, bool bFull, string tag, int tagid);
+            virtual void readFromXml(ofxXmlSettings &xml, bool bFull, string tag, int tagid);
 			
 		protected:
-			ParameterNamedIndex(ParameterGroup *parent, string path) : Parameter(parent, path, Types::kNamedIndex) {
-				setClamp(false);
-			}
+			ParameterNamedIndex(ParameterGroup *parent, string path)
+            : ParameterInt(parent, path, Types::kNamedIndex) { setClamp(false); }
 			
 			vector<string> _labels;
 		};
 
-		
-		//------------------------------------------------------------
-		
-		vector<string>& ParameterNamedIndex::labels() {
-			return _labels;
-		}
-		
-		string ParameterNamedIndex::selectedLabel() const {
-			return _labels.at(value());
-		}
-		
-		
-//		template<typename T> ParameterNamedIndex::operator T() const {
-//			return (T)_value;
-//		}
-//		
-//		template<typename T> T ParameterNamedIndex::operator=(const T & value) {
-//			setValue(value);
-//		}
-//		
-		
 		
 		
 	}

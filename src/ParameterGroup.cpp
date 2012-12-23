@@ -108,7 +108,7 @@ namespace msa {
 		}
 		
         //--------------------------------------------------------------
-		bool ParameterGroup::saveSchemaXml(string filename) {
+		bool ParameterGroup::saveXml(bool bFull, string filename) {
 			setFilename(filename);
             ofxXmlSettings xml;
             
@@ -116,12 +116,13 @@ namespace msa {
                 Parameter &p = *_paramArr[i];
                 
                 if(p.type() == Types::kCommand) {
-                    if(p.value() == Types::kStartGroup) {
+                    ParameterInt &pi = (ParameterInt&) p;
+                    if(pi.getValue() == Types::kStartGroup) {
                         int tagid = xml.addTag("group");
-                        xml.addAttribute("group", "name", p.name(), tagid);
+                        xml.addAttribute("group", "name", pi.name(), tagid);
                         xml.pushTag("group", tagid);
                         
-                    } else if(p.value() == Types::kEndGroup) {
+                    } else if(pi.getValue() == Types::kEndGroup) {
                         xml.popTag();
                     }
                 } else {
@@ -129,58 +130,17 @@ namespace msa {
                     int tagid = xml.addTag(tag);
                     xml.addAttribute(tag, "name", p.name(), tagid);
                     xml.addAttribute(tag, "path", p.path(), tagid);
-                    xml.addAttribute(tag, "value", p.value(), tagid);
-                    xml.addAttribute(tag, "min", p.min(), tagid);
-                    xml.addAttribute(tag, "max", p.max(), tagid);
-                    xml.addAttribute(tag, "type", p.typeName(), tagid);
-                    xml.pushTag(tag, tagid);
-                    p.writeSchemaToXml(xml);
-                    xml.popTag();
+                    p.writeToXml(xml, bFull, tag, tagid);
                 }
             }
-            return xml.saveFile(_filename + "-schema.xml");
+            return xml.saveFile(_filename + (bFull ? "-schema.xml" : "-values.xml"));
 		}
 		
         //--------------------------------------------------------------
-		bool ParameterGroup::loadSchemaXml(string filename) {
+		bool ParameterGroup::loadXml(bool bFull, string filename) {
 			setFilename(filename);
 		}
         
-        //--------------------------------------------------------------
-        bool ParameterGroup::saveValueXml(string filename) {
-			setFilename(filename);
-            ofxXmlSettings xml;
-            
-            for(int i=0; i<_paramArr.size(); i++) {
-                Parameter &p = *_paramArr[i];
-                
-                if(p.type() == Types::kCommand) {
-                    if(p.value() == Types::kStartGroup) {
-                        int tagid = xml.addTag("group");
-                        xml.addAttribute("group", "name", p.name(), tagid);
-                        xml.pushTag("group", tagid);
-                        
-                    } else if(p.value() == Types::kEndGroup) {
-                        xml.popTag();
-                    }
-                } else {
-                    string tag = "parameter";// + ofToString(i);
-                    int tagid = xml.addTag(tag);
-                    xml.addAttribute(tag, "name", p.name(), tagid);
-                    xml.addAttribute(tag, "value", p.value(), tagid);
-                    xml.pushTag(tag, tagid);
-                    p.writeValueToXml(xml);
-                    xml.popTag();
-                }
-            }
-            return xml.saveFile(_filename + "-values.xml");        }
-        
-        //--------------------------------------------------------------
-        bool ParameterGroup::loadValueXml(string filename) {
-            
-        }
-
-		
         //--------------------------------------------------------------
 		string ParameterGroup::makePath(string parent, string child) {
 			return parent.empty() ? child : parent + getPathDivider() + child;
@@ -205,23 +165,23 @@ namespace msa {
         
 		
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::addInt(string name) {
-			return addParameter(new Parameter(this, addToPath(name), Types::kInt));
+		ParameterInt& ParameterGroup::addInt(string name) {
+			return (ParameterInt&) addParameter(new ParameterInt(this, addToPath(name), Types::kInt));
 		}
 		
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::addFloat(string name) {
-			return addParameter(new Parameter(this, addToPath(name), Types::kFloat));
+		ParameterFloat& ParameterGroup::addFloat(string name) {
+			return (ParameterFloat&) addParameter(new ParameterFloat(this, addToPath(name), Types::kFloat));
 		}
 		
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::addToggle(string name) {
-			return addParameter(new Parameter(this, addToPath(name), Types::kToggle));
+		ParameterBool& ParameterGroup::addToggle(string name) {
+			return (ParameterBool&) addParameter(new ParameterBool(this, addToPath(name), Types::kToggle));
 		}
 		
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::addBang(string name) {
-			return addParameter(new Parameter(this, addToPath(name), Types::kBang));
+		ParameterBool& ParameterGroup::addBang(string name) {
+			return (ParameterBool&) addParameter(new ParameterBool(this, addToPath(name), Types::kBang));
 		}
 		
         //--------------------------------------------------------------
@@ -231,7 +191,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         void ParameterGroup::addCommand(string name, Types::Command command) {
-            addParameter(new Parameter(this, addToPath(name), Types::kCommand)).setValue(command);
+            ((ParameterInt&)addParameter(new ParameterInt(this, addToPath(name), Types::kCommand))).setValue(command);
         }
         
 		//-------------- group functions --------------

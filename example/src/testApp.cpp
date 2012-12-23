@@ -40,7 +40,7 @@ void testApp::setup(){
     
     string labels[] = {"first option", "another option", "yet another option", "even more", "and last one"};
 	params.addNamedIndex("a dropdown").setLabels(5, labels);
-    params.addNamedIndex("another dropdown").setLabels(4, "cow", "camel", "dolphin", "monkey");
+    params.addNamedIndex("animals").setLabels(4, "cow", "camel", "dolphin", "monkey");
     
 
 	
@@ -84,7 +84,7 @@ void testApp::setup(){
 void testApp::update(){
     //	if(myBool1Animate) myFloat1 = ofNoise(ofGetElapsedTimef());
     //
-    //	if(gui.control("myBool1 Animate").value()) myFloat1 = ofNoise(ofGetElapsedTimef());
+    //	if(gui.control("myBool1 Animate").getValue()) myFloat1 = ofNoise(ofGetElapsedTimef());
     //
     //	if(randomizeButton) {
     //		randomizeButton = false;
@@ -124,20 +124,20 @@ void testApp::keyPressed (int key){
 	
 	switch(key) {
 		case 's':
-            params.saveValueXml();
+            params.saveXml(false);
             break;
             
 		case 'S':
-            params.saveSchemaXml();
+            params.saveXml(true);
             break;
             
 
 		case 'l':
-			params.loadValueXml();
+			params.loadXml(false);
 			break;
 			
 		case 'L':
-			params.loadSchemaXml();
+			params.loadXml(true);
 			break;
 	}
 }

@@ -44,15 +44,33 @@ namespace msa {
 			return *this;
         }
         
+        
+        
         //--------------------------------------------------------------
-        void ParameterNamedIndex::writeSchemaToXml(ofxXmlSettings &xml) {
-            for(int i=0; i<_labels.size(); i++) {
-                xml.addValue("label" + ofToString(i), _labels[i]);
+		vector<string>& ParameterNamedIndex::labels() {
+			return _labels;
+		}
+		
+        //--------------------------------------------------------------
+		string ParameterNamedIndex::selectedLabel() const {
+			return _labels.at(getValue());
+		}
+		
+        
+        //--------------------------------------------------------------
+        void ParameterNamedIndex::writeToXml(ofxXmlSettings &xml, bool bFull, string tag, int tagid) {
+            ParameterNumberT<int>::writeToXml(xml, bFull, tag, tagid);
+            if(bFull) {
+                xml.pushTag(tag, tagid);
+                for(int i=0; i<_labels.size(); i++) {
+                    xml.addValue("label" + ofToString(i), _labels[i]);
+                }
+                xml.popTag();
             }
         }
         
         //--------------------------------------------------------------
-        void ParameterNamedIndex::readSchemaFromXml(ofxXmlSettings &xml) {
+        void ParameterNamedIndex::readFromXml(ofxXmlSettings &xml, bool bFull, string tag, int tagid) {
             
         }
         

@@ -36,10 +36,10 @@ namespace msa {
 
 			
 			// all of the below are added to the _currentPath
-			Parameter& addInt(string name);
-			Parameter& addFloat(string name);
-			Parameter& addToggle(string name);
-			Parameter& addBang(string name);
+			ParameterInt& addInt(string name);
+			ParameterFloat& addFloat(string name);
+			ParameterBool& addToggle(string name);
+			ParameterBool& addBang(string name);
 			ParameterNamedIndex& addNamedIndex(string name);
             //            Parameter& addVec2(string name);
             //            Parameter& addVec3(string name);
@@ -55,12 +55,9 @@ namespace msa {
 			// if name is omitted, last used name is used (by default same as group name)
 			void setFilename(string filename = "");
 			
-			bool saveSchemaXml(string filename = "");
-			bool loadSchemaXml(string filename = "");
+			bool saveXml(bool bFull, string filename = "");
+			bool loadXml(bool bFull, string filename = "");
 
-			bool saveValueXml(string filename = "");
-			bool loadValueXml(string filename = "");
-            
 //			void checkValueHasChanged();
 //			void updateControllers(bool doChildGroups = true);		// update all controllers
 			
