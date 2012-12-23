@@ -7,8 +7,8 @@
  *
  */
 
-#include "MSACFController.h"
-#include "MSACFParameter.h"
+#include "ofxMSAControlFreak/src/Controller.h"
+#include "ofxMSAControlFreak/src/Parameter.h"
 
 
 namespace msa {

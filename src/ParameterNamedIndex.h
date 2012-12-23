@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "MSACFParameter.h"
+#include "ofxMSAControlFreak/src/Parameter.h"
 
 
 namespace msa {
@@ -21,25 +21,23 @@ namespace msa {
 		public:
 			
 			friend class ParameterGroup;
-
+            
+			ParameterNamedIndex& setLabels(int count, string* labels);
+            ParameterNamedIndex& setLabels(vector<string>& labels);
+            ParameterNamedIndex& setLabels(int count, ...);
 			
 			inline vector<string>& labels();
 			inline string selectedLabel() const;
 			
-			void writeToPropertyTree(boost::property_tree::ptree& pt);
-			void readFromPropertyTree(boost::property_tree::ptree& pt);
-//			template<typename T> operator T() const;			// cast operator
-//			template<typename T> T operator=(const T & value);	// assignment operator
-
+            virtual void writeSchemaToXml(ofxXmlSettings &xml);
+            virtual void readSchemaFromXml(ofxXmlSettings &xml);
 			
 		protected:
-			ParameterNamedIndex(ParameterGroup *parent, string path, int value)
-			: Parameter(parent, path, Types::kNamedIndex, 0, 1, value) {
+			ParameterNamedIndex(ParameterGroup *parent, string path) : Parameter(parent, path, Types::kNamedIndex) {
 				setClamp(false);
 			}
 			
 			vector<string> _labels;
-
 		};
 
 		
@@ -50,7 +48,7 @@ namespace msa {
 		}
 		
 		string ParameterNamedIndex::selectedLabel() const {
-			return _labels.at(_value);
+			return _labels.at(value());
 		}
 		
 		

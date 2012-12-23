@@ -1,38 +1,50 @@
 #include "testApp.h"
-#include  "MSAFreakGui.h"
-#include "MSAControlFreak.h"
+#include "ofxMSAControlFreak/src/gui/Gui.h"
+#include "ofxMSAControlFreak/src/ControlFreak.h"
 
-using namespace msa;
-using namespace ControlFreak;
+//using namespace msa;
+//using namespace ControlFreak;
 
 // for demonstrating adding any drawable object (that extends ofBaseDraw);
 ofVideoGrabber		vidGrabber;
 unsigned char * 	videoInverted;
 ofTexture			videoTexture;
 
-ParameterGroup      params;
-guigl::Gui			gui;
+msa::ControlFreak::ParameterGroup      params;
+msa::ControlFreak::gui::Gui             gui;
 
 //--------------------------------------------------------------
 void testApp::setup(){
 	ofBackground(0, 0, 0);
 	ofSetVerticalSync(true);
+    ofSetLogLevel(OF_LOG_VERBOSE);
 	
 	// ADD variables and controls programmatically like below
 	// OR just hand edit XML / JSON / INI file and the schema will be loaded and gui constructed
 	params.setName("My Settings");
 	
-	params.addFloat("float1");
-    params.addFloat("float2");
+	params.addFloat("var-f1");                                  // default value for float is 0, default range for float is 0...1
+    params.addFloat("var-f2").setValue(0.7f);                   // init with value 0.7, and default range
+    params.addFloat("var-f3").setRange(-1, 1);                  // set range
+    params.addFloat("var-f4").setRange(0, 1000).setValue(200);  // set range and value
     
-	string labels[] = {"first option", "another option", "yet anothing option", "even more", "and last one"};
-	params.addNamedIndex("a dropdown", 5, labels);
-	params.addInt("int1");
-	params.addToggle("bool1");
+	params.addInt("var-i1");                                    // default value for int is 0, default range is 0...100
+	params.addInt("var-i2").setValue(30);                       // init with value 30, and default range
+	params.addInt("var-i3").setRange(-10, 10);                  // set range
+	params.addInt("var-i4").setRange(5, 10).setValue(7);        // set range and value
+    
+	params.addToggle("var-toggle1");                            // default value for for toggle is false
+	params.addToggle("var-toggle2").setValue(true);             // set value
+    
 	params.addBang("trigger");
+    
+    string labels[] = {"first option", "another option", "yet another option", "even more", "and last one"};
+	params.addNamedIndex("a dropdown").setLabels(5, labels);
+    params.addNamedIndex("another dropdown").setLabels(4, "cow", "camel", "dolphin", "monkey");
+    
+
 	
 	params.startGroup("vision");		// now this becomes the activeGroup
-    {
         params.addToggle("enabled");
         params.addFloat("brightness").setRange(0, 100);
         params.addFloat("contrast").setRange(-100, 100);
@@ -42,27 +54,23 @@ void testApp::setup(){
         params.addToggle("bang");
         
         params.startGroup("optical flow");
-        {
             params.addToggle("enabled");
             params.addFloat("velMult").setRange(0, 10);
             params.addInt("windowSize").setRange(1, 3);
-        }
+            params.addNamedIndex("method").setLabels(3, "Lucas-Kanade", "Horn–Schunck", "Buxton–Buxton");
         params.endGroup();	// optical flow
-    }
 	params.endGroup();	// vision
 	
 	
 	params.startGroup("particles");
-    {
         params.addToggle("enabled");
         params.addInt("count").setRange(100, 200);
         params.addFloat("maxSpeed").setRange(0, 100);
-	}
     params.endGroup();
     
     
     // set GUI handler for the Parameter params
-//    gui.set
+    gui.addParameters(params);
 	gui.setDefaultKeys(true);
 	gui.show();
     
@@ -115,20 +123,22 @@ void testApp::keyPressed (int key){
     //	gui.keyPressed(key);
 	
 	switch(key) {
-		case 'x':
-            params.saveToXML();
+		case 's':
+            params.saveValueXml();
             break;
-		case 'i':
-			params.saveToInfo();
-			break;
-		case 'j':
-            //            params.saveToJSON();
-			break;
-			
+            
+		case 'S':
+            params.saveSchemaXml();
+            break;
+            
+
 		case 'l':
-			params.loadFromInfo();
+			params.loadValueXml();
 			break;
 			
+		case 'L':
+			params.loadSchemaXml();
+			break;
 	}
 }
 

@@ -39,8 +39,8 @@
  Global::applyPreset(name, time);					// apply preset (if it exists) to all parameters in all groups, in time seconds
  Global::savePreset(name);							// save current value for all parameters in all groups as preset with name
  
- saveToXML();
- loadFromXML;
+ writeToXml();
+ readFromXml;
  
  
  myParameter.addPreset(5, "default");
@@ -53,9 +53,9 @@
 
 #pragma once
 
-#include "MSACFParameter.h"
-#include "MSACFController.h"
-#include "MSACFParameterGroup.h"
+#include "ofxMSAControlFreak/src/Parameter.h"
+#include "ofxMSAControlFreak/src/Controller.h"
+#include "ofxMSAControlFreak/src/ParameterGroup.h"
 
 namespace msa {
 	namespace ControlFreak {

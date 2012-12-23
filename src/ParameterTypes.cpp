@@ -8,13 +8,14 @@
  */
 
 
-#include "MSACFParameterTypes.h"
+#include "ofxMSAControlFreak/src/ParameterTypes.h"
 
 #include <map>
 
 namespace msa {
 	namespace ControlFreak {
 		namespace Types {
+            
 			struct case_insensitive_compare {
 				bool operator() (const string & s1, const string & s2) const {
 					return strcasecmp(s1.c_str(), s2.c_str()) < 0;
@@ -28,18 +29,22 @@ namespace msa {
 				"Int",
 				"Toggle",
 				"Bang",
-				"NamedIndex"
+				"NamedIndex",
+                "Command"
 			};
 			
+            //--------------------------------------------------------------
 			void setup() {
 				for(int i=0; i<kNumTypes; i++) indices[ names[i] ] = (Index) i;
 			}
 			
+            //--------------------------------------------------------------
 			Index indexForName(string s) {
 				if(indices.empty()) setup();
 				return indices[s];
 			}
 			
+            //--------------------------------------------------------------
 			string nameForIndex(Index i) {
 				if(indices.empty()) setup();
 				return names[i];

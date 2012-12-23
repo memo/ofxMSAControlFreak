@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include "MSACore.h"
-#include "MSACFParameter.h"
-#include "MSACFParameterNamedIndex.h"
-//#include "MSACFGuiBase.h"
+#include "ofxMSACore/src/MSACore.h"
+#include "ofxMSAControlFreak/src/Parameter.h"
+#include "ofxMSAControlFreak/src/ParameterNamedIndex.h"
+//#include "ofxMSAControlFreak/src/GuiBase.h"
 
-#include <boost/property_tree/ptree.hpp>
+//#include <boost/property_tree/ptree.hpp>
 
 namespace msa {
 	namespace ControlFreak {
@@ -24,7 +24,7 @@ namespace msa {
 		class ParameterGroup {
 		public:
 			
-			ParameterGroup(string name = "My ParameterGroup");
+			ParameterGroup(string name = "My ParameterGroup", string pathDivider = "/");
 			~ParameterGroup();
 			
 			void setName(string s);
@@ -36,11 +36,11 @@ namespace msa {
 
 			
 			// all of the below are added to the _currentPath
-			Parameter& addFloat(string name, float min=0, float max=1, float defaultValue = 0);
-			Parameter& addInt(string name, int min=0, int max=100, int defaultValue = 0);					
-			Parameter& addToggle(string name, bool defaultValue = false);
-			Parameter& addBang(string name, bool defaultValue = false);
-			ParameterNamedIndex& addNamedIndex(string name, int count = 0, string* labels = NULL, int defaultValue = 0);
+			Parameter& addInt(string name);
+			Parameter& addFloat(string name);
+			Parameter& addToggle(string name);
+			Parameter& addBang(string name);
+			ParameterNamedIndex& addNamedIndex(string name);
             //            Parameter& addVec2(string name);
             //            Parameter& addVec3(string name);
             //            Parameter& addVec4(string name);
@@ -55,43 +55,33 @@ namespace msa {
 			// if name is omitted, last used name is used (by default same as group name)
 			void setFilename(string filename = "");
 			
-			bool saveToXML(string filename = "");
-			bool loadFromXML(string filename = "");
-			
-			bool saveToInfo(string filename = "");
-			bool loadFromInfo(string filename = "");
-			
-//			bool saveToJSON(string filename = "");
-//			bool loadFromJSON(string filename = "");
+			bool saveSchemaXml(string filename = "");
+			bool loadSchemaXml(string filename = "");
 
+			bool saveValueXml(string filename = "");
+			bool loadValueXml(string filename = "");
+            
 //			void checkValueHasChanged();
 //			void updateControllers(bool doChildGroups = true);		// update all controllers
 			
-			// GUI based functions
-//			void setGui(GuiBase& gui);		// all parameters & groups will be reflected in this Gui
-//			GuiBase* gui();					// return reference to the gui
-			
-			
+			string getPathDivider();
+            
 		protected:
 			string			_name;
 			string			_filename;
+            string          _pathDivider;
 			stack<string>	_pathStack;	// keep track of stack of groups when creating
-//			GuiBase			*_gui;
 			
 			string makePath(string parent, string child);	// concatenate paths, add divider if need be
 			string addToPath(string name);		//make full path out of name (using _currentPath)
 			
-			void updateTreeFromParams();					// runs through all params and updates property tree
-			void updateTreeFromParam(Parameter *Param);		// updates just this parameter in property tree
-			
-			void updateParamsFromTree(string rootPath = "");// runs through tree and updates all params
-			void updateParamFromTree(string path);			// updates just this parameter from property tree
-
 			Parameter& addParameter(Parameter *param);		// used internally, only public for advanced use (adds reference to original parameter)
 
-			boost::property_tree::ptree _ptree;
 			map<string, Parameter*>	_paramMap;		// map for all parameters
 			vector<Parameter*>		_paramArr;		// array needed to access sequentially (for displaying in gui)
+            
+            
+            void addCommand(string name, Types::Command command);
 		};
 
 	}
