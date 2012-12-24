@@ -23,16 +23,16 @@ namespace msa {
             
 			// set and get value
             ParameterValueT<T>& setValue(T v);
-			T getValue();
+			T& getValue() const;
             
             // operators for assigning and casting (same functionality as above)
 			T operator=(const T & v);
-			operator T();
+			operator T() const;
 			
             // set min/max range values
 			ParameterValueT<T>& setRange(T vmin, T vmax);
-			T getMin();
-			T getMax();
+			T& getMin() const;
+			T& getMax() const;
 
             // set and get whether clamping to range is enabled
 			ParameterValueT<T>& setClamp(bool b);
@@ -40,7 +40,7 @@ namespace msa {
 			
             // set and get increment amount (when using inc/dec methods)
             ParameterValueT<T>& setIncrement(T inc);
-            T getIncrement();
+            T& getIncrement() const;
             
             // increase or decrease by increment amount
             ParameterValueT<T>& inc();
@@ -48,11 +48,11 @@ namespace msa {
             
             // set and get as 0...1 values normalized to min/max range
 			ParameterValueT<T>& setNormalized(float norm);
-			float getNormalized();
+			float getNormalized() const;
             
             // set and get mapped to a new range
             ParameterValueT<T>& setMappedFrom(T v, T inputMin, T inputMax);
-            T getMappedTo(T newMin, T newMax);
+            T getMappedTo(T newMin, T newMax) const;
             
             
             // OPTIONAL
@@ -79,11 +79,13 @@ namespace msa {
 
             
 		private:
-            // internally stored values
-			T   _vvalue, _vmin, _vmax, _vinc;
-            
-            // pointers to externally stored values (leave NULL to ignore)
+            // pointers to externally stored values
+            // if they are set to NULL, they point to the below internal members
             T   *_pvalue, *_pmin, *_pmax, *_pinc;
+            
+            // internally stored values
+            // these are only used as targets if any of the above is set to NULL
+			T   _value, _min, _max, _inc;
             
 			bool					_isClamped;
 			vector<Controller*>		_controllers;
@@ -93,13 +95,22 @@ namespace msa {
         //--------------------------------------------------------------
         //--------------------------------------------------------------
         //--------------------------------------------------------------
+		template <typename T>
+        ParameterValueT<T>::ParameterValueT(ParameterContainer *parent, string name, Type::Index typeIndex)
+        : ParameterContainer(parent, name, typeIndex), _pvalue(NULL), _pmin(NULL), _pmax(NULL), _pinc(NULL) {
+            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::ParameterValueT " <<  getPath().c_str();
+            setValueVariable(NULL);
+            setRangeVariables(NULL, NULL);
+            setIncrementVariable(NULL);
+            setClamp(false);
+        }
+        
+        
+        //--------------------------------------------------------------
         template <typename T>
         ParameterValueT<T>& ParameterValueT<T>::setValue(T v) {
             // set value and clamp if nessecary
-            _vvalue = clamp(v);
-            
-            // if we have a pointer to a value, update that too
-            if(_pvalue) *_pvalue = _vvalue;
+            *_pvalue = clamp(v);
             
 			//				checkValueHasChanged();
 			updateControllers();
@@ -108,12 +119,9 @@ namespace msa {
         
         //--------------------------------------------------------------
 		template <typename T>
-		T ParameterValueT<T>::getValue() {
-            // if we have a pointer to value, make sure they're in sync
-            if(_pvalue && *_pvalue != _vvalue) setValue(*_pvalue);
-			return _vvalue;
+		T& ParameterValueT<T>::getValue() const {
+			return *_pvalue;
 		}
-		
         
         //--------------------------------------------------------------
         template <typename T>
@@ -123,19 +131,15 @@ namespace msa {
         
         //--------------------------------------------------------------
 		template <typename T>
-		ParameterValueT<T>::operator T() {
+		ParameterValueT<T>::operator T() const {
 			return getValue();
 		}
 		
-        
         //--------------------------------------------------------------
         template <typename T>
 		ParameterValueT<T>& ParameterValueT<T>::setRange(T vmin, T vmax) {
-            _vmin = vmin;
-            _vmax = vmax;
-            
-            if(_pmin) *_pmin = _vmin;
-            if(_pmax) *_pmax = _vmax;
+            *_pmin = vmin;
+            *_pmax = vmax;
 
 			setValue(getValue());
 			return *this;
@@ -143,16 +147,14 @@ namespace msa {
         
         //--------------------------------------------------------------
 		template <typename T>
-		T ParameterValueT<T>::getMin() {
-            if(_pmin) _vmin = *_pmin;
-			return _vmin;
+		T& ParameterValueT<T>::getMin() const {
+			return *_pmin;
 		}
 		
         //--------------------------------------------------------------
 		template <typename T>
-		T ParameterValueT<T>::getMax() {
-            if(_pmax) _vmax = *_pmax;
-			return _vmax;
+		T& ParameterValueT<T>::getMax() const {
+			return *_pmax;
 		}
 
         
@@ -174,16 +176,14 @@ namespace msa {
         //--------------------------------------------------------------
 		template <typename T>
 		ParameterValueT<T>& ParameterValueT<T>::setIncrement(T inc) {
-            _vinc = inc;
-            if(_pinc) *_pinc = _vinc;
+            *_pinc = inc;
             return *this;
         }
         
         //--------------------------------------------------------------
 		template <typename T>
-		T ParameterValueT<T>::getIncrement() {
-            if(_pinc) _vinc = *_pinc;
-            return _vinc;
+		T& ParameterValueT<T>::getIncrement() const {
+            return *_pinc;
         }
         
         
@@ -211,7 +211,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
         template <typename T>
-        float ParameterValueT<T>::getNormalized() {
+        float ParameterValueT<T>::getNormalized() const {
 			return getMappedTo(0, 1);
 		}
 		
@@ -226,7 +226,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
 		template <typename T>
-		T ParameterValueT<T>::getMappedTo(T newMin, T newMax) {
+		T ParameterValueT<T>::getMappedTo(T newMin, T newMax) const {
 			return ofMap(getValue(), getMin(), getMax(), newMin, newMax);
 //            return ((getValue() - getMin()) / (getMax() - getMin()) * (newMax - newMin) + newMin);
 		}
@@ -235,22 +235,22 @@ namespace msa {
         //--------------------------------------------------------------
 		template <typename T>
         ParameterValueT<T>& ParameterValueT<T>::setValueVariable(T *pv) {
-            _pvalue = pv;
+            _pvalue = pv ? pv : &_value;
             return *this;
         }
         
         //--------------------------------------------------------------
 		template <typename T>
         ParameterValueT<T>& ParameterValueT<T>::setRangeVariables(T *pmin, T *pmax) {
-            _pmin = pmin;
-            _pmax = pmax;
+            _pmin = pmin ? pmin : &_min;
+            _pmax = pmax ? pmax : &_max;
             return *this;
         }
         
         //--------------------------------------------------------------
 		template <typename T>
         ParameterValueT<T>& ParameterValueT<T>::setIncrementVariable(T *pinc) {
-            _pinc = pinc;
+            _pinc = pinc ? pinc : &_inc;
             return *this;
         }
 
@@ -282,14 +282,7 @@ namespace msa {
 			for(int i=0; i<_controllers.size(); i++) s += "[" + _controllers[i]->toString() + "]";
 			return s + " " + getName();
 		}
-        
-        //--------------------------------------------------------------
-		template <typename T>
-        ParameterValueT<T>::ParameterValueT(ParameterContainer *parent, string name, Type::Index typeIndex)
-        : ParameterContainer(parent, name, typeIndex), _pvalue(NULL), _pmin(NULL), _pmax(NULL), _pinc(NULL) {
-            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::ParameterValueT " <<  getPath().c_str();
-            setClamp(false);
-        }
+
         
         
 	}
