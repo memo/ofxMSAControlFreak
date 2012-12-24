@@ -37,6 +37,7 @@ namespace msa {
             //            Parameter& addVec4(string name);
             //            Parameter& addColor(string name);
 			
+            
 			
 			int getNumParams();
             Parameter& getParameter(int index);     // access by index

@@ -50,7 +50,7 @@ namespace msa {
 		}
 		
         //--------------------------------------------------------------
-		string ParameterNamedIndex::selectedLabel() const {
+		string ParameterNamedIndex::selectedLabel() {
 			return _labels.at(getValue());
 		}
 		

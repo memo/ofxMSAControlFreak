@@ -24,7 +24,7 @@ namespace msa {
             ParameterNamedIndex& setLabels(int count, ...);
 			
 			vector<string>& labels();
-			string selectedLabel() const;
+			string selectedLabel();
 			
             // from Parameter
             virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
