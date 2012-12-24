@@ -54,12 +54,20 @@
 #pragma once
 
 #include "ofxMSAControlFreak/src/Parameter.h"
-#include "ofxMSAControlFreak/src/Controller.h"
+#include "ofxMSAControlFreak/src/ParameterValues.h"
+#include "ofxMSAControlFreak/src/ParameterNamedIndex.h"
 #include "ofxMSAControlFreak/src/ParameterGroup.h"
+#include "ofxMSAControlFreak/src/ParameterTypes.h"
+#include "ofxMSAControlFreak/src/Controller.h"
 
-namespace msa {
-	namespace ControlFreak {
-		
-		
-	}
-}
+
+/*
+ 
+ Parameter  ->  ParameterValueT ->  ParameterInt
+                                ->  ParameterBool
+                                ->  ParameterFloat
+ 
+                                
+ 
+ */
+

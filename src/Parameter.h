@@ -1,3 +1,9 @@
+/*
+ 
+ Individual parameter or group / container
+ Base class for everything
+ 
+ */
 
 // protected constructor, can only be created via ParameterGroup
 
@@ -5,6 +11,7 @@
 #pragma once
 
 #include "ofxMSACore/src/MSACore.h"
+
 #include "ofxMSAControlFreak/src/Controller.h"
 #include "ofxMSAControlFreak/src/ParameterTypes.h"
 
@@ -22,25 +29,33 @@ namespace msa {
 			
 			virtual ~Parameter() {}
 			
-			string name() const;		// return name
-			string path() const;        // return path (including parents)
+            Parameter& setName(string s);
+			string getName() const;
+            
+			string getPath() const;        // return path (including parents)
 
-			Types::Index type() const;
-			string typeName() const;
-			
+            ParameterGroup* getParent() const;
+            
+			Types::Index getType() const;
+			string getTypeName() const;
 			
             virtual string fullName() const;	// return name prefixed with controllers
 			
-            virtual void writeToXml(ofxXmlSettings &xml, bool bFull, string tag, int tagid);
-            virtual void readFromXml(ofxXmlSettings &xml, bool bFull, string tag, int tagid);
+            virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
+            virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
             
 		protected:
 			Types::Index			_typeIndex;
-			string					_path;
 			string					_name;
+//			string					_path;
 			ParameterGroup			*_parent;
+            
+            string                  _xmlTag;
+            int                     _xmlTagId;
 			
-			Parameter(ParameterGroup *parent, string path, Types::Index typeIndex);
+			Parameter(ParameterGroup *parent, string name, Types::Index typeIndex);
+
+            void setParent(ParameterGroup *parent);
 		};
 		
 	

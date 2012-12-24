@@ -8,9 +8,7 @@
  */
 
 
-#include "ofxMSAControlFreak/src/ParameterTypes.h"
-
-#include <map>
+#include "ofxMSAControlFreak/src/ControlFreak.h"
 
 namespace msa {
 	namespace ControlFreak {
@@ -30,7 +28,7 @@ namespace msa {
 				"Toggle",
 				"Bang",
 				"NamedIndex",
-                "Command"
+                "Group",
 			};
 			
             //--------------------------------------------------------------

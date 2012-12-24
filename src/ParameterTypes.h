@@ -23,14 +23,14 @@ namespace msa {
 				kToggle,
 				kBang,
 				kNamedIndex,
-                kCommand,       // used for storing commands, custom data etc.
+                kGroup,
+                kVec2f,
+                kVec3f,
+                kVec4f,
+                kColoru8,
+                kColorf,
 				kNumTypes
 			};
-            
-            enum Command {
-                kStartGroup,
-                kEndGroup
-            };
 			
 			Index indexForName(string s);
 			string nameForIndex(Index i);

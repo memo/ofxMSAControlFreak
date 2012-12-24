@@ -8,61 +8,81 @@
  */
 
 
-#include "ofxMSAControlFreak/src/Parameter.h"
-#include "ofxMSAControlFreak/src/ParameterGroup.h"
+#include "ofxMSAControlFreak/src/ControlFreak.h"
 
 namespace msa {
 	namespace ControlFreak {
 
         //--------------------------------------------------------------
-		string Parameter::path() const {
-			return _path;
+		Parameter& Parameter::setName(string s) {
+            _name = s;
+            return *this;
 		}
 		
         //--------------------------------------------------------------
-		string Parameter::name() const {
+		string Parameter::getName() const {
 			return _name;
 		}
+        
+        
+        //--------------------------------------------------------------
+		string Parameter::getPath() const {
+			return _parent ? _parent->getPath() + _parent->getPathDivider() + _name : _name;
+		}
 		
+        //--------------------------------------------------------------
+        void Parameter::setParent(ParameterGroup *parent) {
+            _parent = parent;
+        }
+        
+        //--------------------------------------------------------------
+        ParameterGroup* Parameter::getParent() const {
+            return _parent;
+        }
+
+        
         //--------------------------------------------------------------
 		string Parameter::fullName() const {
 			string s;
 //			for(int i=0; i<_controllers.size(); i++) s += "[" + _controllers[i]->toString() + "]";
-			return s + " " + name();
+			return s + " " + getName();
 		}
 		
         //--------------------------------------------------------------
-		Types::Index Parameter::type() const {
+		Types::Index Parameter::getType() const {
 			return _typeIndex;
 		}
 		
         //--------------------------------------------------------------
-		string Parameter::typeName() const {
+		string Parameter::getTypeName() const {
 			return nameForIndex(_typeIndex);
 		}
 
 		
         //--------------------------------------------------------------
-        void Parameter::writeToXml(ofxXmlSettings &xml, bool bFull, string tag, int tagid) {
-			ofLogVerbose() << "msa::ControlFreak::Parameter::writeToXml " << _path.c_str();
-        }
-        
-        //--------------------------------------------------------------
-        void Parameter::readFromXml(ofxXmlSettings &xml, bool bFull, string tag, int tagid) {
-			ofLogVerbose() << "msa::ControlFreak::Parameter::readFromXml " << _path.c_str();
-        }
-        
-        
-        //--------------------------------------------------------------
-        Parameter::Parameter(ParameterGroup *parent, string path, Types::Index typeIndex) : _parent(parent), _path(path), _typeIndex(typeIndex) {
-            ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter " <<  _path.c_str();
-            
-            if(parent) {
-                size_t lastDividerPos = _path.rfind(parent->getPathDivider());
-                _name = lastDividerPos == string::npos ? _path : _path.substr(lastDividerPos+1);
-            } else {
-                _name = _path;
+        void Parameter::writeToXml(ofxXmlSettings &xml, bool bFull) {
+			ofLogVerbose() << "msa::ControlFreak::Parameter::writeToXml " << getPath().c_str();
+
+            _xmlTag = "Parameter";// + ofToString(i);
+            _xmlTagId = xml.addTag(_xmlTag);
+            xml.addAttribute(_xmlTag, "type", getTypeName(), _xmlTagId);
+            xml.addAttribute(_xmlTag, "name", getName(), _xmlTagId);
+            if(bFull) {
+                xml.addAttribute(_xmlTag, "path", getPath(), _xmlTagId);
+                //            xml.addAttribute(_xmlTag, "parent", _parent ? _parent->getName() : "none", _xmlTagId);
             }
+        }
+        
+        //--------------------------------------------------------------
+        void Parameter::readFromXml(ofxXmlSettings &xml, bool bFull) {
+			ofLogVerbose() << "msa::ControlFreak::Parameter::readFromXml " << getPath().c_str();
+        }
+        
+        
+        //--------------------------------------------------------------
+        Parameter::Parameter(ParameterGroup *parent, string name, Types::Index typeIndex)
+        : _parent(parent), _name(name), _typeIndex(typeIndex) {
+            ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter " <<  getPath().c_str();
         }
 
  

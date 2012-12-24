@@ -1,6 +1,4 @@
 #include "testApp.h"
-#include "ofxMSAControlFreak/src/gui/Gui.h"
-#include "ofxMSAControlFreak/src/ControlFreak.h"
 
 //using namespace msa;
 //using namespace ControlFreak;
@@ -10,7 +8,6 @@ ofVideoGrabber		vidGrabber;
 unsigned char * 	videoInverted;
 ofTexture			videoTexture;
 
-msa::ControlFreak::ParameterGroup      params;
 msa::ControlFreak::gui::Gui             gui;
 
 //--------------------------------------------------------------
@@ -21,20 +18,20 @@ void testApp::setup(){
 	
 	// ADD variables and controls programmatically like below
 	// OR just hand edit XML / JSON / INI file and the schema will be loaded and gui constructed
-	params.setName("My Settings");
+	params.setName("Test Settings");
 	
-	params.addFloat("var-f1");                                  // default value for float is 0, default range for float is 0...1
-    params.addFloat("var-f2").setValue(0.7f);                   // init with value 0.7, and default range
-    params.addFloat("var-f3").setRange(-1, 1);                  // set range
-    params.addFloat("var-f4").setRange(0, 1000).setValue(200);  // set range and value
+	params.addFloat("varf1");                                  // default value for float is 0, default range for float is 0...1
+    params.addFloat("varf2").setValue(0.7f);                   // init with value 0.7, and default range
+    params.addFloat("varf3").setRange(-1, 1);                  // set range
+    params.addFloat("varf4").setRange(0, 1000).setValue(200);  // set range and value
     
-	params.addInt("var-i1");                                    // default value for int is 0, default range is 0...100
-	params.addInt("var-i2").setValue(30);                       // init with value 30, and default range
-	params.addInt("var-i3").setRange(-10, 10);                  // set range
-	params.addInt("var-i4").setRange(5, 10).setValue(7);        // set range and value
+	params.addInt("vari1");                                    // default value for int is 0, default range is 0...100
+	params.addInt("vari2").setValue(30);                       // init with value 30, and default range
+	params.addInt("vari3").setRange(-10, 10);                  // set range
+	params.addInt("vari4").setRange(5, 10).setValue(7);        // set range and value
     
-	params.addToggle("var-toggle1");                            // default value for for toggle is false
-	params.addToggle("var-toggle2").setValue(true);             // set value
+	params.addToggle("vartoggle1");                            // default value for for toggle is false
+	params.addToggle("vartoggle2").setValue(true);             // set value
     
 	params.addBang("trigger");
     

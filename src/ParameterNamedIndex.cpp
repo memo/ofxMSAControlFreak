@@ -7,14 +7,12 @@
  *
  */
 
-#include "ofxMSAControlFreak/src/ParameterNamedIndex.h"
-//#include <boost/foreach.hpp>
+#include "ofxMSAControlFreak/src/ControlFreak.h"
+
 
 namespace msa {
 	namespace ControlFreak {
 		
-        
-        
         //--------------------------------------------------------------
 		ParameterNamedIndex& ParameterNamedIndex::setLabels(int count, string* labels) {
             _labels.clear();
@@ -58,10 +56,12 @@ namespace msa {
 		
         
         //--------------------------------------------------------------
-        void ParameterNamedIndex::writeToXml(ofxXmlSettings &xml, bool bFull, string tag, int tagid) {
-            ParameterNumberT<int>::writeToXml(xml, bFull, tag, tagid);
+        void ParameterNamedIndex::writeToXml(ofxXmlSettings &xml, bool bFull) {
+			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::writeToXml " << getPath().c_str();
+            
+            ParameterInt::writeToXml(xml, bFull);  // IMPORTANT: always start with parents write to xml
             if(bFull) {
-                xml.pushTag(tag, tagid);
+                xml.pushTag(_xmlTag, _xmlTagId);
                 for(int i=0; i<_labels.size(); i++) {
                     xml.addValue("label" + ofToString(i), _labels[i]);
                 }
@@ -70,7 +70,8 @@ namespace msa {
         }
         
         //--------------------------------------------------------------
-        void ParameterNamedIndex::readFromXml(ofxXmlSettings &xml, bool bFull, string tag, int tagid) {
+        void ParameterNamedIndex::readFromXml(ofxXmlSettings &xml, bool bFull) {
+			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::readFromXml " << getPath().c_str();
             
         }
         
