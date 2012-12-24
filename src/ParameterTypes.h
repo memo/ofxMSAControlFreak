@@ -18,6 +18,7 @@ namespace msa {
 		namespace Types {
 			
 			enum Index {
+                kUnknown,
 				kFloat,
 				kInt,
 				kToggle,
@@ -28,7 +29,7 @@ namespace msa {
                 kVec3f,
                 kVec4f,
                 kColoru8,
-                kColorf,
+                kColorf32,
 				kNumTypes
 			};
 			

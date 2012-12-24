@@ -19,8 +19,6 @@ namespace msa {
 		public:
             friend class ParameterGroup;
 			
-			virtual ~ParameterValueT() {}
-			
 			// set and get value
             ParameterValueT<T>& setValue(T v);
 			T getValue() const;
@@ -81,8 +79,7 @@ namespace msa {
         //--------------------------------------------------------------
         template <typename T>
         ParameterValueT<T>& ParameterValueT<T>::setValue(T v) {
-            _value = _isClamped ? ofClamp(v, getMin(), getMax()) : v;
-//            _value = _isClamped ? ( v < _min ? _min : _value > _max ? _max : v) : v;
+            _value = _isClamped ? ( v < _min ? _min : _value > _max ? _max : v) : v;
 			//				checkValueHasChanged();
 			updateControllers();
             return *this;
@@ -191,14 +188,16 @@ namespace msa {
         //--------------------------------------------------------------
 		template <typename T>
 		ParameterValueT<T>& ParameterValueT<T>::setMappedFrom(T v, T inputMin, T inputMax) {
-			setValue(ofMap(v, inputMin, inputMax, getMin(), getMax()));
+//			setValue(ofMap(v, inputMin, inputMax, getMin(), getMax()));
+            setValue(  ((v - inputMin) / (inputMax - inputMin) * (getMax() - getMin()) + _min)  );
             return *this;
 		}
 		
         //--------------------------------------------------------------
 		template <typename T>
 		T ParameterValueT<T>::getMappedTo(T newMin, T newMax) const {
-			return ofMap(getValue(), getMin(), getMax(), newMin, newMax);
+//			return ofMap(getValue(), getMin(), getMax(), newMin, newMax);
+            return ((getValue() - getMin()) / (getMax() - getMin()) * (newMax - newMin) + newMin);
 		}
 		
 

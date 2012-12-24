@@ -38,10 +38,13 @@ namespace msa {
             //            Parameter& addColor(string name);
 			
 			
-			int numParams();
-			Parameter& operator[](string path);		// access by name
-			Parameter& operator[](int index);		// access by index
-			
+			int getNumParams();
+            Parameter& getParameter(int index);     // access by index
+            Parameter& getParameter(string path);   // access by name
+            
+            // [] operator overloads for above
+			Parameter& operator[](int index);
+            Parameter& operator[](string path);
 			
 			// if name is omitted, last used name is used (by default same as group name)
 			void setFilename(string filename = "");
@@ -49,10 +52,6 @@ namespace msa {
 			bool saveXml(bool bFull, string filename = "");
 			bool loadXml(bool bFull, string filename = "");
             
-            // from Parameter
-            virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
-            virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
-
 //			void checkValueHasChanged();
 //			void updateControllers(bool doChildGroups = true);		// update all controllers
 			
@@ -61,6 +60,9 @@ namespace msa {
             // this cannot be changed once the group is created
             // TODO: this could be implemented, is a bit of a pain
 
+            // from Parameter
+            virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
+            virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
             
 		protected:
 			string			_filename;

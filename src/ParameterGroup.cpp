@@ -21,31 +21,42 @@ namespace msa {
 		
         //--------------------------------------------------------------
 		ParameterGroup::~ParameterGroup() {
-			int np = numParams();
+			int np = getNumParams();
 			for(int i=0; i<np; i++) delete _paramArr[i];
 		}
         
 
         //--------------------------------------------------------------
-        int ParameterGroup::numParams() {
+        int ParameterGroup::getNumParams() {
 			assert(_paramArr.size() == _paramMap.size());	// probably tried to add a parameter with the same name (in the same group)
 			return _paramMap.size();
 		}
 		
+        
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::operator[](string path) {
+        Parameter& ParameterGroup::getParameter(int index) {
+			return *_paramArr[index];
+        }
+        
+        //--------------------------------------------------------------
+        Parameter& ParameterGroup::getParameter(string path) {
             vector<string> pathbits = ofSplitString(path, _pathDivider, true, true);
             ParameterGroup *p = this;
             for(int i=0; i<pathbits.size(); i++) {
-//                p = &_paramMap[pathbits[i]];
+                //                p = &_paramMap[pathbits[i]];
                 // TODO:
             }
 			return *_paramMap[path];
+        }
+
+        //--------------------------------------------------------------
+		Parameter& ParameterGroup::operator[](int index) {
+            return getParameter(index);
 		}
 		
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::operator[](int index) {
-			return *_paramArr[index];
+		Parameter& ParameterGroup::operator[](string path) {
+            return getParameter(path);
 		}
 		
         //--------------------------------------------------------------
@@ -104,7 +115,7 @@ namespace msa {
                 _paramMap[param->getPath()] = param;
                 _paramArr.push_back(param);
                 
-                numParams();	// to check if correctly added to both containers
+                getNumParams();	// to check if correctly added to both containers
                 return *param;
             } else {
                 return currentGroup->addParameter(param);
@@ -151,7 +162,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
         //		void ParameterGroup::updateControllers(bool doChildGroups) {
-        //			int np = numParams();
+        //			int np = getNumParams();
         //			for(int i=0; i<np; i++) _paramArr[i]->updateControllers();
         //			
         //			if(doChildGroups) {

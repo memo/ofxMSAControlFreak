@@ -23,12 +23,18 @@ namespace msa {
 			static map<string, Index, case_insensitive_compare> indices;	// map to convert from NAME to INDEX
 			
 			static string names[] = {			// array to convert from INDEX to NAME
+                "Unknown",
 				"Float",
 				"Int",
 				"Toggle",
 				"Bang",
 				"NamedIndex",
                 "Group",
+                "Vec2f",
+                "Vec3f",
+                "Vec4f",
+                "Coloru8",
+                "Colorf32",
 			};
 			
             //--------------------------------------------------------------
