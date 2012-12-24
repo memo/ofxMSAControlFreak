@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "ofxMSAControlFreak/src/ParameterValues.h"
+#include "ofxMSAControlFreak/src/ParameterNumbers.h"
 
 
 namespace msa {
@@ -14,10 +14,14 @@ namespace msa {
 		
 		// todo: keep max, in sync with labels.size()
 		
-		class ParameterNamedIndex : public  ParameterInt {
+		class ParameterNamedIndex : public ParameterInt {
 		public:
 			
-			friend class ParameterGroup;
+//			friend class ParameterGroup;
+            
+			ParameterNamedIndex(ParameterContainer *parent, string name)
+            : ParameterInt(parent, name, Type::kNamedIndex) { setClamp(false); }
+            
             
 			ParameterNamedIndex& setLabels(int count, string* labels);
             ParameterNamedIndex& setLabels(vector<string>& labels);
@@ -31,8 +35,6 @@ namespace msa {
             virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
 			
 		protected:
-			ParameterNamedIndex(ParameterGroup *parent, string name)
-            : ParameterInt(parent, name, Types::kNamedIndex) { setClamp(false); }
 			
 			vector<string> _labels;
 		};

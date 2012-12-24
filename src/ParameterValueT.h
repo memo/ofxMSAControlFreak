@@ -1,24 +1,26 @@
 /*
  
- Template base class for anything that has a single value, with a range
+ Template base class for any Parameter that can have a value (either simple or complex), with a range
+
+ Protected constructor, can only be created via ParameterContainer
  
  */
 
-// protected constructor, can only be created via ParameterGroup
 
 
 #pragma once
 
-#include "ofxMSAControlFreak/src/Parameter.h"
+#include "ofxMSAControlFreak/src/ParameterContainer.h"
 
 namespace msa {
 	namespace ControlFreak {
 		
 		template <typename T>
-		class ParameterValueT : public Parameter {
+		class ParameterValueT : public ParameterContainer {
 		public:
-            friend class ParameterGroup;
-			
+
+            ParameterValueT(ParameterContainer *parent, string name, Type::Index typeIndex);
+            
 			// set and get value
             ParameterValueT<T>& setValue(T v);
 			T getValue();
@@ -55,11 +57,9 @@ namespace msa {
             
             // OPTIONAL
             // track vaiables and keep values in sync (send NULL to clear)
-            ParameterValueT<T>& trackValueVariable(T *pv);
-            ParameterValueT<T>& trackRangeVariables(T *pmin, T *pmax);
-            ParameterValueT<T>& trackIncrementVariable(T *pinc);
-			
-
+            ParameterValueT<T>& setValueVariable(T *pv);
+            ParameterValueT<T>& setRangeVariables(T *pmin, T *pmax);
+            ParameterValueT<T>& setIncrementVariable(T *pinc);
 
 			
             // add a controller TODO: add external controllers instead of internal?
@@ -71,11 +71,11 @@ namespace msa {
             // from Parameter:
 			virtual string fullName() const;	// return name prefixed with controllers
 			
-            virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
-            virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
+            virtual void writeToXml(ofxXmlSettings &xml, bool bFull) = 0;
+            virtual void readFromXml(ofxXmlSettings &xml, bool bFull) = 0;
 
         protected:
-            ParameterValueT(ParameterGroup *parent, string name, Types::Index typeIndex);
+            virtual T clamp(T v) = 0;
 
             
 		private:
@@ -96,7 +96,7 @@ namespace msa {
         template <typename T>
         ParameterValueT<T>& ParameterValueT<T>::setValue(T v) {
             // set value and clamp if nessecary
-            _vvalue = _isClamped ? ( v < getMin() ? getMin() : v > getMax() ? getMax() : v) : v;
+            _vvalue = clamp(v);
             
             // if we have a pointer to a value, update that too
             if(_pvalue) *_pvalue = _vvalue;
@@ -234,14 +234,14 @@ namespace msa {
 
         //--------------------------------------------------------------
 		template <typename T>
-        ParameterValueT<T>& ParameterValueT<T>::trackValueVariable(T *pv) {
+        ParameterValueT<T>& ParameterValueT<T>::setValueVariable(T *pv) {
             _pvalue = pv;
             return *this;
         }
         
         //--------------------------------------------------------------
 		template <typename T>
-        ParameterValueT<T>& ParameterValueT<T>::trackRangeVariables(T *pmin, T *pmax) {
+        ParameterValueT<T>& ParameterValueT<T>::setRangeVariables(T *pmin, T *pmax) {
             _pmin = pmin;
             _pmax = pmax;
             return *this;
@@ -249,7 +249,7 @@ namespace msa {
         
         //--------------------------------------------------------------
 		template <typename T>
-        ParameterValueT<T>& ParameterValueT<T>::trackIncrementVariable(T *pinc) {
+        ParameterValueT<T>& ParameterValueT<T>::setIncrementVariable(T *pinc) {
             _pinc = pinc;
             return *this;
         }
@@ -285,36 +285,10 @@ namespace msa {
         
         //--------------------------------------------------------------
 		template <typename T>
-        void ParameterValueT<T>::writeToXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterValueT<T>::writeToXml " << getPath().c_str();
-            
-            Parameter::writeToXml(xml, bFull);  // IMPORTANT: always start with parents write to xml
-            xml.addAttribute(_xmlTag, "value", getValue(), _xmlTagId);
-            if(bFull) {
-                xml.addAttribute(_xmlTag, "min", getMin(), _xmlTagId);
-                xml.addAttribute(_xmlTag, "max", getMax(), _xmlTagId);
-                xml.addAttribute(_xmlTag, "clamped", isClamped(), _xmlTagId);
-                xml.addAttribute(_xmlTag, "inc", getIncrement(), _xmlTagId);
-            }
-        }
-        
-        //--------------------------------------------------------------
-		template <typename T>
-        void ParameterValueT<T>::readFromXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterValueT<T>::readFromXml " << getPath().c_str();
-        }
-        
-        
-        
-        //--------------------------------------------------------------
-		template <typename T>
-        ParameterValueT<T>::ParameterValueT(ParameterGroup *parent, string name, Types::Index typeIndex)
-        : Parameter(parent, name, typeIndex), _pvalue(NULL), _pmin(NULL), _pmax(NULL), _pinc(NULL) {
-            ofLogVerbose() << "msa::ControlFreak::ParameterValueT<T>::Parameter " <<  getPath().c_str();
-            
+        ParameterValueT<T>::ParameterValueT(ParameterContainer *parent, string name, Type::Index typeIndex)
+        : ParameterContainer(parent, name, typeIndex), _pvalue(NULL), _pmin(NULL), _pmax(NULL), _pinc(NULL) {
+            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::ParameterValueT " <<  getPath().c_str();
             setClamp(false);
-            setValue(0);
-            setRange(0, 100);
         }
         
         

@@ -360,7 +360,7 @@ namespace msa {
             }
             
             //--------------------------------------------------------------
-            Gui& Gui::addParameters(ParameterGroup& parameters) {
+            Gui& Gui::addParameters(ParameterContainer& parameters) {
             }
             
             

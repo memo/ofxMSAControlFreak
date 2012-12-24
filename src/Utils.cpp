@@ -12,7 +12,24 @@
 
 namespace msa {
 	namespace ControlFreak {
-		namespace Types {
+        
+        
+        static string _pathDivider = ".";
+        
+        //--------------------------------------------------------------
+        void setPathDivider(string divider) {
+            _pathDivider = divider;
+        }
+        
+        //--------------------------------------------------------------
+        string getPathDivider() {
+            return _pathDivider;
+        }
+        
+        
+        //--------------------------------------------------------------
+        //--------------------------------------------------------------
+		namespace Type {
             
 			struct case_insensitive_compare {
 				bool operator() (const string & s1, const string & s2) const {
@@ -23,18 +40,18 @@ namespace msa {
 			static map<string, Index, case_insensitive_compare> indices;	// map to convert from NAME to INDEX
 			
 			static string names[] = {			// array to convert from INDEX to NAME
-                "Unknown",
-				"Float",
-				"Int",
-				"Toggle",
-				"Bang",
-				"NamedIndex",
-                "Group",
-                "Vec2f",
-                "Vec3f",
+                "unknown",
+				"float",
+				"int",
+				"toggle",
+				"bang",
+				"namedindex",
+                "group",
+                "vec2f",
+                "vec3f",
                 "Vec4f",
-                "Coloru8",
-                "Colorf32",
+                "coloru32",
+                "colorf32",
 			};
 			
             //--------------------------------------------------------------
@@ -53,9 +70,8 @@ namespace msa {
 				if(indices.empty()) setup();
 				return names[i];
 			}
-		}
-		
-		
-		
-	}
+        }
+
+        
+    }
 }

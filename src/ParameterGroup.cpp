@@ -1,64 +1,16 @@
-/*
- *  MSACFParameters.cpp
- *  UK Summer Games v2
- *
- *  Created by Memo Akten on 23/08/2010.
- *  Copyright 2010 MSA Visuals Ltd. All rights reserved.
- *
- */
+//
+//  ParameterGroup.cpp
+//  ofxMSAControlFreak example
+//
+//  Created by Memo Akten on 24/12/2012.
+//
+//
 
 #include "ofxMSAControlFreak/src/ControlFreak.h"
 
-
 namespace msa {
-	namespace ControlFreak {
+    namespace ControlFreak {
         
-        //--------------------------------------------------------------
-		ParameterGroup::ParameterGroup(ParameterGroup *parent, string name, string pathDivider)
-        : Parameter(parent, name, Types::kGroup), _pathDivider(pathDivider) {
-            _groupStack.push(this); // start with this as current group
-		}
-		
-        //--------------------------------------------------------------
-		ParameterGroup::~ParameterGroup() {
-			int np = getNumParams();
-			for(int i=0; i<np; i++) delete _paramArr[i];
-		}
-        
-
-        //--------------------------------------------------------------
-        int ParameterGroup::getNumParams() {
-			assert(_paramArr.size() == _paramMap.size());	// probably tried to add a parameter with the same name (in the same group)
-			return _paramMap.size();
-		}
-		
-        
-        //--------------------------------------------------------------
-        Parameter& ParameterGroup::getParameter(int index) {
-			return *_paramArr[index];
-        }
-        
-        //--------------------------------------------------------------
-        Parameter& ParameterGroup::getParameter(string path) {
-            vector<string> pathbits = ofSplitString(path, _pathDivider, true, true);
-            ParameterGroup *p = this;
-            for(int i=0; i<pathbits.size(); i++) {
-                //                p = &_paramMap[pathbits[i]];
-                // TODO:
-            }
-			return *_paramMap[path];
-        }
-
-        //--------------------------------------------------------------
-		Parameter& ParameterGroup::operator[](int index) {
-            return getParameter(index);
-		}
-		
-        //--------------------------------------------------------------
-		Parameter& ParameterGroup::operator[](string path) {
-            return getParameter(path);
-		}
-		
         //--------------------------------------------------------------
 		// if parameter non empty, saves the filename
 		void ParameterGroup::setFilename(string filename) {
@@ -83,31 +35,35 @@ namespace msa {
 			setFilename(filename);
 		}
         
-        //--------------------------------------------------------------
-        void ParameterGroup::writeToXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::writeToXml " << getPath().c_str();
-            
-            Parameter::writeToXml(xml, bFull);
-            xml.pushTag(_xmlTag, _xmlTagId);
-
-            for(int i=0; i<_paramArr.size(); i++) {
-                Parameter &p = *_paramArr[i];
-                p.writeToXml(xml, bFull);
-            }
-            
-            xml.popTag();
-        }
         
         //--------------------------------------------------------------
-        void ParameterGroup::readFromXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::readFromXml " << getPath().c_str();
-            
-        }
-
-
+		ParameterInt& ParameterGroup::createInt(string name) {
+			return (ParameterInt&) addParameter(new ParameterInt(_groupStack.top(), name, Type::kInt));
+		}
+		
+        //--------------------------------------------------------------
+		ParameterFloat& ParameterGroup::createFloat(string name) {
+			return (ParameterFloat&) addParameter(new ParameterFloat(_groupStack.top(), name, Type::kFloat));
+		}
+		
+        //--------------------------------------------------------------
+		ParameterBool& ParameterGroup::createToggle(string name) {
+			return (ParameterBool&) addParameter(new ParameterBool(_groupStack.top(), name, Type::kToggle));
+		}
+		
+        //--------------------------------------------------------------
+		ParameterBool& ParameterGroup::createBang(string name) {
+			return (ParameterBool&) addParameter(new ParameterBool(_groupStack.top(), name, Type::kBang));
+		}
+		
+        //--------------------------------------------------------------
+		ParameterNamedIndex& ParameterGroup::createNamedIndex(string name) {
+			return (ParameterNamedIndex&) addParameter(new ParameterNamedIndex(_groupStack.top(), name));
+		}
+        
         //--------------------------------------------------------------
 		Parameter& ParameterGroup::addParameter(Parameter *param) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::addParameter " << param->getPath().c_str();
+			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::addParameter " << param->getPath().c_str();
 			
             ParameterGroup *currentGroup = _groupStack.top();
             // avoid infinite recursion
@@ -122,36 +78,9 @@ namespace msa {
             }
 		}
         
-		
-        //--------------------------------------------------------------
-		ParameterInt& ParameterGroup::addInt(string name) {
-			return (ParameterInt&) addParameter(new ParameterInt(_groupStack.top(), name, Types::kInt));
-		}
-		
-        //--------------------------------------------------------------
-		ParameterFloat& ParameterGroup::addFloat(string name) {
-			return (ParameterFloat&) addParameter(new ParameterFloat(_groupStack.top(), name, Types::kFloat));
-		}
-		
-        //--------------------------------------------------------------
-		ParameterBool& ParameterGroup::addToggle(string name) {
-			return (ParameterBool&) addParameter(new ParameterBool(_groupStack.top(), name, Types::kToggle));
-		}
-		
-        //--------------------------------------------------------------
-		ParameterBool& ParameterGroup::addBang(string name) {
-			return (ParameterBool&) addParameter(new ParameterBool(_groupStack.top(), name, Types::kBang));
-		}
-		
-        //--------------------------------------------------------------
-		ParameterNamedIndex& ParameterGroup::addNamedIndex(string name) {
-			return (ParameterNamedIndex&) addParameter(new ParameterNamedIndex(_groupStack.top(), name));
-		}
-        
-        
         //--------------------------------------------------------------
 		void ParameterGroup::startGroup(string name) {
-            _groupStack.push( (ParameterGroup*)&addParameter(new ParameterGroup(_groupStack.top(), name, getPathDivider())) );
+            _groupStack.push( (ParameterGroup*)&addParameter(new ParameterGroup(_groupStack.top(), name)) );
 		}
 		
         //--------------------------------------------------------------
@@ -161,26 +90,23 @@ namespace msa {
         
 		
         //--------------------------------------------------------------
-        //		void ParameterGroup::updateControllers(bool doChildGroups) {
+        //		void ParameterContainer::updateControllers(bool doChildGroups) {
         //			int np = getNumParams();
         //			for(int i=0; i<np; i++) _paramArr[i]->updateControllers();
-        //			
+        //
         //			if(doChildGroups) {
         //				int ng = numGroups();
         //				for(int i=0; i<ng; i++) _groupArr[i]->updateControllers();
         //			}
         //		}
 		
-		//		void ParameterGroup::checkValueHasChanged() {
+		//		void ParameterContainer::checkValueHasChanged() {
 		//			for(int i=0; i<size(); i++) _paramArr[i]->checkValueHasChanged();
 		//		}
 		
 		
-        //--------------------------------------------------------------
-		string ParameterGroup::getPathDivider() {
-            return _pathDivider;
-        }
         
-		
-	}
+
+        
+    }
 }

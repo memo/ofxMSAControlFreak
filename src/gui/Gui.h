@@ -55,7 +55,7 @@ namespace msa {
                 Page& addPage(string name = "");
                 
                 Gui& addParameter(Parameter& parameter);
-                Gui& addParameters(ParameterGroup& parameters);
+                Gui& addParameters(ParameterContainer& parameters);
                 
 
                 //--------------------------------------------------------------

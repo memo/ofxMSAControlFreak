@@ -27,16 +27,16 @@ namespace msa {
         
         //--------------------------------------------------------------
 		string Parameter::getPath() const {
-			return _parent ? _parent->getPath() + _parent->getPathDivider() + _name : _name;
+			return _parent ? _parent->getPath() + getPathDivider() + _name : _name;
 		}
 		
         //--------------------------------------------------------------
-        void Parameter::setParent(ParameterGroup *parent) {
+        void Parameter::setParent(ParameterContainer *parent) {
             _parent = parent;
         }
         
         //--------------------------------------------------------------
-        ParameterGroup* Parameter::getParent() const {
+        ParameterContainer* Parameter::getParent() const {
             return _parent;
         }
 
@@ -49,7 +49,7 @@ namespace msa {
 		}
 		
         //--------------------------------------------------------------
-		Types::Index Parameter::getType() const {
+		Type::Index Parameter::getType() const {
 			return _typeIndex;
 		}
 		
@@ -80,7 +80,7 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-        Parameter::Parameter(ParameterGroup *parent, string name, Types::Index typeIndex)
+        Parameter::Parameter(ParameterContainer *parent, string name, Type::Index typeIndex)
         : _parent(parent), _name(name), _typeIndex(typeIndex) {
             ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter " <<  getPath().c_str();
         }

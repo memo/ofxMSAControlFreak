@@ -20,49 +20,47 @@ void testApp::setup(){
 	// OR just hand edit XML / JSON / INI file and the schema will be loaded and gui constructed
 	params.setName("Test Settings");
 	
-	params.addFloat("varf1");                                  // default value for float is 0, default range for float is 0...1
-    params.addFloat("varf2").setValue(0.7f);                   // init with value 0.7, and default range
-    params.addFloat("varf3").setRange(-1, 1);                  // set range
-    params.addFloat("varf4").setRange(0, 1000).setValue(200);  // set range and value
+	params.createFloat("varf1");                                  // default value for float is 0, default range for float is 0...1
+    params.createFloat("varf2").setValue(0.7f);                   // init with value 0.7, and default range
+    params.createFloat("varf3").setRange(-1, 1);                  // set range
+    params.createFloat("varf4").setRange(0, 1000).setValue(ofRandom(200));  // set range to 0..1000 and set a random value
     
-	params.addInt("vari1");                                    // default value for int is 0, default range is 0...100
-	params.addInt("vari2").setValue(30);                       // init with value 30, and default range
-	params.addInt("vari3").setRange(-10, 10);                  // set range
-	params.addInt("vari4").setRange(5, 10).setValue(7);        // set range and value
+	params.createInt("vari1");                                    // default value for int is 0, default range is 0...100
+	params.createInt("vari2").setValue(ofRandom(30));             // init with random value, and default range
+	params.createInt("vari3").setRange(-10, 10);                  // set range
+	params.createInt("vari4").setRange(5, 10).setValue(7);        // set range and value
     
-	params.addToggle("vartoggle1");                            // default value for for toggle is false
-	params.addToggle("vartoggle2").setValue(true);             // set value
+	params.createToggle("vartoggle1");                            // default value for for toggle is false
+	params.createToggle("vartoggle2").setValue(true);             // set value
     
-	params.addBang("trigger");
+	params.createBang("trigger");
     
     string labels[] = {"first option", "another option", "yet another option", "even more", "and last one"};
-	params.addNamedIndex("a dropdown").setLabels(5, labels);
-    params.addNamedIndex("animals").setLabels(4, "cow", "camel", "dolphin", "monkey");
+	params.createNamedIndex("a dropdown").setLabels(5, labels);
+    params.createNamedIndex("animals").setLabels(4, "cow", "camel", "dolphin", "monkey");
     
-
-	
 	params.startGroup("vision");		// now this becomes the activeGroup
-        params.addToggle("enabled");
-        params.addFloat("brightness").setRange(0, 100);
-        params.addFloat("contrast").setRange(-100, 100);
-        params.addInt("deviceid").setRange(0, 10);
-        params.addToggle("flip x");
-        params.addToggle("flip y");
-        params.addToggle("bang");
+        params.createToggle("enabled");
+        params.createFloat("brightness").setRange(0, 100);
+        params.createFloat("contrast").setRange(-100, 100);
+        params.createInt("deviceid").setRange(0, 10);
+        params.createToggle("flip x");
+        params.createToggle("flip y");
+        params.createToggle("bang");
         
         params.startGroup("optical flow");
-            params.addToggle("enabled");
-            params.addFloat("velMult").setRange(0, 10);
-            params.addInt("windowSize").setRange(1, 3);
-            params.addNamedIndex("method").setLabels(3, "Lucas-Kanade", "Horn–Schunck", "Buxton–Buxton");
+            params.createToggle("enabled");
+            params.createFloat("velMult").setRange(0, 10);
+            params.createInt("windowSize").setRange(1, 3);
+            params.createNamedIndex("method").setLabels(3, "Lucas-Kanade", "Horn–Schunck", "Buxton–Buxton");
         params.endGroup();	// optical flow
 	params.endGroup();	// vision
 	
 	
 	params.startGroup("particles");
-        params.addToggle("enabled");
-        params.addInt("count").setRange(100, 200);
-        params.addFloat("maxSpeed").setRange(0, 100);
+        params.createToggle("enabled");
+        params.createInt("count").setRange(100, 200);
+        params.createFloat("maxSpeed").setRange(0, 100);
     params.endGroup();
     
     
