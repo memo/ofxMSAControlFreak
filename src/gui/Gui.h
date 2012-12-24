@@ -102,10 +102,7 @@ namespace msa {
                 void addListeners();
                 void removeListeners();
                 
-                
                 void drawFocus(float x, float y);
-                
-                
                 
                 
 //                Control&        addControl(Control& control);

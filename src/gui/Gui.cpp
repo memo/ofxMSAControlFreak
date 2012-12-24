@@ -220,6 +220,7 @@ namespace msa {
             
             //--------------------------------------------------------------
             Page& Gui::page(int i) {
+                if(!config) setup();
                 return *pages.at(i);
             }
             
@@ -357,10 +358,57 @@ namespace msa {
             //--------------------------------------------------------------
             Gui& Gui::addParameter(Parameter& parameter) {
                 // if parameter already exists, remove it first
+                
+                ParameterContainer *pc = static_cast<ParameterContainer*>(&parameter);
+                if(pc && pc->getNumParams() > 0) addParameters(*pc);
+                
+                switch(parameter.getType()) {
+                    case Type::kFloat: {
+                        ParameterFloat &p = (ParameterFloat&)parameter;
+                        currentPage().addSlider(p.getName(), p.getValue(), p.getMin(), p.getMax()).setIncrement(p.getIncrement());
+                    }
+                        break;
+                        
+                    case Type::kInt: {
+                        ParameterInt &p = (ParameterInt&)parameter;
+                        currentPage().addSlider(p.getName(), p.getValue(), p.getMin(), p.getMax()).setIncrement(p.getIncrement());
+                    }
+                        break;
+                        
+                    case Type::kToggle: {
+                        ParameterBool &p = (ParameterBool&)parameter;
+                        currentPage().addToggle(p.getName(), p.getValue());
+                    }
+                        break;
+                        
+                    case Type::kBang: {
+                        ParameterBool &p = (ParameterBool&)parameter;
+                        currentPage().addButton(p.getName(), p.getValue());
+                    }
+                        break;
+                        
+                    case Type::kNamedIndex: {
+                        ParameterNamedIndex &p = (ParameterNamedIndex&)parameter;
+                        currentPage().addComboBox(p.getName(), p.getValue(), p.getLabels());
+                    }
+                        break;
+                        
+                    default:
+                        ofLogWarning() << "msa::ControlFreak::Gui::addParameter - unknown type adding parameter " << parameter.getPath() << " " << parameter.getTypeName();
+                        break;
+                }
             }
             
             //--------------------------------------------------------------
             Gui& Gui::addParameters(ParameterContainer& parameters) {
+                if(!config) setup();
+                
+                currentPage().addTitle(parameters.getName());
+                int np = parameters.getNumParams();
+                for(int i=0; i<np; i++) {
+                    addParameter(parameters.getParameter(i));
+                }
+                currentPage().addTitle("");
             }
             
             

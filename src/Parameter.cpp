@@ -13,8 +13,18 @@
 namespace msa {
 	namespace ControlFreak {
 
+        
+        
+        //--------------------------------------------------------------
+        Parameter::Parameter(ParameterContainer *parent, string name, Type::Index typeIndex)
+        : _parent(parent), _name(name), _typeIndex(typeIndex) {
+            ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter " <<  getPath();
+        }
+        
         //--------------------------------------------------------------
 		Parameter& Parameter::setName(string s) {
+			ofLogVerbose() << "msa::ControlFreak::Parameter::setName " << s;
+            
             _name = s;
             return *this;
 		}
@@ -32,6 +42,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
         void Parameter::setParent(ParameterContainer *parent) {
+			ofLogVerbose() << "msa::ControlFreak::Parameter::setName " << getPath() << " " << (parent ? parent->getName() : "NULL");
             _parent = parent;
         }
         
@@ -61,7 +72,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
         void Parameter::writeToXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::Parameter::writeToXml " << getPath().c_str();
+			ofLogVerbose() << "msa::ControlFreak::Parameter::writeToXml " << getPath();
 
             _xmlTag = "Parameter";// + ofToString(i);
             _xmlTagId = xml.addTag(_xmlTag);
@@ -75,14 +86,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         void Parameter::readFromXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::Parameter::readFromXml " << getPath().c_str();
-        }
-        
-        
-        //--------------------------------------------------------------
-        Parameter::Parameter(ParameterContainer *parent, string name, Type::Index typeIndex)
-        : _parent(parent), _name(name), _typeIndex(typeIndex) {
-            ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter " <<  getPath().c_str();
+			ofLogVerbose() << "msa::ControlFreak::Parameter::readFromXml " << getPath();
         }
 
  

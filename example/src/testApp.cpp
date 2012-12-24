@@ -20,47 +20,65 @@ void testApp::setup(){
 	// OR just hand edit XML / JSON / INI file and the schema will be loaded and gui constructed
 	params.setName("Test Settings");
 	
-	params.createFloat("varf1");                                  // default value for float is 0, default range for float is 0...1
-    params.createFloat("varf2").setValue(0.7f);                   // init with value 0.7, and default range
-    params.createFloat("varf3").setRange(-1, 1);                  // set range
-    params.createFloat("varf4").setRange(0, 1000).setValue(ofRandom(200));  // set range to 0..1000 and set a random value
+    // ADD 'FLOAT' PARAMETERS. CAN BE ANY REAL NUMBER
+	params.addFloat("varf1");
+    params.addFloat("varf2").setValue(0.7f);
+    params.addFloat("varf3").setRange(-1, 1);
+    params.addFloat("varf5").setRange(0, 1000).setValue(ofRandom(200)).setIncrement(0.5);
     
-	params.createInt("vari1");                                    // default value for int is 0, default range is 0...100
-	params.createInt("vari2").setValue(ofRandom(30));             // init with random value, and default range
-	params.createInt("vari3").setRange(-10, 10);                  // set range
-	params.createInt("vari4").setRange(5, 10).setValue(7);        // set range and value
+    // add 'integer' parameters. can be any whole number
+	params.addInt("vari1");
+	params.addInt("vari2").setValue(ofRandom(30));
+	params.addInt("vari3").setRange(-10, 10);
+	params.addInt("vari4").setRange(50, 1000).setValue(7).setIncrement(10);
     
-	params.createToggle("vartoggle1");                            // default value for for toggle is false
-	params.createToggle("vartoggle2").setValue(true);             // set value
+    // add 'toggle' parameters (can be only true or false)
+	params.addToggle("vartoggle1");                            // default value for for toggle is false
+	params.addToggle("vartoggle2").setValue(true);             // set value
+    params.addFloat("varsin1").setRange(-1, 1).setClamp(true);
+    params.addFloat("varsin2").setRange(-1, 1).setClamp(false);
     
-	params.createBang("trigger");
+    // add a 'bang' parameter (i.e. like a button, sends a trigger value of 'true' for one frame)
+	params.addBang("trigger");
     
+
+    // this is one way of adding a named-index parameter (i.e. dropbox box or option list)
     string labels[] = {"first option", "another option", "yet another option", "even more", "and last one"};
-	params.createNamedIndex("a dropdown").setLabels(5, labels);
-    params.createNamedIndex("animals").setLabels(4, "cow", "camel", "dolphin", "monkey");
+	params.addNamedIndex("a dropdown").setLabels(5, labels);
     
+    // this is another way of adding a named-index parameter
+    params.addNamedIndex("animals").setLabels(4, "cow", "camel", "dolphin", "monkey");
+    
+    // you can add complex types
+    params.addVec3f("pos1");
+    params.addVec3f("pos2").setValue( ofVec3f(0.1, 0.2, 0.3) );
+    params.addVec3f("pos3").setValue( ofVec3f(1.5, 2.5, 3.5) ).setRange( ofVec3f(-10, -20, -20), ofVec3f(100, 200, 300) );
+    
+    
+    // you can create groups and add any parameters to that group
 	params.startGroup("vision");		// now this becomes the activeGroup
-        params.createToggle("enabled");
-        params.createFloat("brightness").setRange(0, 100);
-        params.createFloat("contrast").setRange(-100, 100);
-        params.createInt("deviceid").setRange(0, 10);
-        params.createToggle("flip x");
-        params.createToggle("flip y");
-        params.createToggle("bang");
-        
+        params.addToggle("enabled");
+        params.addFloat("brightness").setRange(0, 100);
+        params.addFloat("contrast").setRange(-100, 100);
+        params.addInt("deviceid").setRange(0, 10);
+        params.addToggle("flip x");
+        params.addToggle("flip y");
+        params.addToggle("bang");
+    
+        // you can even add groups inside of groups (you can go infinitely deep, as long as you have enough memory)
         params.startGroup("optical flow");
-            params.createToggle("enabled");
-            params.createFloat("velMult").setRange(0, 10);
-            params.createInt("windowSize").setRange(1, 3);
-            params.createNamedIndex("method").setLabels(3, "Lucas-Kanade", "Horn–Schunck", "Buxton–Buxton");
+            params.addToggle("enabled");
+            params.addFloat("velMult").setRange(0, 10);
+            params.addInt("windowSize").setRange(1, 3);
+            params.addNamedIndex("method").setLabels(3, "Lucas-Kanade", "Horn–Schunck", "Buxton–Buxton");
         params.endGroup();	// optical flow
 	params.endGroup();	// vision
 	
 	
 	params.startGroup("particles");
-        params.createToggle("enabled");
-        params.createInt("count").setRange(100, 200);
-        params.createFloat("maxSpeed").setRange(0, 100);
+        params.addToggle("enabled");
+        params.addInt("count").setRange(100, 200);
+        params.addFloat("maxSpeed").setRange(0, 100);
     params.endGroup();
     
     
@@ -76,7 +94,9 @@ void testApp::setup(){
 
 
 //--------------------------------------------------------------
-void testApp::update(){
+void testApp::update() {
+//    if(params["vartoggle1"]) params["varsin1"] = sin(ofGetElapsedTimef()) * 2;
+//    if(params["vartoggle2"]) params["varsin2"] = sin(ofGetElapsedTimef()) * 2;
     //	if(myBool1Animate) myFloat1 = ofNoise(ofGetElapsedTimef());
     //
     //	if(gui.control("myBool1 Animate").getValue()) myFloat1 = ofNoise(ofGetElapsedTimef());

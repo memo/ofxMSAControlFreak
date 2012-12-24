@@ -17,14 +17,14 @@ namespace msa {
 
 			ParameterComplexValueT(ParameterContainer *parent, string name, Type::Index typeIndex)
             : ParameterValueT<T>(parent, name, typeIndex) {
-                ofLogVerbose() << "msa::ControlFreak::ParameterComplexValueT::ParameterComplexValueT " <<  this->getPath().c_str();
+                ofLogVerbose() << "msa::ControlFreak::ParameterComplexValueT::ParameterComplexValueT " <<  this->getPath();
                 
             }
 
             
             // from Parameter
-            virtual void writeToXml(ofxXmlSettings &xml, bool bFull) {}
-            virtual void readFromXml(ofxXmlSettings &xml, bool bFull) {}
+            virtual void writeToXml(ofxXmlSettings &xml, bool bFull) { ParameterContainer::writeToXml(xml, bFull); }
+            virtual void readFromXml(ofxXmlSettings &xml, bool bFull) { ParameterContainer::readFromXml(xml, bFull); }
             
 		protected:
             

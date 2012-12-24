@@ -17,7 +17,7 @@ namespace msa {
 
             ParameterSingleValueT(ParameterContainer *parent, string name, Type::Index typeIndex)
             : ParameterValueT<T>(parent, name, typeIndex) {
-                ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::ParameterSingleValueT " <<  this->getPath().c_str();
+                ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::ParameterSingleValueT " <<  this->getPath();
                 this->setValue(0);
             }
             
@@ -36,7 +36,7 @@ namespace msa {
         //--------------------------------------------------------------
 		template <typename T>
         void ParameterSingleValueT<T>::writeToXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::writeToXml " << this->getPath().c_str();
+			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::writeToXml " << this->getPath();
             
             Parameter::writeToXml(xml, bFull);  // IMPORTANT: always start with parents write to xml
             xml.addAttribute(this->_xmlTag, "value", this->getValue(), this->_xmlTagId);
@@ -51,7 +51,7 @@ namespace msa {
         //--------------------------------------------------------------
 		template <typename T>
         void ParameterSingleValueT<T>::readFromXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::readFromXml " << this->getPath().c_str();
+			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::readFromXml " << this->getPath();
         }
         
         //--------------------------------------------------------------

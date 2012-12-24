@@ -9,18 +9,12 @@ namespace msa {
         public:
 //            friend class ParameterContainer;
             
-            ParameterVec3f(ParameterContainer *parent, string name)
-            : ParameterComplexValueT<ofVec3f>(parent, name, Type::kVec3f) {
-                ParameterFloat *px = new ParameterFloat(this, "x");
-//                px->setValueVariable(_vvalue.x);
-                addParameter(px);
+            ParameterVec3f(ParameterContainer *parent, string name);
+            
+            virtual ParameterValueT<ofVec3f>& setValueVariable(ofVec3f *pv);
+            virtual ParameterValueT<ofVec3f>& setRangeVariables(ofVec3f *pmin, ofVec3f *pmax);
+            virtual ParameterValueT<ofVec3f>& setIncrementVariable(ofVec3f *pinc);
 
-                ParameterFloat *py = new ParameterFloat(this, "y");
-                addParameter(py);
-
-                ParameterFloat *pz = new ParameterFloat(this, "z");
-                addParameter(pz);
-            }
         };
         
     }

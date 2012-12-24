@@ -16,11 +16,12 @@ namespace msa {
         //--------------------------------------------------------------
 		ParameterContainer::ParameterContainer(ParameterContainer *parent, string name, Type::Index typeIndex)
         : Parameter(parent, name, typeIndex) {
-            ofLogVerbose() << "msa::ControlFreak::ParameterContainer::ParameterContainer " <<  getPath().c_str();
+            ofLogVerbose() << "msa::ControlFreak::ParameterContainer::ParameterContainer " <<  getPath();
 		}
 		
         //--------------------------------------------------------------
 		ParameterContainer::~ParameterContainer() {
+            ofLogVerbose() << "msa::ControlFreak::ParameterContainer::~ParameterContainer " <<  getPath();
 			int np = getNumParams();
 			for(int i=0; i<np; i++) delete _paramArr[i];
 		}
@@ -61,7 +62,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
         void ParameterContainer::writeToXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::writeToXml " << getPath().c_str();
+			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::writeToXml " << getPath();
             
             Parameter::writeToXml(xml, bFull);
             xml.pushTag(_xmlTag, _xmlTagId);
@@ -76,14 +77,14 @@ namespace msa {
         
         //--------------------------------------------------------------
         void ParameterContainer::readFromXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::readFromXml " << getPath().c_str();
+			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::readFromXml " << getPath();
             
         }
 
 
         //--------------------------------------------------------------
 		Parameter& ParameterContainer::addParameter(Parameter *param) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::addParameter " << param->getPath().c_str();
+			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::addParameter " << param->getPath();
 			
             _paramMap[param->getPath()] = param;
             _paramArr.push_back(param);

@@ -37,33 +37,39 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-		ParameterInt& ParameterGroup::createInt(string name) {
+		ParameterInt& ParameterGroup::addInt(string name) {
 			return (ParameterInt&) addParameter(new ParameterInt(_groupStack.top(), name, Type::kInt));
 		}
 		
         //--------------------------------------------------------------
-		ParameterFloat& ParameterGroup::createFloat(string name) {
+		ParameterFloat& ParameterGroup::addFloat(string name) {
 			return (ParameterFloat&) addParameter(new ParameterFloat(_groupStack.top(), name, Type::kFloat));
 		}
 		
         //--------------------------------------------------------------
-		ParameterBool& ParameterGroup::createToggle(string name) {
+		ParameterBool& ParameterGroup::addToggle(string name) {
 			return (ParameterBool&) addParameter(new ParameterBool(_groupStack.top(), name, Type::kToggle));
 		}
 		
         //--------------------------------------------------------------
-		ParameterBool& ParameterGroup::createBang(string name) {
+		ParameterBool& ParameterGroup::addBang(string name) {
 			return (ParameterBool&) addParameter(new ParameterBool(_groupStack.top(), name, Type::kBang));
 		}
 		
         //--------------------------------------------------------------
-		ParameterNamedIndex& ParameterGroup::createNamedIndex(string name) {
+		ParameterNamedIndex& ParameterGroup::addNamedIndex(string name) {
 			return (ParameterNamedIndex&) addParameter(new ParameterNamedIndex(_groupStack.top(), name));
 		}
         
+        
+        //--------------------------------------------------------------
+        ParameterVec3f& ParameterGroup::addVec3f(string name) {
+			return (ParameterVec3f&) addParameter(new ParameterVec3f(_groupStack.top(), name));
+        }
+
         //--------------------------------------------------------------
 		Parameter& ParameterGroup::addParameter(Parameter *param) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::addParameter " << param->getPath().c_str();
+			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::addParameter " << param->getPath();
 			
             ParameterGroup *currentGroup = _groupStack.top();
             // avoid infinite recursion

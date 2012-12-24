@@ -57,9 +57,9 @@ namespace msa {
             
             // OPTIONAL
             // track vaiables and keep values in sync (send NULL to clear)
-            ParameterValueT<T>& setValueVariable(T *pv);
-            ParameterValueT<T>& setRangeVariables(T *pmin, T *pmax);
-            ParameterValueT<T>& setIncrementVariable(T *pinc);
+            virtual ParameterValueT<T>& setValueVariable(T *pv);
+            virtual ParameterValueT<T>& setRangeVariables(T *pmin, T *pmax);
+            virtual ParameterValueT<T>& setIncrementVariable(T *pinc);
 
 			
             // add a controller TODO: add external controllers instead of internal?
@@ -98,7 +98,7 @@ namespace msa {
 		template <typename T>
         ParameterValueT<T>::ParameterValueT(ParameterContainer *parent, string name, Type::Index typeIndex)
         : ParameterContainer(parent, name, typeIndex), _pvalue(NULL), _pmin(NULL), _pmax(NULL), _pinc(NULL) {
-            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::ParameterValueT " <<  getPath().c_str();
+            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::ParameterValueT " <<  getPath();
             setValueVariable(NULL);
             setRangeVariables(NULL, NULL);
             setIncrementVariable(NULL);
@@ -235,6 +235,7 @@ namespace msa {
         //--------------------------------------------------------------
 		template <typename T>
         ParameterValueT<T>& ParameterValueT<T>::setValueVariable(T *pv) {
+            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::setValueVariable " <<  getPath() << " " << pv;
             _pvalue = pv ? pv : &_value;
             return *this;
         }
@@ -242,6 +243,7 @@ namespace msa {
         //--------------------------------------------------------------
 		template <typename T>
         ParameterValueT<T>& ParameterValueT<T>::setRangeVariables(T *pmin, T *pmax) {
+            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::setRangeVariables " <<  getPath() << " " << pmin << " " << pmax;
             _pmin = pmin ? pmin : &_min;
             _pmax = pmax ? pmax : &_max;
             return *this;
@@ -250,6 +252,7 @@ namespace msa {
         //--------------------------------------------------------------
 		template <typename T>
         ParameterValueT<T>& ParameterValueT<T>::setIncrementVariable(T *pinc) {
+            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::setValueVariable " <<  getPath() << " " << pinc;
             _pinc = pinc ? pinc : &_inc;
             return *this;
         }
@@ -257,6 +260,7 @@ namespace msa {
         //--------------------------------------------------------------
 		template <typename T>
 		ParameterValueT<T>& ParameterValueT<T>::addController(Controller *controller) {
+            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::addController " <<  getPath() << " " << controller;
 			controller->setParam(this);
 			controller->updateController();
 			_controllers.push_back(controller);

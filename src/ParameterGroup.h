@@ -16,34 +16,31 @@ namespace msa {
         class ParameterFloat;
         class ParameterBool;
         class ParameterNamedIndex;
+        class ParameterVec3f;
         
         class ParameterGroup : public ParameterContainer {
         public:
             ParameterGroup(ParameterContainer *parent = NULL, string name = "MSAControlFreak")
             : ParameterContainer(parent, name, Type::kGroup) {
-                ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup " <<  getPath().c_str();
+                ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup " <<  getPath();
                 _groupStack.push(this); // start with this as current group
             }
-            
             
             // groups can contain subgroups
 			void startGroup(string name="");
 			void endGroup();
             
-			
-
-			ParameterInt& createInt(string name);
-			ParameterFloat& createFloat(string name);
-			ParameterBool& createToggle(string name);
-			ParameterBool& createBang(string name);
-			ParameterNamedIndex& createNamedIndex(string name);
+			ParameterInt& addInt(string name);
+			ParameterFloat& addFloat(string name);
+			ParameterBool& addToggle(string name);
+			ParameterBool& addBang(string name);
+			ParameterNamedIndex& addNamedIndex(string name);
             //            Parameter& addVec2(string name);
-            //            Parameter& addVec3(string name);
+            ParameterVec3f& addVec3f(string name);
             //            Parameter& addVec4(string name);
             //            Parameter& addColor(string name);
 			
             Parameter& addParameter(Parameter *param);
-            
             
             // if name is omitted, last used name is used (by default same as group name)
 			void setFilename(string filename = "");

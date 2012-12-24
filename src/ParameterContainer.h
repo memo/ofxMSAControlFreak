@@ -22,7 +22,7 @@ namespace msa {
 			int getNumParams();
             Parameter& getParameter(int index);     // access by index
             Parameter& getParameter(string path);   // access by name
-            
+                        
             // [] operator overloads for above
 			Parameter& operator[](int index);
             Parameter& operator[](string path);

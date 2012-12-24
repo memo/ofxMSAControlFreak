@@ -45,22 +45,23 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-		vector<string>& ParameterNamedIndex::labels() {
+		vector<string>& ParameterNamedIndex::getLabels() {
 			return _labels;
 		}
 		
         //--------------------------------------------------------------
-		string ParameterNamedIndex::selectedLabel() {
+		string ParameterNamedIndex::getSelectedLabel() {
 			return _labels.at(getValue());
 		}
 		
         
         //--------------------------------------------------------------
         void ParameterNamedIndex::writeToXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::writeToXml " << getPath().c_str();
+			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::writeToXml " << getPath();
             
             ParameterInt::writeToXml(xml, bFull);  // IMPORTANT: always start with parents write to xml
             if(bFull) {
+                xml.addAttribute(_xmlTag, "selectedLabel", getSelectedLabel(), _xmlTagId);
                 xml.pushTag(_xmlTag, _xmlTagId);
                 for(int i=0; i<_labels.size(); i++) {
                     xml.addValue("label" + ofToString(i), _labels[i]);
@@ -71,7 +72,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         void ParameterNamedIndex::readFromXml(ofxXmlSettings &xml, bool bFull) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::readFromXml " << getPath().c_str();
+			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::readFromXml " << getPath();
             
         }
         

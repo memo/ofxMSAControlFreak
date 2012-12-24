@@ -25,8 +25,7 @@ namespace msa {
                 //--------------------------------------------------------------------- construct
                 SliderBase(string name, Type &value, Type min, Type max) : Control(name) {
                     this->value = &value;
-                    setMin(min);
-                    setMax(max);
+                    setRange(min, max);
                     
                     targetValue	= value;
                     oldValue	= targetValue;
@@ -38,12 +37,9 @@ namespace msa {
                     setup();
                 }
                 
-                void setMin(Type m) {
-                    min = m;
-                }
-                
-                void setMax(Type m) {
-                    max = m;
+                void setRange(Type min, Type max) {
+                    this->min = min;
+                    this->max = max;
                 }
                 
                 void setup() {
