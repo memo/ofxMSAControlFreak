@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "MSACore.h"
+#include "ofxMSACore/src/MSACore.h"
 
 namespace msa {
 	namespace ControlFreak {

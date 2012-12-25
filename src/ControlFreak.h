@@ -33,14 +33,14 @@
  Parameter::applyPreset(name, time);					// apply preset (if it exists) in time seconds
  Parameter::savePreset(name);						// save current value as preset with name
  
- Parameters::applyPreset(name, time);						// apply preset (if it exists) to all parameters in group, in time seconds
- Parameters::savePreset(name);							// save current value for all parameters in group as preset with name
+ ParameterContainer::applyPreset(name, time);						// apply preset (if it exists) to all parameters in group, in time seconds
+ ParameterContainer::savePreset(name);							// save current value for all parameters in group as preset with name
  
  Global::applyPreset(name, time);					// apply preset (if it exists) to all parameters in all groups, in time seconds
  Global::savePreset(name);							// save current value for all parameters in all groups as preset with name
  
- saveToXML();
- loadFromXML;
+ writeToXml();
+ readFromXml;
  
  
  myParameter.addPreset(5, "default");
@@ -53,13 +53,31 @@
 
 #pragma once
 
-#include "MSACFParameterT.h"
-#include "MSACFController.h"
-#include "MSACFParameters.h"
+#include "ofxMSAControlFreak/src/Parameter.h"
+#include "ofxMSAControlFreak/src/ParameterNumbers.h"
+#include "ofxMSAControlFreak/src/ParameterNamedIndex.h"
+#include "ofxMSAControlFreak/src/ParameterGroup.h"
+#include "ofxMSAControlFreak/src/ParameterVec3f.h"
+#include "ofxMSAControlFreak/src/Utils.h"
+#include "ofxMSAControlFreak/src/Controller.h"
 
-namespace msa {
-	namespace ControlFreak {
-		
-		
-	}
-}
+
+/*
+ 
+ Parameter
+    ParameterContainer
+        ParameterValueT
+            ParameterSingleValueT
+                ParameterInt
+                    ParameterNamedIndex
+                ParameterFloat
+                ParameterBool
+            ParameterContainerValueT
+ 
+ 
+ 
+ 
+                                
+ 
+ */
+

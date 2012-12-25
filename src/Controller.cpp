@@ -7,8 +7,8 @@
  *
  */
 
-#include "MSACFController.h"
-#include "MSACFParameterT.h"
+#include "ofxMSAControlFreak/src/Controller.h"
+#include "ofxMSAControlFreak/src/Parameter.h"
 
 
 namespace msa {
@@ -20,7 +20,7 @@ namespace msa {
 		
 		
 //		void Controller::checkValueHasChanged() {
-//			if(_param->value() != _oldValue) {
+//			if(_param->getValue() != _oldValue) {
 //				_oldValue = *_param;
 //				sendValue();
 //			}
