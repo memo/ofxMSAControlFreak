@@ -28,7 +28,8 @@ namespace msa {
             
 		protected:
             
-            virtual T clamp(T v) { return v; }
+            virtual void clamp() {}
+            virtual void snap() {}
         };
         
         //--------------------------------------------------------------

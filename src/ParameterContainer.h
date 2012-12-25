@@ -51,7 +51,7 @@ namespace msa {
             // from Parameter
             virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
             virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
-            
+            virtual void update();
             
             // Advanced
 //            template <typename T>

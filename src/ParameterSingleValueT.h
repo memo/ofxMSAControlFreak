@@ -27,7 +27,8 @@ namespace msa {
             virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
             
 		protected:
-            virtual T clamp(T v);
+            virtual void clamp();
+            virtual void snap();
         };
         
         
@@ -43,8 +44,9 @@ namespace msa {
             if(bFull) {
                 xml.addAttribute(this->_xmlTag, "min", this->getMin(), this->_xmlTagId);
                 xml.addAttribute(this->_xmlTag, "max", this->getMax(), this->_xmlTagId);
-                xml.addAttribute(this->_xmlTag, "clamped", this->isClamped(), this->_xmlTagId);
+                xml.addAttribute(this->_xmlTag, "doClamp", this->getClamp(), this->_xmlTagId);
                 xml.addAttribute(this->_xmlTag, "inc", this->getIncrement(), this->_xmlTagId);
+                xml.addAttribute(this->_xmlTag, "doSnap", this->getSnap(), this->_xmlTagId);
             }
         }
         
@@ -56,8 +58,18 @@ namespace msa {
         
         //--------------------------------------------------------------
         template <typename T>
-        T ParameterSingleValueT<T>::clamp(T v) {
-            return this->isClamped() ? ( v < this->getMin() ? this->getMin() : v > this->getMax() ? this->getMax() : v) : v;
+        void ParameterSingleValueT<T>::clamp() {
+            this->_setValue( this->getValue() < this->getMin() ? this->getMin() : this->getValue() > this->getMax() ? this->getMax() : this->getValue() );
         }
+        
+        //--------------------------------------------------------------
+        template <typename T>
+        void ParameterSingleValueT<T>::snap() {
+//            float inv = 1.0f / this->getIncrement();
+            int ival = floor(this->getValue() / this->getIncrement());
+            this->_setValue((T) (ival * this->getIncrement()) );
+        }
+        
+
     }
 }

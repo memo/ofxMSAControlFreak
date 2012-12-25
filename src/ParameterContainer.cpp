@@ -26,7 +26,7 @@ namespace msa {
 			for(int i=0; i<np; i++) delete _paramArr[i];
 		}
         
-
+        
         //--------------------------------------------------------------
         int ParameterContainer::getNumParams() const {
 			assert(_paramArr.size() == _paramMap.size());	// probably tried to add a parameter with the same name (in the same group)
@@ -41,18 +41,18 @@ namespace msa {
         
         //--------------------------------------------------------------
         Parameter& ParameterContainer::getParameter(string path) {
-//            ofLogVerbose() << "msa::ControlFreak::ParameterContainer::getParameter " << path;
+            //            ofLogVerbose() << "msa::ControlFreak::ParameterContainer::getParameter " << path;
             Parameter *p = _paramMap.at(path);
             return *p;
-//            vector<string> pathbits = ofSplitString(path, getPathDivider(), true, true);
-//            ParameterContainer *p = this;
-//            for(int i=0; i<pathbits.size(); i++) {
-//                //                p = &_paramMap[pathbits[i]];
-//                // TODO:
-//            }
-//			return *_paramMap[path];
+            //            vector<string> pathbits = ofSplitString(path, getPathDivider(), true, true);
+            //            ParameterContainer *p = this;
+            //            for(int i=0; i<pathbits.size(); i++) {
+            //                //                p = &_paramMap[pathbits[i]];
+            //                // TODO:
+            //            }
+            //			return *_paramMap[path];
         }
-
+        
         //--------------------------------------------------------------
         ParameterValueT<int>& ParameterContainer::getInt(string path) {
             return dynamic_cast<ParameterInt&>(getParameter(path));
@@ -77,18 +77,18 @@ namespace msa {
         ParameterContainer& ParameterContainer::getContainer(string path) {
             return dynamic_cast<ParameterContainer&>(getParameter(path));
         }
-
-
-
+        
+        
+        
         //--------------------------------------------------------------
-//		Parameter& ParameterContainer::operator[](int index) {
-//            return getParameter(index);
-//		}
-//		
-//        //--------------------------------------------------------------
-//		Parameter& ParameterContainer::operator[](string path) {
-//            return getParameter(path);
-//		}
+        //		Parameter& ParameterContainer::operator[](int index) {
+        //            return getParameter(index);
+        //		}
+        //
+        //        //--------------------------------------------------------------
+        //		Parameter& ParameterContainer::operator[](string path) {
+        //            return getParameter(path);
+        //		}
 		
         //--------------------------------------------------------------
         void ParameterContainer::writeToXml(ofxXmlSettings &xml, bool bFull) {
@@ -96,7 +96,7 @@ namespace msa {
             
             Parameter::writeToXml(xml, bFull);
             xml.pushTag(_xmlTag, _xmlTagId);
-
+            
             for(int i=0; i<_paramArr.size(); i++) {
                 Parameter &p = *_paramArr[i];
                 p.writeToXml(xml, bFull);
@@ -110,8 +110,8 @@ namespace msa {
 			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::readFromXml " << getPath();
             
         }
-
-
+        
+        
         //--------------------------------------------------------------
 		Parameter& ParameterContainer::addParameter(Parameter *param) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::addParameter " << param->getPath() << " name: " << param->getName();
@@ -123,5 +123,17 @@ namespace msa {
             return *param;
 		}
         
-	}
+        
+        //--------------------------------------------------------------
+        void ParameterContainer::update() {
+            Parameter::update();
+            int np = getNumParams();
+            for(int i=0; i<np; i++) {
+                Parameter &p = getParameter(i);
+                p.update();
+            }
+        }
+        
+        
+    }
 }

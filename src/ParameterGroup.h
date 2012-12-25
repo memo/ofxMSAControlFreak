@@ -51,7 +51,7 @@ namespace msa {
             
             //			void checkValueHasChanged();
             //			void updateControllers(bool doChildGroups = true);		// update all controllers
-
+            
         protected:
             string _filename;
             

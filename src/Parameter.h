@@ -45,6 +45,8 @@ namespace msa {
             virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
             virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
             
+            virtual void update() {}
+            
 		protected:
 			Type::Index			_typeIndex;
 			string					_name;

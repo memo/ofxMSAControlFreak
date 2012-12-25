@@ -23,14 +23,16 @@ void testApp::setup(){
     // ADD 'FLOAT' PARAMETERS. CAN BE ANY REAL NUMBER
 	params.addFloat("varf1");
     params.addFloat("varf2").setValue(0.7f);
-    params.addFloat("varf3").setRange(-1, 1);
+    params.addFloat("varf3").setRange(-1, 1).setIncrement(0.2);
+    params.addFloat("varf4").setRange(-1, 1).setIncrement(0.2).setSnap(true);
     params.addFloat("varf5").setRange(0, 1000).setValue(ofRandom(200)).setIncrement(0.5);
     
     // add 'integer' parameters. can be any whole number
 	params.addInt("vari1");
 	params.addInt("vari2").setValue(ofRandom(30));
-	params.addInt("vari3").setRange(-10, 10);
-	params.addInt("vari4").setRange(50, 1000).setValue(7).setIncrement(10);
+	params.addInt("vari3").setRange(-10, 10).setIncrement(2);
+	params.addInt("vari4").setRange(-10, 10).setIncrement(2).setSnap(true);
+	params.addInt("vari5").setRange(50, 1000).setValue(7).setIncrement(10);
     
     // add 'toggle' parameters (can be only true or false)
 	params.addToggle("vartoggle1");                            // default value for for toggle is false
@@ -95,14 +97,9 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update() {
-    msa::ControlFreak::Parameter &p = params.getParameter("varf1");
-//    msa::ControlFreak::ParameterFloat &p2 = params.getFloat("varf1");
-    msa::ControlFreak::ParameterValueT<float> &p3 = params.getFloat("varf1");
-    
-    p3 = 5.3;
+    params.update();
     
     // find why can't assign to float, int etc. operator overload?
-    
     
     if(params.getBool("vartoggle1")) params.getFloat("varsin1") = sin(ofGetElapsedTimef()) * 2;
     if(params.getBool("vartoggle2")) params.getFloat("varsin2") = sin(ofGetElapsedTimef()) * 2;

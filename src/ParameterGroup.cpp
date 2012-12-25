@@ -90,7 +90,6 @@ namespace msa {
 			_groupStack.pop();
 		}
         
-		
         //--------------------------------------------------------------
         //		void ParameterContainer::updateControllers(bool doChildGroups) {
         //			int np = getNumParams();
