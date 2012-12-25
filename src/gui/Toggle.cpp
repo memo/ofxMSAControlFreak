@@ -1,12 +1,12 @@
 
-#include  "ofxMSAControlFreak/src/gui/Toggle.h"
+#include  "ofxMSAControlFreak/src/gui/Includes.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
             
-            Toggle::Toggle(string name, bool &value) : Control(name) {
+            Toggle::Toggle(Page* page, string name, bool &value) : Control(page, name) {
                 this->value	= &value;
                 setMomentary(false);
                 controlType = "Toggle";

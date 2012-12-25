@@ -1,5 +1,5 @@
 
-#include  "ofxMSAControlFreak/src/gui/QuadWarp.h"
+#include  "ofxMSAControlFreak/src/gui/Includes.h"
 
 #define MOUSE_DISTANCE		10.0f
 
@@ -8,7 +8,7 @@ namespace msa {
         namespace gui {
             
             //---------------------------------------------------------------------
-            QuadWarp::QuadWarp(string name, ofBaseDraws &baseDraw, ofPoint *pts) : Control(name) {
+            QuadWarp::QuadWarp(Page* page, string name, ofBaseDraws &baseDraw, ofPoint *pts) : Control(page, name) {
                 this->baseDraw = &baseDraw;
                 
                 setPos(0, 0);

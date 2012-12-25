@@ -1,13 +1,16 @@
 #pragma once
 
 #include "ofxMSAInteractiveObject/src/ofxMSAInteractiveObject.h"
-#include "ofxMSAControlFreak/src/gui/Config.h"
+//#include "ofxMSAControlFreak/src/gui/Config.h"
 
 #include "ofxXmlSettings.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
+            
+            class Page;
+            class Config;
             
             class Control : public ofxMSAInteractiveObject {
             public:
@@ -21,7 +24,7 @@ namespace msa {
                 bool		hasTitle;
                 char		keyboardShortcut;
                 
-                Control(string name);
+                Control(Page* parent, string name);
                 Control& setName(string newName);
                 Control& setKey(string newKey);
                 Control& setConfig(Config *config);
@@ -65,6 +68,7 @@ namespace msa {
                 
             protected:
                 Config	*config;
+                Page    *parent;
             };
             
         }

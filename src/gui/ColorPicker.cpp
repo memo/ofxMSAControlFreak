@@ -7,13 +7,13 @@
  *
  */
 
-#include  "ofxMSAControlFreak/src/gui/ColorPicker.h"
+#include  "ofxMSAControlFreak/src/gui/Includes.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            ColorPicker::ColorPicker(string name, ofFloatColor& color, float max) : Control(name) {
+            ColorPicker::ColorPicker(Page* parent, string name, ofFloatColor& color, float max) : Control(parent, name) {
                 this->value = &color;
                 this->min	= 0;
                 this->max	= max;

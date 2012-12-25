@@ -57,9 +57,6 @@ namespace msa {
 //            template <typename T>
 //            ParameterValueT<T>& getValue(string path) const;
             
-
-            
-            
 		protected:
 			map<string, Parameter*>	_paramMap;		// map for all parameters
 			vector<Parameter*>		_paramArr;		// array needed to access sequentially (for display etc.)

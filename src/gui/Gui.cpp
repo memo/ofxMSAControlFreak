@@ -1,4 +1,5 @@
 #include  "ofxMSAControlFreak/src/gui/Gui.h"
+#include  "ofxMSAControlFreak/src/gui/Includes.h"
 
 
 namespace msa {
@@ -247,7 +248,7 @@ namespace msa {
             Page& Gui::addPage(string name) {
                 if(!config) setup();
                 
-                Page *newPage = new Page(name);//ofToString(pages.size(), 0) + ": " + name);
+                Page *newPage = new Page(NULL, name);//ofToString(pages.size(), 0) + ": " + name);
                 pages.push_back(newPage);
                 if(name == "") newPage->setName("SETTINGS");
                 static bool b;

@@ -1,12 +1,12 @@
 
-#include  "ofxMSAControlFreak/src/gui/Slider2d.h"
+#include  "ofxMSAControlFreak/src/gui/Includes.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
             
-            Slider2d::Slider2d(string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax) : Control(name) {
+            Slider2d::Slider2d(Page* page, string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax) : Control(page, name) {
                 min.set(xmin, ymin);
                 max.set(xmax, ymax);
                 this->value = &value;

@@ -13,7 +13,7 @@ namespace msa {
                 float			fixheight;
                 ofBaseDraws		*content;
                 
-                Content(string name, ofBaseDraws& content, float fixwidth=250.0);
+                Content(Page* parent, string name, ofBaseDraws& content, float fixwidth=250.0);
                 void setup();
                 void draw(float x, float y);
             };

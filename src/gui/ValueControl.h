@@ -12,7 +12,7 @@ namespace msa {
                 T	*value;
                 T	oldValue;
                 
-                ValueControl(string name, T &value) : Control(name), value(&value) {}
+                ValueControl(Page* page, string name, T &value) : Control(page, name), value(&value) {}
                 
                 virtual bool changed() {
                     if(*value != oldValue) {

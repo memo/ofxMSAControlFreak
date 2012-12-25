@@ -12,7 +12,7 @@ namespace msa {
                 bool			beToggle;
                 bool			beenPressed;
                 
-                Button(string name, bool &value);
+                Button(Page* parent, string name, bool &value);
                 void setup();
                 
                 void readFromXml(ofxXmlSettings &XML);

@@ -1,11 +1,11 @@
 
-#include  "ofxMSAControlFreak/src/gui/Title.h"
+#include  "ofxMSAControlFreak/src/gui/Includes.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            Title::Title(string name, float height) : Control(name) {
+            Title::Title(Page* page, string name, float height) : Control(page, name) {
                 beToggle	= false;
                 beenPressed = false;
                 //		this->value	= &value;

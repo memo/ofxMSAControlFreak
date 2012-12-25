@@ -5,13 +5,19 @@
 #include "ofMain.h"
 
 #include "ofxXmlSettings.h"
-#include "ofxMSAControlFreak/src/gui/Controls.h"
+//#include "ofxMSAControlFreak/src/gui/Controls.h"
 #include "ofxMSAControlFreak/src/ControlFreak.h"
 
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
+            
+            class Page;
+//            class Control;
+            class Button;
+            class Config;
+            
             
             class Gui {
             public:
@@ -50,7 +56,7 @@ namespace msa {
                 Page& currentPage();				// returns current page
                 vector <Page*>&	getPages();
                 
-                Control& control(string name);		// returns control by name (on any page)
+//                Control& control(string name);		// returns control by name (on any page)
                 
                 Page& addPage(string name = "");
                 

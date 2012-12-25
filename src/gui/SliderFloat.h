@@ -1,6 +1,5 @@
 #pragma once
 
-#include  "ofxMSAControlFreak/src/gui/Control.h"
 #include  "ofxMSAControlFreak/src/gui/SliderBase.h"
 
 
@@ -11,7 +10,7 @@ namespace msa {
             class SliderFloat : public SliderBase<float> {
                 
             public:
-                SliderFloat(string name, float &value, float min, float max) : SliderBase<float>(name, value, min, max) {
+                SliderFloat(Page* page, string name, float &value, float min, float max) : SliderBase<float>(page, name, value, min, max) {
                     controlType = "SliderFloat";
                 }
             };

@@ -1,14 +1,14 @@
-#include  "ofxMSAControlFreak/src/gui/Page.h"
+#include  "ofxMSAControlFreak/src/gui/Includes.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            Page::Page(string name) : Control(name) {
+            Page::Page(Page* page, string name) : Control(page, name) {
                 disableAllEvents();
                 width = 0;
                 height = ofGetHeight();
-                eventStealingControl = NULL;
+                activeControl = NULL;
                 setXMLName(name + "_settings.xml");
             }
             
@@ -90,7 +90,7 @@ namespace msa {
                     float controlY = posY + y;
                     
                     //we don't draw the event stealing controls until the end because they can expand and overlap with other controls (e.g. combo box)
-                    if(eventStealingControl == &control) {
+                    if(activeControl == &control) {
                         stealingX = controlX;
                         stealingY = controlY;
                     } else {
@@ -116,13 +116,13 @@ namespace msa {
                     //		else							   controls[i]->focused = false;
                 }
                 //event stealing controls get drawn on top
-                if(eventStealingControl) {
-                    eventStealingControl->draw(stealingX, stealingY);
-                    if(eventStealingControl->hasTitle) {
+                if(activeControl) {
+                    activeControl->draw(stealingX, stealingY);
+                    if(activeControl->hasTitle) {
                         ofNoFill();
                         ofSetHexColor(config->borderColor);
                         glLineWidth(0.5f);
-                        ofRect(stealingX, stealingY, eventStealingControl->width, eventStealingControl->height);
+                        ofRect(stealingX, stealingY, activeControl->width, activeControl->height);
                     }
                 }
             }
@@ -135,20 +135,34 @@ namespace msa {
             }
             
             Button& Page::addButton(string name, bool& value) {
-                return (Button&)addControl(* new Button(name, value));
+                return (Button&)addControl(* new Button(this, name, value));
             }
             
+            
+            ColorPicker& Page::addColorPicker(string name, ofFloatColor& color) {
+                return (ColorPicker&)addControl(* new ColorPicker(this, name, color));
+            }
+            
+            
+            ComboBox& Page::addComboBox(string name, int& value, int numChoices, string* choiceTitles) {
+                return (ComboBox&)addControl(* new ComboBox(this, name, value, numChoices, choiceTitles));
+            }
+            
+            ComboBox& Page::addComboBox(string name, int& value, vector<string>& choiceTitles) {
+                return (ComboBox&)addComboBox(name, value, choiceTitles.size(), &choiceTitles[0]);
+            }
+
             Content& Page::addContent(string name, ofBaseDraws& content, float fixwidth) {
                 if(fixwidth == -1) fixwidth = config->gridSize.x - config->padding.x;
-                return (Content&)addControl(* new Content(name, content, fixwidth));
+                return (Content&)addControl(* new Content(this, name, content, fixwidth));
             }
             
             FPSCounter& Page::addFPSCounter() {
-                return (FPSCounter&)addControl(* new FPSCounter());
+                return (FPSCounter&)addControl(* new FPSCounter(this));
             }
             
             QuadWarp& Page::addQuadWarper(string name, ofBaseDraws& baseDraw, ofPoint *pts) {
-                return (QuadWarp&)addControl(* new QuadWarp(name, baseDraw, pts));
+                return (QuadWarp&)addControl(* new QuadWarp(this, name, baseDraw, pts));
             }
             //
             //MovieSlider& Page::addMovieSlider(string name, ofVideoPlayer& input) {
@@ -156,36 +170,23 @@ namespace msa {
             //}
             
             SliderInt& Page::addSlider(string name, int& value, int min, int max) {
-                return (SliderInt&)addControl(* new SliderInt(name, value, min, max));
+                return (SliderInt&)addControl(* new SliderInt(this, name, value, min, max));
             }
             
             SliderFloat& Page::addSlider(string name, float& value, float min, float max) {
-                return (SliderFloat&)addControl(* new SliderFloat(name, value, min, max));
+                return (SliderFloat&)addControl(* new SliderFloat(this, name, value, min, max));
             }
             
             Slider2d& Page::addSlider2d(string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax) {
-                return (Slider2d&)addControl(* new Slider2d(name, value, xmin, xmax, ymin, ymax));
+                return (Slider2d&)addControl(* new Slider2d(this, name, value, xmin, xmax, ymin, ymax));
             }
             
             Title& Page::addTitle(string name, float height) {
-                return (Title&)addControl(* new Title(name, height));
+                return (Title&)addControl(* new Title(this, name, height));
             }
             
             Toggle& Page::addToggle(string name, bool& value) {
-                return (Toggle&)addControl(* new Toggle(name, value));
-            }
-            
-            ColorPicker& Page::addColorPicker(string name, ofFloatColor& color) {
-                return (ColorPicker&)addControl(* new ColorPicker(name, color));
-            }
-            
-            
-            ComboBox& Page::addComboBox(string name, int& value, int numChoices, string* choiceTitles) {
-                return (ComboBox&)addControl(* new ComboBox(name, value, numChoices, this, choiceTitles));
-            }
-            
-            ComboBox& Page::addComboBox(string name, int& value, vector<string>& choiceTitles) {
-                return (ComboBox&)addComboBox(name, value, choiceTitles.size(), &choiceTitles[0]);
+                return (Toggle&)addControl(* new Toggle(this, name, value));
             }
 
             
@@ -194,39 +195,44 @@ namespace msa {
                 for(int i=0; i<controls.size(); i++) controls[i]->update();
             }
             
-            void Page::SetEventStealingControl(Control& control) {
-                eventStealingControl = &control;
+            void Page::setActiveControl(Control* control) {
+                activeControl = control;
             }
-            void Page::ReleaseEventStealingControl() {
-                eventStealingControl = NULL;
+            void Page::releaseActiveControl() {
+                activeControl = NULL;
             }
             
             void Page::mouseMoved(ofMouseEventArgs& e) {
-                if(eventStealingControl)
-                    eventStealingControl->_mouseMoved(e);
+                if(activeControl)
+                    activeControl->_mouseMoved(e);
                 else
                     for(int i=0; i<controls.size(); i++) controls[i]->_mouseMoved(e);
             }
             
             void Page::mousePressed(ofMouseEventArgs& e) {
-                if(eventStealingControl)
-                    eventStealingControl->_mousePressed(e);
+                if(activeControl)
+                    activeControl->_mousePressed(e);
                 else
-                    for(int i=0; i<controls.size(); i++) controls[i]->_mousePressed(e);
+                    for(int i=0; i<controls.size(); i++) {
+                        controls[i]->_mousePressed(e);
+                        if(controls[i]->hitTest(e.x, e.y)) setActiveControl(controls[i]);
+                    }
             }
             
             void Page::mouseDragged(ofMouseEventArgs& e) {
-                if(eventStealingControl)
-                    eventStealingControl->_mouseDragged(e);
+                if(activeControl)
+                    activeControl->_mouseDragged(e);
                 else
                     for(int i=0; i<controls.size(); i++) controls[i]->_mouseDragged(e);
             }
             
             void Page::mouseReleased(ofMouseEventArgs& e) {
-                if(eventStealingControl)
-                    eventStealingControl->_mouseReleased(e);
+                if(activeControl)
+                    activeControl->_mouseReleased(e);
                 else
                     for(int i=0; i<controls.size(); i++) controls[i]->_mouseReleased(e);
+                
+                releaseActiveControl();
             }
             
             void Page::keyPressed(ofKeyEventArgs& e) {

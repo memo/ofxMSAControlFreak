@@ -7,8 +7,7 @@
  *
  */
 
-#include  "ofxMSAControlFreak/src/gui/ComboBox.h"
-#include  "ofxMSAControlFreak/src/gui/Page.h"
+#include  "ofxMSAControlFreak/src/gui/Includes.h"
 
 #define kMaxChoiceStringLen 150
 #define kMaxNameStringLen 100
@@ -17,10 +16,9 @@ namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            ComboBox::ComboBox(string name, int &choice_out, int numChoices, Page *owner, string* choiceTitles ) :
-            Control(name),
-            m_selectedChoice(choice_out),
-            m_page(owner)
+            ComboBox::ComboBox(Page* parent, string name, int &choice_out, int numChoices, string* choiceTitles ) :
+            Control(parent, name),
+            m_selectedChoice(choice_out)
             {
                 m_selectedChoice = m_mouseChoice = 0;
                 if(numChoices <=1)
@@ -130,8 +128,8 @@ namespace msa {
                     //expand the height for all choices
                     //      setSize(config->gridSize.x - config->padding.x, config->comboBoxHeight * m_choices.size());
                     m_hasFocus = true;
-                    //notify that we want to steal all events from the page
-                    m_page->SetEventStealingControl(*this);
+                    //notify that we want to steal all events from the parent
+                    parent->setActiveControl(this);
                 } else {
                     //if we have focus, a click signals that we should lose it
                     releaseEventStealingFocus();
@@ -178,9 +176,9 @@ namespace msa {
             }
             
             void ComboBox::onRelease(int x, int y, int button) {
-                if(m_hasFocus && m_mouseMovedSinceClick) {
+//                if(m_hasFocus && m_mouseMovedSinceClick) {
                     releaseEventStealingFocus();
-                }
+//                }
             }
             
             void ComboBox::releaseEventStealingFocus(){
@@ -190,8 +188,8 @@ namespace msa {
                 //a release toggles focus state if we are on - TODO: unless x and y don't change
                 m_hasFocus = false;
                 //      setSize(config->gridSize.x - config->padding.x, config->comboBoxHeight);
-                //also let the page know we don't need to steal all the events and draw over anymore
-                m_page->ReleaseEventStealingControl();
+                //also let the parent know we don't need to steal all the events and draw over anymore
+                parent->releaseActiveControl();
             }
             
             //special overloads - this is a hack - later think about making Control's methods virtual.
@@ -211,6 +209,9 @@ namespace msa {
 #define kSGCBTextPaddingX    3
 #define kSGCBTextPaddingY    15
             void ComboBox::draw(float x, float y) {
+//                if(m_hasFocus) parent->setActiveControl(this);
+                
+                
                 //we assume a max of 256 characters.
                 char choiceBuf[256];
                 

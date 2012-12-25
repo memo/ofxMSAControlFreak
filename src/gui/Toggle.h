@@ -12,7 +12,7 @@ namespace msa {
                 bool	*value;
                 bool	momentary;
                 
-                Toggle(string name, bool &value);
+                Toggle(Page* page, string name, bool &value);
                 Toggle& setMomentary(bool m);
                 void setup();
                 

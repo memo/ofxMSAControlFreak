@@ -50,7 +50,6 @@ namespace msa {
 		protected:
 			Type::Index			_typeIndex;
 			string					_name;
-//			string					_path;
 			ParameterContainer			*_parent;
             
             string                  _xmlTag;

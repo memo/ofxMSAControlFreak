@@ -1,13 +1,15 @@
-#include  "ofxMSAControlFreak/src/gui/Control.h"
+#include "ofxMSAControlFreak/src/gui/Includes.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
             
-            Control::Control(string name) {
+            //--------------------------------------------------------------
+            Control::Control(Page *parent, string name) {
                 controlType = "";
                 this->config = &defaultSimpleGuiConfig;
+                this->parent = parent;
                 setName(name);
                 setKey(key);
                 setPos(0, 0);
@@ -24,19 +26,20 @@ namespace msa {
                 //	disableKeyEvents();
             }
             
+            //--------------------------------------------------------------
             Control &Control::setConfig(Config *config) {
                 this->config = config;
                 setup();
                 return *this;
             }
             
+            //--------------------------------------------------------------
             Control &Control::setNewColumn(bool b) {
                 newColumn = b;
                 return *this;
             }
             
-            
-            
+            //--------------------------------------------------------------
             Control &Control::setName(string newName) {
                 name = newName;
                 origName = name;
@@ -46,7 +49,7 @@ namespace msa {
                 return *this;
             }
             
-            
+            //--------------------------------------------------------------
             Control &Control::setKey(string newKey) {
                 if(newKey.compare("") == 0) key = name;
                 else key = newKey;
@@ -56,18 +59,21 @@ namespace msa {
                 return *this;
             }
             
+            //--------------------------------------------------------------
             Control &Control::setTextColor(bool clickable) {
                 if(isMouseOver() && clickable) ofSetHexColor(config->textOverColor);
                 else ofSetHexColor(config->textColor);
                 return *this;
             }
             
+            //--------------------------------------------------------------
             Control &Control::setTextBGColor(bool clickable) {
                 if(isMouseOver() && clickable) ofSetHexColor(config->textBGOverColor);
                 else ofSetHexColor(config->textBGColor);
                 return *this;
             }
             
+            //--------------------------------------------------------------
             Control &Control::setFullColor(bool forceActive) {
                 if(isMouseDown() || forceActive) ofSetHexColor(config->fullActiveColor);
                 else if(isMouseOver()) ofSetHexColor(config->fullOverColor);
@@ -75,6 +81,7 @@ namespace msa {
                 return *this;
             }
             
+            //--------------------------------------------------------------
             Control &Control::setEmptyColor() {
                 ofSetHexColor(config->emptyColor);
                 //		if(isMouseOver()) ofSetHexColor(config->overColor.r, config->overColor.g, config->overColor.b);
@@ -82,6 +89,7 @@ namespace msa {
                 return *this;
             }
             
+            //--------------------------------------------------------------
             Control &Control::setKeyboardShortcut(char c) {
                 keyboardShortcut = c;
                 if(c) {

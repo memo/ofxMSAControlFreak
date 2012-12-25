@@ -1,4 +1,4 @@
-#include  "ofxMSAControlFreak/src/gui/Config.h"
+#include  "ofxMSAControlFreak/src/gui/Includes.h"
 
 
 namespace msa {

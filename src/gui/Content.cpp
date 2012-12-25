@@ -1,12 +1,12 @@
 
-#include  "ofxMSAControlFreak/src/gui/Content.h"
+#include  "ofxMSAControlFreak/src/gui/Includes.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
             
-            Content::Content(string name, ofBaseDraws& content, float fixwidth) : Control(name) {
+            Content::Content(Page* parent, string name, ofBaseDraws& content, float fixwidth) : Control(parent, name) {
                 this->content = &content;
                 this->fixwidth  = fixwidth;
                 controlType = "Content";

@@ -1,11 +1,11 @@
 
-#include  "ofxMSAControlFreak/src/gui/Button.h"
+#include  "ofxMSAControlFreak/src/gui/Includes.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            Button::Button(string name, bool &value) : ValueControl<bool>(name, value) {
+            Button::Button(Page* parent, string name, bool &value) : ValueControl<bool>(parent, name, value) {
                 beToggle	= false;
                 beenPressed = false;
                 controlType = "Button";
