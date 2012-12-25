@@ -139,7 +139,7 @@ namespace msa {
                         glColor3f(0.5, 0.5, 0.5);
                     }
                     
-                    ofDrawBitmapString(ofToString(getValue(i), 4), 3, startY + 14);
+                    config->drawString(ofToString(getValue(i), 4), 3, startY + 14);
                     
                     startY += config->sliderHeight * 2;
                 }
@@ -155,7 +155,7 @@ namespace msa {
                 
                 setTextColor();
                 string s = name;
-                ofDrawBitmapString(s, 3, startY + 14);
+                config->drawString(s, 3, startY + 14);
                 ofDisableAlphaBlending();
                 glPopMatrix();
             }

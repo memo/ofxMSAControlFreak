@@ -74,11 +74,7 @@ namespace msa {
             ParameterGroup *currentGroup = _groupStack.top();
             // avoid infinite recursion
             if(currentGroup == this) {
-                _paramMap[param->getPath()] = param;
-                _paramArr.push_back(param);
-                
-                getNumParams();	// to check if correctly added to both containers
-                return *param;
+                return ParameterContainer::addParameter(param);
             } else {
                 return currentGroup->addParameter(param);
             }

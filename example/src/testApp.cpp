@@ -95,8 +95,17 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update() {
-//    if(params["vartoggle1"]) params["varsin1"] = sin(ofGetElapsedTimef()) * 2;
-//    if(params["vartoggle2"]) params["varsin2"] = sin(ofGetElapsedTimef()) * 2;
+    msa::ControlFreak::Parameter &p = params.getParameter("varf1");
+//    msa::ControlFreak::ParameterFloat &p2 = params.getFloat("varf1");
+    msa::ControlFreak::ParameterValueT<float> &p3 = params.getFloat("varf1");
+    
+    p3 = 5.3;
+    
+    // find why can't assign to float, int etc. operator overload?
+    
+    
+    if(params.getBool("vartoggle1")) params.getFloat("varsin1") = sin(ofGetElapsedTimef()) * 2;
+    if(params.getBool("vartoggle2")) params.getFloat("varsin2") = sin(ofGetElapsedTimef()) * 2;
     //	if(myBool1Animate) myFloat1 = ofNoise(ofGetElapsedTimef());
     //
     //	if(gui.control("myBool1 Animate").getValue()) myFloat1 = ofNoise(ofGetElapsedTimef());

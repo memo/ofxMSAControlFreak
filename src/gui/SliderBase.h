@@ -184,7 +184,6 @@ namespace msa {
                     setEmptyColor();
                     ofRect(0, 0, width, config->sliderHeight);
                     
-                    
                     setFullColor();
                     ofRect(0, 0, barwidth, config->sliderHeight);
                     
@@ -193,7 +192,7 @@ namespace msa {
                     
                     setTextColor();
                     string s = name + ": " + ofToString((*value));
-                    ofDrawBitmapString(s, 3, config->sliderHeight + 14);
+                    config->drawString(s, config->textPos.x, config->sliderHeight/2 + config->textPos.y);
                     ofDisableAlphaBlending();
                     glPopMatrix();
                 }

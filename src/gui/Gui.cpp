@@ -359,7 +359,7 @@ namespace msa {
             Gui& Gui::addParameter(Parameter& parameter) {
                 // if parameter already exists, remove it first
                 
-                ParameterContainer *pc = static_cast<ParameterContainer*>(&parameter);
+                ParameterContainer *pc = dynamic_cast<ParameterContainer*>(&parameter);
                 if(pc && pc->getNumParams() > 0) addParameters(*pc);
                 
                 switch(parameter.getType()) {

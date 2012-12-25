@@ -41,7 +41,7 @@ namespace msa {
                 ofRect(0, fixheight, width, config->sliderTextHeight);
                 
                 setTextColor();
-                ofDrawBitmapString(name, 3, fixheight + 15);
+                config->drawString(name, 3, fixheight + 15);
                 ofDisableAlphaBlending();
                 glPopMatrix();
             }

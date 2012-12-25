@@ -28,7 +28,7 @@ namespace msa {
         
 
         //--------------------------------------------------------------
-        int ParameterContainer::getNumParams() {
+        int ParameterContainer::getNumParams() const {
 			assert(_paramArr.size() == _paramMap.size());	// probably tried to add a parameter with the same name (in the same group)
 			return _paramMap.size();
 		}
@@ -41,24 +41,54 @@ namespace msa {
         
         //--------------------------------------------------------------
         Parameter& ParameterContainer::getParameter(string path) {
-            vector<string> pathbits = ofSplitString(path, getPathDivider(), true, true);
-            ParameterContainer *p = this;
-            for(int i=0; i<pathbits.size(); i++) {
-                //                p = &_paramMap[pathbits[i]];
-                // TODO:
-            }
-			return *_paramMap[path];
+//            ofLogVerbose() << "msa::ControlFreak::ParameterContainer::getParameter " << path;
+            Parameter *p = _paramMap.at(path);
+            return *p;
+//            vector<string> pathbits = ofSplitString(path, getPathDivider(), true, true);
+//            ParameterContainer *p = this;
+//            for(int i=0; i<pathbits.size(); i++) {
+//                //                p = &_paramMap[pathbits[i]];
+//                // TODO:
+//            }
+//			return *_paramMap[path];
         }
 
         //--------------------------------------------------------------
-		Parameter& ParameterContainer::operator[](int index) {
-            return getParameter(index);
-		}
-		
+        ParameterValueT<int>& ParameterContainer::getInt(string path) {
+            return dynamic_cast<ParameterInt&>(getParameter(path));
+        }
+        
         //--------------------------------------------------------------
-		Parameter& ParameterContainer::operator[](string path) {
-            return getParameter(path);
-		}
+        ParameterValueT<float>& ParameterContainer::getFloat(string path) {
+            return dynamic_cast<ParameterFloat&>(getParameter(path));
+        }
+        
+        //--------------------------------------------------------------
+        ParameterValueT<bool>& ParameterContainer::getBool(string path) {
+            return dynamic_cast<ParameterBool&>(getParameter(path));
+        }
+        
+        //--------------------------------------------------------------
+        ParameterNamedIndex& ParameterContainer::getNamedIndex(string path) {
+            return dynamic_cast<ParameterNamedIndex&>(getParameter(path));
+        }
+        
+        //--------------------------------------------------------------
+        ParameterContainer& ParameterContainer::getContainer(string path) {
+            return dynamic_cast<ParameterContainer&>(getParameter(path));
+        }
+
+
+
+        //--------------------------------------------------------------
+//		Parameter& ParameterContainer::operator[](int index) {
+//            return getParameter(index);
+//		}
+//		
+//        //--------------------------------------------------------------
+//		Parameter& ParameterContainer::operator[](string path) {
+//            return getParameter(path);
+//		}
 		
         //--------------------------------------------------------------
         void ParameterContainer::writeToXml(ofxXmlSettings &xml, bool bFull) {
@@ -84,9 +114,9 @@ namespace msa {
 
         //--------------------------------------------------------------
 		Parameter& ParameterContainer::addParameter(Parameter *param) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::addParameter " << param->getPath();
+			ofLogVerbose() << "msa::ControlFreak::ParameterContainer::addParameter " << param->getPath() << " name: " << param->getName();
 			
-            _paramMap[param->getPath()] = param;
+            _paramMap[param->getName()] = param;
             _paramArr.push_back(param);
             param->setParent(this);
             getNumParams();	// to check if correctly added to both containers

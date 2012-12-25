@@ -79,7 +79,7 @@ namespace msa {
                 }
                 
                 setTextColor();
-                ofDrawBitmapString(name, 3, 15);
+                config->drawString(name, 3, 15);
                 
                 ofDisableAlphaBlending();
                 

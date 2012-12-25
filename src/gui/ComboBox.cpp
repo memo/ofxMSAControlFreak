@@ -227,7 +227,7 @@ namespace msa {
                 setTextColor();
                 //	sprintf(choiceBuf, "%s: %s", m_title, m_choices.size() ? m_choices[m_selectedChoice] : "(No Choices Available)");
                 
-                ofDrawBitmapString(m_title + "\n" + (m_choices.size() ? m_choices[m_selectedChoice] : "N/A"), kSGCBTextPaddingX, kSGCBTextPaddingY);
+                config->drawString(m_title + ": " + (m_choices.size() ? m_choices[m_selectedChoice] : "N/A"), kSGCBTextPaddingX, kSGCBTextPaddingY);
                 //draw a combobox down triangle icon so the users know to click
                 ofTriangle(width - (kSGCBTriangleWidth + KSGCBTrianglePadding), kSGCBTextPaddingY/2,
                            width - (KSGCBTrianglePadding), kSGCBTextPaddingY/2,
@@ -235,9 +235,12 @@ namespace msa {
                 
                 if(m_hasFocus) {
                     setCBTextBGColor();
-                    ofRect(0, height, width, config->comboBoxTextHeight * m_choices.size());
+                    ofRect(0, height, width, config->comboBoxTextHeight * (m_choices.size()+0.5));
                     setTextColor();
-                    ofLine(0, config->comboBoxHeight-1, width, config->comboBoxHeight-1);
+                    ofNoFill();
+                    ofRect(0, config->comboBoxHeight-1, width, config->comboBoxTextHeight * (m_choices.size()+0.5));
+                    ofFill();
+//                    ofLine(0, config->comboBoxHeight-1, width, config->comboBoxHeight-1);
                     
                     for(int i=0; i < m_choices.size(); i++) {
                         setCBTextColor();
@@ -245,11 +248,11 @@ namespace msa {
                         float curY = height + i*config->comboBoxTextHeight; 
                         if(i==m_mouseChoice){
                             //draw a text colored rect so we can see the inverse
-                            ofRect(0, curY, width, config->comboBoxTextHeight);
+                            ofRect(0, curY+3, width, config->comboBoxTextHeight);
                             setCBTextBGColor();
                         }
                         
-                        ofDrawBitmapString(m_choices[i], kSGCBTextPaddingX, curY + kSGCBTextPaddingY);
+                        config->drawString(m_choices[i], kSGCBTextPaddingX, curY + kSGCBTextPaddingY);
                     }
                 }
                 ofDisableAlphaBlending();

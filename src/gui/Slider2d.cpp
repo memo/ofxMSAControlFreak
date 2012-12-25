@@ -102,7 +102,7 @@ namespace msa {
                 ofRect(0, height-config->slider2DTextHeight, width, config->slider2DTextHeight);
                 
                 setTextColor();
-                ofDrawBitmapString(name+"\nx:"+ofToString(value->x, 2)+"\ny:"+ofToString(value->y, 2), 3, height+15-config->slider2DTextHeight);
+                config->drawString(name+"\nx:"+ofToString(value->x, 2)+"\ny:"+ofToString(value->y, 2), 3, height+15-config->slider2DTextHeight);
                 
                 setTextColor();
                 ofCircle(pointv.x-x, pointv.y-y, 2);

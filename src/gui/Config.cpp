@@ -10,9 +10,8 @@ namespace msa {
             
             
             Config::Config() {
-                
-                sliderHeight		= 10;
-                sliderTextHeight	= 22;
+                sliderHeight		= 6;
+                sliderTextHeight	= 20;
                 titleHeight			= sliderHeight + sliderTextHeight;
                 toggleHeight		= titleHeight;
                 buttonHeight		= titleHeight;
@@ -20,8 +19,8 @@ namespace msa {
                 comboBoxHeight		= titleHeight;	//15
                 comboBoxTextHeight	= 15;
                 
-                
-                padding.set			(titleHeight/2, 5);
+                textPos.set         (5, 16);
+                padding.set			(titleHeight/2, 10);
                 offset.set			(titleHeight/2, titleHeight/2);
                 slider2DSize.set	(titleHeight * 4, titleHeight * 4);
                 
@@ -40,6 +39,13 @@ namespace msa {
                 
                 borderColor			= 0x333333;
             }
+            
+            
+            void Config::drawString(string s, float x, float y) {
+                if(!font.isLoaded()) font.loadFont("fonts/Verdana.ttf", 8, false, false, false);
+                font.drawString(s, floor(x), floor(y));
+            }
+
         }
     }
 }

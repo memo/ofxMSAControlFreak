@@ -28,7 +28,7 @@ namespace msa {
                 ofRect(0, 0, width, height);
                 
                 setTextColor(false);
-                ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()), 3, 15);
+                config->drawString("FPS: " + ofToString(ofGetFrameRate()), 3, 15);
                 
                 glPopMatrix();
             }

@@ -12,9 +12,9 @@
 namespace msa {
     namespace ControlFreak {
         
-        class ParameterInt;
-        class ParameterFloat;
-        class ParameterBool;
+//        class ParameterInt;
+//        class ParameterFloat;
+//        class ParameterBool;
         class ParameterNamedIndex;
         class ParameterVec3f;
         
@@ -35,10 +35,11 @@ namespace msa {
 			ParameterBool& addToggle(string name);
 			ParameterBool& addBang(string name);
 			ParameterNamedIndex& addNamedIndex(string name);
-            //            Parameter& addVec2(string name);
+            Parameter& addVec2(string name);
             ParameterVec3f& addVec3f(string name);
-            //            Parameter& addVec4(string name);
-            //            Parameter& addColor(string name);
+            Parameter& addVec4(string name);
+            Parameter& addColoru8(string name);
+            Parameter& addColorf32(string name);
 			
             Parameter& addParameter(Parameter *param);
             

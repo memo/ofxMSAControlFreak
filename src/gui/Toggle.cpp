@@ -95,7 +95,7 @@ namespace msa {
                 ofRect(height, 0, width - height, height);
                 
                 setTextColor();
-                ofDrawBitmapString(name, height + 15, 15);
+                config->drawString(name, height + config->textPos.x, config->textPos.y);
                 ofDisableAlphaBlending();
                 
                 glPopMatrix();

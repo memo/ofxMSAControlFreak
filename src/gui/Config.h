@@ -8,6 +8,7 @@ namespace msa {
             
             class Config {
             public:
+                ofTrueTypeFont font;
                 ofPoint	gridSize;
                 
                 float	buttonHeight;
@@ -19,6 +20,7 @@ namespace msa {
                 float	comboBoxHeight;
                 float	comboBoxTextHeight;
                 
+                ofPoint textPos;
                 ofPoint padding;
                 ofPoint offset;
                 ofPoint	slider2DSize;
@@ -35,6 +37,7 @@ namespace msa {
                 int borderColor;
                 
                 Config();
+                void drawString(string s, float x, float y);
             };
             
             

@@ -12,6 +12,12 @@
 namespace msa {
     namespace ControlFreak {
         
+        
+//        typedef ParameterSingleValueT<float> ParameterFloat;
+//        typedef ParameterSingleValueT<int> ParameterInt;
+//        typedef ParameterSingleValueT<bool> ParameterBool;
+        
+        
         //--------------------------------------------------------------
         //--------------------------------------------------------------
         class ParameterInt : public ParameterSingleValueT<int> {
