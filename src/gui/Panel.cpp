@@ -4,7 +4,7 @@ namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            Page::Page(Page* page, string name) : Control(page, name) {
+            Panel::Panel(Panel* parent, string name) : Control(parent, name) {
                 disableAllEvents();
                 width = 0;
                 height = ofGetHeight();
@@ -12,19 +12,19 @@ namespace msa {
                 setXMLName(name + "_settings.xml");
             }
             
-            Page::~Page() {
+            Panel::~Panel() {
                 // delete all controls
             }
             
             
-            Page& Page::setXMLName(string s) {
+            Panel& Panel::setXMLName(string s) {
                 xmlFilename = s;
                 return *this;
             }
             
             
-            void Page::loadXml() {
-                ofLog(OF_LOG_VERBOSE,  "ofxMSAControlFreak/src/gui/Page::loadXml: " + xmlFilename);
+            void Panel::loadXml() {
+                ofLog(OF_LOG_VERBOSE,  "ofxMSAControlFreak/src/gui/Panel::loadXml: " + xmlFilename);
                 
                 if(xmlFilename.compare("") == 0) return;
                 
@@ -41,7 +41,7 @@ namespace msa {
             }
             
             
-            void Page::saveXml() {
+            void Panel::saveXml() {
                 if(controls.size() <= 1 || xmlFilename.compare("") == 0) return;	// if it has no controls (title counts as one control)
                 
                 XML.clear();	// clear cause we are building a new xml file
@@ -55,18 +55,18 @@ namespace msa {
                 
                 XML.saveFile(xmlFilename);
                 //	if(doSaveBackup)
-                ofLog(OF_LOG_VERBOSE,  "ofxMSAControlFreak/src/gui/Page::saveXml: " + xmlFilename + " " + ofToString(controls.size(), 0) + " items");
+                ofLog(OF_LOG_VERBOSE,  "ofxMSAControlFreak/src/gui/Panel::saveXml: " + xmlFilename + " " + ofToString(controls.size(), 0) + " items");
             }
             
             
-            float Page::getNextY(float y) {
+            float Panel::getNextY(float y) {
                 return y;
                 int iy = (int)ceil(y/config->gridSize.y);
                 return (iy) * config->gridSize.y;
             }
             
             
-            void Page::draw(float x, float y, bool alignRight) {
+            void Panel::draw(float x, float y, bool alignRight) {
                 setPos(x += config->offset.x, y += config->offset.y);
                 if(alignRight) x = ofGetWidth() - x -  config->gridSize.x;
                 
@@ -128,88 +128,88 @@ namespace msa {
             }
             
             
-            Control& Page::addControl(Control& control) {
+            Control& Panel::addControl(Control& control) {
                 controls.push_back(&control);
                 width += control.width + config->padding.x;
                 return control;
             }
             
-            Button& Page::addButton(string name, bool& value) {
+            Button& Panel::addButton(string name, bool& value) {
                 return (Button&)addControl(* new Button(this, name, value));
             }
             
             
-            ColorPicker& Page::addColorPicker(string name, ofFloatColor& color) {
+            ColorPicker& Panel::addColorPicker(string name, ofFloatColor& color) {
                 return (ColorPicker&)addControl(* new ColorPicker(this, name, color));
             }
             
             
-            ComboBox& Page::addComboBox(string name, int& value, int numChoices, string* choiceTitles) {
+            ComboBox& Panel::addComboBox(string name, int& value, int numChoices, string* choiceTitles) {
                 return (ComboBox&)addControl(* new ComboBox(this, name, value, numChoices, choiceTitles));
             }
             
-            ComboBox& Page::addComboBox(string name, int& value, vector<string>& choiceTitles) {
+            ComboBox& Panel::addComboBox(string name, int& value, vector<string>& choiceTitles) {
                 return (ComboBox&)addComboBox(name, value, choiceTitles.size(), &choiceTitles[0]);
             }
 
-            Content& Page::addContent(string name, ofBaseDraws& content, float fixwidth) {
+            Content& Panel::addContent(string name, ofBaseDraws& content, float fixwidth) {
                 if(fixwidth == -1) fixwidth = config->gridSize.x - config->padding.x;
                 return (Content&)addControl(* new Content(this, name, content, fixwidth));
             }
             
-            FPSCounter& Page::addFPSCounter() {
+            FPSCounter& Panel::addFPSCounter() {
                 return (FPSCounter&)addControl(* new FPSCounter(this));
             }
             
-            QuadWarp& Page::addQuadWarper(string name, ofBaseDraws& baseDraw, ofPoint *pts) {
+            QuadWarp& Panel::addQuadWarper(string name, ofBaseDraws& baseDraw, ofPoint *pts) {
                 return (QuadWarp&)addControl(* new QuadWarp(this, name, baseDraw, pts));
             }
             //
-            //MovieSlider& Page::addMovieSlider(string name, ofVideoPlayer& input) {
+            //MovieSlider& Panel::addMovieSlider(string name, ofVideoPlayer& input) {
             //	return (MovieSlider&)addControl(* new MovieSlider(name, input));
             //}
             
-            SliderInt& Page::addSlider(string name, int& value, int min, int max) {
+            SliderInt& Panel::addSlider(string name, int& value, int min, int max) {
                 return (SliderInt&)addControl(* new SliderInt(this, name, value, min, max));
             }
             
-            SliderFloat& Page::addSlider(string name, float& value, float min, float max) {
+            SliderFloat& Panel::addSlider(string name, float& value, float min, float max) {
                 return (SliderFloat&)addControl(* new SliderFloat(this, name, value, min, max));
             }
             
-            Slider2d& Page::addSlider2d(string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax) {
+            Slider2d& Panel::addSlider2d(string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax) {
                 return (Slider2d&)addControl(* new Slider2d(this, name, value, xmin, xmax, ymin, ymax));
             }
             
-            Title& Page::addTitle(string name, float height) {
+            Title& Panel::addTitle(string name, float height) {
                 return (Title&)addControl(* new Title(this, name, height));
             }
             
-            Toggle& Page::addToggle(string name, bool& value) {
+            Toggle& Panel::addToggle(string name, bool& value) {
                 return (Toggle&)addControl(* new Toggle(this, name, value));
             }
 
             
             
-            void Page::update(ofEventArgs& e) {
+            void Panel::update(ofEventArgs& e) {
                 for(int i=0; i<controls.size(); i++) controls[i]->update();
             }
             
-            void Page::setActiveControl(Control* control) {
+            void Panel::setActiveControl(Control* control) {
                 activeControl = control;
             }
-            void Page::releaseActiveControl() {
+            void Panel::releaseActiveControl() {
                 activeControl = NULL;
             }
             
-            void Page::mouseMoved(ofMouseEventArgs& e) {
+            void Panel::mouseMoved(ofMouseEventArgs& e) {
                 if(activeControl)
                     activeControl->_mouseMoved(e);
                 else
                     for(int i=0; i<controls.size(); i++) controls[i]->_mouseMoved(e);
             }
             
-            void Page::mousePressed(ofMouseEventArgs& e) {
+            void Panel::mousePressed(ofMouseEventArgs& e) {
                 if(activeControl)
                     activeControl->_mousePressed(e);
                 else
@@ -219,14 +219,14 @@ namespace msa {
                     }
             }
             
-            void Page::mouseDragged(ofMouseEventArgs& e) {
+            void Panel::mouseDragged(ofMouseEventArgs& e) {
                 if(activeControl)
                     activeControl->_mouseDragged(e);
                 else
                     for(int i=0; i<controls.size(); i++) controls[i]->_mouseDragged(e);
             }
             
-            void Page::mouseReleased(ofMouseEventArgs& e) {
+            void Panel::mouseReleased(ofMouseEventArgs& e) {
                 if(activeControl)
                     activeControl->_mouseReleased(e);
                 else
@@ -235,7 +235,7 @@ namespace msa {
                 releaseActiveControl();
             }
             
-            void Page::keyPressed(ofKeyEventArgs& e) {
+            void Panel::keyPressed(ofKeyEventArgs& e) {
                 bool keyUp		= e.key == OF_KEY_UP;
                 bool keyDown	= e.key == OF_KEY_DOWN;
                 bool keyLeft	= e.key == OF_KEY_LEFT;
@@ -255,12 +255,12 @@ namespace msa {
                 }
             }
             
-            void Page::keyReleased(ofKeyEventArgs& e) {
+            void Panel::keyReleased(ofKeyEventArgs& e) {
                 for(int i=0; i<controls.size(); i++) if(controls[i]->isMouseOver()) controls[i]->_keyReleased(e);
             }
             
             
-            vector <Control*>&	Page::getControls() {
+            vector <Control*>&	Panel::getControls() {
                 return controls;
             }
             

@@ -12,7 +12,7 @@ namespace msa {
                 T	*value;
                 T	oldValue;
                 
-                ValueControl(Page* page, string name, T &value) : Control(page, name), value(&value) {}
+                ValueControl(Panel* parent, string name, T &value) : Control(parent, name), value(&value) {}
                 
                 virtual bool changed() {
                     if(*value != oldValue) {

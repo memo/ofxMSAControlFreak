@@ -17,7 +17,7 @@ namespace msa {
                 ofPoint			lastPressPlace;
                 float			lastPressTime;
                 
-                QuadWarp(Page* page, string name, ofBaseDraws &baseDraw, ofPoint *pts);
+                QuadWarp(Panel* parent, string name, ofBaseDraws &baseDraw, ofPoint *pts);
                 void setup();
                 void readFromXml(ofxXmlSettings &XML);
                 void writeToXml(ofxXmlSettings &XML);

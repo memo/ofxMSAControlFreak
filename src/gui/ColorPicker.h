@@ -15,7 +15,7 @@ namespace msa {
                 float		barwidth[4];
                 float		pct[4];
                 
-                ColorPicker(Page* parent, string name, ofFloatColor& color, float max = 1);
+                ColorPicker(Panel* parent, string name, ofFloatColor& color, float max = 1);
                 void setup();
                 void readFromXml(ofxXmlSettings &XML);
                 void writeToXml(ofxXmlSettings &XML);

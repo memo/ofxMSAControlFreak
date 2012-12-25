@@ -5,7 +5,7 @@ namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            Title::Title(Page* page, string name, float height) : Control(page, name) {
+            Title::Title(Panel* parent, string name, float height) : Control(parent, name) {
                 beToggle	= false;
                 beenPressed = false;
                 //		this->value	= &value;

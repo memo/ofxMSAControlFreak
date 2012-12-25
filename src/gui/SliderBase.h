@@ -23,7 +23,7 @@ namespace msa {
                 Type		increment;
                 
                 //--------------------------------------------------------------------- construct
-                SliderBase(Page* page, string name, Type &value, Type min, Type max) : Control(page, name) {
+                SliderBase(Panel* parent, string name, Type &value, Type min, Type max) : Control(parent, name) {
                     this->value = &value;
                     setRange(min, max);
                     

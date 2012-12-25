@@ -13,7 +13,7 @@ namespace msa {
                 bool			beToggle;
                 bool			beenPressed;
                 
-                Title(Page* page, string name, float height);
+                Title(Panel* parent, string name, float height);
                 void setup();
                 
                 void readFromXml(ofxXmlSettings &XML);

@@ -13,7 +13,7 @@ namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            class Page;
+            class Panel;
 //            class Control;
             class Button;
             class Config;
@@ -51,14 +51,14 @@ namespace msa {
                 
                 void nextPageWithBlank();		// cycles through pages, and closes after last page
                 
-                Page& page(int i);				// 1 based index of page
-                Page& page(string name);			// returns page by name
-                Page& currentPage();				// returns current page
-                vector <Page*>&	getPages();
+                Panel& page(int i);				// 1 based index of page
+                Panel& page(string name);			// returns page by name
+                Panel& currentPage();				// returns current page
+                vector <Panel*>&	getPages();
                 
 //                Control& control(string name);		// returns control by name (on any page)
                 
-                Page& addPage(string name = "");
+                Panel& addPage(string name = "");
                 
                 Gui& addParameter(Parameter& parameter);
                 Gui& addParameters(ParameterContainer& parameters);
@@ -101,9 +101,9 @@ namespace msa {
                 bool		doDraw;
                 float		border;
                 
-                Page				*headerPage;
+                Panel				*headerPage;
                 Button				*titleButton;
-                vector <Page*>		pages;				// 0 is for headerPage
+                vector <Panel*>		pages;				// 0 is for headerPage
                 
                 void addListeners();
                 void removeListeners();

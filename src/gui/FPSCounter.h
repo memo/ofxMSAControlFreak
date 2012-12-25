@@ -8,7 +8,7 @@ namespace msa {
             
             class FPSCounter : public Control {
             public:
-                FPSCounter(Page* parent);
+                FPSCounter(Panel* parent);
                 void setup();
                 void draw(float x, float y);
             };

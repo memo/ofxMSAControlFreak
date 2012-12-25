@@ -15,14 +15,14 @@ namespace msa {
         namespace gui {
             
             
-            class Page;
+            class Panel;
             
             class ComboBox : public Control {
             public:
                 //create a combo box which displays "Name : selection"
                 //choiceTitles is an array of strings that can be NULL in which case numbers will be used to display the choices
                 //the titles can be movified later with the below documented add/set/removeChoice methods
-                ComboBox(Page* parent, string name, int &choice_out, int numChoices,  string* choiceTitles = NULL ) ;
+                ComboBox(Panel* parent, string name, int &choice_out, int numChoices,  string* choiceTitles = NULL ) ;
                 virtual ~ComboBox();
                 
                 void setup();

@@ -9,7 +9,7 @@ namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            class Page;
+            class Panel;
             class Config;
             
             class Control : public ofxMSAInteractiveObject {
@@ -24,7 +24,7 @@ namespace msa {
                 bool		hasTitle;
                 char		keyboardShortcut;
                 
-                Control(Page* parent, string name);
+                Control(Panel* parent, string name);
                 Control& setName(string newName);
                 Control& setKey(string newKey);
                 Control& setConfig(Config *config);
@@ -68,7 +68,7 @@ namespace msa {
                 
             protected:
                 Config	*config;
-                Page    *parent;
+                Panel    *parent;
             };
             
         }

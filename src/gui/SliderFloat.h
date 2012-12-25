@@ -10,7 +10,7 @@ namespace msa {
             class SliderFloat : public SliderBase<float> {
                 
             public:
-                SliderFloat(Page* page, string name, float &value, float min, float max) : SliderBase<float>(page, name, value, min, max) {
+                SliderFloat(Panel* parent, string name, float &value, float min, float max) : SliderBase<float>(parent, name, value, min, max) {
                     controlType = "SliderFloat";
                 }
             };

@@ -20,17 +20,17 @@ namespace msa {
             class Title;
             class Toggle;
             
-            class Page : public Control {
+            class Panel : public Control {
             public:
                 
                 friend class Gui;
                 
-                Page(Page* page, string name);
-                ~Page();
+                Panel(Panel* parent, string name);
+                ~Panel();
                 
                 void draw(float x, float y, bool alignRight);
                 
-                Page& setXMLName(string xmlFilename);
+                Panel& setXMLName(string xmlFilename);
                 void loadXml();
                 void saveXml();
                 

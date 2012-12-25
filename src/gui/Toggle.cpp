@@ -6,7 +6,7 @@ namespace msa {
         namespace gui {
             
             
-            Toggle::Toggle(Page* page, string name, bool &value) : Control(page, name) {
+            Toggle::Toggle(Panel* parent, string name, bool &value) : Control(parent, name) {
                 this->value	= &value;
                 setMomentary(false);
                 controlType = "Toggle";

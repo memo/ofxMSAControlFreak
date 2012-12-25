@@ -6,7 +6,7 @@ namespace msa {
             
             
             //--------------------------------------------------------------
-            Control::Control(Page *parent, string name) {
+            Control::Control(Panel *parent, string name) {
                 controlType = "";
                 this->config = &defaultSimpleGuiConfig;
                 this->parent = parent;

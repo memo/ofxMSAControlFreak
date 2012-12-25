@@ -209,7 +209,7 @@ namespace msa {
             
             //--------------------------------------------------------------
             void Gui::setPage(string name) {
-                //	Page *page;
+                //	Panel *page;
                 for(int i=1; i < pages.size(); i++) {
                     if(name.compare(pages[i]->name) == 0) {
                         setPage(i);
@@ -220,35 +220,35 @@ namespace msa {
             
             
             //--------------------------------------------------------------
-            Page& Gui::page(int i) {
+            Panel& Gui::page(int i) {
                 if(!config) setup();
                 return *pages.at(i);
             }
             
             //--------------------------------------------------------------
-            Page& Gui::page(string name) {
+            Panel& Gui::page(string name) {
                 if(!config) setup();
                 for(int i=1; i<pages.size(); i++) if(name.compare(pages[i]->name) == 0) return *pages[i];
             }
             
             
             //--------------------------------------------------------------
-            Page& Gui::currentPage() {
+            Panel& Gui::currentPage() {
                 return page(currentPageIndex);
             }
             
             //--------------------------------------------------------------
-            vector <Page*>&	Gui::getPages() {
+            vector <Panel*>&	Gui::getPages() {
                 return pages;
             }
             
             
             
             //--------------------------------------------------------------
-            Page& Gui::addPage(string name) {
+            Panel& Gui::addPage(string name) {
                 if(!config) setup();
                 
-                Page *newPage = new Page(NULL, name);//ofToString(pages.size(), 0) + ": " + name);
+                Panel *newPage = new Panel(NULL, name);//ofToString(pages.size(), 0) + ": " + name);
                 pages.push_back(newPage);
                 if(name == "") newPage->setName("SETTINGS");
                 static bool b;

@@ -6,7 +6,7 @@ namespace msa {
         namespace gui {
             
             
-            FPSCounter::FPSCounter(Page *parent) : Control(parent, "FPS Counter") {
+            FPSCounter::FPSCounter(Panel *parent) : Control(parent, "FPS Counter") {
                 controlType = "FPSCounter";
                 setup();
             }

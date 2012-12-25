@@ -1,5 +1,5 @@
 #include "ofxMSAControlFreak/src/gui/Control.h"
-#include "ofxMSAControlFreak/src/gui/Page.h"
+#include "ofxMSAControlFreak/src/gui/Panel.h"
 #include "ofxMSAControlFreak/src/gui/Config.h"
 #include "ofxMSAControlFreak/src/gui/Button.h"
 #include "ofxMSAControlFreak/src/gui/ColorPicker.h"

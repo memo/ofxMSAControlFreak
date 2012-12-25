@@ -8,7 +8,7 @@ namespace msa {
         namespace gui {
             
             //---------------------------------------------------------------------
-            QuadWarp::QuadWarp(Page* page, string name, ofBaseDraws &baseDraw, ofPoint *pts) : Control(page, name) {
+            QuadWarp::QuadWarp(Panel* parent, string name, ofBaseDraws &baseDraw, ofPoint *pts) : Control(parent, name) {
                 this->baseDraw = &baseDraw;
                 
                 setPos(0, 0);

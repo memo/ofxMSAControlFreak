@@ -13,7 +13,7 @@ namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            ColorPicker::ColorPicker(Page* parent, string name, ofFloatColor& color, float max) : Control(parent, name) {
+            ColorPicker::ColorPicker(Panel* parent, string name, ofFloatColor& color, float max) : Control(parent, name) {
                 this->value = &color;
                 this->min	= 0;
                 this->max	= max;

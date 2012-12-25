@@ -5,7 +5,7 @@ namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            Button::Button(Page* parent, string name, bool &value) : ValueControl<bool>(parent, name, value) {
+            Button::Button(Panel* parent, string name, bool &value) : ValueControl<bool>(parent, name, value) {
                 beToggle	= false;
                 beenPressed = false;
                 controlType = "Button";

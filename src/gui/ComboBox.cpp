@@ -16,7 +16,7 @@ namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            ComboBox::ComboBox(Page* parent, string name, int &choice_out, int numChoices, string* choiceTitles ) :
+            ComboBox::ComboBox(Panel* parent, string name, int &choice_out, int numChoices, string* choiceTitles ) :
             Control(parent, name),
             m_selectedChoice(choice_out)
             {
