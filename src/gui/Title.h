@@ -13,11 +13,11 @@ namespace msa {
                 bool			beToggle;
                 bool			beenPressed;
                 
-                Title(Panel* parent, string name, float height);
+                Title(Panel *parent, string name, float height);
                 void setup();
                 
-                void readFromXml(ofxXmlSettings &XML);
-                void writeToXml(ofxXmlSettings &XML);
+//                void readFromXml(ofxXmlSettings &XML);
+//                void writeToXml(ofxXmlSettings &XML);
                 
                 bool getValue();
                 void setValue(bool b);

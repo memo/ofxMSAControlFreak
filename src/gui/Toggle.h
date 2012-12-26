@@ -12,12 +12,12 @@ namespace msa {
                 bool	*value;
                 bool	momentary;
                 
-                Toggle(Panel* parent, string name, bool &value);
+                Toggle(Panel *parent, string name, bool &value);
                 Toggle& setMomentary(bool m);
                 void setup();
                 
-                void readFromXml(ofxXmlSettings &XML);
-                void writeToXml(ofxXmlSettings &XML);
+//                void readFromXml(ofxXmlSettings &XML);
+//                void writeToXml(ofxXmlSettings &XML);
                 
                 bool getValue();
                 void setValue(bool b);

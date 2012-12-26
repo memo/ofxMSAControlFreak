@@ -15,10 +15,10 @@ namespace msa {
                 float		barwidth[4];
                 float		pct[4];
                 
-                ColorPicker(Panel* parent, string name, ofFloatColor& color, float max = 1);
+                ColorPicker(Panel *parent, string name, ofFloatColor& color, float max = 1);
                 void setup();
-                void readFromXml(ofxXmlSettings &XML);
-                void writeToXml(ofxXmlSettings &XML);
+//                void readFromXml(ofxXmlSettings &XML);
+//                void writeToXml(ofxXmlSettings &XML);
                 float getValue(int i);
                 void setValue(float f, int i);
                 void updateSlider();	

@@ -12,11 +12,11 @@ namespace msa {
                 bool			beToggle;
                 bool			beenPressed;
                 
-                Button(Panel* parent, string name, bool &value);
+                Button(Panel *parent, string name, bool &value);
                 void setup();
                 
-                void readFromXml(ofxXmlSettings &XML);
-                void writeToXml(ofxXmlSettings &XML);
+//                void readFromXml(ofxXmlSettings &XML);
+//                void writeToXml(ofxXmlSettings &XML);
                 
                 void keyPressed( int key );
                 

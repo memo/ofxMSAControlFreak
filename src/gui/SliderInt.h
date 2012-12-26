@@ -10,8 +10,7 @@ namespace msa {
             class SliderInt : public SliderBase<int> {
                 
             public:
-                SliderInt(Panel* parent, string name, int &value, int min, int max) : SliderBase<int>(parent, name, value, min, max) {
-                    controlType = "SliderInt";
+                SliderInt(Panel *parent, string name, int &value, int min, int max) : SliderBase<int>(parent, name, "SliderInt", value, min, max) {
                     setIncrement(1);
                 }
                 

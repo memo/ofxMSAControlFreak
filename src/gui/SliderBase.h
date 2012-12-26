@@ -23,13 +23,12 @@ namespace msa {
                 Type		increment;
                 
                 //--------------------------------------------------------------------- construct
-                SliderBase(Panel* parent, string name, Type &value, Type min, Type max) : Control(parent, name) {
+                SliderBase(Panel *parent, string name, string controlType, Type &value, Type min, Type max) : Control(parent, name, controlType) {
                     this->value = &value;
                     setRange(min, max);
                     
                     targetValue	= value;
                     oldValue	= targetValue;
-                    controlType = "SliderBase";
                     
                     setIncrement(0);
                     setSmoothing(0);
@@ -48,17 +47,17 @@ namespace msa {
                     barwidth = pct;
                 }
                 
-                void readFromXml(ofxXmlSettings &XML) {
-                    setValue((Type)XML.getValue(controlType + "_" + key + ":value", 0.0f));
-                }
-                
-                void writeToXml(ofxXmlSettings &XML) {
-                    XML.addTag(controlType + "_" + key);
-                    XML.pushTag(controlType + "_" + key);
-                    XML.addValue("name", name);
-                    XML.addValue("value", getValue());
-                    XML.popTag();
-                }
+//                void readFromXml(ofxXmlSettings &XML) {
+//                    setValue((Type)XML.getValue(controlType + "_" + key + ":value", 0.0f));
+//                }
+//                
+//                void writeToXml(ofxXmlSettings &XML) {
+//                    XML.addTag(controlType + "_" + key);
+//                    XML.pushTag(controlType + "_" + key);
+//                    XML.addValue("name", name);
+//                    XML.addValue("value", getValue());
+//                    XML.popTag();
+//                }
                 
                 void setSmoothing(float smoothing) {
                     lerpSpeed	= 1.0f - smoothing * 0.9;		// so smoothing :1 still results in some motion!

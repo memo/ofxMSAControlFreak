@@ -45,7 +45,7 @@ void testApp::setup(){
     // add a 'bang' parameter (i.e. like a button, sends a trigger value of 'true' for one frame)
 	params.addBang("trigger");
     
-
+    
     // this is one way of adding a named-index parameter (i.e. dropbox box or option list)
     string labels[] = {"first option", "another option", "yet another option", "even more", "and last one"};
 	params.addNamedIndex("a dropdown").setLabels(5, labels);
@@ -61,32 +61,31 @@ void testApp::setup(){
     
     // you can create groups and add any parameters to that group
 	params.startGroup("vision");		// now this becomes the activeGroup
-        params.addToggle("enabled");
-        params.addFloat("brightness").setRange(0, 100);
-        params.addFloat("contrast").setRange(-100, 100);
-        params.addInt("deviceid").setRange(0, 10);
-        params.addToggle("flip x");
-        params.addToggle("flip y");
-        params.addToggle("bang");
+    params.addToggle("enabled");
+    params.addFloat("brightness").setRange(0, 100);
+    params.addFloat("contrast").setRange(-100, 100);
+    params.addInt("deviceid").setRange(0, 10);
+    params.addToggle("flip x");
+    params.addToggle("flip y");
+    params.addToggle("bang");
     
-        // you can even add groups inside of groups (you can go infinitely deep, as long as you have enough memory)
-        params.startGroup("optical flow");
-            params.addToggle("enabled");
-            params.addFloat("velMult").setRange(0, 10);
-            params.addInt("windowSize").setRange(1, 3);
-            params.addNamedIndex("method").setLabels(3, "Lucas-Kanade", "Horn–Schunck", "Buxton–Buxton");
-        params.endGroup();	// optical flow
+    // you can even add groups inside of groups (you can go infinitely deep, as long as you have enough memory)
+    params.startGroup("optical flow");
+    params.addToggle("enabled");
+    params.addFloat("velMult").setRange(0, 10);
+    params.addInt("windowSize").setRange(1, 3);
+    params.addNamedIndex("method").setLabels(3, "Lucas-Kanade", "Horn–Schunck", "Buxton–Buxton");
+    params.endGroup();	// optical flow
 	params.endGroup();	// vision
 	
 	
 	params.startGroup("particles");
-        params.addToggle("enabled");
-        params.addInt("count").setRange(100, 200);
-        params.addFloat("maxSpeed").setRange(0, 100);
+    params.addToggle("enabled");
+    params.addInt("count").setRange(100, 200);
+    params.addFloat("maxSpeed").setRange(0, 100);
     params.endGroup();
     
     
-    // set GUI handler for the Parameter params
     gui.addParameters(params);
 	gui.setDefaultKeys(true);
 	gui.show();
@@ -133,7 +132,7 @@ void testApp::update() {
 void testApp::draw(){
     //	ofBackground(color.r * 255, color.g * 255.0f, color.b * 255.0);
 	
-//	gui.draw();
+    //	gui.draw();
 }
 
 void testApp::exit() {
@@ -154,7 +153,7 @@ void testApp::keyPressed (int key){
             params.saveXml(true);
             break;
             
-
+            
 		case 'l':
 			params.loadXml(false);
 			break;
@@ -162,6 +161,11 @@ void testApp::keyPressed (int key){
 		case 'L':
 			params.loadXml(true);
 			break;
+            
+            
+        case 'f':
+            ofToggleFullscreen();
+            break;
 	}
 }
 

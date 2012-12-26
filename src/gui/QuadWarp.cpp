@@ -8,7 +8,7 @@ namespace msa {
         namespace gui {
             
             //---------------------------------------------------------------------
-            QuadWarp::QuadWarp(Panel* parent, string name, ofBaseDraws &baseDraw, ofPoint *pts) : Control(parent, name) {
+            QuadWarp::QuadWarp(Panel *parent, string name, ofBaseDraws &baseDraw, ofPoint *pts) : Control(parent, name, "QuadWarp") {
                 this->baseDraw = &baseDraw;
                 
                 setPos(0, 0);
@@ -19,7 +19,6 @@ namespace msa {
                 
                 for(int i=0; i<4; i++) pts[i].z = i;		// z axis stores the index
                 
-                controlType = "QuadWarp";
                 setup();
             }
             
@@ -28,23 +27,23 @@ namespace msa {
             }
             
             
-            void QuadWarp::readFromXml(ofxXmlSettings &XML) {
-                for(int i=0; i<4; i++) {
-                    pts[i].x = XML.getValue(controlType + "_" + key + ":values_" + ofToString(i) + "_x", 0.0f);
-                    pts[i].y = XML.getValue(controlType + "_" + key + ":values_" + ofToString(i) + "_y", 0.0f);
-                }
-            }
-            
-            void QuadWarp::writeToXml(ofxXmlSettings &XML) {
-                XML.addTag(controlType + "_" + key);
-                XML.pushTag(controlType + "_" + key);
-                XML.addValue("name", name);
-                for(int i=0; i<4; i++) {
-                    XML.addValue("values_" + ofToString(i) + "_x", pts[i].x);
-                    XML.addValue("values_" + ofToString(i) + "_y", pts[i].y);
-                }
-                XML.popTag();
-            }
+//            void QuadWarp::readFromXml(ofxXmlSettings &XML) {
+//                for(int i=0; i<4; i++) {
+//                    pts[i].x = XML.getValue(controlType + "_" + key + ":values_" + ofToString(i) + "_x", 0.0f);
+//                    pts[i].y = XML.getValue(controlType + "_" + key + ":values_" + ofToString(i) + "_y", 0.0f);
+//                }
+//            }
+//            
+//            void QuadWarp::writeToXml(ofxXmlSettings &XML) {
+//                XML.addTag(controlType + "_" + key);
+//                XML.pushTag(controlType + "_" + key);
+//                XML.addValue("name", name);
+//                for(int i=0; i<4; i++) {
+//                    XML.addValue("values_" + ofToString(i) + "_x", pts[i].x);
+//                    XML.addValue("values_" + ofToString(i) + "_y", pts[i].y);
+//                }
+//                XML.popTag();
+//            }
             
             
             //---------------------------------------------------------------------

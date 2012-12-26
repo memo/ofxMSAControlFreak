@@ -12,10 +12,10 @@ namespace msa {
                 ofPoint		*value;
                 ofPoint		point, min, max;
                 
-                Slider2d(Panel* parent, string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax);
+                Slider2d(Panel *parent, string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax);
                 void setup();
-                void readFromXml(ofxXmlSettings &XML);
-                void writeToXml(ofxXmlSettings &XML);
+//                void readFromXml(ofxXmlSettings &XML);
+//                void writeToXml(ofxXmlSettings &XML);
                 void setValue(float x, float y);
                 void setMin(float x, float y);
                 void setMax(float x, float y);

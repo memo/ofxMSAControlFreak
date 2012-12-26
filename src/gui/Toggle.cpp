@@ -6,10 +6,9 @@ namespace msa {
         namespace gui {
             
             
-            Toggle::Toggle(Panel* parent, string name, bool &value) : Control(parent, name) {
+            Toggle::Toggle(Panel *parent, string name, bool &value) : Control(parent, name, "Toggle") {
                 this->value	= &value;
                 setMomentary(false);
-                controlType = "Toggle";
                 setup();
             }
             
@@ -23,17 +22,17 @@ namespace msa {
                 setSize(config->gridSize.x - config->padding.x, config->toggleHeight);
             }
             
-            void Toggle::readFromXml(ofxXmlSettings &XML) {
-                setValue(XML.getValue(controlType + "_" + key + ":value", 0));
-            }
-            
-            void Toggle::writeToXml(ofxXmlSettings &XML) {
-                XML.addTag(controlType + "_" + key);
-                XML.pushTag(controlType + "_" + key);
-                XML.addValue("name", name);
-                XML.addValue("value", getValue());
-                XML.popTag();
-            }
+//            void Toggle::readFromXml(ofxXmlSettings &XML) {
+//                setValue(XML.getValue(controlType + "_" + key + ":value", 0));
+//            }
+//            
+//            void Toggle::writeToXml(ofxXmlSettings &XML) {
+//                XML.addTag(controlType + "_" + key);
+//                XML.pushTag(controlType + "_" + key);
+//                XML.addValue("name", name);
+//                XML.addValue("value", getValue());
+//                XML.popTag();
+//            }
             
             bool Toggle::getValue() {
                 return (*value);

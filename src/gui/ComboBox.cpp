@@ -16,8 +16,8 @@ namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            ComboBox::ComboBox(Panel* parent, string name, int &choice_out, int numChoices, string* choiceTitles ) :
-            Control(parent, name),
+            ComboBox::ComboBox(Panel *parent, string name, int &choice_out, int numChoices, string* choiceTitles ) :
+            Control(parent, name, "ComboBox"),
             m_selectedChoice(choice_out)
             {
                 m_selectedChoice = m_mouseChoice = 0;
@@ -29,7 +29,6 @@ namespace msa {
                 for(int i=0; i<numChoices; i++){
                     addChoice(choiceTitles ? choiceTitles[i] : ofToString(i));
                 }
-                controlType = "ComboBox";
                 setup();
             }
             
@@ -87,17 +86,17 @@ namespace msa {
                 setSize(config->gridSize.x - config->padding.x, config->comboBoxHeight);
             }
             
-            void ComboBox::readFromXml(ofxXmlSettings &XML) {
-                setValue(XML.getValue(controlType + "_" + key + ":value", 0));
-            }
-            
-            void ComboBox::writeToXml(ofxXmlSettings &XML) {
-                XML.addTag(controlType + "_" + key);
-                XML.pushTag(controlType + "_" + key);
-                XML.addValue("name", name);
-                XML.addValue("value", getValue());
-                XML.popTag();
-            }
+//            void ComboBox::readFromXml(ofxXmlSettings &XML) {
+//                setValue(XML.getValue(controlType + "_" + key + ":value", 0));
+//            }
+//            
+//            void ComboBox::writeToXml(ofxXmlSettings &XML) {
+//                XML.addTag(controlType + "_" + key);
+//                XML.pushTag(controlType + "_" + key);
+//                XML.addValue("name", name);
+//                XML.addValue("value", getValue());
+//                XML.popTag();
+//            }
             
             void ComboBox::keyPressed( int key ) {
             }

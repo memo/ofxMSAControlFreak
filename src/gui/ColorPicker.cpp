@@ -13,12 +13,10 @@ namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            ColorPicker::ColorPicker(Panel* parent, string name, ofFloatColor& color, float max) : Control(parent, name) {
+            ColorPicker::ColorPicker(Panel *parent, string name, ofFloatColor& color, float max) : Control(parent, name, "ColorPicker") {
                 this->value = &color;
                 this->min	= 0;
                 this->max	= max;
-                
-                controlType = "ColorPicker";
                 setup();
             }
             
@@ -30,21 +28,21 @@ namespace msa {
                 }
             }
             
-            void ColorPicker::readFromXml(ofxXmlSettings &XML) {
-                for(int i=0; i<4; i++) {
-                    setValue(XML.getValue(controlType + "_" + key + ":values_" + ofToString(i), 0.0f), i);
-                }
-            }
-            
-            void ColorPicker::writeToXml(ofxXmlSettings &XML) {
-                XML.addTag(controlType + "_" + key);
-                XML.pushTag(controlType + "_" + key);
-                XML.addValue("name", name);
-                for(int i=0; i<4; i++) {
-                    XML.addValue("values_" + ofToString(i), getValue(i));
-                }
-                XML.popTag();
-            }
+//            void ColorPicker::readFromXml(ofxXmlSettings &XML) {
+//                for(int i=0; i<4; i++) {
+//                    setValue(XML.getValue(controlType + "_" + key + ":values_" + ofToString(i), 0.0f), i);
+//                }
+//            }
+//            
+//            void ColorPicker::writeToXml(ofxXmlSettings &XML) {
+//                XML.addTag(controlType + "_" + key);
+//                XML.pushTag(controlType + "_" + key);
+//                XML.addValue("name", name);
+//                for(int i=0; i<4; i++) {
+//                    XML.addValue("values_" + ofToString(i), getValue(i));
+//                }
+//                XML.popTag();
+//            }
             
             
             float ColorPicker::getValue(int i) {

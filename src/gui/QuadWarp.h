@@ -17,10 +17,10 @@ namespace msa {
                 ofPoint			lastPressPlace;
                 float			lastPressTime;
                 
-                QuadWarp(Panel* parent, string name, ofBaseDraws &baseDraw, ofPoint *pts);
+                QuadWarp(Panel *parent, string name, ofBaseDraws &baseDraw, ofPoint *pts);
                 void setup();
-                void readFromXml(ofxXmlSettings &XML);
-                void writeToXml(ofxXmlSettings &XML);
+//                void readFromXml(ofxXmlSettings &XML);
+//                void writeToXml(ofxXmlSettings &XML);
                 void onPress(int x, int y, int button);
                 void onPressOutside(int x, int y, int button);
                 void onDragOver(int x, int y, int button);

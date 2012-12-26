@@ -16,7 +16,7 @@ namespace msa {
             public:
                 string		name;		// Human readable name this is what is displayed on screen (includes keyboard shortcut)
                 string		origName;	// the original name (excluding keyboard shortcut)
-                string		key;		// Machine readable name (don't change this after creating control, used for saving/loading)
+//                string		key;		// Machine readable name (don't change this after creating control, used for saving/loading)
                 string		controlType;
                 bool		lock;
                 bool		focused;
@@ -24,9 +24,9 @@ namespace msa {
                 bool		hasTitle;
                 char		keyboardShortcut;
                 
-                Control(Panel* parent, string name);
+                Control(Panel *parent, string name, string controlType);
                 Control& setName(string newName);
-                Control& setKey(string newKey);
+//                Control& setKey(string newKey);
                 Control& setConfig(Config *config);
                 Control& setNewColumn(bool b);
                 

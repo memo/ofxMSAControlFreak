@@ -12,7 +12,7 @@ namespace msa {
                 T	*value;
                 T	oldValue;
                 
-                ValueControl(Panel* parent, string name, T &value) : Control(parent, name), value(&value) {}
+                ValueControl(Panel *parent, string name, string controlType, T &value) : Control(parent, name, controlType), value(&value) {}
                 
                 virtual bool changed() {
                     if(*value != oldValue) {

@@ -6,12 +6,12 @@ namespace msa {
             
             
             //--------------------------------------------------------------
-            Control::Control(Panel *parent, string name) {
-                controlType = "";
+            Control::Control(Panel *parent, string name, string controlType) {
                 this->config = &defaultSimpleGuiConfig;
                 this->parent = parent;
+                this->controlType = controlType;
                 setName(name);
-                setKey(key);
+//                setKey(key);
                 setPos(0, 0);
                 lock	  = false;
                 focused	  = false;
@@ -43,21 +43,21 @@ namespace msa {
             Control &Control::setName(string newName) {
                 name = newName;
                 origName = name;
-                if(key.compare("") == 0) setKey("");	// if key has not been set yet, set name as key too
+//                if(key.compare("") == 0) setKey("");	// if key has not been set yet, set name as key too
                 
                 hasTitle = (name.compare("") != 0);
                 return *this;
             }
             
-            //--------------------------------------------------------------
-            Control &Control::setKey(string newKey) {
-                if(newKey.compare("") == 0) key = name;
-                else key = newKey;
-                for(int i=0; i<key.size(); i++) {
-                    if(key[i] == ' ') key[i] = '_';
-                }
-                return *this;
-            }
+//            //--------------------------------------------------------------
+//            Control &Control::setKey(string newKey) {
+//                if(newKey.compare("") == 0) key = name;
+//                else key = newKey;
+//                for(int i=0; i<key.size(); i++) {
+//                    if(key[i] == ' ') key[i] = '_';
+//                }
+//                return *this;
+//            }
             
             //--------------------------------------------------------------
             Control &Control::setTextColor(bool clickable) {

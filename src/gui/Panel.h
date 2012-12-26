@@ -4,6 +4,10 @@
 
 namespace msa {
     namespace ControlFreak {
+        
+        class Parameter;
+        class ParameterContainer;
+        
         namespace gui {
             
             class Gui;
@@ -25,10 +29,10 @@ namespace msa {
                 
                 friend class Gui;
                 
-                Panel(Panel* parent, string name);
+                Panel(Panel *parent, string name);
                 ~Panel();
                 
-                void draw(float x, float y, bool alignRight);
+                void draw(float x, float y);
                 
                 Panel& setXMLName(string xmlFilename);
                 void loadXml();
@@ -38,42 +42,43 @@ namespace msa {
                 void setActiveControl(Control *control);
                 void releaseActiveControl();
                 
-                void update(ofEventArgs &e);
-                
+                void update();
                 void mouseMoved(ofMouseEventArgs &e);
                 void mousePressed(ofMouseEventArgs &e);
                 void mouseDragged(ofMouseEventArgs &e);
                 void mouseReleased(ofMouseEventArgs &e);
-                
                 void keyPressed(ofKeyEventArgs &e);
                 void keyReleased(ofKeyEventArgs &e);
                 
-                
                 vector <Control*>&	getControls();
                 
+                void addParameter(Parameter &parameter);
+                void addParameters(ParameterContainer &parameters);
                 
             protected:
+                ofVec2f   maxSize;
                 vector <Control*>	controls;
+                bool isOpen;
                 
                 //some controls can take over focus (e.g. combo box,) which means events should only be passed to them
                 Control*			activeControl;
                 float getNextY(float y);
                 
-                Control			&addControl(Control& control);
+                Control			&addControl(Control *control);
+                
+                Panel           &addPanel(string name);
                 Button			&addButton(string name, bool &value);
-                ColorPicker		&addColorPicker(string name, ofFloatColor& color);
-                ComboBox&       addComboBox(string name, int& value, int numChoices, string* choiceTitles);
-                ComboBox&       addComboBox(string name, int& value, vector<string>& choiceTitles);
+                ColorPicker		&addColorPicker(string name, ofFloatColor &color);
+                ComboBox&       addComboBox(string name, int &value, int numChoices, string *choiceTitles);
+                ComboBox&       addComboBox(string name, int &value, vector<string> &choiceTitles);
                 Content			&addContent(string name, ofBaseDraws &content, float fixwidth = -1);
                 FPSCounter		&addFPSCounter();
                 QuadWarp		&addQuadWarper(string name, ofBaseDraws &baseDraw, ofPoint *pts);
-                Slider2d		&addSlider2d(string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax);
+                Slider2d		&addSlider2d(string name, ofPoint &value, float xmin, float xmax, float ymin, float ymax);
                 SliderInt		&addSlider(string name, int &value, int min, int max);
                 SliderFloat		&addSlider(string name, float &value, float min, float max);
                 Title			&addTitle(string name="", float height = 0);
                 Toggle			&addToggle(string name, bool &value);
-
-                
 
                 ofxXmlSettings					XML;
                 string							xmlFilename;

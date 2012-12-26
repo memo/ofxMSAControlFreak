@@ -3,18 +3,17 @@
 #pragma once
 
 #include "ofMain.h"
-
 #include "ofxXmlSettings.h"
-//#include "ofxMSAControlFreak/src/gui/Controls.h"
-#include "ofxMSAControlFreak/src/ControlFreak.h"
 
 
 namespace msa {
     namespace ControlFreak {
+
+        class ParameterContainer;
+        
         namespace gui {
             
             class Panel;
-//            class Control;
             class Button;
             class Config;
             
@@ -56,12 +55,9 @@ namespace msa {
                 Panel& currentPage();				// returns current page
                 vector <Panel*>&	getPages();
                 
-//                Control& control(string name);		// returns control by name (on any page)
-                
                 Panel& addPage(string name = "");
                 
-                Gui& addParameter(Parameter& parameter);
-                Gui& addParameters(ParameterContainer& parameters);
+                void addParameters(ParameterContainer &parameters);
                 
 
                 //--------------------------------------------------------------

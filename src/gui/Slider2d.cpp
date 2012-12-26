@@ -6,11 +6,10 @@ namespace msa {
         namespace gui {
             
             
-            Slider2d::Slider2d(Panel* parent, string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax) : Control(parent, name) {
+            Slider2d::Slider2d(Panel *parent, string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax) : Control(parent, name, "Slider2d") {
                 min.set(xmin, ymin);
                 max.set(xmax, ymax);
                 this->value = &value;
-                controlType = "Slider2D";
                 setup();
             }
             
@@ -19,20 +18,20 @@ namespace msa {
                 point.x = ofMap((*value).x, min.x, max.x, x, x+width);
                 point.y = ofMap((*value).y, min.y, max.y, y, y+height-config->slider2DTextHeight);
             }
-            
-            void Slider2d::readFromXml(ofxXmlSettings &XML) {
-                value->set(XML.getValue(controlType + "_" + key + ":valueX", 0.0f), XML.getValue(controlType + "_" + key + ":valueY", 0.0f));
-            }
-            
-            
-            void Slider2d::writeToXml(ofxXmlSettings &XML) {
-                XML.addTag(controlType + "_" + key);
-                XML.pushTag(controlType + "_" + key);
-                XML.addValue("name", name);
-                XML.addValue("valueX", value->x);
-                XML.addValue("valueY", value->y);
-                XML.popTag();
-            }
+//            
+//            void Slider2d::readFromXml(ofxXmlSettings &XML) {
+//                value->set(XML.getValue(controlType + "_" + key + ":valueX", 0.0f), XML.getValue(controlType + "_" + key + ":valueY", 0.0f));
+//            }
+//            
+//            
+//            void Slider2d::writeToXml(ofxXmlSettings &XML) {
+//                XML.addTag(controlType + "_" + key);
+//                XML.pushTag(controlType + "_" + key);
+//                XML.addValue("name", name);
+//                XML.addValue("valueX", value->x);
+//                XML.addValue("valueY", value->y);
+//                XML.popTag();
+//            }
             
             void Slider2d::setValue(float x, float y) {
                 (*value).x = x;

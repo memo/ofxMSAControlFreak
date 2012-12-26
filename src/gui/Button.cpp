@@ -5,10 +5,9 @@ namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            Button::Button(Panel* parent, string name, bool &value) : ValueControl<bool>(parent, name, value) {
+            Button::Button(Panel *parent, string name, bool &value) : ValueControl<bool>(parent, name, "Button", value) {
                 beToggle	= false;
                 beenPressed = false;
-                controlType = "Button";
                 setup();
             }
             
@@ -16,17 +15,17 @@ namespace msa {
                 setSize(config->gridSize.x - config->padding.x, config->buttonHeight);
             }
             
-            void Button::readFromXml(ofxXmlSettings &XML) {
-                setValue(XML.getValue(controlType + "_" + key + ":value", 0));
-            }
-            
-            void Button::writeToXml(ofxXmlSettings &XML) {
-                XML.addTag(controlType + "_" + key);
-                XML.pushTag(controlType + "_" + key);
-                XML.addValue("name", name);
-                XML.addValue("value", getValue());
-                XML.popTag();
-            }
+//            void Button::readFromXml(ofxXmlSettings &XML) {
+//                setValue(XML.getValue(controlType + "_" + key + ":value", 0));
+//            }
+//            
+//            void Button::writeToXml(ofxXmlSettings &XML) {
+//                XML.addTag(controlType + "_" + key);
+//                XML.pushTag(controlType + "_" + key);
+//                XML.addValue("name", name);
+//                XML.addValue("value", getValue());
+//                XML.popTag();
+//            }
             
             void Button::keyPressed( int key ) {
                 if(key==keyboardShortcut) toggle();
@@ -63,22 +62,23 @@ namespace msa {
             void Button::draw(float x, float y) {
                 setPos(x, y);
                 
+                if(hasTitle == false) return;
+                
                 glPushMatrix();
                 glTranslatef(x, y, 0);
                 
                 ofEnableAlphaBlending();
                 ofFill();
-                setTextBGColor();
+                if(*value) ofSetHexColor(config->fullActiveColor);
+                else ofSetHexColor(config->emptyColor);
                 ofRect(0, 0, width, height);
                 
                 // if a toggle
-                if((*value) && beToggle) {
-                    setTextColor();
-                    //ofLine(0, 0, box.width, box.height);
-                    //ofLine(box.width, 0, 0, box.height);
-                }
+//                if(value && (*value) && beToggle) {
+//                    setTextColor();
+//                }
                 
-                setTextColor();
+                setTextColor(value != NULL);
                 config->drawString(name, 3, 15);
                 
                 ofDisableAlphaBlending();

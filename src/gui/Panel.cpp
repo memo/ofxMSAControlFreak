@@ -1,28 +1,35 @@
 #include  "ofxMSAControlFreak/src/gui/Includes.h"
 
+#include "ofxMSAControlFreak/src/ControlFreak.h"
+
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            Panel::Panel(Panel* parent, string name) : Control(parent, name) {
+            //--------------------------------------------------------------
+            Panel::Panel(Panel *parent, string name) : Control(parent, name, "Panel") {
                 disableAllEvents();
                 width = 0;
-                height = ofGetHeight();
+                height = 0;//ofGetHeight();
+                maxSize.set(0, 0);
                 activeControl = NULL;
                 setXMLName(name + "_settings.xml");
             }
             
+            //--------------------------------------------------------------
             Panel::~Panel() {
                 // delete all controls
             }
             
             
+            //--------------------------------------------------------------
             Panel& Panel::setXMLName(string s) {
                 xmlFilename = s;
                 return *this;
             }
             
             
+            //--------------------------------------------------------------
             void Panel::loadXml() {
                 ofLog(OF_LOG_VERBOSE,  "ofxMSAControlFreak/src/gui/Panel::loadXml: " + xmlFilename);
                 
@@ -41,6 +48,7 @@ namespace msa {
             }
             
             
+            //--------------------------------------------------------------
             void Panel::saveXml() {
                 if(controls.size() <= 1 || xmlFilename.compare("") == 0) return;	// if it has no controls (title counts as one control)
                 
@@ -59,6 +67,7 @@ namespace msa {
             }
             
             
+            //--------------------------------------------------------------
             float Panel::getNextY(float y) {
                 return y;
                 int iy = (int)ceil(y/config->gridSize.y);
@@ -66,8 +75,17 @@ namespace msa {
             }
             
             
-            void Panel::draw(float x, float y, bool alignRight) {
+            //--------------------------------------------------------------
+            void Panel::draw(float x, float y) {//, bool alignRight) {
+                bool alignRight = false;
+                
+                float maxHeight = maxSize.y ? maxSize.y : ofGetHeight();
+                
+                ofPushStyle();
+                
                 setPos(x += config->offset.x, y += config->offset.y);
+                setSize(0, 0);
+                
                 if(alignRight) x = ofGetWidth() - x -  config->gridSize.x;
                 
                 float posX		= 0;
@@ -77,8 +95,13 @@ namespace msa {
                 
                 ofSetRectMode(OF_RECTMODE_CORNER);
                 
-                for(int i=0; i<controls.size(); i++) {
+//                ofLogVerbose() << "\n\nDrawing : " << name;
+                int numControls = isOpen ? controls.size() : 1;
+                
+                for(int i=0; i<numControls; i++) {
                     Control& control = *controls[i];
+                    
+//                    ofLogVerbose() << control.name << " " << control.controlType;
                     
                     if(control.newColumn) {
                         if(alignRight) posX -= config->gridSize.x;
@@ -93,10 +116,11 @@ namespace msa {
                     if(activeControl == &control) {
                         stealingX = controlX;
                         stealingY = controlY;
-                    } else {
-                        //			printf("drawing control: %s %s\n", control.controlType.c_str(), control.name.c_str());
-                        control.draw(controlX, controlY);
                     }
+//                    else {
+                        //			printf("drawing control: %s %s\n", control.controlType.c_str(), control.name.c_str());
+                    control.draw(controlX, controlY);
+//                    }
                     
                     if(control.hasTitle) {
                         ofNoFill();
@@ -106,11 +130,13 @@ namespace msa {
                     }
                     posY = getNextY(posY + control.height + config->padding.y);
                     
-                    if(posY + y >= height - control.height - config->padding.y) {
+                    if(posY + y >= maxHeight - control.height - config->padding.y) {
                         if(alignRight) posX -= config->gridSize.x;
                         else posX += config->gridSize.x;
                         posY = 0;
                     }
+                    
+                    growToInclude((ofRectangle&)control);
                     
                     //		if(guiFocus == controls[i]->guiID) controls[i]->focused = true;		// MEMO
                     //		else							   controls[i]->focused = false;
@@ -125,91 +151,182 @@ namespace msa {
                         ofRect(stealingX, stealingY, activeControl->width, activeControl->height);
                     }
                 }
+                
+                
+                ofNoFill();
+                ofSetColor(128, 0, 0);
+                ofSetLineWidth(1);
+                ofRect(x, y, width, height);
+//                ofLogVerbose() << name << " " << x <<", "<<y<<", "<<width<<" x "<<height;
+                ofPopStyle();
             }
             
             
-            Control& Panel::addControl(Control& control) {
-                controls.push_back(&control);
-                width += control.width + config->padding.x;
-                return control;
+            //--------------------------------------------------------------
+            Control& Panel::addControl(Control *control) {
+                controls.push_back(control);
+//                width += control->width + config->padding.x;
+                return *control;
             }
             
-            Button& Panel::addButton(string name, bool& value) {
-                return (Button&)addControl(* new Button(this, name, value));
+            //--------------------------------------------------------------
+            Panel& Panel::addPanel(string name) {
+                return (Panel&)addControl(new Panel(this, name));
             }
             
-            
-            ColorPicker& Panel::addColorPicker(string name, ofFloatColor& color) {
-                return (ColorPicker&)addControl(* new ColorPicker(this, name, color));
+            //--------------------------------------------------------------
+            Button& Panel::addButton(string name, bool &value) {
+                return (Button&)addControl(new Button(this, name, value));
             }
             
-            
-            ComboBox& Panel::addComboBox(string name, int& value, int numChoices, string* choiceTitles) {
-                return (ComboBox&)addControl(* new ComboBox(this, name, value, numChoices, choiceTitles));
+            //--------------------------------------------------------------
+            ColorPicker& Panel::addColorPicker(string name, ofFloatColor &color) {
+                return (ColorPicker&)addControl(new ColorPicker(this, name, color));
             }
             
-            ComboBox& Panel::addComboBox(string name, int& value, vector<string>& choiceTitles) {
+            //--------------------------------------------------------------
+            ComboBox& Panel::addComboBox(string name, int &value, int numChoices, string* choiceTitles) {
+                return (ComboBox&)addControl(new ComboBox(this, name, value, numChoices, choiceTitles));
+            }
+            
+            //--------------------------------------------------------------
+            ComboBox& Panel::addComboBox(string name, int &value, vector<string> &choiceTitles) {
                 return (ComboBox&)addComboBox(name, value, choiceTitles.size(), &choiceTitles[0]);
             }
 
-            Content& Panel::addContent(string name, ofBaseDraws& content, float fixwidth) {
+            //--------------------------------------------------------------
+            Content& Panel::addContent(string name, ofBaseDraws &content, float fixwidth) {
                 if(fixwidth == -1) fixwidth = config->gridSize.x - config->padding.x;
-                return (Content&)addControl(* new Content(this, name, content, fixwidth));
+                return (Content&)addControl(new Content(this, name, content, fixwidth));
             }
             
+            //--------------------------------------------------------------
             FPSCounter& Panel::addFPSCounter() {
-                return (FPSCounter&)addControl(* new FPSCounter(this));
+                return (FPSCounter&)addControl(new FPSCounter(this));
             }
             
-            QuadWarp& Panel::addQuadWarper(string name, ofBaseDraws& baseDraw, ofPoint *pts) {
-                return (QuadWarp&)addControl(* new QuadWarp(this, name, baseDraw, pts));
-            }
-            //
-            //MovieSlider& Panel::addMovieSlider(string name, ofVideoPlayer& input) {
-            //	return (MovieSlider&)addControl(* new MovieSlider(name, input));
-            //}
-            
-            SliderInt& Panel::addSlider(string name, int& value, int min, int max) {
-                return (SliderInt&)addControl(* new SliderInt(this, name, value, min, max));
+            //--------------------------------------------------------------
+            QuadWarp& Panel::addQuadWarper(string name, ofBaseDraws &baseDraw, ofPoint *pts) {
+                return (QuadWarp&)addControl(new QuadWarp(this, name, baseDraw, pts));
             }
             
-            SliderFloat& Panel::addSlider(string name, float& value, float min, float max) {
-                return (SliderFloat&)addControl(* new SliderFloat(this, name, value, min, max));
+            //--------------------------------------------------------------
+            SliderInt& Panel::addSlider(string name, int &value, int min, int max) {
+                return (SliderInt&)addControl(new SliderInt(this, name, value, min, max));
             }
             
-            Slider2d& Panel::addSlider2d(string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax) {
-                return (Slider2d&)addControl(* new Slider2d(this, name, value, xmin, xmax, ymin, ymax));
+            //--------------------------------------------------------------
+            SliderFloat& Panel::addSlider(string name, float &value, float min, float max) {
+                return (SliderFloat&)addControl(new SliderFloat(this, name, value, min, max));
             }
             
+            //--------------------------------------------------------------
+            Slider2d& Panel::addSlider2d(string name, ofPoint &value, float xmin, float xmax, float ymin, float ymax) {
+                return (Slider2d&)addControl(new Slider2d(this, name, value, xmin, xmax, ymin, ymax));
+            }
+            
+            //--------------------------------------------------------------
             Title& Panel::addTitle(string name, float height) {
-                return (Title&)addControl(* new Title(this, name, height));
+                return (Title&)addControl(new Title(this, name, height));
             }
             
-            Toggle& Panel::addToggle(string name, bool& value) {
-                return (Toggle&)addControl(* new Toggle(this, name, value));
+            //--------------------------------------------------------------
+            Toggle& Panel::addToggle(string name, bool &value) {
+                return (Toggle&)addControl(new Toggle(this, name, value));
+            }
+            
+            
+            
+            //--------------------------------------------------------------
+            void Panel::addParameter(Parameter& parameter) {
+                ofLogVerbose() << "msa::ControlFreak::gui::Panel::addParameter - " << name << ": " << parameter.getPath();
+                // if parameter already exists, remove it first
+                
+                ParameterContainer *pc = dynamic_cast<ParameterContainer*>(&parameter);
+                if(pc && pc->getNumParams() > 0) {
+                    Panel &panel = addPanel(parameter.getPath());
+                    panel.addParameters(*pc);
+                }
+                
+                switch(parameter.getType()) {
+                    case Type::kFloat: {
+                        ParameterFloat &p = (ParameterFloat&)parameter;
+                        addSlider(p.getName(), p.getValue(), p.getMin(), p.getMax()).setIncrement(p.getIncrement());
+                    }
+                        break;
+                        
+                    case Type::kInt: {
+                        ParameterInt &p = (ParameterInt&)parameter;
+                        addSlider(p.getName(), p.getValue(), p.getMin(), p.getMax()).setIncrement(p.getIncrement());
+                    }
+                        break;
+                        
+                    case Type::kToggle: {
+                        ParameterBool &p = (ParameterBool&)parameter;
+                        addToggle(p.getName(), p.getValue());
+                    }
+                        break;
+                        
+                    case Type::kBang: {
+                        ParameterBool &p = (ParameterBool&)parameter;
+                        addButton(p.getName(), p.getValue());
+                    }
+                        break;
+                        
+                    case Type::kNamedIndex: {
+                        ParameterNamedIndex &p = (ParameterNamedIndex&)parameter;
+                        addComboBox(p.getName(), p.getValue(), p.getLabels());
+                    }
+                        break;
+                        
+                    default:
+                        ofLogWarning() << "msa::ControlFreak::Gui::addParameter - unknown type adding parameter " << parameter.getPath() << " " << parameter.getTypeName();
+                        break;
+                }
+            }
+            
+            //--------------------------------------------------------------
+            void Panel::addParameters(ParameterContainer& parameters) {
+                ofLogVerbose() << "msa::ControlFreak::gui::Panel::addParameters - " << name << ": " << parameters.getPath();
+                
+                if(!config) setup();
+                
+//                addTitle(parameters.getPath());
+//                addToggle(parameters.getPath(), *(new bool));
+                addButton(parameters.getPath(), isOpen).setToggleMode(true);
+                isOpen = true;
+                int np = parameters.getNumParams();
+                for(int i=0; i<np; i++) {
+                    addParameter(parameters.getParameter(i));
+                }
+                addTitle("");
             }
 
-            
-            
-            void Panel::update(ofEventArgs& e) {
-                for(int i=0; i<controls.size(); i++) controls[i]->update();
-            }
-            
+            //--------------------------------------------------------------
             void Panel::setActiveControl(Control* control) {
                 activeControl = control;
             }
+            
+            //--------------------------------------------------------------
             void Panel::releaseActiveControl() {
                 activeControl = NULL;
             }
             
-            void Panel::mouseMoved(ofMouseEventArgs& e) {
+            //--------------------------------------------------------------
+            void Panel::update() {
+                for(int i=0; i<controls.size(); i++) controls[i]->update();
+            }
+            
+            //--------------------------------------------------------------
+            void Panel::mouseMoved(ofMouseEventArgs &e) {
                 if(activeControl)
                     activeControl->_mouseMoved(e);
                 else
                     for(int i=0; i<controls.size(); i++) controls[i]->_mouseMoved(e);
             }
             
-            void Panel::mousePressed(ofMouseEventArgs& e) {
+            //--------------------------------------------------------------
+            void Panel::mousePressed(ofMouseEventArgs &e) {
                 if(activeControl)
                     activeControl->_mousePressed(e);
                 else
@@ -219,14 +336,16 @@ namespace msa {
                     }
             }
             
-            void Panel::mouseDragged(ofMouseEventArgs& e) {
+            //--------------------------------------------------------------
+            void Panel::mouseDragged(ofMouseEventArgs &e) {
                 if(activeControl)
                     activeControl->_mouseDragged(e);
                 else
                     for(int i=0; i<controls.size(); i++) controls[i]->_mouseDragged(e);
             }
             
-            void Panel::mouseReleased(ofMouseEventArgs& e) {
+            //--------------------------------------------------------------
+            void Panel::mouseReleased(ofMouseEventArgs &e) {
                 if(activeControl)
                     activeControl->_mouseReleased(e);
                 else
@@ -235,7 +354,8 @@ namespace msa {
                 releaseActiveControl();
             }
             
-            void Panel::keyPressed(ofKeyEventArgs& e) {
+            //--------------------------------------------------------------
+            void Panel::keyPressed(ofKeyEventArgs &e) {
                 bool keyUp		= e.key == OF_KEY_UP;
                 bool keyDown	= e.key == OF_KEY_DOWN;
                 bool keyLeft	= e.key == OF_KEY_LEFT;
@@ -255,11 +375,12 @@ namespace msa {
                 }
             }
             
-            void Panel::keyReleased(ofKeyEventArgs& e) {
+            //--------------------------------------------------------------
+            void Panel::keyReleased(ofKeyEventArgs &e) {
                 for(int i=0; i<controls.size(); i++) if(controls[i]->isMouseOver()) controls[i]->_keyReleased(e);
             }
             
-            
+            //--------------------------------------------------------------
             vector <Control*>&	Panel::getControls() {
                 return controls;
             }
