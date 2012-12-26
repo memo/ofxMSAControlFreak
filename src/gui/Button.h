@@ -19,6 +19,9 @@ namespace msa {
 //                void writeToXml(ofxXmlSettings &XML);
                 
                 void keyPressed( int key );
+                void onKeyEnter();
+//                void onKeyLeft();
+//                onKe
                 
                 bool getValue();
                 void setValue(bool b);

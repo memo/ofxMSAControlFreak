@@ -11,9 +11,12 @@ namespace msa {
                 disableAllEvents();
                 width = 0;
                 height = 0;//ofGetHeight();
-                maxSize.set(0, 0);
+                maxRect.set(0, 0, 0, 0);
                 activeControl = NULL;
                 setXMLName(name + "_settings.xml");
+                
+                isOpen = true;
+                heightScale = 1.0;
             }
             
             //--------------------------------------------------------------
@@ -68,6 +71,11 @@ namespace msa {
             
             
             //--------------------------------------------------------------
+            float Panel::getHeightScale() {
+                return parent ? heightScale * parent->getHeightScale() : heightScale;
+            }
+
+            //--------------------------------------------------------------
             float Panel::getNextY(float y) {
                 return y;
                 int iy = (int)ceil(y/config->gridSize.y);
@@ -79,76 +87,64 @@ namespace msa {
             void Panel::draw(float x, float y) {//, bool alignRight) {
                 bool alignRight = false;
                 
-                float maxHeight = maxSize.y ? maxSize.y : ofGetHeight();
+                if(isOpen) {
+                    if(heightScale<0.98f) heightScale += (1-heightScale) * 0.2f;
+                    else heightScale = 1.0f;
+                } else {
+                    if(heightScale > 0.02) heightScale += (0-heightScale) * 0.2;
+                    else heightScale = 0.0f;
+                }
+                
+                if(parent) maxRect = parent->maxRect;
+                ofVec2f maxPos(maxRect.width ? maxRect.x + maxRect.width : ofGetWidth(), maxRect.height ? maxRect.y + maxRect.height : ofGetHeight());
                 
                 ofPushStyle();
                 
-                setPos(x += config->offset.x, y += config->offset.y);
+                setPos(ofClamp(x, maxRect.getLeft(), maxPos.x), ofClamp(y, maxRect.getTop(), maxPos.y));
                 setSize(0, 0);
                 
-                if(alignRight) x = ofGetWidth() - x -  config->gridSize.x;
-                
-                float posX		= 0;
-                float posY		= 0;
-                float stealingX = 0;
-                float stealingY = 0;
+                ofVec2f curPos(x, y);
                 
                 ofSetRectMode(OF_RECTMODE_CORNER);
                 
-//                ofLogVerbose() << "\n\nDrawing : " << name;
-                int numControls = isOpen ? controls.size() : 1;
+                //                ofLogVerbose() << "\n\nDrawing : " << name << " " << maxY << " " << maxRect.x << " " <<maxRect.y << " " <<maxRect.width << " " <<maxRect.height;
+                int numControls = getHeightScale() ? controls.size() : 1;
                 
                 for(int i=0; i<numControls; i++) {
                     Control& control = *controls[i];
                     
-//                    ofLogVerbose() << control.name << " " << control.controlType;
+                    //                    ofLogVerbose() << control.name << " " << control.controlType;
                     
-                    if(control.newColumn) {
-                        if(alignRight) posX -= config->gridSize.x;
-                        else posX += config->gridSize.x;
-                        posY = 0;
+                    if(control.newColumn || curPos.y + (control.height + config->padding.y) * getHeightScale() > maxPos.y) {
+                        curPos.x += config->gridSize.x;
+                        curPos.y = maxRect.y;
                     }
                     
-                    float controlX = posX + x;
-                    float controlY = posY + y;
+                    control.draw(curPos.x, curPos.y);
                     
-                    //we don't draw the event stealing controls until the end because they can expand and overlap with other controls (e.g. combo box)
-                    if(activeControl == &control) {
-                        stealingX = controlX;
-                        stealingY = controlY;
-                    }
-//                    else {
-                        //			printf("drawing control: %s %s\n", control.controlType.c_str(), control.name.c_str());
-                    control.draw(controlX, controlY);
-//                    }
+                    curPos.y += (control.height + config->padding.y) * getHeightScale();
                     
                     if(control.hasTitle) {
                         ofNoFill();
                         ofSetHexColor(config->borderColor);
-                        glLineWidth(0.5f);
-                        ofRect(controlX, controlY, control.width, control.height);
-                    }
-                    posY = getNextY(posY + control.height + config->padding.y);
-                    
-                    if(posY + y >= maxHeight - control.height - config->padding.y) {
-                        if(alignRight) posX -= config->gridSize.x;
-                        else posX += config->gridSize.x;
-                        posY = 0;
+                        glLineWidth(1.0);
+                        ofRect(curPos.x, curPos.y, control.width, control.height * getHeightScale());
                     }
                     
                     growToInclude((ofRectangle&)control);
-                    
-                    //		if(guiFocus == controls[i]->guiID) controls[i]->focused = true;		// MEMO
-                    //		else							   controls[i]->focused = false;
                 }
+                
+                // draw panel title again so it's on top
+                if(controls[0] && getHeightScale() < 0.9) controls[0]->draw();
+                
                 //event stealing controls get drawn on top
                 if(activeControl) {
-                    activeControl->draw(stealingX, stealingY);
+                    activeControl->draw();
                     if(activeControl->hasTitle) {
                         ofNoFill();
                         ofSetHexColor(config->borderColor);
-                        glLineWidth(0.5f);
-                        ofRect(stealingX, stealingY, activeControl->width, activeControl->height);
+                        ofSetLineWidth(1);
+                        ofRect((ofRectangle&)*activeControl);//, stealingY, activeControl->width, activeControl->height);
                     }
                 }
                 
@@ -157,15 +153,15 @@ namespace msa {
                 ofSetColor(128, 0, 0);
                 ofSetLineWidth(1);
                 ofRect(x, y, width, height);
-//                ofLogVerbose() << name << " " << x <<", "<<y<<", "<<width<<" x "<<height;
                 ofPopStyle();
+//                height = 0;
             }
             
             
             //--------------------------------------------------------------
             Control& Panel::addControl(Control *control) {
                 controls.push_back(control);
-//                width += control->width + config->padding.x;
+                //                width += control->width + config->padding.x;
                 return *control;
             }
             
@@ -193,7 +189,7 @@ namespace msa {
             ComboBox& Panel::addComboBox(string name, int &value, vector<string> &choiceTitles) {
                 return (ComboBox&)addComboBox(name, value, choiceTitles.size(), &choiceTitles[0]);
             }
-
+            
             //--------------------------------------------------------------
             Content& Panel::addContent(string name, ofBaseDraws &content, float fixwidth) {
                 if(fixwidth == -1) fixwidth = config->gridSize.x - config->padding.x;
@@ -291,17 +287,17 @@ namespace msa {
                 
                 if(!config) setup();
                 
-//                addTitle(parameters.getPath());
-//                addToggle(parameters.getPath(), *(new bool));
+                //                addTitle(parameters.getPath());
+                //                addToggle(parameters.getPath(), *(new bool));
                 addButton(parameters.getPath(), isOpen).setToggleMode(true);
                 isOpen = true;
                 int np = parameters.getNumParams();
                 for(int i=0; i<np; i++) {
                     addParameter(parameters.getParameter(i));
                 }
-                addTitle("");
+//                addTitle("");
             }
-
+            
             //--------------------------------------------------------------
             void Panel::setActiveControl(Control* control) {
                 activeControl = control;
@@ -314,42 +310,54 @@ namespace msa {
             
             //--------------------------------------------------------------
             void Panel::update() {
-                for(int i=0; i<controls.size(); i++) controls[i]->update();
+                if(controls[0]) controls[0]->update();
+                if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) controls[i]->update();
             }
             
             //--------------------------------------------------------------
             void Panel::mouseMoved(ofMouseEventArgs &e) {
                 if(activeControl)
                     activeControl->_mouseMoved(e);
-                else
-                    for(int i=0; i<controls.size(); i++) controls[i]->_mouseMoved(e);
+                else {
+                    if(controls[0]) controls[0]->_mouseMoved(e);
+                    if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) controls[i]->_mouseMoved(e);
+                }
             }
             
             //--------------------------------------------------------------
             void Panel::mousePressed(ofMouseEventArgs &e) {
                 if(activeControl)
                     activeControl->_mousePressed(e);
-                else
-                    for(int i=0; i<controls.size(); i++) {
+                else {
+                    if(controls[0]) {
+                        controls[0]->_mousePressed(e);
+                        if(controls[0]->hitTest(e.x, e.y)) setActiveControl(controls[0]);
+                    }
+                    if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) {
                         controls[i]->_mousePressed(e);
                         if(controls[i]->hitTest(e.x, e.y)) setActiveControl(controls[i]);
                     }
+                }
             }
             
             //--------------------------------------------------------------
             void Panel::mouseDragged(ofMouseEventArgs &e) {
                 if(activeControl)
                     activeControl->_mouseDragged(e);
-                else
-                    for(int i=0; i<controls.size(); i++) controls[i]->_mouseDragged(e);
+                else {
+                    if(controls[0]) controls[0]->_mouseDragged(e);
+                    if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) controls[i]->_mouseDragged(e);
+                }
             }
             
             //--------------------------------------------------------------
             void Panel::mouseReleased(ofMouseEventArgs &e) {
                 if(activeControl)
                     activeControl->_mouseReleased(e);
-                else
-                    for(int i=0; i<controls.size(); i++) controls[i]->_mouseReleased(e);
+                else {
+                    if(controls[0]) controls[0]->_mouseReleased(e);
+                    if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) controls[i]->_mouseReleased(e);
+                }
                 
                 releaseActiveControl();
             }
@@ -362,7 +370,17 @@ namespace msa {
                 bool keyRight	= e.key == OF_KEY_RIGHT;
                 bool keyEnter	= e.key == OF_KEY_RETURN;
                 
-                for(int i=0; i<controls.size(); i++) {
+                Control *c = controls[0];
+                if(c->isMouseOver()) {
+                    if(keyUp)		c->onKeyUp();
+                    if(keyDown)		c->onKeyDown();
+                    if(keyLeft)		c->onKeyLeft();
+                    if(keyRight)	c->onKeyRight();
+                    if(keyEnter)	c->onKeyEnter();
+                    c->_keyPressed(e);
+                }
+                
+                if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) {
                     Control *c = controls[i];
                     if(c->isMouseOver()) {
                         if(keyUp)		c->onKeyUp();
@@ -377,7 +395,8 @@ namespace msa {
             
             //--------------------------------------------------------------
             void Panel::keyReleased(ofKeyEventArgs &e) {
-                for(int i=0; i<controls.size(); i++) if(controls[i]->isMouseOver()) controls[i]->_keyReleased(e);
+                if(controls[0]->isMouseOver()) controls[0]->_keyReleased(e);
+                if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) if(controls[i]->isMouseOver()) controls[i]->_keyReleased(e);
             }
             
             //--------------------------------------------------------------

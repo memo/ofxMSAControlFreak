@@ -31,7 +31,9 @@ namespace msa {
                 if(key==keyboardShortcut) toggle();
             }
             
-            
+            void Button::onKeyEnter() {
+                toggle();
+            }
             
             bool Button::getValue() {
                 return (*value);

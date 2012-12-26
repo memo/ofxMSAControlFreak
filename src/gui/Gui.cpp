@@ -26,8 +26,7 @@ namespace msa {
                 changePage          = false;
                 
                 headerPage          = &addPage("Header");
-                headerPage->maxSize.set(0, 1);//  = config->buttonHeight * 2;
-//                headerPage->width   = 0;
+                headerPage->maxRect.set(0, 0, 0, 1);
                 titleButton         = &headerPage->addButton("title", changePage);
                 
                 headerPage->addToggle("Auto Save", doAutoSave);
@@ -295,11 +294,11 @@ namespace msa {
                 }
                 
                 headerPage->_update(e);
-                if(forceHeight) {
-                    pages[currentPageIndex]->height = forceHeight;
-                } else {
-                    pages[currentPageIndex]->height = ofGetHeight();
-                }
+//                if(forceHeight) {
+//                    pages[currentPageIndex]->height = forceHeight;
+//                } else {
+//                    pages[currentPageIndex]->height = ofGetHeight();
+//                }
                 pages[currentPageIndex]->_update(e);
                 
                 
@@ -317,11 +316,9 @@ namespace msa {
                 ofSetLineWidth(3);
                 glDisableClientState(GL_COLOR_ARRAY);
                 
-                headerPage->draw(0, 0);		// this is the header
-//                ofSetHexColor(config->borderColor);
-//                if(alignRight) ofLine(ofGetWidth() - headerPage->width, headerPage->height, headerPage->width, headerPage->height);
-//                else ofLine(0, headerPage->height, headerPage->width, headerPage->height);
-                pages[currentPageIndex]->draw(0.0f, headerPage->height + config->padding.y);
+//                headerPage->draw(0, 0);		// this is the header
+//                pages[currentPageIndex]->maxRect.set(config->padding.x, headerPage->height + config->padding.y, 0, 0);
+                pages[currentPageIndex]->draw(0, 0);
                 
                 ofPopStyle();
             }

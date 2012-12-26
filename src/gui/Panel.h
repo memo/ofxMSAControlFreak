@@ -56,9 +56,13 @@ namespace msa {
                 void addParameters(ParameterContainer &parameters);
                 
             protected:
-                ofVec2f   maxSize;
-                vector <Control*>	controls;
                 bool isOpen;
+                float heightScale;
+                
+                float getHeightScale();
+                
+                ofRectangle   maxRect;
+                vector <Control*>	controls;
                 
                 //some controls can take over focus (e.g. combo box,) which means events should only be passed to them
                 Control*			activeControl;
