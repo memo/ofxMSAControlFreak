@@ -101,6 +101,7 @@ namespace msa {
                 ofPushStyle();
                 
                 setPos(ofClamp(x, maxRect.getLeft(), maxPos.x), ofClamp(y, maxRect.getTop(), maxPos.y));
+//                y += config->padding.y * 5;
                 setSize(0, 0);
                 
                 ofVec2f curPos(x, y);
@@ -133,6 +134,8 @@ namespace msa {
                     
                     growToInclude((ofRectangle&)control);
                 }
+                
+//                height += config->padding.y * 2;
                 
                 // draw panel title again so it's on top
                 if(controls[0] && getHeightScale() < 0.9) controls[0]->draw();
