@@ -55,8 +55,8 @@ void testApp::setup(){
     
     // you can add complex types
     params.addVec3f("pos1");
-    params.addVec3f("pos2").setValue( ofVec3f(0.1, 0.2, 0.3) );
-    params.addVec3f("pos3").setValue( ofVec3f(1.5, 2.5, 3.5) ).setRange( ofVec3f(-10, -20, -20), ofVec3f(100, 200, 300) );
+//    params.addVec3f("pos2").setValue( ofVec3f(0.1, 0.2, 0.3) );
+//    params.addVec3f("pos3").setValue( ofVec3f(1.5, 2.5, 3.5) ).setRange( ofVec3f(-10, -20, -20), ofVec3f(100, 200, 300) );
     
     
     // you can create groups and add any parameters to that group

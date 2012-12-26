@@ -10,13 +10,13 @@
 
 #pragma once
 
-#include "ofxMSAControlFreak/src/ParameterGroup.h"
+#include "ofxMSAControlFreak/src/Parameter.h"
 
 namespace msa {
 	namespace ControlFreak {
 		
 		template <typename T>
-		class ParameterValueT : public ParameterGroup {
+		class ParameterValueT : public Parameter {
 		public:
 
             ParameterValueT(ParameterGroup *parent, string name, Type::Index typeIndex);
@@ -113,7 +113,7 @@ namespace msa {
         //--------------------------------------------------------------
 		template <typename T>
         ParameterValueT<T>::ParameterValueT(ParameterGroup *parent, string name, Type::Index typeIndex)
-        : ParameterGroup(parent, name, typeIndex), _pvalue(NULL), _pmin(NULL), _pmax(NULL), _pinc(NULL) {
+        : Parameter(parent, name, typeIndex), _pvalue(NULL), _pmin(NULL), _pmax(NULL), _pinc(NULL) {
             ofLogVerbose() << "msa::ControlFreak::ParameterValueT::ParameterValueT " <<  getPath();
             setValueVariable(NULL);
             setRangeVariables(NULL, NULL);
@@ -148,18 +148,6 @@ namespace msa {
 			return *_pvalue;
 		}
         
-        //--------------------------------------------------------------
-//        template <typename T>
-//        T ParameterValueT<T>::operator=(const T & v) {
-//			setValue(v);
-//		}
-//        
-//        //--------------------------------------------------------------
-//		template <typename T>
-//		ParameterValueT<T>::operator T() const {
-//			return getValue();
-//		}
-		
         //--------------------------------------------------------------
         template <typename T>
 		ParameterValueT<T>& ParameterValueT<T>::setRange(T vmin, T vmax) {
@@ -320,7 +308,7 @@ namespace msa {
         //--------------------------------------------------------------
         template <typename T>
         void ParameterValueT<T>::update() {
-            ParameterGroup::update();
+            Parameter::update();
             if(_doClamp) clamp();
             if(_doSnap) snap();
         }

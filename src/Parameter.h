@@ -39,23 +39,26 @@ namespace msa {
             
 			Type::Index getType() const;
 			string getTypeName() const;
+            
+//            template <typename T>
+//            Parameter& setValue(T v);
+//			T& getValue() const;
+            
+		protected:
+			Type::Index			_typeIndex;
+			string				_name;
+			ParameterGroup		*_parent;
+            
+            string              _xmlTag;
+            int                 _xmlTagId;
 			
-            virtual string fullName() const;	// return name prefixed with controllers
-			
+            void setParent(ParameterGroup *parent);
+            
             virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
             virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
             
             virtual void update() {}
             
-		protected:
-			Type::Index			_typeIndex;
-			string					_name;
-			ParameterGroup			*_parent;
-            
-            string                  _xmlTag;
-            int                     _xmlTagId;
-			
-            void setParent(ParameterGroup *parent);
 		};
 		
 	

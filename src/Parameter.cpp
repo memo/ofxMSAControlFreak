@@ -51,14 +51,7 @@ namespace msa {
             return _parent;
         }
 
-        
-        //--------------------------------------------------------------
-		string Parameter::fullName() const {
-			string s;
-//			for(int i=0; i<_controllers.size(); i++) s += "[" + _controllers[i]->toString() + "]";
-			return s + " " + getName();
-		}
-		
+
         //--------------------------------------------------------------
 		Type::Index Parameter::getType() const {
 			return _typeIndex;

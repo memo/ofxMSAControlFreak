@@ -12,11 +12,11 @@ namespace msa {
     namespace ControlFreak {
         
         template <typename T>
-        class ParameterComplexValueT : public ParameterValueT<T> {
+        class ParameterComplexValueT : public ParameterGroup {
         public:
 
 			ParameterComplexValueT(ParameterGroup *parent, string name, Type::Index typeIndex)
-            : ParameterValueT<T>(parent, name, typeIndex) {
+            : ParameterGroup(parent, name, typeIndex) {
                 ofLogVerbose() << "msa::ControlFreak::ParameterComplexValueT::ParameterComplexValueT " <<  this->getPath();
                 
             }

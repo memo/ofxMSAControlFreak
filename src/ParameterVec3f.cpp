@@ -22,31 +22,31 @@ namespace msa {
         
         //--------------------------------------------------------------
         ParameterValueT<ofVec3f>& ParameterVec3f::setValueVariable(ofVec3f *pv) {
-            ParameterValueT<ofVec3f>::setValueVariable(pv);
+//            ParameterValueT<ofVec3f>::setValueVariable(pv);
             int np = getNumParams();
             for(int i=0; i<np; i++) {
                 ParameterFloat &p = (ParameterFloat&)getParameter(i);
-                p.setValueVariable(&getValue()[i]);
+//                p.setValueVariable(&getValue()[i]);
             }
         }
         
         //--------------------------------------------------------------
         ParameterValueT<ofVec3f>& ParameterVec3f::setRangeVariables(ofVec3f *pmin, ofVec3f *pmax) {
-            ParameterValueT<ofVec3f>::setRangeVariables(pmin, pmax);
+//            ParameterValueT<ofVec3f>::setRangeVariables(pmin, pmax);
             int np = getNumParams();
             for(int i=0; i<np; i++) {
                 ParameterFloat &p = (ParameterFloat&)getParameter(i);
-                p.setRangeVariables(&getMin()[i], &getMax()[i]);
+//                p.setRangeVariables(&getMin()[i], &getMax()[i]);
             }
         }
         
         //--------------------------------------------------------------
         ParameterValueT<ofVec3f>& ParameterVec3f::setIncrementVariable(ofVec3f *pinc) {
-            ParameterValueT<ofVec3f>::setIncrementVariable(pinc);
+//            ParameterValueT<ofVec3f>::setIncrementVariable(pinc);
             int np = getNumParams();
             for(int i=0; i<np; i++) {
                 ParameterFloat &p = (ParameterFloat&)getParameter(i);
-                p.setIncrementVariable(&getIncrement()[i]);
+//                p.setIncrementVariable(&getIncrement()[i]);
             }
         }
 
