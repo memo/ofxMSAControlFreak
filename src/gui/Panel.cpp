@@ -241,7 +241,7 @@ namespace msa {
                 ofLogVerbose() << "msa::ControlFreak::gui::Panel::addParameter - " << name << ": " << parameter.getPath();
                 // if parameter already exists, remove it first
                 
-                ParameterContainer *pc = dynamic_cast<ParameterContainer*>(&parameter);
+                ParameterGroup *pc = dynamic_cast<ParameterGroup*>(&parameter);
                 if(pc && pc->getNumParams() > 0) {
                     Panel &panel = addPanel(parameter.getPath());
                     panel.addParameters(*pc);
@@ -285,7 +285,7 @@ namespace msa {
             }
             
             //--------------------------------------------------------------
-            void Panel::addParameters(ParameterContainer& parameters) {
+            void Panel::addParameters(ParameterGroup& parameters) {
                 ofLogVerbose() << "msa::ControlFreak::gui::Panel::addParameters - " << name << ": " << parameters.getPath();
                 
                 if(!config) setup();

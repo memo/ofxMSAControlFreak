@@ -19,7 +19,7 @@ namespace msa {
 			
 //			friend class ParameterGroup;
             
-			ParameterNamedIndex(ParameterContainer *parent, string name)
+			ParameterNamedIndex(ParameterGroup *parent, string name)
             : ParameterInt(parent, name, Type::kNamedIndex) { setClamp(false); }
             
             

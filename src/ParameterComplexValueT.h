@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "ParameterContainer.h"
+#include "ParameterGroup.h"
 
 namespace msa {
     namespace ControlFreak {
@@ -15,7 +15,7 @@ namespace msa {
         class ParameterComplexValueT : public ParameterValueT<T> {
         public:
 
-			ParameterComplexValueT(ParameterContainer *parent, string name, Type::Index typeIndex)
+			ParameterComplexValueT(ParameterGroup *parent, string name, Type::Index typeIndex)
             : ParameterValueT<T>(parent, name, typeIndex) {
                 ofLogVerbose() << "msa::ControlFreak::ParameterComplexValueT::ParameterComplexValueT " <<  this->getPath();
                 
@@ -23,8 +23,8 @@ namespace msa {
 
             
             // from Parameter
-            virtual void writeToXml(ofxXmlSettings &xml, bool bFull) { ParameterContainer::writeToXml(xml, bFull); }
-            virtual void readFromXml(ofxXmlSettings &xml, bool bFull) { ParameterContainer::readFromXml(xml, bFull); }
+            virtual void writeToXml(ofxXmlSettings &xml, bool bFull) { ParameterGroup::writeToXml(xml, bFull); }
+            virtual void readFromXml(ofxXmlSettings &xml, bool bFull) { ParameterGroup::readFromXml(xml, bFull); }
             
 		protected:
             

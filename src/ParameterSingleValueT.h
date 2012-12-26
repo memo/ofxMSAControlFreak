@@ -15,12 +15,15 @@ namespace msa {
         class ParameterSingleValueT : public ParameterValueT<T> {
         public:
 
-            ParameterSingleValueT(ParameterContainer *parent, string name, Type::Index typeIndex)
+            ParameterSingleValueT(ParameterGroup *parent, string name, Type::Index typeIndex)
             : ParameterValueT<T>(parent, name, typeIndex) {
                 ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::ParameterSingleValueT " <<  this->getPath();
                 this->setValue(0);
             }
             
+            T operator=(const T & v) { this->setValue(v); }
+			operator T() const { return this->getValue(); }
+
 
             // from Parameter
             virtual void writeToXml(ofxXmlSettings &xml, bool bFull);

@@ -9,7 +9,7 @@
 namespace msa {
     namespace ControlFreak {
 
-        class ParameterContainer;
+        class ParameterGroup;
         
         namespace gui {
             
@@ -57,7 +57,7 @@ namespace msa {
                 
                 Panel& addPage(string name = "");
                 
-                void addParameters(ParameterContainer &parameters);
+                void addParameters(ParameterGroup &parameters);
                 
 
                 //--------------------------------------------------------------

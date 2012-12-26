@@ -7,9 +7,9 @@ namespace msa {
      
         class ParameterVec3f : public ParameterComplexValueT<ofVec3f> {
         public:
-//            friend class ParameterContainer;
+//            friend class ParameterGroup;
             
-            ParameterVec3f(ParameterContainer *parent, string name);
+            ParameterVec3f(ParameterGroup *parent, string name);
             
             virtual ParameterValueT<ofVec3f>& setValueVariable(ofVec3f *pv);
             virtual ParameterValueT<ofVec3f>& setRangeVariables(ofVec3f *pmin, ofVec3f *pmax);

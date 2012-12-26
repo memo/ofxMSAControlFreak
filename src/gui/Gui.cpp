@@ -259,7 +259,7 @@ namespace msa {
             
          
             //--------------------------------------------------------------
-            void Gui::addParameters(ParameterContainer &parameters) {
+            void Gui::addParameters(ParameterGroup &parameters) {
                 if(!config) setup();
                 currentPage().addParameters(parameters);
             }

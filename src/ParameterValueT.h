@@ -2,7 +2,7 @@
  
  Template base class for any Parameter that can have a value (either simple or complex), with a range
 
- Protected constructor, can only be created via ParameterContainer
+ Protected constructor, can only be created via ParameterGroup
  
  */
 
@@ -10,24 +10,24 @@
 
 #pragma once
 
-#include "ofxMSAControlFreak/src/ParameterContainer.h"
+#include "ofxMSAControlFreak/src/ParameterGroup.h"
 
 namespace msa {
 	namespace ControlFreak {
 		
 		template <typename T>
-		class ParameterValueT : public ParameterContainer {
+		class ParameterValueT : public ParameterGroup {
 		public:
 
-            ParameterValueT(ParameterContainer *parent, string name, Type::Index typeIndex);
+            ParameterValueT(ParameterGroup *parent, string name, Type::Index typeIndex);
             
 			// set and get value
             ParameterValueT<T>& setValue(T v);
 			T& getValue() const;
             
             // operators for assigning and casting (same functionality as above)
-			T operator=(const T & v);
-			operator T() const;
+            T operator=(const T & v) { this->setValue(v); }
+			operator T() const { return this->getValue(); }
 			
             // set min/max range values
 			ParameterValueT<T>& setRange(T vmin, T vmax);
@@ -112,8 +112,8 @@ namespace msa {
         //--------------------------------------------------------------
         //--------------------------------------------------------------
 		template <typename T>
-        ParameterValueT<T>::ParameterValueT(ParameterContainer *parent, string name, Type::Index typeIndex)
-        : ParameterContainer(parent, name, typeIndex), _pvalue(NULL), _pmin(NULL), _pmax(NULL), _pinc(NULL) {
+        ParameterValueT<T>::ParameterValueT(ParameterGroup *parent, string name, Type::Index typeIndex)
+        : ParameterGroup(parent, name, typeIndex), _pvalue(NULL), _pmin(NULL), _pmax(NULL), _pinc(NULL) {
             ofLogVerbose() << "msa::ControlFreak::ParameterValueT::ParameterValueT " <<  getPath();
             setValueVariable(NULL);
             setRangeVariables(NULL, NULL);
@@ -149,16 +149,16 @@ namespace msa {
 		}
         
         //--------------------------------------------------------------
-        template <typename T>
-        T ParameterValueT<T>::operator=(const T & v) {
-			setValue(v);
-		}
-        
-        //--------------------------------------------------------------
-		template <typename T>
-		ParameterValueT<T>::operator T() const {
-			return getValue();
-		}
+//        template <typename T>
+//        T ParameterValueT<T>::operator=(const T & v) {
+//			setValue(v);
+//		}
+//        
+//        //--------------------------------------------------------------
+//		template <typename T>
+//		ParameterValueT<T>::operator T() const {
+//			return getValue();
+//		}
 		
         //--------------------------------------------------------------
         template <typename T>
@@ -320,7 +320,7 @@ namespace msa {
         //--------------------------------------------------------------
         template <typename T>
         void ParameterValueT<T>::update() {
-            ParameterContainer::update();
+            ParameterGroup::update();
             if(_doClamp) clamp();
             if(_doSnap) snap();
         }

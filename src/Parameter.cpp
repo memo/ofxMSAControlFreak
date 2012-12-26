@@ -16,7 +16,7 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-        Parameter::Parameter(ParameterContainer *parent, string name, Type::Index typeIndex)
+        Parameter::Parameter(ParameterGroup *parent, string name, Type::Index typeIndex)
         : _parent(parent), _name(name), _typeIndex(typeIndex) {
             ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter " <<  getPath();
         }
@@ -41,13 +41,13 @@ namespace msa {
 		}
 		
         //--------------------------------------------------------------
-        void Parameter::setParent(ParameterContainer *parent) {
+        void Parameter::setParent(ParameterGroup *parent) {
 			ofLogVerbose() << "msa::ControlFreak::Parameter::setName " << getPath() << " " << (parent ? parent->getName() : "NULL");
             _parent = parent;
         }
         
         //--------------------------------------------------------------
-        ParameterContainer* Parameter::getParent() const {
+        ParameterGroup* Parameter::getParent() const {
             return _parent;
         }
 

@@ -23,7 +23,11 @@ namespace msa {
         class ParameterInt : public ParameterSingleValueT<int> {
         public:
             //            friend class ParameterGroup;
-            ParameterInt(ParameterContainer *parent, string name, Type::Index typeIndex = Type::kInt)
+            
+            template <typename T> T operator=(const T & v) { this->setValue(v); }
+			template <typename T> operator T() const { return this->getValue(); }
+            
+            ParameterInt(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kInt)
             : ParameterSingleValueT<int>(parent, name, typeIndex) { setRange(0, 100); setIncrement(1); }
         };
         
@@ -33,7 +37,10 @@ namespace msa {
         class ParameterFloat : public ParameterSingleValueT<float> {
         public:
             //            friend class ParameterGroup;
-            ParameterFloat(ParameterContainer *parent, string name, Type::Index typeIndex = Type::kFloat)
+            template <typename T> T operator=(const T & v) { this->setValue(v); }
+			template <typename T> operator T() const { return this->getValue(); }
+            
+            ParameterFloat(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kFloat)
             : ParameterSingleValueT<float>(parent, name, typeIndex) { setRange(0, 1); setIncrement(0.01); }
         };
         
@@ -43,7 +50,10 @@ namespace msa {
         class ParameterBool : public ParameterSingleValueT<bool> {
         public:
             //            friend class ParameterGroup;
-            ParameterBool(ParameterContainer *parent, string name, Type::Index typeIndex = Type::kToggle)
+            template <typename T> T operator=(const T & v) { this->setValue(v); }
+			template <typename T> operator T() const { return this->getValue(); }
+            
+            ParameterBool(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kToggle)
             : ParameterSingleValueT<bool>(parent, name, typeIndex) { setRange(0, 1); setIncrement(1); }
         };
         

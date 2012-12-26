@@ -33,8 +33,8 @@
  Parameter::applyPreset(name, time);					// apply preset (if it exists) in time seconds
  Parameter::savePreset(name);						// save current value as preset with name
  
- ParameterContainer::applyPreset(name, time);						// apply preset (if it exists) to all parameters in group, in time seconds
- ParameterContainer::savePreset(name);							// save current value for all parameters in group as preset with name
+ ParameterGroup::applyPreset(name, time);						// apply preset (if it exists) to all parameters in group, in time seconds
+ ParameterGroup::savePreset(name);							// save current value for all parameters in group as preset with name
  
  Global::applyPreset(name, time);					// apply preset (if it exists) to all parameters in all groups, in time seconds
  Global::savePreset(name);							// save current value for all parameters in all groups as preset with name
@@ -65,14 +65,14 @@
 /*
  
  Parameter
-    ParameterContainer
+    ParameterGroup
         ParameterValueT
             ParameterSingleValueT
                 ParameterInt
                     ParameterNamedIndex
                 ParameterFloat
                 ParameterBool
-            ParameterContainerValueT
+            ParameterGroupValueT
  
  
  

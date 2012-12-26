@@ -3,7 +3,7 @@
  Individual parameter or group / container
  Base class for all Parameters
  
- Protected constructor, can only be created via ParameterContainer
+ Protected constructor, can only be created via ParameterGroup
 
  */
 
@@ -20,14 +20,14 @@
 namespace msa {
 	namespace ControlFreak {
 		
-		class ParameterContainer;
+		class ParameterGroup;
         
 		class Parameter {
 		public:
 			
-			friend class ParameterContainer;
+			friend class ParameterGroup;
             
-			Parameter(ParameterContainer *parent, string name, Type::Index typeIndex);
+			Parameter(ParameterGroup *parent, string name, Type::Index typeIndex);
 			virtual ~Parameter() {}
 			
             Parameter& setName(string s);
@@ -35,7 +35,7 @@ namespace msa {
             
 			string getPath() const;        // return path (including parents)
 
-            ParameterContainer* getParent() const;
+            ParameterGroup* getParent() const;
             
 			Type::Index getType() const;
 			string getTypeName() const;
@@ -50,12 +50,12 @@ namespace msa {
 		protected:
 			Type::Index			_typeIndex;
 			string					_name;
-			ParameterContainer			*_parent;
+			ParameterGroup			*_parent;
             
             string                  _xmlTag;
             int                     _xmlTagId;
 			
-            void setParent(ParameterContainer *parent);
+            void setParent(ParameterGroup *parent);
 		};
 		
 	

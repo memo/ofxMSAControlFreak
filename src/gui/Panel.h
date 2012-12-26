@@ -6,7 +6,7 @@ namespace msa {
     namespace ControlFreak {
         
         class Parameter;
-        class ParameterContainer;
+        class ParameterGroup;
         
         namespace gui {
             
@@ -53,7 +53,7 @@ namespace msa {
                 vector <Control*>&	getControls();
                 
                 void addParameter(Parameter &parameter);
-                void addParameters(ParameterContainer &parameters);
+                void addParameters(ParameterGroup &parameters);
                 
             protected:
                 bool isOpen;
