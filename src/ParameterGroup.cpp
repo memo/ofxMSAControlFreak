@@ -34,8 +34,8 @@ namespace msa {
         
         //--------------------------------------------------------------
 		void ParameterGroup::clear() {
-            int np = getNumParams();
-            for(int i=0; i<np; i++) delete _paramArr[i];
+//            int np = getNumParams();
+//            for(int i=0; i<np; i++) delete _paramArr[i];
             _paramArr.clear();
             _paramMap.clear();
             
@@ -102,16 +102,19 @@ namespace msa {
 
         //--------------------------------------------------------------
 		ParameterInt& ParameterGroup::addInt(string name) {
-			return (ParameterInt&) addParameter(new ParameterInt(_groupStack.top(), name, Type::kInt));
+            if(_paramMap.find(name) != _paramMap.end()) return getInt(name);
+            return (ParameterInt&) addParameter(new ParameterInt(_groupStack.top(), name, Type::kInt));
 		}
 		
         //--------------------------------------------------------------
 		ParameterFloat& ParameterGroup::addFloat(string name) {
+            if(_paramMap.find(name) != _paramMap.end()) return getFloat(name);
 			return (ParameterFloat&) addParameter(new ParameterFloat(_groupStack.top(), name, Type::kFloat));
 		}
 		
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBool(string name) {
+            if(_paramMap.find(name) != _paramMap.end()) return getBool(name);
             ParameterBool *p = new ParameterBool(_groupStack.top(), name, Type::kBool);
             p->setBang(false);
             addParameter(p);
@@ -120,6 +123,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBang(string name) {
+            if(_paramMap.find(name) != _paramMap.end()) return getBool(name);
             ParameterBool *p = new ParameterBool(_groupStack.top(), name, Type::kBool);
             p->setBang(true);
             addParameter(p);
@@ -128,19 +132,24 @@ namespace msa {
 		
         //--------------------------------------------------------------
 		ParameterNamedIndex& ParameterGroup::addNamedIndex(string name) {
+            if(_paramMap.find(name) != _paramMap.end()) return getNamedIndex(name);
 			return (ParameterNamedIndex&) addParameter(new ParameterNamedIndex(_groupStack.top(), name));
 		}
         
         
         //--------------------------------------------------------------
         ParameterVec3f& ParameterGroup::addVec3f(string name) {
+//            if(_paramMap.find(name) != _paramMap.end()) return getVec3f(name);
 			return (ParameterVec3f&) addParameter(new ParameterVec3f(_groupStack.top(), name));
         }
         
         
         //--------------------------------------------------------------
 		void ParameterGroup::startGroup(string name) {
-            _groupStack.push( (ParameterGroup*)&addParameter(new ParameterGroup(_groupStack.top(), name)) );
+            ParameterGroup* g;
+            if(_paramMap.find(name) != _paramMap.end()) g = &getGroup(name);
+            else g = (ParameterGroup*)&addParameter(new ParameterGroup(_groupStack.top(), name));
+            _groupStack.push(g);
 		}
 		
         //--------------------------------------------------------------
@@ -158,7 +167,7 @@ namespace msa {
                 map<string, Parameter*>::iterator p = _paramMap.find(param->getName());
                 if(p == _paramMap.end()) {
                     _paramMap[param->getName()] = param;
-                    _paramArr.push_back(param);
+                    _paramArr.push_back(ParameterPtr(param));
                     param->setParent(this);
                     getNumParams();	// to check if correctly added to both containers
                     return *param;

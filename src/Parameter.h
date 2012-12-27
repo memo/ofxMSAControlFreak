@@ -68,5 +68,6 @@ namespace msa {
 		};
 		
 	
+        typedef std::tr1::shared_ptr<Parameter> ParameterPtr;
 	}
 }

@@ -96,7 +96,7 @@ namespace msa {
             
         protected:
 			map<string, Parameter*>	_paramMap;		// map for all parameters
-			vector<Parameter*>		_paramArr;		// array needed to access sequentially (for display etc.)
+			vector<ParameterPtr>	_paramArr;		// array needed to access sequentially (for display etc.)
             
             string _filename;
             
