@@ -11,10 +11,12 @@ ofTexture			videoTexture;
 
 
 msa::ControlFreak::ParameterGroup      params;
-msa::ControlFreak::gui::Gui             gui;
+msa::ControlFreak::gui::Gui            gui;
 
 float fvar1;
 float fvar2;
+
+bool doDebug = true;
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -25,7 +27,7 @@ void testApp::setup(){
     // Set name for our ParameterGroup
 	params.setName("ControlFreak Demo");
     
-    
+    if(!doDebug) {
     
 	// CREATING PARAMETERS
     // All Parameters are created via the addXXXX methods of a ParameterGroup
@@ -234,7 +236,21 @@ void testApp::setup(){
         params.addBang("reset");
     } params.endGroup();
     
+    }
     
+    params.startGroup("floats");
+    params.addFloat("no clamp, no snap").setRange(0, 5).setIncrement(0.1);
+    params.addFloat("yes clamp, no snap").setRange(0, 5).setIncrement(0.1).setClamp(true);
+    params.addFloat("yes clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(true).setSnap(true);
+    params.addFloat("no clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(false).setSnap(true);
+    params.endGroup();
+    
+    params.startGroup("ints");
+    params.addInt("no clamp, no snap").setRange(0, 100).setIncrement(5);
+    params.addInt("yes clamp, no snap").setRange(0, 100).setIncrement(5).setClamp(true);
+    params.addInt("yes clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(true).setSnap(true);
+    params.addInt("no clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(false).setSnap(true);
+    params.endGroup();
     
     // you can create groups and add any parameters to that group
     
@@ -254,11 +270,12 @@ void testApp::setup(){
 void testApp::update() {
     params.update();
     
+    if(!doDebug) {
     // read from the bool parameters, and update the float parameters if they are true
     // note that parameter 'animated2' had had it's 'clamp' set to true, so it will never go outside of -1...1
     if(params.getBool("Testers.doAnimate1")) params.getFloat("Testers.animated1") = sin(ofGetElapsedTimef()) * 2;
     if(params.getBool("Testers.doAnimate2")) params.getFloat("Testers.animated2") = sin(ofGetElapsedTimef()) * 2;
-    
+    }
     
     // 'trackTester' is a normal variable, which we had set to sync to the parameter 'trackTester'
     // if we write to this variable, the gui updates
@@ -291,6 +308,7 @@ void testApp::update() {
 //--------------------------------------------------------------
 void testApp::draw(){
     //	ofBackground(color.r * 255, color.g * 255.0f, color.b * 255.0);
+    if(!doDebug) {
     
     ofPushStyle();
     ofSetRectMode(OF_RECTMODE_CENTER);
@@ -336,6 +354,7 @@ void testApp::draw(){
     }
     ofPopMatrix();
     ofPopStyle();
+    }
 }
 
 void testApp::exit() {

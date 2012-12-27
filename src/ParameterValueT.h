@@ -52,8 +52,8 @@ namespace msa {
 
             
             // increase or decrease by increment amount
-            ParameterValueT<T>& inc();
-            ParameterValueT<T>& dec();
+            ParameterValueT<T>& inc(T amount);
+            ParameterValueT<T>& dec(T amount);
             
             // set and get as 0...1 values normalized to min/max range
 			ParameterValueT<T>& setNormalized(float norm);
@@ -243,25 +243,25 @@ namespace msa {
 		T ParameterValueT<T>::getIncrement() const {
             kCheckBadParameter(T());
             
-            return _inc;
+            return _inc ? _inc : T(1);
         }
         
         
         //--------------------------------------------------------------
 		template <typename T>
-		ParameterValueT<T>& ParameterValueT<T>::inc() {
+		ParameterValueT<T>& ParameterValueT<T>::inc(T amount) {
             kCheckBadParameter(*this);
             
-            setValue(getValue() + getIncrement());
+            setValue(getValue() + getIncrement() * amount);
             return *this;
         }
     
         //--------------------------------------------------------------
 		template <typename T>
-		ParameterValueT<T>& ParameterValueT<T>::dec() {
+		ParameterValueT<T>& ParameterValueT<T>::dec(T amount) {
             kCheckBadParameter(*this);
             
-            setValue(getValue() - getIncrement());
+            setValue(getValue() - getIncrement() * amount);
             return *this;
         }
 		
@@ -289,8 +289,8 @@ namespace msa {
 		ParameterValueT<T>& ParameterValueT<T>::setMappedFrom(T v, T inputMin, T inputMax) {
             kCheckBadParameter(*this);
             
-//			setValue(ofMap(v, inputMin, inputMax, getMin(), getMax()));
-            setValue(  ((v - inputMin) / (inputMax - inputMin) * (getMax() - getMin()) + getMin())  );
+			setValue(ofMap(v, inputMin, inputMax, getMin(), getMax()));
+//            setValue(  ((v - inputMin) / (inputMax - inputMin) * (getMax() - getMin()) + getMin())  );
             return *this;
 		}
 		
@@ -299,8 +299,8 @@ namespace msa {
 		T ParameterValueT<T>::getMappedTo(T newMin, T newMax) const {
             kCheckBadParameter(T());
             
-//			return ofMap(getValue(), getMin(), getMax(), newMin, newMax);
-            return ((getValue() - getMin()) / (getMax() - getMin()) * (newMax - newMin) + newMin);
+			return ofMap(getValue(), getMin(), getMax(), newMin, newMax);
+//            return ((getValue() - getMin()) / (getMax() - getMin()) * (newMax - newMin) + newMin);
 		}
 		
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ofxMSAControlFreak/src/gui/Control.h"
+#include "ofxMSAControlFreak/src/gui/ControlParameterT.h"
 
 namespace msa {
     namespace ControlFreak {
@@ -11,8 +11,7 @@ namespace msa {
         namespace gui {
             
             class Gui;
-            class Control;
-            class Button;
+            class BoolButton;
             class ColorPicker;
             class ComboBox;
             class Content;
@@ -21,23 +20,18 @@ namespace msa {
             class Slider2d;
             class SliderInt;
             class SliderFloat;
-            class Title;
-            class Toggle;
+            class BoolTitle;
+            class BoolToggle;
             
-            class Panel : public Control {
+            class Panel : public ControlParameterT<ParameterGroup> {
             public:
                 
                 friend class Gui;
                 
-                Panel(Panel *parent, string name);
+                Panel(Panel *parent, Parameter *p);
                 ~Panel();
                 
                 void draw(float x, float y);
-                
-                Panel& setXMLName(string xmlFilename);
-                void loadXml();
-                void saveXml();
-                
                 
                 void setActiveControl(Control *control);
                 void releaseActiveControl();
@@ -49,10 +43,9 @@ namespace msa {
                 void mouseReleased(ofMouseEventArgs &e);
                 void keyPressed(ofKeyEventArgs &e);
                 void keyReleased(ofKeyEventArgs &e);
+//                vector<ControlPtr>&	getControls();
                 
-                vector <Control*>&	getControls();
-                
-                void addParameter(Parameter &parameter);
+                void addParameter(Parameter *p);
                 void addParameters(ParameterGroup &parameters);
                 
             protected:
@@ -62,7 +55,7 @@ namespace msa {
                 float getHeightScale();
                 
                 ofRectangle   maxRect;
-                vector <Control*>	controls;
+                vector<ControlPtr>	controls;
                 
                 //some controls can take over focus (e.g. combo box,) which means events should only be passed to them
                 Control*			activeControl;
@@ -70,23 +63,21 @@ namespace msa {
                 
                 Control			&addControl(Control *control);
                 
-                Panel           &addPanel(string name);
-                Button			&addButton(string name, bool &value);
-                ColorPicker		&addColorPicker(string name, ofFloatColor &color);
-                ComboBox&       addComboBox(string name, int &value, int numChoices, string *choiceTitles);
-                ComboBox&       addComboBox(string name, int &value, vector<string> &choiceTitles);
-                Content			&addContent(string name, ofBaseDraws &content, float fixwidth = -1);
+                Panel           &addPanel(Parameter *p);
+                BoolButton		&addButton(Parameter *p);
+                ColorPicker		&addColorPicker(Parameter *p);
+                ComboBox&       addComboBox(Parameter *p);
+                Content			&addContent(Parameter *p, ofBaseDraws &content, float fixwidth = -1);
                 FPSCounter		&addFPSCounter();
-                QuadWarp		&addQuadWarper(string name, ofBaseDraws &baseDraw, ofPoint *pts);
-                Slider2d		&addSlider2d(string name, ofPoint &value, float xmin, float xmax, float ymin, float ymax);
-                SliderInt		&addSlider(string name, int &value, int min, int max);
-                SliderFloat		&addSlider(string name, float &value, float min, float max);
-                Title			&addTitle(string name="", float height = 0);
-                Toggle			&addToggle(string name, bool &value);
-
-                ofxXmlSettings					XML;
-                string							xmlFilename;
+                QuadWarp		&addQuadWarper(Parameter *p);
+                Slider2d		&addSlider2d(Parameter *p);
+                SliderInt		&addSliderInt(Parameter *p);
+                SliderFloat		&addSliderFloat(Parameter *p);
+                BoolTitle		&addTitle(Parameter *p, float height = 0);
+                BoolToggle		&addToggle(Parameter *p);
             };
+            
+            typedef std::tr1::shared_ptr<Panel> PanelPtr;
             
         }
     }

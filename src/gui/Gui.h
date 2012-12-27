@@ -3,35 +3,39 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxXmlSettings.h"
+//#include "ofxXmlSettings.h"
+
+#include "ofxMSAControlFreak/src/gui/Config.h"
+#include "ofxMSAControlFreak/src/gui/Panel.h"
+
+#include "ofxMSAControlFreak/src/ControlFreak.h"
 
 
 namespace msa {
     namespace ControlFreak {
 
-        class ParameterGroup;
+//        class ParameterGroup;
         
         namespace gui {
             
-            class Panel;
-            class Button;
+//            class Panel;
+            class BoolButton;
             class Config;
-            
             
             class Gui {
             public:
-                int guiFocus;
+//                int guiFocus;
                 
-                Config *config;
+                Config config;
                 
                 Gui();
                 
                 void setup();
                 
                 
-                void loadXml();
-                void saveXml();
-                void setAutoSave(bool b);
+//                void loadXml();
+//                void saveXml();
+//                void setAutoSave(bool b);
                 void setAlignRight(bool b);
                 void setDefaultKeys(bool b);
                 
@@ -53,7 +57,7 @@ namespace msa {
                 Panel& page(int i);				// 1 based index of page
                 Panel& page(string name);			// returns page by name
                 Panel& currentPage();				// returns current page
-                vector <Panel*>&	getPages();
+//                vector <Panel*>&	getPages();
                 
                 Panel& addPage(string name = "");
                 
@@ -82,6 +86,7 @@ namespace msa {
 
                 
             protected:
+                bool        isSetup;
                 bool        doAutoEvents;
                 bool        eventsAreRegistered;
 
@@ -89,7 +94,7 @@ namespace msa {
                 
                 bool		alignRight;
                 bool		doDefaultKeys;
-                bool		doSave;//, doSaveBackup;
+//                bool		doSave;//, doSaveBackup;
                 bool		changePage;
                 int			forceHeight;
                 int			currentPageIndex;			// 1 based index of page (0 is for global controls)
@@ -97,33 +102,35 @@ namespace msa {
                 bool		doDraw;
                 float		border;
                 
-                Panel				*headerPage;
-                Button				*titleButton;
-                vector <Panel*>		pages;				// 0 is for headerPage
+//                Panel				*headerPage;
+                BoolButton				*titleButton;
+                vector<PanelPtr>		pages;				// 0 is for headerPage
                 
                 void addListeners();
                 void removeListeners();
                 
                 void drawFocus(float x, float y);
                 
+                ParameterGroup paramsRoot;
+                
                 
 //                Control&        addControl(Control& control);
 //                Content&        addContent(string name, ofBaseDraws& content, float fixwidth = -1);
-//                Button&         addButton(string name, bool& value);
+//                BoolButton&         addButton(string name, bool& value);
 //                FPSCounter&     addFPSCounter();
 //                QuadWarp&       addQuadWarper(string name, ofBaseDraws& baseDraw, ofPoint *pts);
 //                SliderInt&      addSlider(string name, int& value, int min, int max);
 //                SliderFloat&    addSlider(string name, float& value, float min, float max);
 //                Slider2d&       addSlider2d(string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax);
-//                Title&          addTitle(string name="", float height = 0);
-//                Toggle&         addToggle(string name, bool& value);
+//                BoolTitle&          addTitle(string name="", float height = 0);
+//                BoolToggle&         addToggle(string name, bool& value);
 //                ColorPicker&    addColorPicker(string name, ofFloatColor& color);
 //                ComboBox&       addComboBox(string name, int& value, int numChoices, string* choiceTitles=NULL);
 //                ComboBox&       addComboBox(string name, int& value, vector<string>& choiceTitles);
             };
             
             
-            extern Gui gui;
+//            extern Gui gui;
             
         }
     }

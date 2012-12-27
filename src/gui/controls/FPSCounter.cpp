@@ -1,12 +1,12 @@
 
-#include  "ofxMSAControlFreak/src/gui/Includes.h"
+#include "ofxMSAControlFreak/src/gui/Includes.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
             
-            FPSCounter::FPSCounter(Panel *parent) : Control(parent, "FPS Counter", "FPS Counter") {
+            FPSCounter::FPSCounter(Panel *parent) : ControlParameterT<Parameter>(parent, NULL) {
                 setup();
             }
             

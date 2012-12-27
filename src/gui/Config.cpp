@@ -1,12 +1,9 @@
-#include  "ofxMSAControlFreak/src/gui/Includes.h"
+#include "ofxMSAControlFreak/src/gui/Includes.h"
 
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
-            
-            
-            Config defaultSimpleGuiConfig;
             
             
             Config::Config() {
@@ -27,17 +24,17 @@ namespace msa {
                 gridSize.x			= 200 + padding.x;
                 gridSize.y			= toggleHeight + padding.y;
                 
-                textColor			= 0x888888;
-                textOverColor		= 0xFFFFFF;
-                textBGColor			= 0x000000;
-                textBGOverColor		= 0x222222;
+                textColor			= ofColor::fromHex(0x888888);
+                textOverColor		= ofColor::fromHex(0xFFFFFF);
+                textBGColor			= ofColor::fromHex(0x000000);
+                textBGOverColor		= ofColor::fromHex(0x222222);
                 
-                fullColor			= 0xaaaaaa;
-                fullOverColor		= 0xffffff;
-                fullActiveColor		= 0x881818;
-                emptyColor			= 0x333333;
+                fullColor			= ofColor::fromHex(0xaaaaaa);
+                fullOverColor		= ofColor::fromHex(0xffffff);
+                fullActiveColor		= ofColor::fromHex(0x881818);
+                emptyColor			= ofColor::fromHex(0x333333);
                 
-                borderColor			= 0x333333;
+                borderColor			= ofColor::fromHex(0x333333);
             }
             
             

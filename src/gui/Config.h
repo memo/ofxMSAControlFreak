@@ -25,23 +25,20 @@ namespace msa {
                 ofPoint offset;
                 ofPoint	slider2DSize;
                 
-                int	textColor;
-                int textOverColor;
-                int textBGColor;
-                int textBGOverColor;
+                ofColor textColor;
+                ofColor textOverColor;
+                ofColor textBGColor;
+                ofColor textBGOverColor;
                 
-                int fullColor;
-                int	fullOverColor;
-                int fullActiveColor;
-                int emptyColor;
-                int borderColor;
+                ofColor fullColor;
+                ofColor fullOverColor;
+                ofColor fullActiveColor;
+                ofColor emptyColor;
+                ofColor borderColor;
                 
                 Config();
                 void drawString(string s, float x, float y);
             };
-            
-            
-            extern Config defaultSimpleGuiConfig;
             
         }
     }

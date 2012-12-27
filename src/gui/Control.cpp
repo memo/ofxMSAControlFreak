@@ -5,16 +5,16 @@ namespace msa {
         namespace gui {
             
             
-            //--------------------------------------------------------------
-            Control::Control(Panel *parent, string name, string controlType) {
-                this->config = &defaultSimpleGuiConfig;
+            Control::Control(Panel *parent) {
                 this->parent = parent;
-                this->controlType = controlType;
-                setName(name);
-//                setKey(key);
+                if(parent) this->config = parent->config;
+                active = false;
+                //                this->controlType = controlType;
+                //                setName(name);
+                //                setKey(key);
                 setPos(0, 0);
-                lock	  = false;
-                focused	  = false;
+                //                lock	  = false;
+                //                focused	  = false;
                 newColumn = false;
                 setKeyboardShortcut(0);
                 
@@ -40,52 +40,52 @@ namespace msa {
             }
             
             //--------------------------------------------------------------
-            Control &Control::setName(string newName) {
-                name = newName;
-                origName = name;
-//                if(key.compare("") == 0) setKey("");	// if key has not been set yet, set name as key too
-                
-                hasTitle = (name.compare("") != 0);
-                return *this;
-            }
-            
-//            //--------------------------------------------------------------
-//            Control &Control::setKey(string newKey) {
-//                if(newKey.compare("") == 0) key = name;
-//                else key = newKey;
-//                for(int i=0; i<key.size(); i++) {
-//                    if(key[i] == ' ') key[i] = '_';
-//                }
-//                return *this;
-//            }
+            //            Control &Control::setName(string newName) {
+            //                name = newName;
+            //                origName = name;
+            ////                if(key.compare("") == 0) setKey("");	// if key has not been set yet, set name as key too
+            //
+            //                hasTitle = (name.compare("") != 0);
+            //                return *this;
+            //            }
+            //
+            //            //--------------------------------------------------------------
+            //            Control &Control::setKey(string newKey) {
+            //                if(newKey.compare("") == 0) key = name;
+            //                else key = newKey;
+            //                for(int i=0; i<key.size(); i++) {
+            //                    if(key[i] == ' ') key[i] = '_';
+            //                }
+            //                return *this;
+            //            }
             
             //--------------------------------------------------------------
             Control &Control::setTextColor(bool clickable) {
-                if(isMouseOver() && clickable) ofSetHexColor(config->textOverColor);
-                else ofSetHexColor(config->textColor);
+                if(isMouseOver() && clickable) ofSetColor(config->textOverColor);
+                else ofSetColor(config->textColor);
                 return *this;
             }
             
             //--------------------------------------------------------------
             Control &Control::setTextBGColor(bool clickable) {
-                if(isMouseOver() && clickable) ofSetHexColor(config->textBGOverColor);
-                else ofSetHexColor(config->textBGColor);
+                if(isMouseOver() && clickable) ofSetColor(config->textBGOverColor);
+                else ofSetColor(config->textBGColor);
                 return *this;
             }
             
             //--------------------------------------------------------------
             Control &Control::setFullColor(bool forceActive) {
-                if(isMouseDown() || forceActive) ofSetHexColor(config->fullActiveColor);
-                else if(isMouseOver()) ofSetHexColor(config->fullOverColor);
-                else ofSetHexColor(config->fullColor);
+                if((isMouseDown() && getLastMouseButton()==0) || forceActive) ofSetColor(config->fullActiveColor);
+                else if(isMouseOver()) ofSetColor(config->fullOverColor);
+                else ofSetColor(config->fullColor);
                 return *this;
             }
             
             //--------------------------------------------------------------
             Control &Control::setEmptyColor() {
-                ofSetHexColor(config->emptyColor);
-                //		if(isMouseOver()) ofSetHexColor(config->overColor.r, config->overColor.g, config->overColor.b);
-                //		if(focused && !isMouseOver()) ofSetHexColor(config->focusColor.r, config->focusColor.g, config->focusColor.b);
+                ofSetColor(config->emptyColor);
+                //		if(isMouseOver()) ofSetColor(config->overColor.r, config->overColor.g, config->overColor.b);
+                //		if(focused && !isMouseOver()) ofSetColor(config->focusColor.r, config->focusColor.g, config->focusColor.b);
                 return *this;
             }
             
@@ -94,13 +94,14 @@ namespace msa {
                 keyboardShortcut = c;
                 if(c) {
                     //	printf( "ofxMSAControlFreak/src/gui/Control::setKeyboardShortcut %s %c\n", name.c_str(), c);
-                    name = origName + " (" + c + ")";
+                    //                    name = origName + " (" + c + ")";
                 } else {
-                    name = origName;
+                    //                    name = origName;
                 }
                 return *this;
             }
             
+          
         }
     }
 }

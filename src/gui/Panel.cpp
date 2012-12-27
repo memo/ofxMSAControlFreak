@@ -1,4 +1,4 @@
-#include  "ofxMSAControlFreak/src/gui/Includes.h"
+#include "ofxMSAControlFreak/src/gui/Includes.h"
 
 #include "ofxMSAControlFreak/src/ControlFreak.h"
 
@@ -7,13 +7,13 @@ namespace msa {
         namespace gui {
             
             //--------------------------------------------------------------
-            Panel::Panel(Panel *parent, string name) : Control(parent, name, "Panel") {
+            Panel::Panel(Panel *parent, Parameter *p) : ControlParameterT<ParameterGroup>(parent, p) {
                 disableAllEvents();
                 width = 0;
                 height = 0;//ofGetHeight();
                 maxRect.set(0, 0, 0, 0);
                 activeControl = NULL;
-                setXMLName(name + "_settings.xml");
+//                setXMLName(p->getName() + "_settings.xml");
                 
                 isOpen = true;
                 heightScale = 1.0;
@@ -26,48 +26,48 @@ namespace msa {
             
             
             //--------------------------------------------------------------
-            Panel& Panel::setXMLName(string s) {
-                xmlFilename = s;
-                return *this;
-            }
+//            Panel& Panel::setXMLName(string s) {
+//                xmlFilename = s;
+//                return *this;
+//            }
             
             
             //--------------------------------------------------------------
-            void Panel::loadXml() {
-                ofLog(OF_LOG_VERBOSE,  "ofxMSAControlFreak/src/gui/Panel::loadXml: " + xmlFilename);
-                
-                if(xmlFilename.compare("") == 0) return;
-                
-                if(XML.loadFile(xmlFilename) == false) {
-                    ofLog(OF_LOG_ERROR, "Error loading xmlFilename: " + xmlFilename);
-                    return;
-                }
-                
-                XML.pushTag("controls");
-                for(int i=0; i < controls.size(); i++) {
-                    controls[i]->readFromXml(XML);
-                }
-                XML.popTag();
-            }
+//            void Panel::loadXml() {
+//                ofLog(OF_LOG_VERBOSE,  "ofxMSAControlFreak/src/gui/Panel::loadXml: " + xmlFilename);
+//                
+//                if(xmlFilename.compare("") == 0) return;
+//                
+//                if(XML.loadFile(xmlFilename) == false) {
+//                    ofLog(OF_LOG_ERROR, "Error loading xmlFilename: " + xmlFilename);
+//                    return;
+//                }
+//                
+//                XML.pushTag("controls");
+//                for(int i=0; i < controls.size(); i++) {
+//                    controls[i]->readFromXml(XML);
+//                }
+//                XML.popTag();
+//            }
             
             
             //--------------------------------------------------------------
-            void Panel::saveXml() {
-                if(controls.size() <= 1 || xmlFilename.compare("") == 0) return;	// if it has no controls (title counts as one control)
-                
-                XML.clear();	// clear cause we are building a new xml file
-                
-                XML.addTag("controls");
-                XML.pushTag("controls");
-                for(int i=0; i < controls.size(); i++) {
-                    controls[i]->writeToXml(XML);
-                }
-                XML.popTag();
-                
-                XML.saveFile(xmlFilename);
-                //	if(doSaveBackup)
-                ofLog(OF_LOG_VERBOSE,  "ofxMSAControlFreak/src/gui/Panel::saveXml: " + xmlFilename + " " + ofToString(controls.size(), 0) + " items");
-            }
+//            void Panel::saveXml() {
+//                if(controls.size() <= 1 || xmlFilename.compare("") == 0) return;	// if it has no controls (title counts as one control)
+//                
+//                XML.clear();	// clear cause we are building a new xml file
+//                
+//                XML.addTag("controls");
+//                XML.pushTag("controls");
+//                for(int i=0; i < controls.size(); i++) {
+//                    controls[i]->writeToXml(XML);
+//                }
+//                XML.popTag();
+//                
+//                XML.saveFile(xmlFilename);
+//                //	if(doSaveBackup)
+//                ofLog(OF_LOG_VERBOSE,  "ofxMSAControlFreak/src/gui/Panel::saveXml: " + xmlFilename + " " + ofToString(controls.size(), 0) + " items");
+//            }
             
             
             //--------------------------------------------------------------
@@ -125,12 +125,12 @@ namespace msa {
                     
                     curPos.y += (control.height + config->padding.y) * getHeightScale();
                     
-                    if(control.hasTitle) {
+//                    if(control.parameter && !control.parameter->getName().empty()) {
                         ofNoFill();
-                        ofSetHexColor(config->borderColor);
+                        ofSetColor(config->borderColor);
                         glLineWidth(1.0);
                         ofRect(curPos.x, curPos.y, control.width, control.height * getHeightScale());
-                    }
+//                    }
                     
                     growToInclude((ofRectangle&)control);
                 }
@@ -142,20 +142,20 @@ namespace msa {
                 
                 //event stealing controls get drawn on top
                 if(activeControl) {
-                    activeControl->draw();
-                    if(activeControl->hasTitle) {
+                    activeControl->draw();  // TODO: is this drawing the whole heirarchy again? each panel has an active control, which is all sub-panels?
+//                    if(activeControl->parameter && !activeControl->parameter->getName().empty()) {
                         ofNoFill();
-                        ofSetHexColor(config->borderColor);
-                        ofSetLineWidth(1);
-                        ofRect((ofRectangle&)*activeControl);//, stealingY, activeControl->width, activeControl->height);
-                    }
+//                        ofSetColor(config->borderColor);
+//                        ofSetLineWidth(1);
+//                        ofRect((ofRectangle&)*activeControl);//, stealingY, activeControl->width, activeControl->height);
+//                    }
                 }
                 
-                
-                ofNoFill();
-                ofSetColor(128, 0, 0);
-                ofSetLineWidth(1);
-                ofRect(x, y, width, height);
+                // panel border
+//                ofNoFill();
+//                ofSetColor(128, 0, 0);
+//                ofSetLineWidth(1);
+//                ofRect(x, y, width, height);
                 ofPopStyle();
 //                height = 0;
             }
@@ -163,40 +163,34 @@ namespace msa {
             
             //--------------------------------------------------------------
             Control& Panel::addControl(Control *control) {
-                controls.push_back(control);
-                //                width += control->width + config->padding.x;
+                controls.push_back(ControlPtr(control));
                 return *control;
             }
             
             //--------------------------------------------------------------
-            Panel& Panel::addPanel(string name) {
-                return (Panel&)addControl(new Panel(this, name));
+            Panel& Panel::addPanel(Parameter *p) {
+                return (Panel&)addControl(new Panel(this, p));
             }
             
             //--------------------------------------------------------------
-            Button& Panel::addButton(string name, bool &value) {
-                return (Button&)addControl(new Button(this, name, value));
+            BoolButton& Panel::addButton(Parameter *p) {
+                return (BoolButton&)addControl(new BoolButton(this, p));
             }
             
             //--------------------------------------------------------------
-            ColorPicker& Panel::addColorPicker(string name, ofFloatColor &color) {
-                return (ColorPicker&)addControl(new ColorPicker(this, name, color));
+            ColorPicker& Panel::addColorPicker(Parameter *p) {
+//                return (ColorPicker&)addControl(new ColorPicker(this, p));
             }
             
             //--------------------------------------------------------------
-            ComboBox& Panel::addComboBox(string name, int &value, int numChoices, string* choiceTitles) {
-                return (ComboBox&)addControl(new ComboBox(this, name, value, numChoices, choiceTitles));
+            ComboBox& Panel::addComboBox(Parameter *p) {
+                return (ComboBox&)addControl(new ComboBox(this, p));
             }
             
             //--------------------------------------------------------------
-            ComboBox& Panel::addComboBox(string name, int &value, vector<string> &choiceTitles) {
-                return (ComboBox&)addComboBox(name, value, choiceTitles.size(), &choiceTitles[0]);
-            }
-            
-            //--------------------------------------------------------------
-            Content& Panel::addContent(string name, ofBaseDraws &content, float fixwidth) {
+            Content& Panel::addContent(Parameter *p, ofBaseDraws &content, float fixwidth) {
                 if(fixwidth == -1) fixwidth = config->gridSize.x - config->padding.x;
-                return (Content&)addControl(new Content(this, name, content, fixwidth));
+                return (Content&)addControl(new Content(this, p, content, fixwidth));
             }
             
             //--------------------------------------------------------------
@@ -205,105 +199,84 @@ namespace msa {
             }
             
             //--------------------------------------------------------------
-            QuadWarp& Panel::addQuadWarper(string name, ofBaseDraws &baseDraw, ofPoint *pts) {
-                return (QuadWarp&)addControl(new QuadWarp(this, name, baseDraw, pts));
+            QuadWarp& Panel::addQuadWarper(Parameter *p) {
+//                return (QuadWarp&)addControl(new QuadWarp(this, p));
             }
             
             //--------------------------------------------------------------
-            SliderInt& Panel::addSlider(string name, int &value, int min, int max) {
-                return (SliderInt&)addControl(new SliderInt(this, name, value, min, max));
+            SliderInt& Panel::addSliderInt(Parameter *p) {
+                return (SliderInt&)addControl(new SliderT<int>(this, p));
             }
             
             //--------------------------------------------------------------
-            SliderFloat& Panel::addSlider(string name, float &value, float min, float max) {
-                return (SliderFloat&)addControl(new SliderFloat(this, name, value, min, max));
+            SliderFloat& Panel::addSliderFloat(Parameter *p) {
+                return (SliderFloat&)addControl(new SliderT<float>(this, p));
             }
             
             //--------------------------------------------------------------
-            Slider2d& Panel::addSlider2d(string name, ofPoint &value, float xmin, float xmax, float ymin, float ymax) {
-                return (Slider2d&)addControl(new Slider2d(this, name, value, xmin, xmax, ymin, ymax));
+            Slider2d& Panel::addSlider2d(Parameter *p) {
+//                return (Slider2d&)addControl(new Slider2d(this, p));
             }
             
             //--------------------------------------------------------------
-            Title& Panel::addTitle(string name, float height) {
-                return (Title&)addControl(new Title(this, name, height));
+            BoolTitle& Panel::addTitle(Parameter *p, float height) {
+                return (BoolTitle&)addControl(new BoolTitle(this, p, height));
             }
             
             //--------------------------------------------------------------
-            Toggle& Panel::addToggle(string name, bool &value) {
-                return (Toggle&)addControl(new Toggle(this, name, value));
+            BoolToggle& Panel::addToggle(Parameter *p) {
+                return (BoolToggle&)addControl(new BoolToggle(this,p));
             }
             
             
             
             //--------------------------------------------------------------
-            void Panel::addParameter(Parameter& parameter) {
-                ofLogVerbose() << "msa::ControlFreak::gui::Panel::addParameter - " << name << ": " << parameter.getPath();
+            void Panel::addParameter(Parameter *p) {
+                ofLogVerbose() << "msa::ControlFreak::gui::Panel::addParameter - " << parameter->getPath() << ": " << p->getPath();
                 // if parameter already exists, remove it first
                 
-                ParameterGroup *pc = dynamic_cast<ParameterGroup*>(&parameter);
+                ParameterGroup *pc = dynamic_cast<ParameterGroup*>(p);
                 if(pc && pc->getNumParams() > 0) {
-                    Panel &panel = addPanel(parameter.getPath());
+                    Panel &panel = addPanel(pc);
                     panel.addParameters(*pc);
                 }
                 
-                switch(parameter.getType()) {
-                    case Type::kFloat: {
-                        ParameterFloat &p = (ParameterFloat&)parameter;
-                        addSlider(p.getName(), p.getValue(), p.getMin(), p.getMax()).setIncrement(p.getIncrement());
-                    }
-                        break;
-                        
-                    case Type::kInt: {
-                        ParameterInt &p = (ParameterInt&)parameter;
-                        addSlider(p.getName(), p.getValue(), p.getMin(), p.getMax()).setIncrement(p.getIncrement());
-                    }
-                        break;
-                        
+                switch(p->getType()) {
+                    case Type::kFloat: addSliderFloat(p); break;
+                    case Type::kInt: addSliderInt(p); break;
                     case Type::kBool: {
-                        ParameterBool &p = (ParameterBool&)parameter;
-                        if(p.getBang()) addButton(p.getName(), p.getValue());
-                        else addToggle(p.getName(), p.getValue());
+                        ParameterBool &pb = *(ParameterBool*)p;
+                        if(pb.getBang()) addButton(p);
+                        else addToggle(p);
                     }
                         break;
                         
-//                    case Type::kBang: {
-//                        ParameterBool &p = (ParameterBool&)parameter;
-//                        addButton(p.getName(), p.getValue());
-//                    }
-                        break;
-                        
-                    case Type::kNamedIndex: {
-                        ParameterNamedIndex &p = (ParameterNamedIndex&)parameter;
-                        addComboBox(p.getName(), p.getValue(), p.getLabels());
-                    }
-                        break;
-                        
+                    case Type::kNamedIndex: addComboBox(p);
+
                     case Type::kGroup:
                         break;
                         
-                        
                     default:
-                        ofLogWarning() << "msa::ControlFreak::Gui::addParameter - unknown type adding parameter " << parameter.getPath() << " " << parameter.getTypeName();
+                        ofLogWarning() << "msa::ControlFreak::Gui::addParameter - unknown type adding parameter " << p->getPath() << " " << p->getTypeName();
                         break;
                 }
             }
             
             //--------------------------------------------------------------
             void Panel::addParameters(ParameterGroup& parameters) {
-                ofLogVerbose() << "msa::ControlFreak::gui::Panel::addParameters - " << name << ": " << parameters.getPath();
+                ofLogVerbose() << "msa::ControlFreak::gui::Panel::addParameters - " << parameter->getPath() << ": " << parameters.getPath();
                 
                 if(!config) setup();
                 
-                //                addTitle(parameters.getPath());
+//                addTitle(parameters.getPath());
                 //                addToggle(parameters.getPath(), *(new bool));
-                addButton(parameters.getPath(), isOpen).setToggleMode(true);
+//                addButton(parameters.getPath(), isOpen).setToggleMode(true);
                 isOpen = true;
                 int np = parameters.getNumParams();
                 for(int i=0; i<np; i++) {
-                    addParameter(parameters.getParameter(i));
+                    addParameter(&parameters.getParameter(i));
                 }
-                addTitle("");
+//                addTitle("");
             }
             
             //--------------------------------------------------------------
@@ -339,11 +312,11 @@ namespace msa {
                 else {
                     if(controls[0]) {
                         controls[0]->_mousePressed(e);
-                        if(controls[0]->hitTest(e.x, e.y)) setActiveControl(controls[0]);
+                        if(controls[0]->hitTest(e.x, e.y)) setActiveControl(controls[0].get());
                     }
                     if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) {
                         controls[i]->_mousePressed(e);
-                        if(controls[i]->hitTest(e.x, e.y)) setActiveControl(controls[i]);
+                        if(controls[i]->hitTest(e.x, e.y)) setActiveControl(controls[i].get());
                     }
                 }
             }
@@ -378,7 +351,7 @@ namespace msa {
                 bool keyRight	= e.key == OF_KEY_RIGHT;
                 bool keyEnter	= e.key == OF_KEY_RETURN;
                 
-                Control *c = controls[0];
+                Control *c = controls[0].get();
                 if(c->isMouseOver()) {
                     if(keyUp)		c->onKeyUp();
                     if(keyDown)		c->onKeyDown();
@@ -389,7 +362,7 @@ namespace msa {
                 }
                 
                 if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) {
-                    Control *c = controls[i];
+                    Control *c = controls[i].get();
                     if(c->isMouseOver()) {
                         if(keyUp)		c->onKeyUp();
                         if(keyDown)		c->onKeyDown();
@@ -408,9 +381,9 @@ namespace msa {
             }
             
             //--------------------------------------------------------------
-            vector <Control*>&	Panel::getControls() {
-                return controls;
-            }
+//            vector <ControlPtr>&	Panel::getControls() {
+//                return controls;
+//            }
             
         }
     }

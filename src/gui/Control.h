@@ -1,7 +1,10 @@
 #pragma once
 
 #include "ofxMSAInteractiveObject/src/ofxMSAInteractiveObject.h"
+//#include "ofxMSAControlFreak/src/gui/Panel.h"
+//#include "ofxMSAControlFreak/src/gui/Includes.h"
 //#include "ofxMSAControlFreak/src/gui/Config.h"
+//#include "ofxMSAControlFreak/src/ControlFreak.h"
 
 #include "ofxXmlSettings.h"
 
@@ -14,19 +17,15 @@ namespace msa {
             
             class Control : public ofxMSAInteractiveObject {
             public:
-                string		name;		// Human readable name this is what is displayed on screen (includes keyboard shortcut)
-                string		origName;	// the original name (excluding keyboard shortcut)
-//                string		key;		// Machine readable name (don't change this after creating control, used for saving/loading)
-                string		controlType;
-                bool		lock;
-                bool		focused;
+                bool		active;
+                //                bool		focused;
                 bool		newColumn;
-                bool		hasTitle;
                 char		keyboardShortcut;
                 
-                Control(Panel *parent, string name, string controlType);
-                Control& setName(string newName);
-//                Control& setKey(string newKey);
+                //                Control(Panel *parent, string name, string controlType);
+                //                Control& setName(string newName);
+                //                Control& setKey(string newKey);
+                Control(Panel *parent);
                 Control& setConfig(Config *config);
                 Control& setNewColumn(bool b);
                 
@@ -36,8 +35,8 @@ namespace msa {
                 Control& setEmptyColor();
                 Control& setKeyboardShortcut(char c);
                 
-                virtual void readFromXml(ofxXmlSettings &XML) {}
-                virtual void writeToXml(ofxXmlSettings &XML) {}
+                //                virtual void readFromXml(ofxXmlSettings &XML) {}
+                //                virtual void writeToXml(ofxXmlSettings &XML) {}
                 
                 virtual void setup() {}
                 
@@ -65,12 +64,16 @@ namespace msa {
                 virtual void keyPressed( int key ){}
                 virtual void keyReleased( int key ){}
                 
-                
             protected:
                 Config	*config;
                 Panel    *parent;
             };
             
+            
+            typedef std::tr1::shared_ptr<Control> ControlPtr;
+
+            
+              
         }
     }
 }

@@ -1,12 +1,12 @@
 
-#include  "ofxMSAControlFreak/src/gui/Includes.h"
+#include "ofxMSAControlFreak/src/gui/Includes.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
             
-            Content::Content(Panel *parent, string name, ofBaseDraws& content, float fixwidth) : Control(parent, name, "Content") {
+            Content::Content(Panel *parent, Parameter *p, ofBaseDraws& content, float fixwidth) : ControlParameterT<Parameter>(parent, p) {
                 this->content = &content;
                 this->fixwidth  = fixwidth;
                 setup();
@@ -40,7 +40,7 @@ namespace msa {
                 ofRect(0, fixheight, width, config->sliderTextHeight);
                 
                 setTextColor();
-                config->drawString(name, 3, fixheight + 15);
+                config->drawString(parameter->getName(), 3, fixheight + 15);
                 ofDisableAlphaBlending();
                 glPopMatrix();
             }
