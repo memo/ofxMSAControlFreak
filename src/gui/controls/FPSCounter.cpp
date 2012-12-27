@@ -11,13 +11,12 @@ namespace msa {
             }
             
             void FPSCounter::setup() {
-                setSize(config->gridSize.x - config->padding.x, config->titleHeight);
+                width = config->gridSize.x - config->padding.x;
+                height = config->titleHeight;
             }
             
             
-            void FPSCounter::draw(float x, float y) {
-                setPos(x, y);
-                
+            void FPSCounter::draw() {
                 glPushMatrix();
                 glTranslatef(x, y, 0);
                 

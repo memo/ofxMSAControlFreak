@@ -10,9 +10,9 @@ namespace msa {
             public:
                 //--------------------------------------------------------------
                 BoolTitle(Panel *parent, Parameter *p, float height = 0) : ControlParameterT<ParameterBool>(parent, p) {
+                    width = config->gridSize.x - config->padding.x;
                     if(height == 0) height = config->titleHeight;
                     if(p->getName().empty()) height/=2;
-                    setSize(config->gridSize.x - config->padding.x, height);
                 }
                 
                 //--------------------------------------------------------------
@@ -46,10 +46,8 @@ namespace msa {
                 }
                 
                 //--------------------------------------------------------------
-                void draw(float x, float y) {
+                void draw() {
                     if(!parameter) return;
-                    
-                    setPos(x, y);
                     
                     if(parameter->getName().empty()) return;
                     

@@ -8,11 +8,13 @@ namespace msa {
             Control::Control(Panel *parent) {
                 this->parent = parent;
                 if(parent) this->config = parent->config;
+                name = "[COULD NOT READ FROM PARAMETER]";
+                z = 0;
                 active = false;
                 //                this->controlType = controlType;
                 //                setName(name);
                 //                setKey(key);
-                setPos(0, 0);
+                setPosition(0, 0);
                 //                lock	  = false;
                 //                focused	  = false;
                 newColumn = false;

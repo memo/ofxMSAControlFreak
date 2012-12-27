@@ -16,7 +16,7 @@ msa::ControlFreak::gui::Gui            gui;
 float fvar1;
 float fvar2;
 
-bool doDebug = true;
+bool doDebug = false;
 
 //--------------------------------------------------------------
 void testApp::setup(){

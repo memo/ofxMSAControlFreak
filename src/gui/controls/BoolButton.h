@@ -10,7 +10,8 @@ namespace msa {
             public:
                 //--------------------------------------------------------------
                 BoolButton(Panel *parent, Parameter *p) : ControlParameterT<ParameterBool>(parent, p) {
-                    setSize(config->gridSize.x - config->padding.x, config->buttonHeight);
+                    width = config->gridSize.x - config->padding.x;
+                    height = config->buttonHeight;
                 }
                 
                 //--------------------------------------------------------------
@@ -40,14 +41,13 @@ namespace msa {
                 
                 //--------------------------------------------------------------
                 void onRelease(int x, int y, int button) {
+                    parameter->setValue(false);
                     //                if(!beToggle) (*value) = false;
                 }
                 
                 //--------------------------------------------------------------
-                void draw(float x, float y) {
+                void draw() {
                     if(!parameter) return;
-                    
-                    setPos(x, y);
                     
                     if(parameter->getName().empty()) return;
                     
@@ -71,6 +71,10 @@ namespace msa {
                     ofDisableAlphaBlending();
                     
                     glPopMatrix();
+                    
+                    
+                    if(parameter->getValue()) parameter->setValue(false);
+
                 }
             };
             

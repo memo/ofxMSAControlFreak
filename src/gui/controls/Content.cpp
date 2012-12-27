@@ -14,15 +14,15 @@ namespace msa {
             
             void Content::setup() {
                 fixheight = fixwidth * content->getHeight()/content->getWidth();
-                setSize(fixwidth, fixheight + config->sliderTextHeight);
+                width = fixwidth;
+                height = fixheight + config->sliderTextHeight;
             }
             
-            void Content::draw(float x, float y) {
+            void Content::draw() {
                 if(content == NULL) return;
                 
                 if(content->getWidth() == 0 && content->getHeight() ==0) return;
                 
-                setPos(x, y);
                 setup();
                 
                 glPushMatrix();

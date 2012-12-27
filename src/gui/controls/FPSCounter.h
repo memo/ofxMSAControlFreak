@@ -10,7 +10,7 @@ namespace msa {
             public:
                 FPSCounter(Panel *parent);
                 void setup();
-                void draw(float x, float y);
+                void draw();
             };
             
         }

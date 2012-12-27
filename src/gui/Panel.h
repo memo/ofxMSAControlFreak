@@ -31,7 +31,8 @@ namespace msa {
                 Panel(Panel *parent, Parameter *p);
                 ~Panel();
                 
-                void draw(float x, float y);
+                void predraw();
+                void draw();
                 
                 void setActiveControl(Control *control);
                 void releaseActiveControl();
@@ -54,12 +55,31 @@ namespace msa {
                 
                 float getHeightScale();
                 
-                ofRectangle   maxRect;
+                
+                struct Layout {
+                    // for auto-layout
+                    ofRectangle   maxRect;
+                    ofVec2f       curPos;
+                    
+                    ofVec2f getMaxPos() {
+                        return ofVec2f(maxRect.width ? maxRect.x + maxRect.width : ofGetWidth(), maxRect.height ? maxRect.y + maxRect.height : ofGetHeight());
+                    }
+                    
+                    ofVec2f clampPoint(ofVec2f p) {
+                        ofVec2f maxPos(getMaxPos());
+                        return ofVec2f(ofClamp(p.x, maxRect.getLeft(), maxPos.x), ofClamp(p.y, maxRect.getTop(), maxPos.y));
+                    }
+                    
+                };
+                typedef std::tr1::shared_ptr<Layout> LayoutPtr;
+                LayoutPtr layout;
+                
+                
                 vector<ControlPtr>	controls;
+                vector<Control*> controlsToDraw;    // this contains the controls to be drawn, sorted on control.z
                 
                 //some controls can take over focus (e.g. combo box,) which means events should only be passed to them
                 Control*			activeControl;
-                float getNextY(float y);
                 
                 Control			&addControl(Control *control);
                 

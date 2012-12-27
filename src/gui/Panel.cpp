@@ -11,7 +11,6 @@ namespace msa {
                 disableAllEvents();
                 width = 0;
                 height = 0;//ofGetHeight();
-                maxRect.set(0, 0, 0, 0);
                 activeControl = NULL;
 //                setXMLName(p->getName() + "_settings.xml");
                 
@@ -76,80 +75,77 @@ namespace msa {
             }
 
             //--------------------------------------------------------------
-            float Panel::getNextY(float y) {
-                return y;
-                int iy = (int)ceil(y/config->gridSize.y);
-                return (iy) * config->gridSize.y;
-            }
-            
-            
-            //--------------------------------------------------------------
-            void Panel::draw(float x, float y) {//, bool alignRight) {
-                bool alignRight = false;
+            void Panel::predraw() {
+                float openSpeed = 0.02f;
                 
+                // how open is this panel
                 if(isOpen) {
-                    if(heightScale<0.98f) heightScale += (1-heightScale) * 0.2f;
+                    if(heightScale<1.0f-openSpeed) heightScale += (1-heightScale) * openSpeed;
                     else heightScale = 1.0f;
                 } else {
-                    if(heightScale > 0.02) heightScale += (0-heightScale) * 0.2;
+                    if(heightScale > openSpeed) heightScale += (0-heightScale) * openSpeed;
                     else heightScale = 0.0f;
                 }
+
+                // if we are drawing this Panel inside another Panel, use auto-layout parameters of that
+                if(parent) layout = parent->layout;
                 
-                if(parent) maxRect = parent->maxRect;
-                ofVec2f maxPos(maxRect.width ? maxRect.x + maxRect.width : ofGetWidth(), maxRect.height ? maxRect.y + maxRect.height : ofGetHeight());
+                // find the maximum position we are allowed to draw at before wrapping
+                ofVec2f maxPos(layout->getMaxPos());
                 
-                ofPushStyle();
+                // save reference to current position for quick access
+                ofVec2f &curPos = layout->curPos;
                 
-                setPos(ofClamp(x, maxRect.getLeft(), maxPos.x), ofClamp(y, maxRect.getTop(), maxPos.y));
-//                y += config->padding.y * 5;
-                setSize(0, 0);
+                // set start position for panel
+                setPosition(layout->clampPoint(getPosition()));
                 
-                ofVec2f curPos(x, y);
+                // also save this in layout managers position
+                curPos = getPosition();
                 
-                ofSetRectMode(OF_RECTMODE_CORNER);
-                
-                //                ofLogVerbose() << "\n\nDrawing : " << name << " " << maxY << " " << maxRect.x << " " <<maxRect.y << " " <<maxRect.width << " " <<maxRect.height;
+                width = 0;
+                height = 0;
+
+//                ofLogNotice() << "\n\npredraw PANEL : " << name;
                 int numControls = getHeightScale() ? controls.size() : 1;
+                
+                controlsToDraw.clear();
                 
                 for(int i=0; i<numControls; i++) {
                     Control& control = *controls[i];
+//                    ofLogNotice() << "predraw CONTROL : " << control.name << " " << control.getPosition() << " " << control.x << "x" << control.y;
+                    
                     
                     //                    ofLogVerbose() << control.name << " " << control.controlType;
                     
+                    // if forced to be new column, or the height of the control is going to reach across the bottom of the screen, start new column
                     if(control.newColumn || curPos.y + (control.height + config->padding.y) * getHeightScale() > maxPos.y) {
-                        curPos.x += config->gridSize.x;
-                        curPos.y = maxRect.y;
+                        curPos.x += config->gridSize.x; // TODO: use control width?
+                        curPos.y = layout->maxRect.y;
                     }
                     
-                    control.draw(curPos.x, curPos.y);
+                    control.setPosition(curPos.x, curPos.y);
+                    control.predraw();
+                    controlsToDraw.push_back(&control);
                     
                     curPos.y += (control.height + config->padding.y) * getHeightScale();
-                    
-//                    if(control.parameter && !control.parameter->getName().empty()) {
-                        ofNoFill();
-                        ofSetColor(config->borderColor);
-                        glLineWidth(1.0);
-                        ofRect(curPos.x, curPos.y, control.width, control.height * getHeightScale());
-//                    }
-                    
-                    growToInclude((ofRectangle&)control);
                 }
                 
-//                height += config->padding.y * 2;
+                // add some padding at end of group
+                curPos.y += config->padding.y * 2;
                 
                 // draw panel title again so it's on top
-                if(controls[0] && getHeightScale() < 0.9) controls[0]->draw();
+//                if(controls[0] && getHeightScale() < 0.9) controls[0]->draw();
                 
                 //event stealing controls get drawn on top
-                if(activeControl) {
-                    activeControl->draw();  // TODO: is this drawing the whole heirarchy again? each panel has an active control, which is all sub-panels?
+//                if(activeControl) {
+//                    activeControl->draw();  // TODO: is this drawing the whole heirarchy again? each panel has an active control, which is all sub-panels?
 //                    if(activeControl->parameter && !activeControl->parameter->getName().empty()) {
-                        ofNoFill();
+//                        ofNoFill();
 //                        ofSetColor(config->borderColor);
 //                        ofSetLineWidth(1);
 //                        ofRect((ofRectangle&)*activeControl);//, stealingY, activeControl->width, activeControl->height);
 //                    }
-                }
+//                }
                 
                 // panel border
 //                ofNoFill();
@@ -157,7 +153,50 @@ namespace msa {
 //                ofSetLineWidth(1);
 //                ofRect(x, y, width, height);
                 ofPopStyle();
-//                height = 0;
+                width = 0;
+                height = 0;
+            }
+            
+            
+            struct PointerCompare {
+                bool operator()(const Control* l, const Control* r) {
+                    return l->z < r->z;
+                }
+            };
+            
+            //--------------------------------------------------------------
+            void Panel::draw() {
+                ofPushStyle();
+                sort(controlsToDraw.begin(), controlsToDraw.end(), PointerCompare());
+                
+//                ofLogNotice() << "\n\ndraw PANEL : " << name;
+
+                for(int i=0; i<controlsToDraw.size(); i++) {
+                    Control& control = *controlsToDraw[i];
+                    
+//                    ofLogNotice() << "draw CONTROL : " << control.name << " " << control.getPosition() << " " << control.x << "x" << control.y;
+                    
+                    control.draw();
+
+                    //                    if(control.parameter && !control.parameter->getName().empty()) {
+                    ofNoFill();
+                    ofSetColor(config->borderColor);
+                    glLineWidth(1.0);
+                    ofRect(control.x, control.y, control.width, control.height * getHeightScale());
+                    //                    }
+                    
+                        
+                    if(activeControl == &control) {
+                        ofNoFill();
+                        ofSetColor(config->borderColor);
+                        ofSetLineWidth(1);
+                        ofRect((ofRectangle&)*activeControl);//, stealingY, activeControl->width, activeControl->height);
+                    }
+                    
+                    growToInclude((ofRectangle&)control);
+                }
+                
+                ofPopStyle();
             }
             
             
@@ -281,7 +320,13 @@ namespace msa {
             
             //--------------------------------------------------------------
             void Panel::setActiveControl(Control* control) {
+                // if old control exists, put it at the back
+                if(activeControl) activeControl->z = 1000;
+                
                 activeControl = control;
+                
+                // put new active control at the front
+                if(activeControl) activeControl->z = 0;
             }
             
             //--------------------------------------------------------------

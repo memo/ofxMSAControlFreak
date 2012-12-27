@@ -323,8 +323,12 @@ namespace msa {
 //                headerPage->draw(0, 0);		// this is the header
 //                pages[currentPageIndex]->maxRect.set(config.padding.x, headerPage->height + config.padding.y, 0, 0);
 //                pages[currentPageIndex]->draw(config.padding.x, headerPage->height + config.padding.y);
-                pages[currentPageIndex]->maxRect.set(config.padding.x, config.padding.y, 0, 0);
-                pages[currentPageIndex]->draw(config.padding.x, config.padding.y);
+                if(pages[currentPageIndex]->layout == NULL) pages[currentPageIndex]->layout = Panel::LayoutPtr(new Panel::Layout);
+                
+                pages[currentPageIndex]->layout->maxRect.set(config.padding.x, config.padding.y, 0, 0);
+                pages[currentPageIndex]->setPosition(config.padding.x, config.padding.y);
+                pages[currentPageIndex]->predraw();
+                pages[currentPageIndex]->draw();
                 
                 ofPopStyle();
             }

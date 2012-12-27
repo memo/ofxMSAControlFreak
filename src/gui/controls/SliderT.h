@@ -12,7 +12,8 @@ namespace msa {
 
                 //--------------------------------------------------------------
                 SliderT(Panel *parent, Parameter *p) : ControlParameterT<ParameterSingleValueT<T> >(parent, p) {
-                    this->setSize(this->config->gridSize.x - this->config->padding.x, this->config->sliderHeight + this->config->sliderTextHeight);
+                    this->width = this->config->gridSize.x - this->config->padding.x;
+                    this->height = this->config->sliderHeight + this->config->sliderTextHeight;
                 }
 
                 //--------------------------------------------------------------
@@ -75,13 +76,13 @@ namespace msa {
                 }
 
                 //--------------------------------------------------------------
-                void draw(float x, float y) {
+                void draw() {
                     if(!this->parameter) return;
                     
                     ofPushStyle();
                     ofEnableAlphaBlending();
                     ofPushMatrix();
-                    ofTranslate(x, y);
+                    ofTranslate(this->x, this->y);
                     ofFill();
                     
                     float width = this->width;
@@ -89,8 +90,6 @@ namespace msa {
                     Config &c = *this->config;
                     
                     ParameterSingleValueT<T> &p = *this->parameter;
-                    
-                    this->setPos(x, y);
                     
                     float barwidth = ofClamp(p.getMappedTo(0, width), 0, width);
                     

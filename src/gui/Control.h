@@ -17,10 +17,12 @@ namespace msa {
             
             class Control : public ofxMSAInteractiveObject {
             public:
+                int         z;  // draw order (0 draw last, i.e. drawn on top)
                 bool		active;
                 //                bool		focused;
                 bool		newColumn;
                 char		keyboardShortcut;
+                string      name;
                 
                 //                Control(Panel *parent, string name, string controlType);
                 //                Control& setName(string newName);
@@ -40,8 +42,9 @@ namespace msa {
                 
                 virtual void setup() {}
                 
-                virtual void draw(float x, float y) {}
-                virtual void draw() { draw(x, y); }
+//                virtual void draw(float x, float y) {}
+                virtual void predraw() {}           // first pass during draw, updating position, z-sorting etc.
+                virtual void draw() {}
                 
                 virtual void onKeyUp() {}			// up key is pressed
                 virtual void onKeyDown() {}			// down key is pressed

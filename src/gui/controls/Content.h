@@ -14,7 +14,7 @@ namespace msa {
                 
                 Content(Panel *parent, Parameter *p, ofBaseDraws& content, float fixwidth=250.0);
                 void setup();
-                void draw(float x, float y);
+                void draw();
             };
             
         }

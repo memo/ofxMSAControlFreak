@@ -10,7 +10,8 @@ namespace msa {
             public:
                 //--------------------------------------------------------------
                 BoolToggle(Panel *parent, Parameter *p) : ControlParameterT<ParameterBool>(parent, p) {
-                    setSize(config->gridSize.x - config->padding.x, config->buttonHeight);
+                    width = config->gridSize.x - config->padding.x;
+                    height = config->buttonHeight;
                 }
                 
                 //--------------------------------------------------------------
@@ -32,7 +33,7 @@ namespace msa {
                 //--------------------------------------------------------------
                 void onPress(int x, int y, int button) {
                     if(!parameter) return;
-                    parameter->setValue(true);
+                    toggle();
                     //                beenPressed = true;
                     //                if(beToggle) (*value) = !(*value);
                     //                else (*value) = true;
@@ -44,10 +45,8 @@ namespace msa {
                 }
                 
                 //--------------------------------------------------------------
-                void draw(float x, float y) {
+                void draw() {
                     if(!parameter) return;
-                    
-                    setPos(x, y);
                     
                     glPushMatrix();
                     glTranslatef(x, y, 0);
