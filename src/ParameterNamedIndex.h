@@ -17,12 +17,14 @@ namespace msa {
 		class ParameterNamedIndex : public ParameterInt {
 		public:
 			
-//			friend class ParameterGroup;
+			friend class ParameterGroup;
             
-			ParameterNamedIndex(ParameterGroup *parent, string name)
-            : ParameterInt(parent, name, Type::kNamedIndex) { setClamp(false); }
-            
-            
+			ParameterNamedIndex(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kNamedIndex)
+            : ParameterInt(parent, name, typeIndex) { setClamp(false); }
+          
+            template <typename T> T operator=(const T & v) { kCheckBadParameter(T()); this->setValue(v); }
+			template <typename T> operator T() const { kCheckBadParameter(T()); return this->getValue(); }
+
 			ParameterNamedIndex& setLabels(int count, string* labels);
             ParameterNamedIndex& setLabels(vector<string>& labels);
             ParameterNamedIndex& setLabels(int count, ...);
@@ -30,13 +32,15 @@ namespace msa {
 			vector<string>& getLabels();
 			string getSelectedLabel();
 			
+		protected:
+			vector<string> _labels;
+            
             // from Parameter
             virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
             virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
 			
-		protected:
-			
-			vector<string> _labels;
+            // dummy parameter, sent back from 'getParameter' functions, if parameter can't be found
+            static ParameterNamedIndex dummy;
 		};
 
 	}

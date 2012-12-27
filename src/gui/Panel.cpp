@@ -260,16 +260,17 @@ namespace msa {
                     }
                         break;
                         
-                    case Type::kToggle: {
+                    case Type::kBool: {
                         ParameterBool &p = (ParameterBool&)parameter;
-                        addToggle(p.getName(), p.getValue());
+                        if(p.getBang()) addButton(p.getName(), p.getValue());
+                        else addToggle(p.getName(), p.getValue());
                     }
                         break;
                         
-                    case Type::kBang: {
-                        ParameterBool &p = (ParameterBool&)parameter;
-                        addButton(p.getName(), p.getValue());
-                    }
+//                    case Type::kBang: {
+//                        ParameterBool &p = (ParameterBool&)parameter;
+//                        addButton(p.getName(), p.getValue());
+//                    }
                         break;
                         
                     case Type::kNamedIndex: {
@@ -277,6 +278,10 @@ namespace msa {
                         addComboBox(p.getName(), p.getValue(), p.getLabels());
                     }
                         break;
+                        
+                    case Type::kGroup:
+                        break;
+                        
                         
                     default:
                         ofLogWarning() << "msa::ControlFreak::Gui::addParameter - unknown type adding parameter " << parameter.getPath() << " " << parameter.getTypeName();
@@ -298,7 +303,7 @@ namespace msa {
                 for(int i=0; i<np; i++) {
                     addParameter(parameters.getParameter(i));
                 }
-//                addTitle("");
+                addTitle("");
             }
             
             //--------------------------------------------------------------

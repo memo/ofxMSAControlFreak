@@ -16,16 +16,16 @@ using namespace std;
 namespace msa {
 	namespace ControlFreak {
         
-        void setPathDivider(string divider = ".");
-        string getPathDivider();
+        void setPathDivider(char divider = '.');
+        char getPathDivider();
 
         namespace Type {
             enum Index {
                 kUnknown,
                 kFloat,
                 kInt,
-                kToggle,
-                kBang,
+                kBool,
+//                kBang,
                 kNamedIndex,
                 kGroup,
                 kVec2f,

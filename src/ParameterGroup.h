@@ -43,13 +43,16 @@ namespace msa {
             void update();
             
             
+            // remove all parameters
+            void clear();
+            
             
             //---- Adding parameters -----------------------
             
             // creates and adds a parameter
 			ParameterInt& addInt(string name);
 			ParameterFloat& addFloat(string name);
-			ParameterBool& addToggle(string name);
+			ParameterBool& addBool(string name);
 			ParameterBool& addBang(string name);
 			ParameterNamedIndex& addNamedIndex(string name);
             Parameter& addVec2(string name);
@@ -86,11 +89,6 @@ namespace msa {
             ParameterNamedIndex& getNamedIndex(string path);
             ParameterGroup& getGroup(string path);
             
-            // ADVANCED, RESERVED FOR FUTURE USE
-//            template <typename T>
-//            ParameterValueT<T>& getValue(string path) const;
-            
-            
             // [] operator overloads for above
             //	Parameter& operator[](int index);
             //  Parameter& operator[](string path);
@@ -104,18 +102,35 @@ namespace msa {
             
             // keep track of stack of groups when creating with startGroup, endGroup
             stack<ParameterGroup*> _groupStack;
+            
+            
+            // generic function to get value as any type (type==parameter class, not basic type)
+            template <typename T>
+            T& get(string path);
+            
+            static ParameterGroup dummy;
         };
         
         
         //--------------------------------------------------------------
         //--------------------------------------------------------------
         //--------------------------------------------------------------
-//        template <typename T>
-//        ParameterValueT<T>& ParameterGroup::getValue(string path) const {
-//            ParameterValueT<T> *p = (ParameterValueT<T>*)&getParameter(path);
-//            return *p;// ? p->getValue() : T();
-//        }
-        
+        template <typename T>
+        T& ParameterGroup::get(string path) {
+            T *p = NULL;
+            try {
+                Parameter &pp = getParameter(path);
+                p = dynamic_cast<T*>(&pp);
+            } catch(...) {
+                ofLogError() << "msa::ControlFreak::ParameterGroup::get<T> " << path << " - EXCEPTION in group " << getPath();
+            }
+            if(p == NULL) {
+                ofLogError() << "msa::ControlFreak::ParameterGroup::get<T> " << path << " is of wrong type in group " << getPath();
+                return T::dummy;//static_cast<T&>(badParameter);
+            } else {
+                return *p;
+            }
+        }
         
     }
 }

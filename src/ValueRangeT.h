@@ -1,83 +1,118 @@
 /*
  
- Template base class for any Parameter that can have a value (either simple or complex), with a range
-
- Protected constructor, can only be created via ParameterGroup
+ Interface base class for any Value (either simple or complex) that can have a range 
  
  */
 
 
 
+//msa::ControlFreak::AnyValue i(new msa::ControlFreak::ValueContainerT<float>);
+//msa::ControlFreak::AnyValue i;//(new msa::ControlFreak::ValueContainerT<float>);
+
+//msa::ControlFreak::ValueContainerI &i = *new msa::ControlFreak::ValueContainerT<float>;
+
+
+void main() {
+    //    msa::ControlFreak::ValueT<float> f;
+    //    Poco::Any i;
+    
+    //    i.setValue(4);
+    //    ofLogVerbose() << (float)i;
+    //    i = 3;
+    //    ofLogVerbose() << (float)i;
+    //    i = 2.3f;
+    //    ofLogVerbose() << (float)i;
+    //    i = 2.3f;
+    //    ofLogVerbose() << (int)i;
+    //    i = 2.3;
+    //    ofLogVerbose() << (float)i;
+    
+    //    ofLogVerbose() << "setting to int";
+    //    i.setValueType(new msa::ControlFreak::ValueContainerT<int>);
+    //    i = 8;
+    //    ofLogVerbose() << (int)i;
+    //    i = 7;
+    //    ofLogVerbose() << (float)i;
+    //    i = 9.5;
+    //    ofLogVerbose() << (int)i;
+    
+    
+    //    ofLogVerbose() << "setting to ofVec3f";
+    //    i.setValueType(new msa::ControlFreak::ValueContainerT<ofVec3f>);
+    //
+    //    i = ofVec3f(3, 4, 5);
+    //    ofLogVerbose() << i.getValue<ofVec3f>();
+    ////    i = 3;
+    //    ofTranslate(i);
+    //    ofLogVerbose() << i.getValue<ofVec3f>();
+    ////
+    ////    i = 6*2.5 + 10;
+    ////    ofLogVerbose() << (float)i;
+    //    
+    //    ofLogVerbose() << "****************\n";
+}
+
+
 #pragma once
 
-#include "ofxMSAControlFreak/src/Parameter.h"
-//#include "ofxMSAControlFreak/src/ValueT.h"
+#include "ofMain.h"
 
 namespace msa {
 	namespace ControlFreak {
 		
 		template <typename T>
-		class ParameterValueT : public Parameter {
+		class ValueRangeT {
 		public:
-
+            
+            ValueRangeT();
+            
 			// set and get value
-            ParameterValueT<T>& setValue(T v);
+            ValueRangeT<T>& setValue(T v);
 			T& getValue() const;
             
-            // whether the value changed this frame or not
-            bool hasChanged();
-            
             // operators for assigning and casting (same functionality as above)
-            T operator=(const T & v) { kCheckBadParameter(T()); this->setValue(v); }
-			operator T() const { kCheckBadParameter(T()); return this->getValue(); }
+            T operator=(const T & v) { this->setValue(v); }
+			operator T() const { return this->getValue(); }
 			
             // set min/max range values
-			ParameterValueT<T>& setRange(T vmin, T vmax);
-			T getMin() const;
-			T getMax() const;
-
+			ValueRangeT<T>& setRange(T vmin, T vmax);
+			T& getMin() const;
+			T& getMax() const;
+            
             // set and get whether clamping to range is enabled
-			ParameterValueT<T>& setClamp(bool b);
+			ValueRangeT<T>& setClamp(bool b);
             bool getClamp() const;
             
             // set and get whether snapping is enabled.
             // if enabled, value is snapped to the closest increment (as set by setIncrement())
-            ParameterValueT<T>& setSnap(bool b);
+            ValueRangeT<T>& setSnap(bool b);
             bool getSnap() const;
             
             // set and get increment amount, which snapping snaps to
             // if snapping is disabled, sliders still use this value when using keyboard up/down or inc/dec
-            ParameterValueT<T>& setIncrement(T inc);
-            T getIncrement() const;
-
+            ValueRangeT<T>& setIncrement(T inc);
+            T& getIncrement() const;
+            
             
             // increase or decrease by increment amount
-            ParameterValueT<T>& inc();
-            ParameterValueT<T>& dec();
+            ValueRangeT<T>& inc();
+            ValueRangeT<T>& dec();
             
             // set and get as 0...1 values normalized to min/max range
-			ParameterValueT<T>& setNormalized(float norm);
+			ValueRangeT<T>& setNormalized(float norm);
 			float getNormalized() const;
             
             // set and get mapped to a new range
-            ParameterValueT<T>& setMappedFrom(T v, T inputMin, T inputMax);
+            ValueRangeT<T>& setMappedFrom(T v, T inputMin, T inputMax);
             T getMappedTo(T newMin, T newMax) const;
             
             
             // OPTIONAL
             // track variables and keep values in sync (send NULL to clear)
-            virtual ParameterValueT<T>& trackVariable(T *pv);
-
-			
-            // add a controller TODO: add external controllers instead of internal?
-//			ParameterValueT<T>& addController(Controller *controller);
-//			void updateControllers();
-            //			void checkValueHasChanged();
-			
+            virtual ValueRangeT<T>& trackVariable(T *pv);
             
+			
         protected:
-            ParameterValueT(ParameterGroup *parent, string name, Type::Index typeIndex);
-            
             // override these functions to implement clamping and snapping for any type
             virtual void clamp() {};
             virtual void snap() {};
@@ -87,11 +122,10 @@ namespace msa {
             // while setValue is used externally, that also does clamp and snap
             // this just sets the variable
             void _setValue(T v);
+
+            void update();
             
-            // from Parameter:
-            virtual void writeToXml(ofxXmlSettings &xml, bool bFull) = 0;
-            virtual void readFromXml(ofxXmlSettings &xml, bool bFull) = 0;
-            virtual void update();
+            
             
 		private:
             // pointer to externally stored variable. if set to NULL, points to internal member
@@ -104,10 +138,8 @@ namespace msa {
             
             T   _oldValue;
             
-            
 			bool    _doClamp;
             bool    _doSnap;
-			vector<Controller*>		_controllers;
 		};
         
         
@@ -115,9 +147,8 @@ namespace msa {
         //--------------------------------------------------------------
         //--------------------------------------------------------------
 		template <typename T>
-        ParameterValueT<T>::ParameterValueT(ParameterGroup *parent, string name, Type::Index typeIndex)
-        : Parameter(parent, name, typeIndex) {
-//            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::ParameterValueT " <<  getPath();
+        ValueRangeT<T>::ValueRangeT() {
+            ofLogVerbose() << "msa::ControlFreak::ValueRangeT::ValueRangeT";
             trackVariable(NULL);
             setClamp(false);
             setSnap(false);
@@ -126,9 +157,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         template <typename T>
-        ParameterValueT<T>& ParameterValueT<T>::setValue(T v) {
-            kCheckBadParameter(*this);
-            
+        ValueRangeT<T>& ValueRangeT<T>::setValue(T v) {
             // set value and clamp if nessecary
             _setValue(v);
             if(_doClamp) clamp();
@@ -141,63 +170,42 @@ namespace msa {
         
         //--------------------------------------------------------------
         template <typename T>
-        void ParameterValueT<T>::_setValue(T v) {
-            kCheckBadParameter();
-            
+        void ValueRangeT<T>::_setValue(T v) {
             *_pvalue = v;
 		}
         
         //--------------------------------------------------------------
 		template <typename T>
-		T& ParameterValueT<T>::getValue() const {
-            kCheckBadParameter();
-            
+		T& ValueRangeT<T>::getValue() const {
 			return *_pvalue;
 		}
         
-        
-        //--------------------------------------------------------------
-		template <typename T>
-        bool ParameterValueT<T>::hasChanged() {
-//            bool ret = (getValue() != _oldValue);
-//            if(ret) _oldValue = getValue();
-            return true;
-        }
-
         //--------------------------------------------------------------
         template <typename T>
-		ParameterValueT<T>& ParameterValueT<T>::setRange(T vmin, T vmax) {
-            kCheckBadParameter(*this);
-            
+		ValueRangeT<T>& ValueRangeT<T>::setRange(T vmin, T vmax) {
             _min = vmin;
             _max = vmax;
-
+            
 			setValue(getValue());
 			return *this;
 		}
         
         //--------------------------------------------------------------
 		template <typename T>
-		T ParameterValueT<T>::getMin() const {
-            kCheckBadParameter(T());
-            
+		T& ValueRangeT<T>::getMin() const {
 			return _min;
 		}
 		
         //--------------------------------------------------------------
 		template <typename T>
-		T ParameterValueT<T>::getMax() const {
-            kCheckBadParameter(T());
-            
+		T& ValueRangeT<T>::getMax() const {
 			return _max;
 		}
-
+        
         
         //--------------------------------------------------------------
 		template <typename T>
-		ParameterValueT<T>& ParameterValueT<T>::setClamp(bool b) {
-            kCheckBadParameter(*this);
-            
+		ValueRangeT<T>& ValueRangeT<T>::setClamp(bool b) {
 			_doClamp = b;
 			if(_doClamp) clamp();
             return *this;
@@ -205,17 +213,13 @@ namespace msa {
 		
         //--------------------------------------------------------------
 		template <typename T>
-		bool ParameterValueT<T>::getClamp() const {
-            kCheckBadParameter(false);
-            
+		bool ValueRangeT<T>::getClamp() const {
 			return _doClamp;
 		}
         
         //--------------------------------------------------------------
 		template <typename T>
-        ParameterValueT<T>& ParameterValueT<T>::setSnap(bool b) {
-            kCheckBadParameter(*this);
-            
+        ValueRangeT<T>& ValueRangeT<T>::setSnap(bool b) {
             _doSnap = b;
 			if(_doSnap) snap();
             return *this;
@@ -223,44 +227,34 @@ namespace msa {
         
         //--------------------------------------------------------------
 		template <typename T>
-        bool ParameterValueT<T>::getSnap() const {
-            kCheckBadParameter(false);
-            
+        bool ValueRangeT<T>::getSnap() const {
             return _doSnap;
         }
-
+        
         //--------------------------------------------------------------
 		template <typename T>
-		ParameterValueT<T>& ParameterValueT<T>::setIncrement(T inc) {
-            kCheckBadParameter(*this);
-            
+		ValueRangeT<T>& ValueRangeT<T>::setIncrement(T inc) {
             _inc = inc;
             return *this;
         }
         
         //--------------------------------------------------------------
 		template <typename T>
-		T ParameterValueT<T>::getIncrement() const {
-            kCheckBadParameter(T());
-            
+		T& ValueRangeT<T>::getIncrement() const {
             return _inc;
         }
         
         
         //--------------------------------------------------------------
 		template <typename T>
-		ParameterValueT<T>& ParameterValueT<T>::inc() {
-            kCheckBadParameter(*this);
-            
+		ValueRangeT<T>& ValueRangeT<T>::inc() {
             setValue(getValue() + getIncrement());
             return *this;
         }
-    
+        
         //--------------------------------------------------------------
 		template <typename T>
-		ParameterValueT<T>& ParameterValueT<T>::dec() {
-            kCheckBadParameter(*this);
-            
+		ValueRangeT<T>& ValueRangeT<T>::dec() {
             setValue(getValue() - getIncrement());
             return *this;
         }
@@ -268,85 +262,47 @@ namespace msa {
         
         //--------------------------------------------------------------
 		template <typename T>
-		ParameterValueT<T>& ParameterValueT<T>::setNormalized(float norm) {
-            kCheckBadParameter(*this);
-            
+		ValueRangeT<T>& ValueRangeT<T>::setNormalized(float norm) {
 			setValue(setMappedFrom(norm, 0, 1));
             return *this;
 		}
 		
         //--------------------------------------------------------------
         template <typename T>
-        float ParameterValueT<T>::getNormalized() const {
-            kCheckBadParameter(0);
-            
+        float ValueRangeT<T>::getNormalized() const {
 			return getMappedTo(0, 1);
 		}
 		
         
         //--------------------------------------------------------------
 		template <typename T>
-		ParameterValueT<T>& ParameterValueT<T>::setMappedFrom(T v, T inputMin, T inputMax) {
-            kCheckBadParameter(*this);
-            
-//			setValue(ofMap(v, inputMin, inputMax, getMin(), getMax()));
+		ValueRangeT<T>& ValueRangeT<T>::setMappedFrom(T v, T inputMin, T inputMax) {
+            //			setValue(ofMap(v, inputMin, inputMax, getMin(), getMax()));
             setValue(  ((v - inputMin) / (inputMax - inputMin) * (getMax() - getMin()) + getMin())  );
             return *this;
 		}
 		
         //--------------------------------------------------------------
 		template <typename T>
-		T ParameterValueT<T>::getMappedTo(T newMin, T newMax) const {
-            kCheckBadParameter(T());
-            
-//			return ofMap(getValue(), getMin(), getMax(), newMin, newMax);
+		T ValueRangeT<T>::getMappedTo(T newMin, T newMax) const {
+            //			return ofMap(getValue(), getMin(), getMax(), newMin, newMax);
             return ((getValue() - getMin()) / (getMax() - getMin()) * (newMax - newMin) + newMin);
 		}
 		
-
+        
         //--------------------------------------------------------------
 		template <typename T>
-        ParameterValueT<T>& ParameterValueT<T>::trackVariable(T *pv) {
-//            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::trackVariable " <<  getPath() << " " << pv;
-            kCheckBadParameter(*this);
-            
+        ValueRangeT<T>& ValueRangeT<T>::trackVariable(T *pv) {
+            ofLogVerbose() << "msa::ControlFreak::ValueRangeT::trackVariable";
             _pvalue = pv ? pv : &_value;
             return *this;
         }
         
-
-        //--------------------------------------------------------------
-//		template <typename T>
-//		ParameterValueT<T>& ParameterValueT<T>::addController(Controller *controller) {
-//            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::addController " <<  getPath() << " " << controller;
-////			controller->setParam(this);
-//			controller->updateController();
-//			_controllers.push_back(controller);
-//			return *this;
-//		}
-//		
-//		
-//        //--------------------------------------------------------------
-//		template <typename T>
-//		void ParameterValueT<T>::updateControllers() {
-//			for(int i=0; i<_controllers.size(); i++) _controllers[i]->updateController();
-//		}
-		
-		//		void ParameterValueT<T>::checkValueHasChanged() {
-		//			for(int i=0; i<_controllers.size(); i++) _controllers[i]->checkValueHasChanged();
-		//		}
-
-		
         //--------------------------------------------------------------
         template <typename T>
-        void ParameterValueT<T>::update() {
-            kCheckBadParameter();
-            
-            Parameter::update();
+        void ValueRangeT<T>::update() {
             if(_doClamp) clamp();
             if(_doSnap) snap();
-            
-//            _oldValue = getValue();
         }
         
         

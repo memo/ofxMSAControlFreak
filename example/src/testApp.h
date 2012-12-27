@@ -21,8 +21,6 @@ public:
 	void mouseDragged(int x, int y, int button);
 	void mousePressed(int x, int y, int button);
 	void mouseReleased(int x, int y, int button);
-    msa::ControlFreak::ParameterGroup      params;
-
 };
 
 #endif

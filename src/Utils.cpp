@@ -14,15 +14,15 @@ namespace msa {
 	namespace ControlFreak {
         
         
-        static string _pathDivider = ".";
+        static char _pathDivider = '.';
         
         //--------------------------------------------------------------
-        void setPathDivider(string divider) {
+        void setPathDivider(char divider) {
             _pathDivider = divider;
         }
         
         //--------------------------------------------------------------
-        string getPathDivider() {
+        char getPathDivider() {
             return _pathDivider;
         }
         
@@ -43,8 +43,8 @@ namespace msa {
                 "unknown",
 				"float",
 				"int",
-				"toggle",
-				"bang",
+				"bool",
+//				"bang",
 				"namedindex",
                 "group",
                 "vec2f",

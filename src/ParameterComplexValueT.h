@@ -14,22 +14,20 @@ namespace msa {
         template <typename T>
         class ParameterComplexValueT : public ParameterGroup {
         public:
-
+            
+		protected:
 			ParameterComplexValueT(ParameterGroup *parent, string name, Type::Index typeIndex)
             : ParameterGroup(parent, name, typeIndex) {
-                ofLogVerbose() << "msa::ControlFreak::ParameterComplexValueT::ParameterComplexValueT " <<  this->getPath();
-                
+//                ofLogVerbose() << "msa::ControlFreak::ParameterComplexValueT::ParameterComplexValueT " <<  this->getPath();
             }
-
+            
+            // from ParameterValueT
+            virtual void clamp() {}
+            virtual void snap() {}
             
             // from Parameter
             virtual void writeToXml(ofxXmlSettings &xml, bool bFull) { ParameterGroup::writeToXml(xml, bFull); }
             virtual void readFromXml(ofxXmlSettings &xml, bool bFull) { ParameterGroup::readFromXml(xml, bFull); }
-            
-		protected:
-            
-            virtual void clamp() {}
-            virtual void snap() {}
         };
         
         //--------------------------------------------------------------

@@ -11,22 +11,38 @@
 namespace msa {
     namespace ControlFreak {
         
+        Parameter Parameter::dummy(NULL, "DUMMY", Type::kUnknown);
+        ParameterGroup ParameterGroup::dummy(NULL, "DUMMY", Type::kUnknown);
+        ParameterInt ParameterInt::dummy(NULL, "DUMMY", Type::kUnknown);
+        ParameterFloat ParameterFloat::dummy(NULL, "DUMMY", Type::kUnknown);
+        ParameterBool ParameterBool::dummy(NULL, "DUMMY", Type::kUnknown);
+        ParameterNamedIndex ParameterNamedIndex::dummy(NULL, "DUMMY", Type::kUnknown);
+        
+        
         //--------------------------------------------------------------
 		ParameterGroup::ParameterGroup(ParameterGroup *parent, string name, Type::Index typeIndex)
         : Parameter(parent, name, typeIndex) {
-            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup " <<  getPath();
-            _groupStack.push(this); // start with this as current group for adding
+            clear();
+//            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup " <<  getPath();
         }
 
         //--------------------------------------------------------------
 		ParameterGroup::~ParameterGroup() {
             ofLogVerbose() << "msa::ControlFreak::ParameterGroup::~ParameterGroup " <<  getPath();
-			int np = getNumParams();
-			for(int i=0; i<np; i++) delete _paramArr[i];
+            clear();
 		}
         
-        
-        
+        //--------------------------------------------------------------
+		void ParameterGroup::clear() {
+            int np = getNumParams();
+            for(int i=0; i<np; i++) delete _paramArr[i];
+            _paramArr.clear();
+            _paramMap.clear();
+            
+            while (!_groupStack.empty()) _groupStack.pop();
+            _groupStack.push(this); // start with this as current group for adding
+        }
+
         //--------------------------------------------------------------
 		// if parameter non empty, saves the filename
 		void ParameterGroup::setFilename(string filename) {
@@ -73,8 +89,6 @@ namespace msa {
         }
         
         
-        
-        
         //--------------------------------------------------------------
         void ParameterGroup::update() {
             Parameter::update();
@@ -86,8 +100,6 @@ namespace msa {
         }
         
 
-        
-        
         //--------------------------------------------------------------
 		ParameterInt& ParameterGroup::addInt(string name) {
 			return (ParameterInt&) addParameter(new ParameterInt(_groupStack.top(), name, Type::kInt));
@@ -99,13 +111,19 @@ namespace msa {
 		}
 		
         //--------------------------------------------------------------
-		ParameterBool& ParameterGroup::addToggle(string name) {
-			return (ParameterBool&) addParameter(new ParameterBool(_groupStack.top(), name, Type::kToggle));
+		ParameterBool& ParameterGroup::addBool(string name) {
+            ParameterBool *p = new ParameterBool(_groupStack.top(), name, Type::kBool);
+            p->setBang(false);
+            addParameter(p);
+			return *p;
 		}
 		
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBang(string name) {
-			return (ParameterBool&) addParameter(new ParameterBool(_groupStack.top(), name, Type::kBang));
+            ParameterBool *p = new ParameterBool(_groupStack.top(), name, Type::kBool);
+            p->setBang(true);
+            addParameter(p);
+			return *p;
 		}
 		
         //--------------------------------------------------------------
@@ -137,11 +155,18 @@ namespace msa {
             ParameterGroup *currentGroup = _groupStack.top();
             // avoid infinite recursion
             if(currentGroup == this) {
-                _paramMap[param->getName()] = param;
-                _paramArr.push_back(param);
-                param->setParent(this);
-                getNumParams();	// to check if correctly added to both containers
-                return *param;
+                map<string, Parameter*>::iterator p = _paramMap.find(param->getName());
+                if(p == _paramMap.end()) {
+                    _paramMap[param->getName()] = param;
+                    _paramArr.push_back(param);
+                    param->setParent(this);
+                    getNumParams();	// to check if correctly added to both containers
+                    return *param;
+                } else {
+                    ofLogError() << "msa::ControlFreak::ParameterGroup::addParameter - " << param->getPath() << " - path already exists, returning existing parameter";
+                    delete param;
+                    return *_paramMap[param->getName()];
+                }
             } else {
                 return currentGroup->addParameter(param);
             }
@@ -165,42 +190,55 @@ namespace msa {
         //--------------------------------------------------------------
         Parameter& ParameterGroup::getParameter(string path) {
             //            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::getParameter " << path;
-            Parameter *p = _paramMap.at(path);
-            return *p;
-            //            vector<string> pathbits = ofSplitString(path, getPathDivider(), true, true);
-            //            ParameterGroup *p = this;
-            //            for(int i=0; i<pathbits.size(); i++) {
-            //                //                p = &_paramMap[pathbits[i]];
-            //                // TODO:
-            //            }
-            //			return *_paramMap[path];
+            
+            // look for path divider
+            size_t pathDividerPos = path.find(getPathDivider());
+            
+            // if path divider doesn't exist, search this group
+            if(pathDividerPos == string::npos) {
+                
+                // if parameter doesn't exist, return with error
+                if(_paramMap.find(path) == _paramMap.end()) {
+                    ofLogError() << "msa::ControlFreak::ParameterGroup::getParameter - " << path << " does not exist in Group: " << getPath();
+                    return Parameter::dummy;
+                } else {
+                    return *_paramMap[path];
+                }
+            } else {
+                // there is path divider, split the string and search the first group
+                
+                string part1 = path.substr(0, pathDividerPos);
+                string part2 = path.substr(pathDividerPos+1);
+//                ofLogNotice() << "FIRST GROUP: " << part1 << " PART2: " << part2;
+                return getGroup(part1).getParameter(part2);
+                
+            }
         }
         
         //--------------------------------------------------------------
         ParameterInt& ParameterGroup::getInt(string path) {
-            return dynamic_cast<ParameterInt&>(getParameter(path));
+            return get<ParameterInt>(path);
         }
         
         //--------------------------------------------------------------
         ParameterFloat& ParameterGroup::getFloat(string path) {
-            return dynamic_cast<ParameterFloat&>(getParameter(path));
+            return get<ParameterFloat>(path);
         }
         
         //--------------------------------------------------------------
         ParameterBool& ParameterGroup::getBool(string path) {
-            return dynamic_cast<ParameterBool&>(getParameter(path));
+            return get<ParameterBool>(path);
         }
         
         //--------------------------------------------------------------
         ParameterNamedIndex& ParameterGroup::getNamedIndex(string path) {
-            return dynamic_cast<ParameterNamedIndex&>(getParameter(path));
+            return get<ParameterNamedIndex>(path);
         }
         
         //--------------------------------------------------------------
         ParameterGroup& ParameterGroup::getGroup(string path) {
-            return dynamic_cast<ParameterGroup&>(getParameter(path));
+            return get<ParameterGroup>(path);
         }
-        
         
         
         //--------------------------------------------------------------

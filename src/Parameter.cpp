@@ -14,11 +14,10 @@ namespace msa {
 	namespace ControlFreak {
 
         
-        
         //--------------------------------------------------------------
         Parameter::Parameter(ParameterGroup *parent, string name, Type::Index typeIndex)
         : _parent(parent), _name(name), _typeIndex(typeIndex) {
-            ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter " <<  getPath();
+//            ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter " <<  getPath();
         }
         
         //--------------------------------------------------------------

@@ -15,23 +15,23 @@ namespace msa {
         class ParameterSingleValueT : public ParameterValueT<T> {
         public:
 
+            T operator=(const T & v) { kCheckBadParameter(T()); this->setValue(v); }
+			operator T() const { kCheckBadParameter(T()); return this->getValue(); }
+
+		protected:
             ParameterSingleValueT(ParameterGroup *parent, string name, Type::Index typeIndex)
             : ParameterValueT<T>(parent, name, typeIndex) {
-                ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::ParameterSingleValueT " <<  this->getPath();
+//                ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::ParameterSingleValueT " <<  this->getPath();
                 this->setValue(0);
             }
             
-            T operator=(const T & v) { this->setValue(v); }
-			operator T() const { return this->getValue(); }
-
-
+            // from ParameterValueT
+            virtual void clamp();
+            virtual void snap();
+            
             // from Parameter
             virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
             virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
-            
-		protected:
-            virtual void clamp();
-            virtual void snap();
         };
         
         
@@ -41,6 +41,8 @@ namespace msa {
 		template <typename T>
         void ParameterSingleValueT<T>::writeToXml(ofxXmlSettings &xml, bool bFull) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::writeToXml " << this->getPath();
+            
+            kCheckBadParameter();
             
             Parameter::writeToXml(xml, bFull);  // IMPORTANT: always start with parents write to xml
             xml.addAttribute(this->_xmlTag, "value", this->getValue(), this->_xmlTagId);
@@ -56,21 +58,26 @@ namespace msa {
         //--------------------------------------------------------------
 		template <typename T>
         void ParameterSingleValueT<T>::readFromXml(ofxXmlSettings &xml, bool bFull) {
+            kCheckBadParameter();
+            
 			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::readFromXml " << this->getPath();
         }
         
         //--------------------------------------------------------------
         template <typename T>
         void ParameterSingleValueT<T>::clamp() {
+            kCheckBadParameter();
+            
             this->_setValue( this->getValue() < this->getMin() ? this->getMin() : this->getValue() > this->getMax() ? this->getMax() : this->getValue() );
         }
         
         //--------------------------------------------------------------
         template <typename T>
         void ParameterSingleValueT<T>::snap() {
+            kCheckBadParameter();
 //            float inv = 1.0f / this->getIncrement();
-            int ival = floor(this->getValue() / this->getIncrement());
-            this->_setValue((T) (ival * this->getIncrement()) );
+            int ival = floor((this->getValue() - this->getMin()) / this->getIncrement());
+            this->_setValue(this->getMin() + (T) (ival * this->getIncrement()) );
         }
         
 

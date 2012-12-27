@@ -24,10 +24,13 @@ namespace msa {
         
 		class Parameter {
 		public:
+            
+#define kCheckBadParameter(ret) 
+            //{ if(this->getType() == Type::kUnknown) return ret; }
+
 			
 			friend class ParameterGroup;
             
-			Parameter(ParameterGroup *parent, string name, Type::Index typeIndex);
 			virtual ~Parameter() {}
 			
             Parameter& setName(string s);
@@ -45,6 +48,8 @@ namespace msa {
 //			T& getValue() const;
             
 		protected:
+			Parameter(ParameterGroup *parent, string name, Type::Index typeIndex);
+
 			Type::Index			_typeIndex;
 			string				_name;
 			ParameterGroup		*_parent;
@@ -56,9 +61,10 @@ namespace msa {
             
             virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
             virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
-            
             virtual void update() {}
-            
+
+            // dummy parameter, sent back from 'getParameter' functions, if parameter can't be found
+            static Parameter dummy;
 		};
 		
 	
