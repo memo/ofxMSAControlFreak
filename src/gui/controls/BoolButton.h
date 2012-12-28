@@ -38,6 +38,12 @@ namespace msa {
                     setTextColor(parameter->getValue());
                     config->drawString(parameter->getName(), 3, 15);
                     
+                    // draw border
+                    ofNoFill();
+                    ofSetColor(config->borderColor);
+                    glLineWidth(1.0);
+                    ofRect(0, 0, width, height);
+
                     ofDisableAlphaBlending();
                     
                     glPopMatrix();

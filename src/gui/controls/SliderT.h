@@ -134,6 +134,12 @@ namespace msa {
                         int ts = height * 0.5;
                         ofTriangle(width, height, width, height - ts, width - ts, height);
                     }
+                    
+                    // draw border
+                    ofNoFill();
+                    ofSetColor(c.borderColor);
+                    glLineWidth(1.0);
+                    ofRect(0, 0, width, height);
 
                     ofPopMatrix();
                     ofPopStyle();

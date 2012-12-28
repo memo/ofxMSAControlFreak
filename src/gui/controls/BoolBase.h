@@ -44,8 +44,10 @@ namespace msa {
                 //--------------------------------------------------------------
                 void onPress(int x, int y, int button) {
                     if(!parameter) return;
-                    if(parameter->getMode() == ParameterBool::kBang || parameter->getMode() == ParameterBool::kPush) parameter->setValue(true);
-                    else toggle();
+                    if(button == 0) {
+                        if(parameter->getMode() == ParameterBool::kBang || parameter->getMode() == ParameterBool::kPush) parameter->setValue(true);
+                        else toggle();
+                    }
                 }
                 
                 //--------------------------------------------------------------

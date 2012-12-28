@@ -16,13 +16,6 @@ namespace msa {
                 BoolTitle(Panel *parent, Parameter *p) : BoolBase(parent, p) {}
                 
                 //--------------------------------------------------------------
-                void setup() {
-                    width = config->gridSize.x - config->padding.x;
-                    if(height == 0) height = config->titleHeight;
-                    if(parameter->getName().empty()) height/=2;
-                }
-                
-                //--------------------------------------------------------------
                 void draw() {
                     if(!parameter) return;
                     
@@ -37,10 +30,11 @@ namespace msa {
                     else ofSetColor(config->emptyColor);
                     ofRect(0, 0, width, height);
                     
-                    // if a toggle
-                    //                if(value && (*value) && beToggle) {
-                    //                    setTextColor();
-                    //                }
+                    // draw border
+                    ofNoFill();
+                    ofSetLineWidth(1);
+                    ofSetColor(config->textColor);
+                    ofRect(0, 0, width, height);
                     
                     setTextColor(parameter->getValue());
                     config->drawString(parameter->getName(), 3, 15);
@@ -49,10 +43,11 @@ namespace msa {
                     
                     glPopMatrix();
                     
+                    
                     BoolBase::draw();
                 }
-
             };
+            
         }
     }
 }

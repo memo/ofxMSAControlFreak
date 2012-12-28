@@ -12,6 +12,9 @@ namespace msa {
             
             class Gui;
             class BoolButton;
+            class BoolTitle;
+            class BoolTitle;
+            class BoolToggle;
             class ColorPicker;
             class ComboBox;
             class Content;
@@ -20,8 +23,6 @@ namespace msa {
             class Slider2d;
             class SliderInt;
             class SliderFloat;
-            class BoolTitle;
-            class BoolToggle;
             
             class Panel : public ControlParameterT<ParameterGroup> {
             public:
@@ -83,7 +84,7 @@ namespace msa {
                 vector<Control*> controlsToDraw;    // this contains the controls to be drawn, sorted on control.z
                 
                 
-                BoolButton      *titleButton;       // button which controls the title of the panel
+                BoolTitle *titleButton;       // button which controls the title of the panel
                 
                 
                 // currently active control (only that receives events)

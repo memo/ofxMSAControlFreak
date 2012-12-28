@@ -187,12 +187,6 @@ namespace msa {
                     
                     control.draw();
 
-                    // border on control
-                    ofNoFill();
-                    ofSetColor(config->borderColor);
-                    glLineWidth(1.0);
-                    ofRect(control.x, control.y, control.width, control.height);// * getHeightScale());
-                    
 //                    growToInclude((ofRectangle&)control);
                 }
                 
@@ -314,7 +308,7 @@ namespace msa {
                 
                 if(!config) setup();
                 
-                titleButton = new BoolButton(this, parameter->getName());
+                titleButton = new BoolTitle(this, parameter->getName());
                 titleButton->getParameter().setValue(true);
                 addControl(titleButton);
                 int np = parameters.getNumParams();
