@@ -19,12 +19,12 @@ namespace msa {
                 void draw() {
                     if(!parameter) return;
                     
-                    glPushMatrix();
-                    glTranslatef(x, y, 0);
+                    ofPushMatrix();
+                    ofTranslate(x, y);
                     
                     ofEnableAlphaBlending();
                     ofFill();
-                    setFullColor(parameter->getValue());
+                    setToggleColor(parameter->getValue());
                     ofRect(0, 0, height, height);
                     
                     if(parameter->getValue()) {
@@ -33,21 +33,14 @@ namespace msa {
                         ofLine(height, 0, 0, height);
                     }
                     
-                    setTextBGColor();
+                    setBGColor();
                     ofRect(height, 0, width - height, height);
                     
-                    setTextColor();
-                    config->drawString(parameter->getName(), height + config->textPos.x, config->textPos.y);
-                    
-                    // draw border
-                    ofNoFill();
-                    ofSetColor(config->borderColor);
-                    glLineWidth(1.0);
-                    ofRect(0, 0, width, height);
-                    
+                    drawText(height + config->textPos.x, config->textPos.y);
+                    drawBorder();
+
                     ofDisableAlphaBlending();
-                    
-                    glPopMatrix();
+                    ofPopMatrix();
                     
                     BoolBase::draw();
                 }

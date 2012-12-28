@@ -144,7 +144,7 @@
 //                
 //                ofFill();
 //                
-//                setTextBGColor();
+//                setBGColor();
 //                ofRect(0, startY, width, config->sliderTextHeight);
 //                
 //                glColor3f(getValue(0), getValue(1), getValue(2));

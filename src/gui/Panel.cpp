@@ -157,7 +157,7 @@ namespace msa {
 //                    activeControl->draw();  // TODO: is this drawing the whole heirarchy again? each panel has an active control, which is all sub-panels?
 //                    if(activeControl->parameter && !activeControl->parameter->getName().empty()) {
 //                        ofNoFill();
-//                        ofSetColor(config->borderColor);
+//                        ofSetColor(config->colors.border[0]);
 //                        ofSetLineWidth(1);
 //                        ofRect((ofRectangle&)*activeControl);//, stealingY, activeControl->width, activeControl->height);
 //                    }
@@ -198,23 +198,23 @@ namespace msa {
                     
                     control.draw();
                     
-                    if(doHilit) {
-                        ofNoFill();
-                        ofSetColor(config->textOverColor);
-                        ofSetLineWidth(1);
-                        ofRect((ofRectangle&)control);
-                    }
+//                    if(doHilit) {
+//                        ofNoFill();
+//                        ofSetColor(config->colors.text[1]);
+//                        ofSetLineWidth(1);
+//                        ofRect((ofRectangle&)control);
+//                    }
                     
 //                    growToInclude((ofRectangle&)control);
                 }
                 
                 // border on active control
-                if(activeControl) {
-                    ofNoFill();
-                    ofSetColor(config->textColor);
-                    ofSetLineWidth(1);
-//                    ofRect((ofRectangle&)*activeControl);
-                }
+//                if(activeControl) {
+//                    ofNoFill();
+//                    ofSetColor(config->colors.text[0]);
+//                    ofSetLineWidth(1);
+////                    ofRect((ofRectangle&)*activeControl);
+//                }
                 ofPopStyle();
             }
             
@@ -350,6 +350,11 @@ namespace msa {
 //                } else {
 //                    ofLogNotice() << "setting active control NULL for panel [" << name;
                 }
+            }
+            
+            //--------------------------------------------------------------
+            Control* Panel::getActiveControl() {
+                return activeControl;
             }
             
             //--------------------------------------------------------------

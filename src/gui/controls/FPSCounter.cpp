@@ -22,10 +22,10 @@ namespace msa {
                 
                 ofEnableAlphaBlending();
                 ofFill();
-                setTextBGColor(false);
+                setBGColor();
                 ofRect(0, 0, width, height);
                 
-                setTextColor(false);
+                setTextColor();
                 config->drawString("FPS: " + ofToString(ofGetFrameRate()), 3, 15);
                 
                 glPopMatrix();

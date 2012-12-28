@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofxMSAControlFreak/src/gui/Control.h"
+#include "ofxMSAControlFreak/src/gui/Config.h"
 #include "ofxMSAControlFreak/src/ControlFreak.h"
 
 namespace msa {
@@ -29,6 +30,22 @@ namespace msa {
                 T &getParameter() {
                     return *parameter;
                 }
+                
+                
+                void drawText(int x, int y, string s = "", ofColor *c = NULL) {
+                    setColor(c ? c : config->colors.text);
+                    config->drawString(s.empty() ? parameter->getName() : s, x, y);
+                }
+                
+                
+                void drawBorder(ofColor *c = NULL) {
+                    ofNoFill();
+                    setColor(c ? c : config->colors.border);
+                    glLineWidth(1.0);
+                    ofRect(0, 0, width, height);
+                }
+                
+
                 
             protected:
                 T *parameter;

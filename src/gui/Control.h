@@ -34,10 +34,16 @@ namespace msa {
                 Control& setConfig(Config *config);
                 Control& setNewColumn(bool b);
                 
-                Control& setTextColor(bool clickable = true);
-                Control& setTextBGColor(bool clickable = true);
-                Control& setFullColor(bool forceActive = false);
-                Control& setEmptyColor();
+                // 0: normal, 1:over, 2:active
+                virtual int getState();
+                
+                ofColor setColor(ofColor *c);
+                ofColor setBGColor();
+                ofColor setTextColor();
+                ofColor setSliderColor(bool b);
+                ofColor setToggleColor(bool b);
+                ofColor setBorderColor();
+
                 Control& setKeyboardShortcut(char c);
                 
                 //                virtual void readFromXml(ofxXmlSettings &XML) {}

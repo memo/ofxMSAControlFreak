@@ -192,13 +192,13 @@
 //            
 //            //special overloads - this is a hack - later think about making Control's methods virtual.
 //            void ComboBox::setCBTextColor() {
-//                if(hasFocus) ofSetColor(config->textOverColor);
-//                else ofSetColor(config->textColor);
+//                if(hasFocus) ofSetColor(config->colors.text[1]);
+//                else ofSetColor(config->colors.text[0]);
 //            }
 //            
 //            void ComboBox::setCBTextBGColor() {
-//                if(hasFocus) ofSetColor(config->textBGOverColor);
-//                else ofSetColor(config->textBGColor);
+//                if(hasFocus) ofSetColor(config->colors.bg[1]);
+//                else ofSetColor(config->colors.bg[0]);
 //            }
 //            
 //            
@@ -220,7 +220,7 @@
 //                
 //                ofEnableAlphaBlending();
 //                ofFill();
-//                setTextBGColor();
+//                setBGColor();
 //                ofRect(0, 0, width, height);
 //                
 //                setTextColor();

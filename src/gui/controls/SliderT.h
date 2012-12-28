@@ -94,25 +94,23 @@ namespace msa {
                     float barwidth = ofClamp(p.getMappedTo(0, width), 0, width);
                     
                     
-                    this->setEmptyColor();
+                    this->setSliderColor(false);
                     ofRect(0, 0, width, c.sliderHeight);
-
                     
-                    this->setFullColor();
+                    this->setSliderColor(true);
                     ofRect(0, 0, barwidth, c.sliderHeight);
                     
-                    this->setTextBGColor();
+                    this->setBGColor();
                     ofRect(0, c.sliderHeight, width, c.sliderTextHeight);
                     
-                    this->setTextColor();
                     string s = p.getName() + ": " + ofToString(p.getValue());
-                    c.drawString(s, c.textPos.x, c.sliderHeight/2 + c.textPos.y);
+                    this->drawText(c.textPos.x, c.sliderHeight/2 + c.textPos.y, s);
                     
                     
                     if(p.getSnap()) {
                         float xinc = ofMap(p.getIncrement(), p.getMin(), p.getMax(), 0, width);
                         if(xinc >=2) {
-                            ofColor &col = c.textBGColor;
+                            ofColor &col = c.colors.bg[0];
                             ofSetColor(col.r, col.g, col.b, 128);
                             for(float f=0; f<=width; f+=xinc) {
                                 ofLine(f, 0, f, c.sliderHeight);
@@ -121,7 +119,7 @@ namespace msa {
                     }
                     
                     if(p.getClamp()) {
-                        ofColor &col = c.textOverColor;
+                        ofColor &col = c.colors.text[1];
                         ofSetColor(col.r, col.g, col.b, 128);
                         int w = 2;
                         int h = c.sliderHeight;
@@ -130,16 +128,13 @@ namespace msa {
                     }
                     
                     if(this->isMouseOver()) {
-                        ofSetColor(c.textColor);
+                        ofSetColor(c.colors.text[0]);
                         int ts = height * 0.5;
                         ofTriangle(width, height, width, height - ts, width - ts, height);
                     }
                     
                     // draw border
-                    ofNoFill();
-                    ofSetColor(c.borderColor);
-                    glLineWidth(1.0);
-                    ofRect(0, 0, width, height);
+                    this->drawBorder();
 
                     ofPopMatrix();
                     ofPopStyle();

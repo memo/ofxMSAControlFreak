@@ -36,7 +36,7 @@ namespace msa {
                 content->draw(0, 0, width, fixheight);
                 
                 ofFill();
-                setTextBGColor();
+                setBGColor();
                 ofRect(0, fixheight, width, config->sliderTextHeight);
                 
                 setTextColor();

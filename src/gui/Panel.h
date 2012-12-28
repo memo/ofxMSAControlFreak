@@ -37,6 +37,7 @@ namespace msa {
                 
                 void setActiveControl(Control *control);
                 void releaseActiveControl();
+                Control* getActiveControl();
                 
                 // returns whether this panel, or any of it's parents have an active control
                 bool getActive();

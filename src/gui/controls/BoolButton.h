@@ -21,33 +21,20 @@ namespace msa {
                     
                     if(parameter->getName().empty()) return;
                     
-                    glPushMatrix();
-                    glTranslatef(x, y, 0);
-                    
+                    ofPushMatrix();
+                    ofTranslate(x, y);
                     ofEnableAlphaBlending();
+                    
+                    // draw bg
                     ofFill();
-                    if(parameter->getValue()) ofSetColor(config->fullActiveColor);
-                    else ofSetColor(config->emptyColor);
+                    setToggleColor(parameter->getValue());
                     ofRect(0, 0, width, height);
                     
-                    // if a toggle
-                    //                if(value && (*value) && beToggle) {
-                    //                    setTextColor();
-                    //                }
-                    
-                    setTextColor(parameter->getValue());
-                    config->drawString(parameter->getName(), 3, 15);
-                    
-                    // draw border
-                    ofNoFill();
-                    ofSetColor(config->borderColor);
-                    glLineWidth(1.0);
-                    ofRect(0, 0, width, height);
+                    drawText(3, 15);
+                    drawBorder();
 
                     ofDisableAlphaBlending();
-                    
-                    glPopMatrix();
-                    
+                    ofPopMatrix();
                     
                     BoolBase::draw();
                 }

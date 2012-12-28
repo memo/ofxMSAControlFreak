@@ -24,17 +24,36 @@ namespace msa {
                 gridSize.x			= 200 + padding.x;
                 gridSize.y			= toggleHeight + padding.y;
                 
-                textColor			= ofColor::fromHex(0x888888);
-                textOverColor		= ofColor::fromHex(0xFFFFFF);
-                textBGColor			= ofColor::fromHex(0x000000);
-                textBGOverColor		= ofColor::fromHex(0x222222);
+
+                // Colors
+                // 0: normal, 1:over, 2:active
+                colors.bg[0]        = ofColor(0);
+                colors.bg[1]		= ofColor(33);
+                colors.bg[2]		= ofColor(33);
                 
-                fullColor			= ofColor::fromHex(0xaaaaaa);
-                fullOverColor		= ofColor::fromHex(0xffffff);
-                fullActiveColor		= ofColor::fromHex(0x881818);
-                emptyColor			= ofColor::fromHex(0x333333);
+                colors.text[0]		= ofColor(140);
+                colors.text[1]		= ofColor(255);
+                colors.text[1]		= ofColor(200);
                 
-                borderColor			= ofColor::fromHex(0x333333);
+                colors.slider.full[0]	= ofColor(128);
+                colors.slider.full[1]	= ofColor(255);
+                colors.slider.full[2]   = ofColor(180, 0, 0);
+                
+                colors.slider.empty[0]  = ofColor(40);
+                colors.slider.empty[1]	= ofColor(60);
+                colors.slider.empty[2]	= ofColor(60);
+                
+                colors.toggle.full[0]	= ofColor(160, 0, 0);
+                colors.toggle.full[1]	= ofColor(200, 0, 0);
+                colors.toggle.full[2]   = ofColor(255, 0, 0);
+                
+                colors.toggle.empty[0]  = ofColor(40);
+                colors.toggle.empty[1]	= ofColor(60);
+                colors.toggle.empty[2]	= ofColor(60);
+                
+                colors.border[0]	= ofColor(60);
+                colors.border[1]	= ofColor(90);
+                colors.border[2]	= ofColor(150);
             }
             
             

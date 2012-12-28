@@ -24,17 +24,20 @@ namespace msa {
                 ofPoint padding;
                 ofPoint offset;
                 ofPoint	slider2DSize;
+
                 
-                ofColor textColor;
-                ofColor textOverColor;
-                ofColor textBGColor;
-                ofColor textBGOverColor;
+                // Colors
+                // 0: normal, 1:over, 2:active
+                struct {
+                    ofColor bg[3];
+                    ofColor text[3];
+                    struct {
+                        ofColor full[3];
+                        ofColor empty[3];
+                    } slider, toggle;
+                    ofColor border[3];
+                } colors;
                 
-                ofColor fullColor;
-                ofColor fullOverColor;
-                ofColor fullActiveColor;
-                ofColor emptyColor;
-                ofColor borderColor;
                 
                 Config();
                 void drawString(string s, float x, float y);

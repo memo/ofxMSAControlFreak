@@ -63,35 +63,47 @@ namespace msa {
             //            }
             
             //--------------------------------------------------------------
-            Control &Control::setTextColor(bool clickable) {
-                if(isMouseOver() && clickable) ofSetColor(config->textOverColor);
-                else ofSetColor(config->textColor);
-                return *this;
+            int Control::getState() {
+                if(parent && parent->getActiveControl() == this) return 2;
+                else if(isMouseOver()) return 1;
+                else return 0;
+            }
+
+            //--------------------------------------------------------------
+            ofColor Control::setColor(ofColor *c) {
+                ofSetColor(c[getState()]);
+                return c[getState()];
+            }
+
+            
+            //--------------------------------------------------------------
+            ofColor Control::setBGColor() {
+                return setColor(config->colors.bg);
             }
             
             //--------------------------------------------------------------
-            Control &Control::setTextBGColor(bool clickable) {
-                if(isMouseOver() && clickable) ofSetColor(config->textBGOverColor);
-                else ofSetColor(config->textBGColor);
-                return *this;
+            ofColor Control::setTextColor() {
+                return setColor(config->colors.text);
+            }
+
+            
+            //--------------------------------------------------------------
+            ofColor Control::setSliderColor(bool b) {
+                if(b) return setColor(config->colors.slider.full);
+                else return setColor(config->colors.slider.empty);
             }
             
             //--------------------------------------------------------------
-            Control &Control::setFullColor(bool forceActive) {
-                if((isMouseDown() && getLastMouseButton()==0) || forceActive) ofSetColor(config->fullActiveColor);
-                else if(isMouseOver()) ofSetColor(config->fullOverColor);
-                else ofSetColor(config->fullColor);
-                return *this;
+            ofColor Control::setToggleColor(bool b) {
+                if(b) return setColor(config->colors.toggle.full);
+                else return setColor(config->colors.toggle.empty);
             }
             
             //--------------------------------------------------------------
-            Control &Control::setEmptyColor() {
-                ofSetColor(config->emptyColor);
-                //		if(isMouseOver()) ofSetColor(config->overColor.r, config->overColor.g, config->overColor.b);
-                //		if(focused && !isMouseOver()) ofSetColor(config->focusColor.r, config->focusColor.g, config->focusColor.b);
-                return *this;
+            ofColor Control::setBorderColor() {
+                return setColor(config->colors.border);
             }
-            
+
             //--------------------------------------------------------------
             Control &Control::setKeyboardShortcut(char c) {
                 keyboardShortcut = c;
@@ -103,7 +115,6 @@ namespace msa {
                 }
                 return *this;
             }
-            
           
         }
     }

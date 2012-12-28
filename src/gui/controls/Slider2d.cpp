@@ -93,11 +93,11 @@ namespace msa {
 //                glTranslatef(x, y, 0);
 //                
 //                ofFill();
-//                setFullColor();
+//                setColor(config->colors.slider.full);
 //                ofRect(0, 0, width, height - config->slider2DTextHeight);
 //                
 //                ofFill();
-//                setTextBGColor();
+//                setBGColor();
 //                ofRect(0, height-config->slider2DTextHeight, width, config->slider2DTextHeight);
 //                
 //                setTextColor();
