@@ -10,6 +10,7 @@ namespace msa {
                 if(parent) this->config = parent->config;
                 name = "[COULD NOT READ FROM PARAMETER]";
                 z = 0;
+                localRect.set(0, 0, 0, 0);
                 active = false;
                 //                this->controlType = controlType;
                 //                setName(name);

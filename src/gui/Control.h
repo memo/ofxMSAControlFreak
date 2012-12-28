@@ -24,6 +24,9 @@ namespace msa {
                 char		keyboardShortcut;
                 string      name;
                 
+                // if this is set (i.e. nonzero), override auto-layout and set position and size in relation to parent
+                ofRectangle localRect;
+                
                 //                Control(Panel *parent, string name, string controlType);
                 //                Control& setName(string newName);
                 //                Control& setKey(string newKey);
