@@ -22,7 +22,7 @@ namespace msa {
                 //                bool		focused;
                 bool		newColumn;
                 char		keyboardShortcut;
-                string      name;
+//                string      name;
                 
                 // if this is set (i.e. nonzero), override auto-layout and set position and size in relation to parent
                 ofRectangle localRect;
@@ -36,14 +36,15 @@ namespace msa {
                 
                 // 0: normal, 1:over, 2:active
                 virtual int getState();
-                
                 ofColor setColor(ofColor *c);
                 ofColor setBGColor();
                 ofColor setTextColor();
                 ofColor setSliderColor(bool b);
                 ofColor setToggleColor(bool b);
                 ofColor setBorderColor();
-
+                
+                bool doTooltip(int millis = -1);
+                
                 Control& setKeyboardShortcut(char c);
                 
                 //                virtual void readFromXml(ofxXmlSettings &XML) {}
@@ -52,7 +53,7 @@ namespace msa {
                 virtual void setup() {}
                 
 //                virtual void draw(float x, float y) {}
-                virtual void predraw() {}           // first pass during draw, updating position, z-sorting etc.
+//                virtual void predraw() {}           // first pass during draw, updating position, z-sorting etc.
                 virtual void draw() {}
                 
                 virtual void onKeyUp() {}			// up key is pressed

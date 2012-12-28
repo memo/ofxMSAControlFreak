@@ -7,22 +7,20 @@ namespace msa {
             
             
             Config::Config() {
-                sliderHeight		= 7;
-                sliderTextHeight	= 16;
-                titleHeight			= sliderHeight + sliderTextHeight;
-                toggleHeight		= titleHeight;
-                buttonHeight		= titleHeight;
-                slider2DTextHeight	= titleHeight * 1.5;
-                comboBoxHeight		= titleHeight;	//15
-                comboBoxTextHeight	= 15;
+                layout.buttonHeight			= 23;
+                layout.sliderHeight         = 7;
+//                layout.sliderTextHeight     = 16;
+//                layout.slider2DTextHeight	= buttonHeight * 1.5;
+//                layout.comboBoxTextHeight	= 15;
                 
-                textPos.set         (5, 16);
-                padding.set			(10, 10);
-                offset.set			(titleHeight/2, titleHeight/2);
-                slider2DSize.set	(titleHeight * 4, titleHeight * 4);
+                layout.textPos              = ofVec2f(5, 16);
+                layout.padding              = ofVec2f(10, 10);
+                layout.indent               = 5;
+//                layout.offset               = ofVec2f(layout.buttonHeight/2, layout.buttonHeight/2);
+//                layout.slider2DSize         = ofVec2f(buttonHeight * 4, buttonHeight * 4);
                 
-                gridSize.x			= 200 + padding.x;
-                gridSize.y			= toggleHeight + padding.y;
+                layout.gridSize.x			= 200 + layout.padding.x;
+//                layout.gridSize.y			= buttonHeight + padding.y;
                 
 
                 // Colors
@@ -54,6 +52,14 @@ namespace msa {
                 colors.border[0]	= ofColor(60);
                 colors.border[1]	= ofColor(90);
                 colors.border[2]	= ofColor(150);
+                
+                
+                
+                tooltip.offset      = ofVec2f(0, -10);
+                tooltip.padding     = ofRectangle(6, 4, 13, 7);
+                tooltip.bgColor     = ofColor(255, 255, 160);
+                tooltip.borderColor = ofColor(0);
+                tooltip.textColor   = ofColor(0);
             }
             
             

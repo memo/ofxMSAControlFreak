@@ -82,7 +82,7 @@
 //            }
 //            
 //            void ComboBox::setup() {
-//                setSize(config->gridSize.x - config->padding.x, config->comboBoxHeight);
+//                setSize(config->layout.gridSize.x - config->layout.padding.x, config->comboBoxHeight);
 //            }
 //            
 ////            void ComboBox::readFromXml(ofxXmlSettings &XML) {
@@ -124,7 +124,7 @@
 //                //a click toggles focus state if we are off
 //                if(!hasFocus) {
 //                    //expand the height for all choices
-//                    //      setSize(config->gridSize.x - config->padding.x, config->comboBoxHeight * choices.size());
+//                    //      setSize(config->layout.gridSize.x - config->layout.padding.x, config->comboBoxHeight * choices.size());
 //                    hasFocus = true;
 //                    //notify that we want to steal all events from the parent
 //                    parent->setActiveControl(this);
@@ -185,7 +185,7 @@
 //                
 //                //a release toggles focus state if we are on - TODO: unless x and y don't change
 //                hasFocus = false;
-//                //      setSize(config->gridSize.x - config->padding.x, config->comboBoxHeight);
+//                //      setSize(config->layout.gridSize.x - config->layout.padding.x, config->comboBoxHeight);
 //                //also let the parent know we don't need to steal all the events and draw over anymore
 //                parent->releaseActiveControl();
 //            }

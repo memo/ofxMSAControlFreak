@@ -92,11 +92,12 @@ namespace msa {
             }
             
             //--------------------------------------------------------------
-            void Panel::predraw() {
+            void Panel::draw() {
+                titleButton->z = -10000;
                 
                 // how open is this panel
                 float openSpeed = 0.1f;
-                if(titleButton->getParameter().getValue() != isOpen) showPanel(titleButton->getParameter().getValue(), true);
+                if(titleButton->getParameter().getValue() != isOpen) showPanel(titleButton->getParameter().getValue(), titleButton->bRecursive);
                 if(isOpen) {
 //                    if(heightScale<0.95) heightScale += (1-heightScale) * openSpeed;
                     if(heightScale < 1) heightScale += openSpeed;
@@ -120,117 +121,87 @@ namespace msa {
                 curPos = layout->clampPoint(curPos);
                 setPosition(curPos);
                 
-                // also save this in layout managers position
-//                curPos = getPosition();
-                
                 width = 0;
-                height = 0;//config->titleHeight;
+                height = 0;//config->layout.buttonHeight;
 
-//                ofLogNotice() << "\n\npredraw PANEL : " << name;
                 int numControls = getHeightScale() ? controls.size() : 1;
                 
-                controlsToDraw.clear();
+//                controlsToDraw.clear();
                 
                 float heightMult = getHeightScale();//i ? getHeightScale() : getParentHeightScale();
                 for(int i=0; i<numControls; i++) {
                     
                     // indent all controls after title
-                    if(i==1) layout->indent += config->padding.x/2;
+                    if(i==1) layout->indent += config->layout.padding.x/2;
                     
                     Control& control = *controls[i];
 
-                    // if doing first control (title) use full height, otherwise use parents height
-//                    float heightMult = getHeightScale();//i ? getHeightScale() : getParentHeightScale();
-                    
                     // if forced to be new column, or the height of the control is going to reach across the bottom of the screen, start new column
-                    if(control.newColumn || curPos.y + (control.height + config->padding.y) * heightMult > maxPos.y) {
-                        curPos.x = layout->rect.x + layout->rect.width + config->padding.x;//config->gridSize.x; // TODO: use control width?
+                    if(control.newColumn || curPos.y + (control.height + config->layout.padding.y) * heightMult > maxPos.y) {
+                        curPos.x = layout->rect.x + layout->rect.width + config->layout.padding.x;//config->layout.gridSize.x; // TODO: use control width?
                         curPos.y = layout->maxRect.y;
                     }
                     
                     control.setPosition(floor(curPos.x + layout->indent), floor(curPos.y));
-                    control.predraw();
-                    controlsToDraw.push_back(&control);
+                    Renderer::instance().addControl(&control);
                     layout->rect.growToInclude((ofRectangle&)control);
                     
-                    curPos.y += (control.height + config->padding.y) * heightMult;
+                    curPos.y += (control.height + config->layout.padding.y) * heightMult;
                 }
                 
-                if(numControls>1) layout->indent -= config->padding.x/2;
+                if(numControls>1) layout->indent -= config->layout.padding.x/2;
                 
                 // add some padding at end of group
-                curPos.y += config->titleHeight * getParentHeightScale();
+                curPos.y += config->layout.buttonHeight * getParentHeightScale();
                 
-//                curPos.y += 30;//config->padding.y * 2;
-                
-                // draw panel title again so it's on top
-//                if(controls[0] && heightMult < 0.9) controls[0]->draw();
-                
-                //event stealing controls get drawn on top
-//                if(activeControl) {
-//                    activeControl->draw();  // TODO: is this drawing the whole heirarchy again? each panel has an active control, which is all sub-panels?
-//                    if(activeControl->parameter && !activeControl->parameter->getName().empty()) {
-//                        ofNoFill();
-//                        ofSetColor(config->colors.border[0]);
-//                        ofSetLineWidth(1);
-//                        ofRect((ofRectangle&)*activeControl);//, stealingY, activeControl->width, activeControl->height);
-//                    }
-//                }
-                
-                // panel border
-//                ofNoFill();
-//                ofSetColor(128, 0, 0);
-//                ofSetLineWidth(1);
-//                ofRect(x, y, width, height);
-                ofPopStyle();
                 width = 0;
                 height = 0;
             }
             
             
-            struct PointerCompare {
-                bool operator()(const Control* l, const Control* r) {
-                    return l->z > r->z;
-                }
-            };
-            
-            //--------------------------------------------------------------
-            void Panel::draw() {
-                ofPushStyle();
-                
-                titleButton->z = -10000;
-                sort(controlsToDraw.begin(), controlsToDraw.end(), PointerCompare());
-                
-//                ofLogNotice() << "\n\ndraw PANEL : " << name;
-                
-                bool doHilit = getActive();
-
-                for(int i=0; i<controlsToDraw.size(); i++) {
-                    Control& control = *controlsToDraw[i];
-                    
-//                    ofLogNotice() << "draw CONTROL : " << control.name << " " << control.getPosition() << " " << control.x << "x" << control.y;
-                    
-                    control.draw();
-                    
-                    if(doHilit) {
-                        ofNoFill();
-                        ofSetColor(config->colors.text[2]);
-                        ofSetLineWidth(1);
-                        ofRect((ofRectangle&)control);
-                    }
-                    
-//                    growToInclude((ofRectangle&)control);
-                }
-                
-                // border on active control
-//                if(activeControl) {
-//                    ofNoFill();
-//                    ofSetColor(config->colors.text[0]);
-//                    ofSetLineWidth(1);
-////                    ofRect((ofRectangle&)*activeControl);
+//            struct PointerCompare {
+//                bool operator()(const Control* l, const Control* r) {
+//                    return l->z > r->z;
 //                }
-                ofPopStyle();
-            }
+//            };
+//            
+//            //--------------------------------------------------------------
+//            void Panel::draw() {
+//                ofPushStyle();
+//                
+//                titleButton->z = -10000;
+//                sort(controlsToDraw.begin(), controlsToDraw.end(), PointerCompare());
+//                
+////                ofLogNotice() << "\n\ndraw PANEL : " << name;
+//                
+//                bool doHilit = getActive();
+//
+//                for(int i=0; i<controlsToDraw.size(); i++) {
+//                    Control& control = *controlsToDraw[i];
+//                    
+////                    ofLogNotice() << "draw CONTROL : " << control.name << " " << control.getPosition() << " " << control.x << "x" << control.y;
+//                    
+//                    control.draw();
+//                    
+//                    if(doHilit) {
+//                        ofNoFill();
+//                        ofSetColor(config->colors.text[2]);
+//                        ofSetLineWidth(1);
+//                        ofRect((ofRectangle&)control);
+//                    }
+//                    
+////                    growToInclude((ofRectangle&)control);
+//                }
+//                
+//                // border on active control
+////                if(activeControl) {
+////                    ofNoFill();
+////                    ofSetColor(config->colors.text[0]);
+////                    ofSetLineWidth(1);
+//////                    ofRect((ofRectangle&)*activeControl);
+////                }
+//                ofPopStyle();
+//            }
             
             
             //--------------------------------------------------------------
@@ -261,7 +232,7 @@ namespace msa {
             
             //--------------------------------------------------------------
             Content& Panel::addContent(Parameter *p, ofBaseDraws &content, float fixwidth) {
-                if(fixwidth == -1) fixwidth = config->gridSize.x - config->padding.x;
+                if(fixwidth == -1) fixwidth = config->layout.gridSize.x - config->layout.padding.x;
                 return (Content&)addControl(new Content(this, p, content, fixwidth));
             }
             
@@ -353,13 +324,13 @@ namespace msa {
             //--------------------------------------------------------------
             void Panel::setActiveControl(Control* control) {
                 // if old control exists, put it at the back
-                if(activeControl) activeControl->z = 1000;
+                if(activeControl) activeControl->z = 0;
                 
                 activeControl = control;
                 
                 // put new active control at the front
                 if(activeControl) {
-                    activeControl->z = 0;
+                    activeControl->z = -1000;
 //                    ofLogNotice() << "setting active control [" << activeControl->name << "] for panel [" << name;
 //                } else {
 //                    ofLogNotice() << "setting active control NULL for panel [" << name;

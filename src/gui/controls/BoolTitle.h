@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofxMSAControlFreak/src/gui/controls/BoolBase.h"
+#include "ofxMSAControlFreak/src/gui/Renderer.h"
 
 namespace msa {
     namespace ControlFreak {
@@ -9,17 +10,32 @@ namespace msa {
             class BoolTitle : public BoolBase {
             public:
                 
-                //--------------------------------------------------------------
-                BoolTitle(Panel *parent, string s) : BoolBase(parent, s) {}
+                bool bRecursive;
+                bool bMouseOverRecursive;
                 
                 //--------------------------------------------------------------
-                BoolTitle(Panel *parent, Parameter *p) : BoolBase(parent, p) {}
+                BoolTitle(Panel *parent, string s) : BoolBase(parent, s) { bRecursive = false; }
+                
+                //--------------------------------------------------------------
+                BoolTitle(Panel *parent, Parameter *p) : BoolBase(parent, p) { bRecursive = false; }
+                
+                void onPress(int x, int y, int button) {
+                    BoolBase::onPress(x, y, button);
+                    bRecursive = bMouseOverRecursive;
+                }
+                
+                //--------------------------------------------------------------
+                void onRelease(int x, int y, int button) {
+                    BoolBase::onRelease(x, y, button);
+                }
                 
                 //--------------------------------------------------------------
                 void draw() {
                     if(!parameter) return;
                     
                     if(parameter->getName().empty()) return;
+                    
+                    bMouseOverRecursive = isMouseOver() && getMouseX() > (x + width - height);
                     
                     ofPushMatrix();
                     ofTranslate(x, y);
@@ -30,11 +46,24 @@ namespace msa {
                     setToggleColor(parameter->getValue());
                     ofRect(0, 0, width, height);
                     
-                    drawText(3, 15);
+                    if(bMouseOverRecursive) ofSetColor(255, 100);
+                    else ofSetColor(0, 100);
+                    ofCircle(width - height/2, height/2, height/4);
+                    
+                    drawText(3, 15, (parameter->getValue() ? "+" : "-"));
+                    drawText(15, 15);
                     drawBorder(config->colors.text);
                     
                     ofDisableAlphaBlending();
                     ofPopMatrix();
+                    
+                    if(doTooltip()) {
+                        string sverb = parameter->getValue() ? "close" : "open";
+                        string starget = bMouseOverRecursive ? "panel and all sub-panels" : "panel";
+//                        if(parameter->getValue()) s = "Click to close panel [" + parameter->getName() + "]";
+//                        else s = "Click to open panel";
+                        Renderer::instance().setToolTip(" Click to " + sverb + " " + starget);
+                    }
                     
                     BoolBase::draw();
                 }

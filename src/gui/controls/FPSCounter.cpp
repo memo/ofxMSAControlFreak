@@ -11,8 +11,8 @@ namespace msa {
             }
             
             void FPSCounter::setup() {
-                width = config->gridSize.x - config->padding.x;
-                height = config->titleHeight;
+                width = config->layout.gridSize.x - config->layout.padding.x;
+                height = config->layout.buttonHeight;
             }
             
             

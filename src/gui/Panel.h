@@ -32,7 +32,7 @@ namespace msa {
                 Panel(Panel *parent, Parameter *p);
                 ~Panel();
                 
-                void predraw();
+//                void predraw();
                 void draw();
                 
                 void setActiveControl(Control *control);
@@ -93,7 +93,7 @@ namespace msa {
                 
                 
                 vector<ControlPtr>	controls;
-                vector<Control*> controlsToDraw;    // this contains the controls to be drawn, sorted on control.z
+//                vector<Control*> controlsToDraw;    // this contains the controls to be drawn, sorted on control.z
                 
                 
                 BoolTitle *titleButton;       // button which controls the title of the panel

@@ -14,9 +14,9 @@ namespace msa {
 //            }
 //            
 //            void Slider2d::setup() {
-//                setSize(config->slider2DSize.x, config->slider2DSize.y + config->slider2DTextHeight);
+//                setSize(config->layout.slider2DSize.x, config->layout.slider2DSize.y + config->layout.slider2DTextHeight);
 //                point.x = ofMap((*value).x, min.x, max.x, x, x+width);
-//                point.y = ofMap((*value).y, min.y, max.y, y, y+height-config->slider2DTextHeight);
+//                point.y = ofMap((*value).y, min.y, max.y, y, y+height-config->layout.slider2DTextHeight);
 //            }
 ////            
 ////            void Slider2d::readFromXml(ofxXmlSettings &XML) {
@@ -73,12 +73,12 @@ namespace msa {
 //                if(point.x > x + width)				point.x = x + width;
 //                else if(point.x < x)				point.x = x;
 //                
-//                if(point.y > y+height - config->slider2DTextHeight)			point.y = y + height - config->slider2DTextHeight;
+//                if(point.y > y+height - config->layout.slider2DTextHeight)			point.y = y + height - config->layout.slider2DTextHeight;
 //                else if(point.y < y)				point.y = y;
 //                
 //                if(lock){
 //                    (*value).x = ofMap(point.x, x, x+width, min.x, max.x);
-//                    (*value).y = ofMap(point.y, y, y+height-config->slider2DTextHeight, min.y, max.y);
+//                    (*value).y = ofMap(point.y, y, y+height-config->layout.slider2DTextHeight, min.y, max.y);
 //                }
 //            }
 //            
@@ -86,7 +86,7 @@ namespace msa {
 //                setPos(x, y);
 //                ofPoint	pointv;
 //                pointv.x = ofMap((*value).x, min.x, max.x, x, x+width);
-//                pointv.y = ofMap((*value).y, min.y, max.y, y, y+height-config->slider2DTextHeight);
+//                pointv.y = ofMap((*value).y, min.y, max.y, y, y+height-config->layout.slider2DTextHeight);
 //                
 //                ofEnableAlphaBlending();
 //                glPushMatrix();
@@ -94,20 +94,20 @@ namespace msa {
 //                
 //                ofFill();
 //                setColor(config->colors.slider.full);
-//                ofRect(0, 0, width, height - config->slider2DTextHeight);
+//                ofRect(0, 0, width, height - config->layout.slider2DTextHeight);
 //                
 //                ofFill();
 //                setBGColor();
-//                ofRect(0, height-config->slider2DTextHeight, width, config->slider2DTextHeight);
+//                ofRect(0, height-config->layout.slider2DTextHeight, width, config->layout.slider2DTextHeight);
 //                
 //                setTextColor();
-//                config->drawString(name+"\nx:"+ofToString(value->x, 2)+"\ny:"+ofToString(value->y, 2), 3, height+15-config->slider2DTextHeight);
+//                config->drawString(name+"\nx:"+ofToString(value->x, 2)+"\ny:"+ofToString(value->y, 2), 3, height+15-config->layout.slider2DTextHeight);
 //                
 //                setTextColor();
 //                ofCircle(pointv.x-x, pointv.y-y, 2);
 //                
 //                setTextColor();
-//                ofLine(pointv.x-x, 0, pointv.x-x, height-config->slider2DTextHeight);
+//                ofLine(pointv.x-x, 0, pointv.x-x, height-config->layout.slider2DTextHeight);
 //                ofLine(0, pointv.y-y,width, pointv.y-y);
 //                
 //                glPopMatrix();

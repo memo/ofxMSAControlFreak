@@ -37,7 +37,7 @@ namespace msa {
                     setBGColor();
                     ofRect(height, 0, width - height, height);
                     
-                    drawText(height + config->textPos.x, config->textPos.y);
+                    drawText(height + config->layout.textPos.x, config->layout.textPos.y);
                     drawBorder();
 
                     ofDisableAlphaBlending();

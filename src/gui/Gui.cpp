@@ -327,13 +327,16 @@ namespace msa {
                 if(pages[currentPageIndex]->layout == NULL) pages[currentPageIndex]->layout = Panel::LayoutPtr(new Panel::Layout);
                
                 Panel::Layout &l = *pages[currentPageIndex]->layout;
-                l.maxRect.set(config.padding.x, config.padding.y, 0, 0);
+                l.maxRect.set(config.layout.padding.x, config.layout.padding.y, 0, 0);
                 l.indent = 0;
                 l.curPos.set(0, 0);
                 l.rect.set(l.maxRect.x, l.maxRect.y, 0, 0);
-                pages[currentPageIndex]->setPosition(config.padding.x, config.padding.y);
-                pages[currentPageIndex]->predraw();
+                pages[currentPageIndex]->setPosition(config.layout.padding.x, config.layout.padding.y);
+//                pages[currentPageIndex]->predraw();
+
+                Renderer::instance().clearControls();
                 pages[currentPageIndex]->draw();
+                Renderer::instance().draw(&config);
                 
                 ofPopStyle();
             }

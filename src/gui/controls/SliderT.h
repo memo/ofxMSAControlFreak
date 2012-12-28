@@ -12,8 +12,8 @@ namespace msa {
 
                 //--------------------------------------------------------------
                 SliderT(Panel *parent, Parameter *p) : ControlParameterT<ParameterSingleValueT<T> >(parent, p) {
-                    this->width = this->config->gridSize.x - this->config->padding.x;
-                    this->height = this->config->sliderHeight + this->config->sliderTextHeight;
+                    this->width = this->config->layout.gridSize.x - this->config->layout.padding.x;
+                    this->height = this->config->layout.buttonHeight;
                 }
 
                 //--------------------------------------------------------------
@@ -94,17 +94,17 @@ namespace msa {
                     float barwidth = ofClamp(p.getMappedTo(0, width), 0, width);
                     
                     
+                    this->setBGColor();
+                    ofRect(0, 0, width, height);
+                    
                     this->setSliderColor(false);
-                    ofRect(0, 0, width, c.sliderHeight);
+                    ofRect(0, 0, width, c.layout.sliderHeight);
                     
                     this->setSliderColor(true);
-                    ofRect(0, 0, barwidth, c.sliderHeight);
-                    
-                    this->setBGColor();
-                    ofRect(0, c.sliderHeight, width, c.sliderTextHeight);
+                    ofRect(0, 0, barwidth, c.layout.sliderHeight);
                     
                     string s = p.getName() + ": " + ofToString(p.getValue());
-                    this->drawText(c.textPos.x, c.sliderHeight/2 + c.textPos.y, s);
+                    this->drawText(c.layout.textPos.x, c.layout.sliderHeight/2 + c.layout.textPos.y, s);
                     
                     
                     if(p.getSnap()) {
@@ -113,7 +113,7 @@ namespace msa {
                             ofColor &col = c.colors.bg[0];
                             ofSetColor(col.r, col.g, col.b, 128);
                             for(float f=0; f<=width; f+=xinc) {
-                                ofLine(f, 0, f, c.sliderHeight);
+                                ofLine(f, 0, f, c.layout.sliderHeight);
                             }
                         }
                     }
@@ -122,7 +122,7 @@ namespace msa {
                         ofColor &col = c.colors.text[1];
                         ofSetColor(col.r, col.g, col.b, 128);
                         int w = 2;
-                        int h = c.sliderHeight;
+                        int h = c.layout.sliderHeight;
                         ofRect(0, 0, w, h);
                         ofRect(width-w-1, 0, w, h);
                     }

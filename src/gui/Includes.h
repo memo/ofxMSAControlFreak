@@ -11,5 +11,8 @@
 #include "ofxMSAControlFreak/src/gui/Controls/QuadWarp.h"
 #include "ofxMSAControlFreak/src/gui/Controls/Slider2d.h"
 #include "ofxMSAControlFreak/src/gui/Controls/SliderT.h"
+
+#include "ofxMSAControlFreak/src/gui/Renderer.h"
+
 //#include "ofxMSAControlFreak/src/gui/Option.h"
 //#include "ofxMSAControlFreak/src/gui/OptionGroup.h"

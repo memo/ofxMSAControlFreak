@@ -15,7 +15,7 @@ namespace msa {
             void Content::setup() {
                 fixheight = fixwidth * content->getHeight()/content->getWidth();
                 width = fixwidth;
-                height = fixheight + config->sliderTextHeight;
+                height = fixheight + config->layout.buttonHeight;
             }
             
             void Content::draw() {
@@ -37,7 +37,7 @@ namespace msa {
                 
                 ofFill();
                 setBGColor();
-                ofRect(0, fixheight, width, config->sliderTextHeight);
+                ofRect(0, fixheight, width, config->layout.buttonHeight);
                 
                 setTextColor();
                 config->drawString(parameter->getName(), 3, fixheight + 15);

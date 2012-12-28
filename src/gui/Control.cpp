@@ -8,7 +8,7 @@ namespace msa {
             Control::Control(Panel *parent) {
                 this->parent = parent;
                 if(parent) this->config = parent->config;
-                name = "[COULD NOT READ FROM PARAMETER]";
+//                name = "[COULD NOT READ FROM PARAMETER]";
                 z = 0;
                 localRect.set(0, 0, 0, 0);
                 active = false;
@@ -103,7 +103,12 @@ namespace msa {
             ofColor Control::setBorderColor() {
                 return setColor(config->colors.border);
             }
-
+            
+            //--------------------------------------------------------------
+            bool Control::doTooltip(int millis) {
+                return isMouseOver() && getStateChangeMillis() > (millis < 0 ? 250 : millis);
+            }
+            
             //--------------------------------------------------------------
             Control &Control::setKeyboardShortcut(char c) {
                 keyboardShortcut = c;

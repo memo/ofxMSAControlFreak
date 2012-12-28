@@ -11,33 +11,40 @@ namespace msa {
             template <typename T>
             class ControlParameterT : public Control {
             public:
+                //--------------------------------------------------------------
                 ControlParameterT(Panel *parent, string s) : Control(parent) {
                     parameterOwner = true;
+//                    ParameterGroup *parentParam = parent ? &(parent->getParameter()) : NULL;
                     parameter = new T(NULL, s);
+//                    name = parameter->getPath();
                 }
 
+                //--------------------------------------------------------------
+                ControlParameterT(Panel *parent, Parameter *p) : Control(parent) {
+                    parameter = dynamic_cast<T*>(p);
+                    if(!parameter) ofLogError() << "msa::ControlFreak::gui::Control - type-casting parameter " << p->getPath();
+//                    if(parameter) name = parameter->getPath();
+                    parameterOwner = false;
+                }
+
+                //--------------------------------------------------------------
                 ~ControlParameterT() {
                     if(parameterOwner && parameter) delete parameter;
                 }
                 
-                ControlParameterT(Panel *parent, Parameter *p) : Control(parent) {
-                    parameter = dynamic_cast<T*>(p);
-                    if(!parameter) ofLogError() << "msa::ControlFreak::gui::Control - type-casting parameter " << p->getPath();
-                    if(parameter) name = parameter->getPath();
-                    parameterOwner = false;
-                }
 
+                //--------------------------------------------------------------
                 T &getParameter() {
                     return *parameter;
                 }
                 
-                
+                //--------------------------------------------------------------
                 void drawText(int x, int y, string s = "", ofColor *c = NULL) {
                     setColor(c ? c : config->colors.text);
                     config->drawString(s.empty() ? parameter->getName() : s, x, y);
                 }
                 
-                
+                //--------------------------------------------------------------
                 void drawBorder(ofColor *c = NULL) {
                     ofNoFill();
                     setColor(c ? c : config->colors.border);

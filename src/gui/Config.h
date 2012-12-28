@@ -9,22 +9,23 @@ namespace msa {
             class Config {
             public:
                 ofTrueTypeFont font;
-                ofPoint	gridSize;
                 
-                float	buttonHeight;
-                float	toggleHeight;
-                float	sliderHeight;
-                float	sliderTextHeight;
-                float	slider2DTextHeight;
-                float	titleHeight;
-                float	comboBoxHeight;
-                float	comboBoxTextHeight;
-                
-                ofPoint textPos;
-                ofPoint padding;
-                ofPoint offset;
-                ofPoint	slider2DSize;
-
+                struct {
+                    ofPoint	gridSize;
+                    
+                    float	buttonHeight;
+                    float	sliderHeight;
+//                    float	sliderTextHeight;
+//                    float	slider2DTextHeight;
+//                    float	comboBoxHeight;
+//                    float	comboBoxTextHeight;
+                    
+                    ofVec2f textPos;
+                    ofVec2f padding;
+//                    ofVec2f offset;
+//                    ofVec2f	slider2DSize;
+                    float indent;
+                } layout;
                 
                 // Colors
                 // 0: normal, 1:over, 2:active
@@ -37,6 +38,14 @@ namespace msa {
                     } slider, toggle;
                     ofColor border[3];
                 } colors;
+                
+                struct {
+                    ofVec2f offset;
+                    ofRectangle padding;
+                    ofColor bgColor;
+                    ofColor borderColor;
+                    ofColor textColor;
+                } tooltip;
                 
                 
                 Config();
