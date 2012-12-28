@@ -67,8 +67,10 @@ namespace msa {
                 
                 struct Layout {
                     // for auto-layout
-                    ofRectangle   maxRect;
-                    ofVec2f       curPos;
+                    ofRectangle maxRect;
+                    ofVec2f     curPos;
+                    float       indent;
+                    ofRectangle rect;
                     
                     ofVec2f getMaxPos() {
                         return ofVec2f(maxRect.width ? maxRect.x + maxRect.width : ofGetWidth(), maxRect.height ? maxRect.y + maxRect.height : ofGetHeight());

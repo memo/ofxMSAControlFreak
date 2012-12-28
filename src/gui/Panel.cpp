@@ -103,10 +103,11 @@ namespace msa {
                 ofVec2f &curPos = layout->curPos;
                 
                 // set start position for panel
-                setPosition(layout->clampPoint(getPosition()));
+                curPos = layout->clampPoint(curPos);
+                setPosition(curPos);
                 
                 // also save this in layout managers position
-                curPos = getPosition();
+//                curPos = getPosition();
                 
                 width = 0;
                 height = 0;//config->titleHeight;
@@ -118,6 +119,10 @@ namespace msa {
                 
                 float heightMult = getHeightScale();//i ? getHeightScale() : getParentHeightScale();
                 for(int i=0; i<numControls; i++) {
+                    
+                    // indent all controls after title
+                    if(i==1) layout->indent += config->padding.x/2;
+                    
                     Control& control = *controls[i];
 
                     // if doing first control (title) use full height, otherwise use parents height
@@ -125,19 +130,23 @@ namespace msa {
                     
                     // if forced to be new column, or the height of the control is going to reach across the bottom of the screen, start new column
                     if(control.newColumn || curPos.y + (control.height + config->padding.y) * heightMult > maxPos.y) {
-                        curPos.x += config->gridSize.x; // TODO: use control width?
+                        curPos.x = layout->rect.x + layout->rect.width + config->padding.x;//config->gridSize.x; // TODO: use control width?
                         curPos.y = layout->maxRect.y;
                     }
                     
-                    control.setPosition(curPos.x, curPos.y);
+                    control.setPosition(floor(curPos.x + layout->indent), floor(curPos.y));
                     control.predraw();
                     controlsToDraw.push_back(&control);
+                    layout->rect.growToInclude((ofRectangle&)control);
                     
                     curPos.y += (control.height + config->padding.y) * heightMult;
                 }
                 
+                if(numControls>1) layout->indent -= config->padding.x/2;
+                
                 // add some padding at end of group
                 curPos.y += config->titleHeight * getParentHeightScale();
+                
 //                curPos.y += 30;//config->padding.y * 2;
                 
                 // draw panel title again so it's on top

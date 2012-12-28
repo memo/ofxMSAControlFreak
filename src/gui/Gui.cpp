@@ -325,8 +325,12 @@ namespace msa {
 //                pages[currentPageIndex]->maxRect.set(config.padding.x, headerPage->height + config.padding.y, 0, 0);
 //                pages[currentPageIndex]->draw(config.padding.x, headerPage->height + config.padding.y);
                 if(pages[currentPageIndex]->layout == NULL) pages[currentPageIndex]->layout = Panel::LayoutPtr(new Panel::Layout);
-                
-                pages[currentPageIndex]->layout->maxRect.set(config.padding.x, config.padding.y, 0, 0);
+               
+                Panel::Layout &l = *pages[currentPageIndex]->layout;
+                l.maxRect.set(config.padding.x, config.padding.y, 0, 0);
+                l.indent = 0;
+                l.curPos.set(0, 0);
+                l.rect.set(l.maxRect.x, l.maxRect.y, 0, 0);
                 pages[currentPageIndex]->setPosition(config.padding.x, config.padding.y);
                 pages[currentPageIndex]->predraw();
                 pages[currentPageIndex]->draw();
