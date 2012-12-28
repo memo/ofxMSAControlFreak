@@ -64,7 +64,8 @@ namespace msa {
 //                float getParentAlphaScale();   // alpha scale of parent
 //                float getAlphaScale();         // inherited height alpha
 
-                
+                bool isOpen;
+                void showPanel(bool bOpen, bool bRecursive = false);
                 
                 struct Layout {
                     // for auto-layout

@@ -29,6 +29,7 @@ namespace msa {
                     
                     if(parameter->getValue()) {
                         setTextColor();
+                        ofSetLineWidth(2);
                         ofLine(0, 0, height, height);
                         ofLine(height, 0, 0, height);
                     }

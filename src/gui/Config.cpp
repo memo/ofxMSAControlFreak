@@ -7,8 +7,8 @@ namespace msa {
             
             
             Config::Config() {
-                sliderHeight		= 6;
-                sliderTextHeight	= 20;
+                sliderHeight		= 7;
+                sliderTextHeight	= 16;
                 titleHeight			= sliderHeight + sliderTextHeight;
                 toggleHeight		= titleHeight;
                 buttonHeight		= titleHeight;
@@ -17,7 +17,7 @@ namespace msa {
                 comboBoxTextHeight	= 15;
                 
                 textPos.set         (5, 16);
-                padding.set			(titleHeight/2, 10);
+                padding.set			(10, 10);
                 offset.set			(titleHeight/2, titleHeight/2);
                 slider2DSize.set	(titleHeight * 4, titleHeight * 4);
                 
@@ -28,8 +28,8 @@ namespace msa {
                 // Colors
                 // 0: normal, 1:over, 2:active
                 colors.bg[0]        = ofColor(0);
-                colors.bg[1]		= ofColor(33);
-                colors.bg[2]		= ofColor(33);
+                colors.bg[1]		= ofColor(30);
+                colors.bg[2]		= ofColor(30);
                 
                 colors.text[0]		= ofColor(140);
                 colors.text[1]		= ofColor(255);

@@ -12,6 +12,7 @@ namespace msa {
                 width = 0;
                 height = 0;//ofGetHeight();
                 activeControl = NULL;
+                isOpen = false;
 //                setXMLName(p->getName() + "_settings.xml");
                 
                 heightScale = 1.0;
@@ -79,11 +80,24 @@ namespace msa {
             }
 
             //--------------------------------------------------------------
+            void Panel::showPanel(bool bOpen, bool bRecursive) {
+                isOpen = bOpen;
+                titleButton->getParameter().setValue(bOpen);
+                if(bRecursive) {
+                    for(int i=0; i<controls.size(); i++) {
+                        Panel *p = dynamic_cast<Panel*>(controls[i].get());
+                        if(p) p->showPanel(bOpen, true);
+                    }
+                }
+            }
+            
+            //--------------------------------------------------------------
             void Panel::predraw() {
                 
                 // how open is this panel
                 float openSpeed = 0.1f;
-                if(titleButton->getParameter().getValue()) {
+                if(titleButton->getParameter().getValue() != isOpen) showPanel(titleButton->getParameter().getValue(), true);
+                if(isOpen) {
 //                    if(heightScale<0.95) heightScale += (1-heightScale) * openSpeed;
                     if(heightScale < 1) heightScale += openSpeed;
                     else heightScale = 1.0f;
@@ -189,7 +203,7 @@ namespace msa {
                 
 //                ofLogNotice() << "\n\ndraw PANEL : " << name;
                 
-                bool doHilit = getActive() && activeControl == titleButton;
+                bool doHilit = getActive();
 
                 for(int i=0; i<controlsToDraw.size(); i++) {
                     Control& control = *controlsToDraw[i];
@@ -198,12 +212,12 @@ namespace msa {
                     
                     control.draw();
                     
-//                    if(doHilit) {
-//                        ofNoFill();
-//                        ofSetColor(config->colors.text[1]);
-//                        ofSetLineWidth(1);
-//                        ofRect((ofRectangle&)control);
-//                    }
+                    if(doHilit) {
+                        ofNoFill();
+                        ofSetColor(config->colors.text[2]);
+                        ofSetLineWidth(1);
+                        ofRect((ofRectangle&)control);
+                    }
                     
 //                    growToInclude((ofRectangle&)control);
                 }
@@ -364,7 +378,7 @@ namespace msa {
             
             //--------------------------------------------------------------
             bool Panel::getActive() {
-                bool b = activeControl != NULL;
+                bool b = activeControl == titleButton;//activeControl != NULL;
                 return parent ? b | parent->getActive() : b;
             }
 
