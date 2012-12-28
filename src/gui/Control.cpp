@@ -7,7 +7,12 @@ namespace msa {
             
             Control::Control(Panel *parent) {
                 this->parent = parent;
-                if(parent) this->config = parent->config;
+                if(parent) {
+                    this->config = parent->config;
+                    width   = config->layout.gridSize.x;
+                    height  = config->layout.buttonHeight;
+                }
+                
 //                name = "[COULD NOT READ FROM PARAMETER]";
                 z = 0;
                 localRect.set(0, 0, 0, 0);
@@ -42,26 +47,10 @@ namespace msa {
                 return *this;
             }
             
-            //--------------------------------------------------------------
-            //            Control &Control::setName(string newName) {
-            //                name = newName;
-            //                origName = name;
-            ////                if(key.compare("") == 0) setKey("");	// if key has not been set yet, set name as key too
-            //
-            //                hasTitle = (name.compare("") != 0);
-            //                return *this;
-            //            }
-            //
-            //            //--------------------------------------------------------------
-            //            Control &Control::setKey(string newKey) {
-            //                if(newKey.compare("") == 0) key = name;
-            //                else key = newKey;
-            //                for(int i=0; i<key.size(); i++) {
-            //                    if(key[i] == ' ') key[i] = '_';
-            //                }
-            //                return *this;
-            //            }
-            
+            int Control::getDepth() {
+                return parent ? parent->getDepth() + 1 : 0;
+            }
+
             //--------------------------------------------------------------
             int Control::getState() {
                 if(parent && parent->getActiveControl() == this) return 2;

@@ -122,34 +122,32 @@ namespace msa {
                 setPosition(curPos);
                 
                 width = 0;
-                height = 0;//config->layout.buttonHeight;
+                height = 0;
 
-                int numControls = getHeightScale() ? controls.size() : 1;
+                int panelDepth = getDepth();// * config->layout.indent;
                 
-//                controlsToDraw.clear();
+                int numControls = getHeightScale() ? controls.size() : 1;
                 
                 float heightMult = getHeightScale();//i ? getHeightScale() : getParentHeightScale();
                 for(int i=0; i<numControls; i++) {
-                    
-                    // indent all controls after title
-                    if(i==1) layout->indent += config->layout.padding.x/2;
-                    
                     Control& control = *controls[i];
 
+                    int indent = i==0 ? panelDepth * config->layout.indent : (panelDepth+1) * config->layout.indent;
+                    
                     // if forced to be new column, or the height of the control is going to reach across the bottom of the screen, start new column
                     if(control.newColumn || curPos.y + (control.height + config->layout.padding.y) * heightMult > maxPos.y) {
-                        curPos.x = layout->rect.x + layout->rect.width + config->layout.padding.x;//config->layout.gridSize.x; // TODO: use control width?
+                        curPos.x = layout->rect.x + layout->rect.width + config->layout.padding.x;
                         curPos.y = layout->maxRect.y;
                     }
                     
-                    control.setPosition(floor(curPos.x + layout->indent), floor(curPos.y));
-                    Renderer::instance().addControl(&control);
+                    control.setWidth(config->layout.gridSize.x - indent);
+                    control.setPosition(floor(curPos.x + indent), floor(curPos.y));
+//                    Renderer::instance().addControl(&control);
+                    control.draw();
                     layout->rect.growToInclude((ofRectangle&)control);
                     
                     curPos.y += (control.height + config->layout.padding.y) * heightMult;
                 }
-                
-                if(numControls>1) layout->indent -= config->layout.padding.x/2;
                 
                 // add some padding at end of group
                 curPos.y += config->layout.buttonHeight * getParentHeightScale();
@@ -232,7 +230,7 @@ namespace msa {
             
             //--------------------------------------------------------------
             Content& Panel::addContent(Parameter *p, ofBaseDraws &content, float fixwidth) {
-                if(fixwidth == -1) fixwidth = config->layout.gridSize.x - config->layout.padding.x;
+                if(fixwidth == -1) fixwidth = config->layout.gridSize.x;
                 return (Content&)addControl(new Content(this, p, content, fixwidth));
             }
             

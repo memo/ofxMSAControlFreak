@@ -71,7 +71,6 @@ namespace msa {
                     // for auto-layout
                     ofRectangle maxRect;
                     ofVec2f     curPos;
-                    float       indent;
                     ofRectangle rect;
                     
                     ofVec2f getMaxPos() {

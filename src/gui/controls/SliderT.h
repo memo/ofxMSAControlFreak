@@ -12,8 +12,6 @@ namespace msa {
 
                 //--------------------------------------------------------------
                 SliderT(Panel *parent, Parameter *p) : ControlParameterT<ParameterSingleValueT<T> >(parent, p) {
-                    this->width = this->config->layout.gridSize.x - this->config->layout.padding.x;
-                    this->height = this->config->layout.buttonHeight;
                 }
 
                 //--------------------------------------------------------------

@@ -13,18 +13,18 @@ namespace msa {
                 struct {
                     ofPoint	gridSize;
                     
-                    float	buttonHeight;
-                    float	sliderHeight;
-//                    float	sliderTextHeight;
-//                    float	slider2DTextHeight;
-//                    float	comboBoxHeight;
-//                    float	comboBoxTextHeight;
+                    int	buttonHeight;
+                    int	sliderHeight;
+//                    int	sliderTextHeight;
+//                    int	slider2DTextHeight;
+//                    int	comboBoxHeight;
+//                    int	comboBoxTextHeight;
                     
                     ofVec2f textPos;
                     ofVec2f padding;
 //                    ofVec2f offset;
 //                    ofVec2f	slider2DSize;
-                    float indent;
+                    int indent;
                 } layout;
                 
                 // Colors

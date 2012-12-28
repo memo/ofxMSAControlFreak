@@ -11,18 +11,10 @@ namespace msa {
                 
                 //--------------------------------------------------------------
                 BoolBase(Panel *parent, string s) : ControlParameterT<ParameterBool>(parent, s) {
-                    setup();
                 }
                 
                 //--------------------------------------------------------------
                 BoolBase(Panel *parent, Parameter *p) : ControlParameterT<ParameterBool>(parent, p) {
-                    setup();
-                }
-                
-                //--------------------------------------------------------------
-                void setup() {
-                    width = config->layout.gridSize.x - config->layout.padding.x;
-                    height = config->layout.buttonHeight;
                 }
                 
                 //--------------------------------------------------------------

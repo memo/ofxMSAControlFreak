@@ -19,20 +19,18 @@ namespace msa {
             public:
                 int         z;  // draw order (0 draw last, i.e. drawn on top)
                 bool		active;
-                //                bool		focused;
                 bool		newColumn;
                 char		keyboardShortcut;
-//                string      name;
                 
                 // if this is set (i.e. nonzero), override auto-layout and set position and size in relation to parent
                 ofRectangle localRect;
                 
-                //                Control(Panel *parent, string name, string controlType);
-                //                Control& setName(string newName);
-                //                Control& setKey(string newKey);
                 Control(Panel *parent);
                 Control& setConfig(Config *config);
                 Control& setNewColumn(bool b);
+                
+                // how deep in the heirarchy it is (how many levels deep)
+                int getDepth();
                 
                 // 0: normal, 1:over, 2:active
                 virtual int getState();

@@ -7,12 +7,6 @@ namespace msa {
             
             
             FPSCounter::FPSCounter(Panel *parent) : ControlParameterT<Parameter>(parent, NULL) {
-                setup();
-            }
-            
-            void FPSCounter::setup() {
-                width = config->layout.gridSize.x - config->layout.padding.x;
-                height = config->layout.buttonHeight;
             }
             
             
