@@ -52,7 +52,7 @@ void testApp::setup(){
 	params.addInt("int5").setIncrement(5).setSnap(true);    // create and enable snap, so even if you use mouse or any other means, values always snap
     
     params.addBool("bool2").setValue(true);                 // create and set value. default value for bool is 0
-    params.addBool("bool3").setBang(true);                  // create and enable momentary bool (i.e. a button, or 'bang')
+    params.addBool("bool3").setMode(msa::ControlFreak::ParameterBool::kBang);                  // create and enable momentary bool (i.e. a button, or 'bang')
     
     // NOTE: The Parameter names used must be unique!
     

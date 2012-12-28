@@ -116,7 +116,7 @@ namespace msa {
 		ParameterBool& ParameterGroup::addBool(string name) {
             if(_paramMap.find(name) != _paramMap.end()) return getBool(name);
             ParameterBool *p = new ParameterBool(_groupStack.top(), name, Type::kBool);
-            p->setBang(false);
+            p->setMode(ParameterBool::kToggle);
             addParameter(p);
 			return *p;
 		}
@@ -125,7 +125,7 @@ namespace msa {
 		ParameterBool& ParameterGroup::addBang(string name) {
             if(_paramMap.find(name) != _paramMap.end()) return getBool(name);
             ParameterBool *p = new ParameterBool(_groupStack.top(), name, Type::kBool);
-            p->setBang(true);
+            p->setMode(ParameterBool::kBang);
             addParameter(p);
 			return *p;
 		}

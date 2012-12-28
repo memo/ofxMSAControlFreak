@@ -1,49 +1,19 @@
 #pragma once
 
-#include "ofxMSAControlFreak/src/gui/ControlParameterT.h"
+#include "ofxMSAControlFreak/src/gui/controls/BoolBase.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            class BoolButton : public ControlParameterT<ParameterBool> {
+            class BoolButton : public BoolBase {
             public:
-                //--------------------------------------------------------------
-                BoolButton(Panel *parent, Parameter *p) : ControlParameterT<ParameterBool>(parent, p) {
-                    width = config->gridSize.x - config->padding.x;
-                    height = config->buttonHeight;
-                }
                 
                 //--------------------------------------------------------------
-                void toggle() {
-                    if(!parameter) return;
-                    parameter->setValue(!parameter->getValue());
-                }
+                BoolButton(Panel *parent, string s) : BoolBase(parent, s) {}
 
                 //--------------------------------------------------------------
-                void keyPressed( int key ) {
-                    if(key==keyboardShortcut) toggle();
-                }
-                
-                //--------------------------------------------------------------
-                void onKeyEnter() {
-                    toggle();
-                }
-
-                //--------------------------------------------------------------
-                void onPress(int x, int y, int button) {
-                    if(!parameter) return;
-                    parameter->setValue(true);
-                    //                beenPressed = true;
-                    //                if(beToggle) (*value) = !(*value);
-                    //                else (*value) = true;
-                }
-                
-                //--------------------------------------------------------------
-                void onRelease(int x, int y, int button) {
-                    parameter->setValue(false);
-                    //                if(!beToggle) (*value) = false;
-                }
+                BoolButton(Panel *parent, Parameter *p) : BoolBase(parent, p) {}
                 
                 //--------------------------------------------------------------
                 void draw() {
@@ -73,8 +43,7 @@ namespace msa {
                     glPopMatrix();
                     
                     
-                    if(parameter->getValue()) parameter->setValue(false);
-
+                    BoolBase::draw();
                 }
             };
             

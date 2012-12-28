@@ -204,7 +204,7 @@ namespace msa {
                 else if(currentPageIndex < 1) currentPageIndex = pages.size()-1;
                 
                 //                if(titleButton) titleButton->setName(ofToString(currentPageIndex) + ": " + pages[currentPageIndex]->name);
-                if(titleButton) titleButton->getParameter()->setName(ofToString(currentPageIndex) + ": " + pages[currentPageIndex]->parameter->getName());
+                if(titleButton) titleButton->getParameter().setName(ofToString(currentPageIndex) + ": " + pages[currentPageIndex]->parameter->getName());
             }
             
             

@@ -14,7 +14,6 @@ namespace msa {
                 activeControl = NULL;
 //                setXMLName(p->getName() + "_settings.xml");
                 
-                isOpen = true;
                 heightScale = 1.0;
             }
             
@@ -70,20 +69,27 @@ namespace msa {
             
             
             //--------------------------------------------------------------
+            float Panel::getParentHeightScale() {
+                return parent ? parent->getHeightScale() : heightScale;
+            }
+            
+            //--------------------------------------------------------------
             float Panel::getHeightScale() {
-                return parent ? heightScale * parent->getHeightScale() : heightScale;
+                return heightScale * getParentHeightScale();
             }
 
             //--------------------------------------------------------------
             void Panel::predraw() {
-                float openSpeed = 0.02f;
                 
                 // how open is this panel
-                if(isOpen) {
-                    if(heightScale<1.0f-openSpeed) heightScale += (1-heightScale) * openSpeed;
+                float openSpeed = 0.1f;
+                if(titleButton->getParameter().getValue()) {
+//                    if(heightScale<0.95) heightScale += (1-heightScale) * openSpeed;
+                    if(heightScale < 1) heightScale += openSpeed;
                     else heightScale = 1.0f;
                 } else {
-                    if(heightScale > openSpeed) heightScale += (0-heightScale) * openSpeed;
+//                    if(heightScale > 0.05) heightScale += (0-heightScale) * openSpeed;
+                    if(heightScale > 0) heightScale -= openSpeed;
                     else heightScale = 0.0f;
                 }
 
@@ -103,22 +109,22 @@ namespace msa {
                 curPos = getPosition();
                 
                 width = 0;
-                height = 0;
+                height = 0;//config->titleHeight;
 
 //                ofLogNotice() << "\n\npredraw PANEL : " << name;
                 int numControls = getHeightScale() ? controls.size() : 1;
                 
                 controlsToDraw.clear();
                 
+                float heightMult = getHeightScale();//i ? getHeightScale() : getParentHeightScale();
                 for(int i=0; i<numControls; i++) {
                     Control& control = *controls[i];
-//                    ofLogNotice() << "predraw CONTROL : " << control.name << " " << control.getPosition() << " " << control.x << "x" << control.y;
-                    
-                    
-                    //                    ofLogVerbose() << control.name << " " << control.controlType;
+
+                    // if doing first control (title) use full height, otherwise use parents height
+//                    float heightMult = getHeightScale();//i ? getHeightScale() : getParentHeightScale();
                     
                     // if forced to be new column, or the height of the control is going to reach across the bottom of the screen, start new column
-                    if(control.newColumn || curPos.y + (control.height + config->padding.y) * getHeightScale() > maxPos.y) {
+                    if(control.newColumn || curPos.y + (control.height + config->padding.y) * heightMult > maxPos.y) {
                         curPos.x += config->gridSize.x; // TODO: use control width?
                         curPos.y = layout->maxRect.y;
                     }
@@ -127,14 +133,15 @@ namespace msa {
                     control.predraw();
                     controlsToDraw.push_back(&control);
                     
-                    curPos.y += (control.height + config->padding.y) * getHeightScale();
+                    curPos.y += (control.height + config->padding.y) * heightMult;
                 }
                 
                 // add some padding at end of group
-                curPos.y += config->padding.y * 2;
+                curPos.y += config->titleHeight * getParentHeightScale();
+//                curPos.y += 30;//config->padding.y * 2;
                 
                 // draw panel title again so it's on top
-//                if(controls[0] && getHeightScale() < 0.9) controls[0]->draw();
+//                if(controls[0] && heightMult < 0.9) controls[0]->draw();
                 
                 //event stealing controls get drawn on top
 //                if(activeControl) {
@@ -160,13 +167,15 @@ namespace msa {
             
             struct PointerCompare {
                 bool operator()(const Control* l, const Control* r) {
-                    return l->z < r->z;
+                    return l->z > r->z;
                 }
             };
             
             //--------------------------------------------------------------
             void Panel::draw() {
                 ofPushStyle();
+                
+                titleButton->z = -10000;
                 sort(controlsToDraw.begin(), controlsToDraw.end(), PointerCompare());
                 
 //                ofLogNotice() << "\n\ndraw PANEL : " << name;
@@ -178,24 +187,22 @@ namespace msa {
                     
                     control.draw();
 
-                    //                    if(control.parameter && !control.parameter->getName().empty()) {
+                    // border on control
                     ofNoFill();
                     ofSetColor(config->borderColor);
                     glLineWidth(1.0);
-                    ofRect(control.x, control.y, control.width, control.height * getHeightScale());
-                    //                    }
+                    ofRect(control.x, control.y, control.width, control.height);// * getHeightScale());
                     
-                        
-                    if(activeControl == &control) {
-                        ofNoFill();
-                        ofSetColor(config->borderColor);
-                        ofSetLineWidth(1);
-                        ofRect((ofRectangle&)*activeControl);//, stealingY, activeControl->width, activeControl->height);
-                    }
-                    
-                    growToInclude((ofRectangle&)control);
+//                    growToInclude((ofRectangle&)control);
                 }
                 
+                // border on active control
+                if(activeControl) {
+                    ofNoFill();
+                    ofSetColor(config->textColor);
+                    ofSetLineWidth(1);
+                    ofRect((ofRectangle&)*activeControl);
+                }
                 ofPopStyle();
             }
             
@@ -258,8 +265,8 @@ namespace msa {
             }
             
             //--------------------------------------------------------------
-            BoolTitle& Panel::addTitle(Parameter *p, float height) {
-                return (BoolTitle&)addControl(new BoolTitle(this, p, height));
+            BoolTitle& Panel::addTitle(Parameter *p) {
+                return (BoolTitle&)addControl(new BoolTitle(this, p));
             }
             
             //--------------------------------------------------------------
@@ -285,8 +292,8 @@ namespace msa {
                     case Type::kInt: addSliderInt(p); break;
                     case Type::kBool: {
                         ParameterBool &pb = *(ParameterBool*)p;
-                        if(pb.getBang()) addButton(p);
-                        else addToggle(p);
+                        if(pb.getMode() == ParameterBool::kToggle) addToggle(p);
+                        else addButton(p);
                     }
                         break;
                         
@@ -307,10 +314,9 @@ namespace msa {
                 
                 if(!config) setup();
                 
-//                addTitle(parameters.getPath());
-                //                addToggle(parameters.getPath(), *(new bool));
-//                addButton(parameters.getPath(), isOpen).setToggleMode(true);
-                isOpen = true;
+                titleButton = new BoolButton(this, parameter->getName());
+                titleButton->getParameter().setValue(true);
+                addControl(titleButton);
                 int np = parameters.getNumParams();
                 for(int i=0; i<np; i++) {
                     addParameter(&parameters.getParameter(i));

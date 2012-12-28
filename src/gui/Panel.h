@@ -50,10 +50,10 @@ namespace msa {
                 void addParameters(ParameterGroup &parameters);
                 
             protected:
-                bool isOpen;
-                float heightScale;
                 
-                float getHeightScale();
+                float heightScale;              // height scale of this panel
+                float getParentHeightScale();   // height scale of parent
+                float getHeightScale();         // inherited height scale
                 
                 
                 struct Layout {
@@ -75,11 +75,19 @@ namespace msa {
                 LayoutPtr layout;
                 
                 
+                // contains extra parameters for gui specific controls
+//                ParameterGroup extraParams;
+                
+                
                 vector<ControlPtr>	controls;
                 vector<Control*> controlsToDraw;    // this contains the controls to be drawn, sorted on control.z
                 
-                //some controls can take over focus (e.g. combo box,) which means events should only be passed to them
-                Control*			activeControl;
+                
+                BoolButton      *titleButton;       // button which controls the title of the panel
+                
+                
+                // currently active control (only that receives events)
+                Control         *activeControl;
                 
                 Control			&addControl(Control *control);
                 
@@ -93,7 +101,7 @@ namespace msa {
                 Slider2d		&addSlider2d(Parameter *p);
                 SliderInt		&addSliderInt(Parameter *p);
                 SliderFloat		&addSliderFloat(Parameter *p);
-                BoolTitle		&addTitle(Parameter *p, float height = 0);
+                BoolTitle		&addTitle(Parameter *p);
                 BoolToggle		&addToggle(Parameter *p);
             };
             

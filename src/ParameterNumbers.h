@@ -13,11 +13,6 @@ namespace msa {
     namespace ControlFreak {
         
         
-        //        typedef ParameterSingleValueT<float> ParameterFloat;
-        //        typedef ParameterSingleValueT<int> ParameterInt;
-        //        typedef ParameterSingleValueT<bool> ParameterBool;
-        
-        
         //--------------------------------------------------------------
         //--------------------------------------------------------------
         class ParameterInt : public ParameterSingleValueT<int> {
@@ -66,23 +61,27 @@ namespace msa {
 			template <typename T> operator T() const { kCheckBadParameter(T()); return this->getValue(); }
             
             ParameterBool(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kBool)
-            : ParameterSingleValueT<bool>(parent, name, typeIndex) { setRange(0, 1); setIncrement(1); setBang(false); }
+            : ParameterSingleValueT<bool>(parent, name, typeIndex) { setRange(0, 1); setIncrement(1); setMode(kToggle); }
             
-            //--------------------------------------------------------------
-            // if Bang is true, parameter will only be true for one frame (i.e. sends a bang)
-            void setBang(bool b) {
+            
+            enum Mode {
+                kToggle,    // toggle on/off
+                kPush,      // on while active, off when released
+                kBang       // on for only one frame
+            };
+            
+            ParameterBool& setMode(Mode mode) {
                 kCheckBadParameter();
-                _isBang = b;
+                _mode = mode;
+                return *this;
             }
             
-            //--------------------------------------------------------------
-            bool getBang() {
-                kCheckBadParameter(false);
-                return _isBang;
+            Mode getMode() {
+                return _mode;
             }
             
         protected:
-            bool _isBang;
+            Mode _mode;
             
             // dummy parameter, sent back from 'getParameter' functions, if parameter can't be found
             static ParameterBool dummy;

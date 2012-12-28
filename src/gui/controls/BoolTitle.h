@@ -1,48 +1,25 @@
 #pragma once
 
-#include "ofxMSAControlFreak/src/gui/ControlParameterT.h"
+#include "ofxMSAControlFreak/src/gui/controls/BoolBase.h"
 
 namespace msa {
     namespace ControlFreak {
         namespace gui {
             
-            class BoolTitle : public ControlParameterT<ParameterBool> {
+            class BoolTitle : public BoolBase {
             public:
+                
                 //--------------------------------------------------------------
-                BoolTitle(Panel *parent, Parameter *p, float height = 0) : ControlParameterT<ParameterBool>(parent, p) {
+                BoolTitle(Panel *parent, string s) : BoolBase(parent, s) {}
+                
+                //--------------------------------------------------------------
+                BoolTitle(Panel *parent, Parameter *p) : BoolBase(parent, p) {}
+                
+                //--------------------------------------------------------------
+                void setup() {
                     width = config->gridSize.x - config->padding.x;
                     if(height == 0) height = config->titleHeight;
-                    if(p->getName().empty()) height/=2;
-                }
-                
-                //--------------------------------------------------------------
-                void toggle() {
-                    if(!parameter) return;
-                    parameter->setValue(!parameter->getValue());
-                }
-                
-                //--------------------------------------------------------------
-                void keyPressed( int key ) {
-                    if(key==keyboardShortcut) toggle();
-                }
-                
-                //--------------------------------------------------------------
-                void onKeyEnter() {
-                    toggle();
-                }
-                
-                //--------------------------------------------------------------
-                void onPress(int x, int y, int button) {
-                    if(!parameter) return;
-                    parameter->setValue(true);
-                    //                beenPressed = true;
-                    //                if(beToggle) (*value) = !(*value);
-                    //                else (*value) = true;
-                }
-                
-                //--------------------------------------------------------------
-                void onRelease(int x, int y, int button) {
-                    //                if(!beToggle) (*value) = false;
+                    if(parameter->getName().empty()) height/=2;
                 }
                 
                 //--------------------------------------------------------------
@@ -71,6 +48,8 @@ namespace msa {
                     ofDisableAlphaBlending();
                     
                     glPopMatrix();
+                    
+                    BoolBase::draw();
                 }
 
             };
