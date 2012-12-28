@@ -179,6 +179,8 @@ namespace msa {
                 sort(controlsToDraw.begin(), controlsToDraw.end(), PointerCompare());
                 
 //                ofLogNotice() << "\n\ndraw PANEL : " << name;
+                
+                bool doHilit = getActive() && activeControl == titleButton;
 
                 for(int i=0; i<controlsToDraw.size(); i++) {
                     Control& control = *controlsToDraw[i];
@@ -186,7 +188,14 @@ namespace msa {
 //                    ofLogNotice() << "draw CONTROL : " << control.name << " " << control.getPosition() << " " << control.x << "x" << control.y;
                     
                     control.draw();
-
+                    
+                    if(doHilit) {
+                        ofNoFill();
+                        ofSetColor(config->textOverColor);
+                        ofSetLineWidth(1);
+                        ofRect((ofRectangle&)control);
+                    }
+                    
 //                    growToInclude((ofRectangle&)control);
                 }
                 
@@ -195,7 +204,7 @@ namespace msa {
                     ofNoFill();
                     ofSetColor(config->textColor);
                     ofSetLineWidth(1);
-                    ofRect((ofRectangle&)*activeControl);
+//                    ofRect((ofRectangle&)*activeControl);
                 }
                 ofPopStyle();
             }
@@ -326,13 +335,25 @@ namespace msa {
                 activeControl = control;
                 
                 // put new active control at the front
-                if(activeControl) activeControl->z = 0;
+                if(activeControl) {
+                    activeControl->z = 0;
+//                    ofLogNotice() << "setting active control [" << activeControl->name << "] for panel [" << name;
+//                } else {
+//                    ofLogNotice() << "setting active control NULL for panel [" << name;
+                }
             }
             
             //--------------------------------------------------------------
             void Panel::releaseActiveControl() {
-                activeControl = NULL;
+                setActiveControl(NULL);
             }
+            
+            //--------------------------------------------------------------
+            bool Panel::getActive() {
+                bool b = activeControl != NULL;
+                return parent ? b | parent->getActive() : b;
+            }
+
             
             //--------------------------------------------------------------
             void Panel::update() {

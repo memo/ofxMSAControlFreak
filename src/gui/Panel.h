@@ -38,6 +38,9 @@ namespace msa {
                 void setActiveControl(Control *control);
                 void releaseActiveControl();
                 
+                // returns whether this panel, or any of it's parents have an active control
+                bool getActive();
+                
                 void update();
                 void mouseMoved(ofMouseEventArgs &e);
                 void mousePressed(ofMouseEventArgs &e);
@@ -55,6 +58,11 @@ namespace msa {
                 float heightScale;              // height scale of this panel
                 float getParentHeightScale();   // height scale of parent
                 float getHeightScale();         // inherited height scale
+                
+//                float alphaScale;              // alpha scale of this panel
+//                float getParentAlphaScale();   // alpha scale of parent
+//                float getAlphaScale();         // inherited height alpha
+
                 
                 
                 struct Layout {
