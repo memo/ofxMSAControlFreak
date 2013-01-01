@@ -3,7 +3,7 @@
 
 #include "ofMain.h"
 
-#include "ofxMSAControlFreak/src/gui/Gui.h"
+#include "ofxMSAControlFreakGui/src/Gui.h"
 #include "ofxMSAControlFreak/src/ControlFreak.h"
 
 
