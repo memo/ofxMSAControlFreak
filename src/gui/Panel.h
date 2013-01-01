@@ -80,7 +80,6 @@ namespace msa {
                         ofVec2f maxPos(getMaxPos());
                         return ofVec2f(ofClamp(p.x, maxRect.getLeft(), maxPos.x), ofClamp(p.y, maxRect.getTop(), maxPos.y));
                     }
-                    
                 };
                 typedef std::tr1::shared_ptr<Layout> LayoutPtr;
                 LayoutPtr layout;

@@ -52,7 +52,7 @@ namespace msa {
                     
                     if(doTooltip()) {
                         string sverb = parameter->getValue() ? "close" : "open";
-                        string starget = bMouseOverRecursive ? "panel and all sub-panels" : "panel";
+                        string starget = bMouseOverRecursive ? "panel and all sub-panels" : "panel. Right-click to temporarily isolate";
 //                        if(parameter->getValue()) s = "Click to close panel [" + parameter->getName() + "]";
 //                        else s = "Click to open panel";
                         Renderer::instance().setToolTip("Click to " + sverb + " " + starget);

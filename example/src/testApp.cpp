@@ -247,8 +247,8 @@ void testApp::setup(){
             params.addInt("rotation").setRange(0, 360);
         } params.endGroup();
         params.startGroup("display options"); {
-            params.addBool("fill").setValue(true);
             params.addNamedIndex("shape type").setLabels(3, "circle", "rectangle", "triangle");
+            params.addBool("fill").setValue(true);
         } params.endGroup();
         params.addBang("randomize");
         params.addBang("reset");
