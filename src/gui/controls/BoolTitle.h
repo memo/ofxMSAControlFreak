@@ -48,7 +48,7 @@ namespace msa {
                     drawText(3, 15, (parameter->getValue() ? "-" : "+"));
                     drawText(15, 15);
                     ofSetLineWidth(2);
-                    drawBorder(config->colors.text);
+                    drawBorder(getConfig().colors.text);
                     
                     if(doTooltip()) {
                         string sverb = parameter->getValue() ? "close" : "open";

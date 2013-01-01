@@ -33,7 +33,7 @@ namespace msa {
                     setBGColor();
                     ofRect(height, 0, width - height, height);
                     
-                    drawText(height + config->layout.textPos.x, config->layout.textPos.y);
+                    drawText(height + getConfig().layout.textPos.x, getConfig().layout.textPos.y);
 //                    drawBorder();
                     
                     BoolBase::onDraw();

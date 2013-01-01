@@ -11,7 +11,7 @@ namespace msa {
                 disableAllEvents();
                 width = 0;
                 height = 0;//ofGetHeight();
-//                activeControl = NULL;
+                activeControl = NULL;
                 isOpen = false;
 //                setXMLName(p->getName() + "_settings.xml");
                 
@@ -71,7 +71,7 @@ namespace msa {
             
             //--------------------------------------------------------------
             float Panel::getParentHeightScale() {
-                return parent ? parent->getHeightScale() : heightScale;
+                return getParent() ? getParent()->getHeightScale() : heightScale;
             }
             
             //--------------------------------------------------------------
@@ -109,7 +109,7 @@ namespace msa {
                 }
 
                 // if we are drawing this Panel inside another Panel, use auto-layout parameters of that
-                if(parent) layout = parent->layout;
+                if(getParent()) layout = getParent()->layout;
                 
                 // find the maximum position we are allowed to draw at before wrapping
                 ofVec2f maxPos(layout->getMaxPos());
@@ -124,7 +124,7 @@ namespace msa {
                 width = 0;
                 height = 0;
 
-                int panelDepth = getDepth();// * config->layout.indent;
+                int panelDepth = getDepth();// * getConfig().layout.indent;
                 
                 int numControls = getHeightScale() ? controls.size() : 1;
                 
@@ -132,24 +132,24 @@ namespace msa {
                 for(int i=0; i<numControls; i++) {
                     Control& control = *controls[i];
 
-                    int indent = i==0 ? panelDepth * config->layout.indent : (panelDepth+1) * config->layout.indent;
+                    int indent = i==0 ? panelDepth * getConfig().layout.indent : (panelDepth+1) * getConfig().layout.indent;
                     
                     // if forced to be new column, or the height of the control is going to reach across the bottom of the screen, start new column
-                    if(control.newColumn || curPos.y + (control.height + config->layout.padding.y) * heightMult > maxPos.y) {
-                        curPos.x = layout->rect.x + layout->rect.width + config->layout.padding.x;
+                    if(control.newColumn || curPos.y + (control.height + getConfig().layout.padding.y) * heightMult > maxPos.y) {
+                        curPos.x = layout->rect.x + layout->rect.width + getConfig().layout.padding.x;
                         curPos.y = layout->maxRect.y;
                     }
                     
-                    control.setWidth(config->layout.gridSize.x - indent);
+                    control.setWidth(getConfig().layout.gridSize.x - indent);
                     control.setLayout(curPos.x + indent, curPos.y);
                     Renderer::instance().addControl(&control);  // TODO: why does this break the order?
                     layout->rect.growToInclude((ofRectangle&)control);
                     
-                    curPos.y += (control.height + config->layout.padding.y) * heightMult;
+                    curPos.y += (control.height + getConfig().layout.padding.y) * heightMult;
                 }
                 
                 // add some padding at end of group
-                curPos.y += config->layout.buttonHeight;// * getParentHeightScale();
+                curPos.y += getConfig().layout.buttonHeight;// * getParentHeightScale();
                 
                 width = 0;
                 height = 0;
@@ -176,7 +176,7 @@ namespace msa {
 //                    
 //                    if(doHilit) {
 //                        ofNoFill();
-//                        ofSetColor(config->colors.text[2]);
+//                        ofSetColor(getConfig().colors.text[2]);
 //                        ofSetLineWidth(1);
 //                        ofRect((ofRectangle&)control);
 //                    }
@@ -187,7 +187,7 @@ namespace msa {
 //                // border on active control
 ////                if(activeControl) {
 ////                    ofNoFill();
-////                    ofSetColor(config->colors.text[0]);
+////                    ofSetColor(getConfig().colors.text[0]);
 ////                    ofSetLineWidth(1);
 //////                    ofRect((ofRectangle&)*activeControl);
 ////                }
@@ -223,7 +223,7 @@ namespace msa {
             
             //--------------------------------------------------------------
             Content& Panel::addContent(Parameter *p, ofBaseDraws &content, float fixwidth) {
-                if(fixwidth == -1) fixwidth = config->layout.gridSize.x;
+                if(fixwidth == -1) fixwidth = getConfig().layout.gridSize.x;
                 return (Content&)addControl(new Content(this, p, content, fixwidth));
             }
             
@@ -300,7 +300,7 @@ namespace msa {
             void Panel::addParameters(ParameterGroup& parameters) {
                 ofLogVerbose() << "msa::ControlFreak::gui::Panel::addParameters - " << parameter->getPath() << ": " << parameters.getPath();
                 
-                if(!config) setup();
+//                if(!_config) setup();
                 
                 titleButton = new BoolTitle(this, parameter->getName());
                 titleButton->getParameter().setValue(true);
@@ -309,34 +309,33 @@ namespace msa {
                 for(int i=0; i<np; i++) {
                     addParameter(&parameters.getParameter(i));
                 }
-//                addTitle("");
             }
             
             //--------------------------------------------------------------
-//            void Panel::setActiveControl(Control* control) {
-//                // if old control exists, put it at the back
-//                if(activeControl) activeControl->z = 0;
-//                
-//                activeControl = control;
-//                
-//                // put new active control at the front
-//                if(activeControl) {
-//                    activeControl->z = -1000;
-////                    ofLogNotice() << "setting active control [" << activeControl->name << "] for panel [" << name;
-////                } else {
-////                    ofLogNotice() << "setting active control NULL for panel [" << name;
-//                }
-//            }
-//            
-//            //--------------------------------------------------------------
-//            Control* Panel::getActiveControl() {
-//                return activeControl;
-//            }
-//            
-//            //--------------------------------------------------------------
-//            void Panel::releaseActiveControl() {
-//                setActiveControl(NULL);
-//            }
+            void Panel::setActiveControl(Control* control) {
+                // if old control exists, put it at the back
+                if(activeControl) activeControl->z = 0;
+                
+                activeControl = control;
+                
+                // put new active control at the front
+                if(activeControl) {
+                    activeControl->z = -1000;
+//                    ofLogNotice() << "setting active control [" << activeControl->name << "] for panel [" << name;
+//                } else {
+//                    ofLogNotice() << "setting active control NULL for panel [" << name;
+                }
+            }
+            
+            //--------------------------------------------------------------
+            Control* Panel::getActiveControl() {
+                return activeControl;
+            }
+            
+            //--------------------------------------------------------------
+            void Panel::releaseActiveControl() {
+                setActiveControl(NULL);
+            }
             
             //--------------------------------------------------------------
 //            bool Panel::getActive() {
@@ -353,50 +352,50 @@ namespace msa {
             
             //--------------------------------------------------------------
             void Panel::mouseMoved(ofMouseEventArgs &e) {
-//                if(activeControl)
-//                    activeControl->_mouseMoved(e);
-//                else {
+                if(activeControl)
+                    activeControl->_mouseMoved(e);
+                else {
                     if(controls[0]) controls[0]->_mouseMoved(e);
                     if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) controls[i]->_mouseMoved(e);
-//                }
+                }
             }
             
             //--------------------------------------------------------------
             void Panel::mousePressed(ofMouseEventArgs &e) {
-//                if(activeControl)
-//                    activeControl->_mousePressed(e);
-//                else {
+                if(activeControl)
+                    activeControl->_mousePressed(e);
+                else {
                     if(controls[0]) {
                         controls[0]->_mousePressed(e);
-//                        if(controls[0]->hitTest(e.x, e.y)) setActiveControl(controls[0].get());
+                        if(controls[0]->hitTest(e.x, e.y)) getRoot()->setActiveControl(controls[0].get());
                     }
                     if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) {
                         controls[i]->_mousePressed(e);
-//                        if(controls[i]->hitTest(e.x, e.y)) setActiveControl(controls[i].get());
+                        if(controls[i]->hitTest(e.x, e.y)) getRoot()->setActiveControl(controls[i].get());
                     }
-//                }
+                }
             }
             
             //--------------------------------------------------------------
             void Panel::mouseDragged(ofMouseEventArgs &e) {
-//                if(activeControl)
-//                    activeControl->_mouseDragged(e);
-//                else {
+                if(activeControl)
+                    activeControl->_mouseDragged(e);
+                else {
                     if(controls[0]) controls[0]->_mouseDragged(e);
                     if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) controls[i]->_mouseDragged(e);
-//                }
+                }
             }
             
             //--------------------------------------------------------------
             void Panel::mouseReleased(ofMouseEventArgs &e) {
-//                if(activeControl)
-//                    activeControl->_mouseReleased(e);
-//                else {
+                if(activeControl)
+                    activeControl->_mouseReleased(e);
+                else {
                     if(controls[0]) controls[0]->_mouseReleased(e);
                     if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) controls[i]->_mouseReleased(e);
-//                }
+                }
                 
-//                releaseActiveControl();
+                getRoot()->releaseActiveControl();
             }
             
             //--------------------------------------------------------------

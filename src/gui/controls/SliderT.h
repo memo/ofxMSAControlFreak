@@ -78,7 +78,7 @@ namespace msa {
                     
                     float width = this->width;
                     float height = this->height;
-                    Config &c = *this->config;
+                    Config &c = this->getConfig();
                     
                     ParameterSingleValueT<T> &p = *this->parameter;
                     

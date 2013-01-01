@@ -20,7 +20,7 @@ namespace msa {
                     ofRect(0, 0, width, height);
                     
                     setTextColor();
-                    config->drawString("FPS: " + ofToString(ofGetFrameRate()), 3, 15);
+                    getConfig().drawString("FPS: " + ofToString(ofGetFrameRate()), 3, 15);
                     
                     glPopMatrix();
                 }

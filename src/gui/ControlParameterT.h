@@ -41,8 +41,8 @@ namespace msa {
                 
                 //--------------------------------------------------------------
                 void drawText(int x, int y, string s = "", ofColor *c = NULL) {
-                    setColor(c ? c : config->colors.text);
-                    config->drawString(s.empty() ? parameter->getName() : s, x, y);
+                    setColor(c ? c : getConfig().colors.text);
+                    getConfig().drawString(s.empty() ? parameter->getName() : s, x, y);
                 }
                 
                 //--------------------------------------------------------------

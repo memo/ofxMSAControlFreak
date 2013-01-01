@@ -15,7 +15,7 @@ namespace msa {
             void Content::setup() {
                 fixheight = fixwidth * content->getHeight()/content->getWidth();
                 width = fixwidth;
-                height = fixheight + config->layout.buttonHeight;
+                height = fixheight + getConfig().layout.buttonHeight;
             }
             
             void Content::onDraw() {
@@ -37,10 +37,10 @@ namespace msa {
                 
                 ofFill();
                 setBGColor();
-                ofRect(0, fixheight, width, config->layout.buttonHeight);
+                ofRect(0, fixheight, width, getConfig().layout.buttonHeight);
                 
                 setTextColor();
-                config->drawString(parameter->getName(), 3, fixheight + 15);
+                getConfig().drawString(parameter->getName(), 3, fixheight + 15);
                 ofDisableAlphaBlending();
                 glPopMatrix();
             }

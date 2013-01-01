@@ -34,9 +34,9 @@ namespace msa {
                 
                 void setLayout(int x, int y);
                 
-//                void setActiveControl(Control *control);
-//                void releaseActiveControl();
-//                Control* getActiveControl();
+                void setActiveControl(Control *control);
+                void releaseActiveControl();
+                Control* getActiveControl();
                 
                 // returns whether this panel, or any of it's parents have an active control
 //                bool getActive();
@@ -85,20 +85,12 @@ namespace msa {
                 typedef std::tr1::shared_ptr<Layout> LayoutPtr;
                 LayoutPtr layout;
                 
-                
-                // contains extra parameters for gui specific controls
-//                ParameterGroup extraParams;
-                
-                
                 vector<ControlPtr>	controls;
-//                vector<Control*> controlsToDraw;    // this contains the controls to be drawn, sorted on control.z
-                
                 
                 BoolTitle *titleButton;       // button which controls the title of the panel
                 
-                
                 // currently active control (only that receives events)
-//                Control         *activeControl;
+                Control         *activeControl;
                 
                 Control			&addControl(Control *control);
                 

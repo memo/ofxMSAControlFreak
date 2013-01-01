@@ -6,15 +6,15 @@ namespace msa {
             
             
             Control::Control(Panel *parent) {
-                this->parent = parent;
-                if(parent) {
-                    this->config = parent->config;
-                    width   = config->layout.gridSize.x;
-                    height  = config->layout.buttonHeight;
+                this->_parent = parent;
+                if(_parent) {
+                    this->_config = &_parent->getConfig();
+                    width   = getConfig().layout.gridSize.x;
+                    height  = getConfig().layout.buttonHeight;
                 }
                 
                 z = 0;
-                active = false;
+//                active = false;
                 newColumn = false;
                 localRect.set(0, 0, 0, 0);
 
@@ -28,7 +28,7 @@ namespace msa {
             
             //--------------------------------------------------------------
             Control &Control::setConfig(Config *config) {
-                this->config = config;
+                this->_config = config;
                 setup();
                 return *this;
             }
@@ -39,15 +39,31 @@ namespace msa {
                 return *this;
             }
             
+            
             //--------------------------------------------------------------
-            int Control::getDepth() {
-                return parent ? parent->getDepth() + 1 : 0;
+            Panel *Control::getParent() {
+                return _parent;
+            }
+            
+            //--------------------------------------------------------------
+            Panel *Control::getRoot() {
+                return _parent ? _parent->getRoot() : (Panel*)this;
+            }
+            
+            //--------------------------------------------------------------
+            Config &Control::getConfig() {
+                return *_config;
             }
 
             //--------------------------------------------------------------
-            bool Control::getActive() {
-                return active;
+            int Control::getDepth() {
+                return _parent ? _parent->getDepth() + 1 : 0;
             }
+
+            //--------------------------------------------------------------
+//            bool Control::getActive() {
+//                return active;
+//            }
             
             //--------------------------------------------------------------
             int Control::getState() {
@@ -65,30 +81,30 @@ namespace msa {
             
             //--------------------------------------------------------------
             ofColor Control::setBGColor() {
-                return setColor(config->colors.bg);
+                return setColor(getConfig().colors.bg);
             }
             
             //--------------------------------------------------------------
             ofColor Control::setTextColor() {
-                return setColor(config->colors.text);
+                return setColor(getConfig().colors.text);
             }
 
             
             //--------------------------------------------------------------
             ofColor Control::setSliderColor(bool b) {
-                if(b) return setColor(config->colors.slider.full);
-                else return setColor(config->colors.slider.empty);
+                if(b) return setColor(getConfig().colors.slider.full);
+                else return setColor(getConfig().colors.slider.empty);
             }
             
             //--------------------------------------------------------------
             ofColor Control::setToggleColor(bool b) {
-                if(b) return setColor(config->colors.toggle.full);
-                else return setColor(config->colors.toggle.empty);
+                if(b) return setColor(getConfig().colors.toggle.full);
+                else return setColor(getConfig().colors.toggle.empty);
             }
             
             //--------------------------------------------------------------
             ofColor Control::setBorderColor() {
-                return setColor(config->colors.border);
+                return setColor(getConfig().colors.border);
             }
             
             //--------------------------------------------------------------
@@ -111,7 +127,7 @@ namespace msa {
             //--------------------------------------------------------------
             void Control::drawBorder(ofColor *c) {
                 ofNoFill();
-                setColor(c ? c : config->colors.border);
+                setColor(c ? c : getConfig().colors.border);
                 glLineWidth(1.0);
                 ofRect(0, 0, width, height);
             }

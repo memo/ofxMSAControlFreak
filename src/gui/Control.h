@@ -28,10 +28,14 @@ namespace msa {
                 Control& setConfig(Config *config);
                 Control& setNewColumn(bool b);
                 
+                Panel *getParent();
+                Panel *getRoot();
+                Config &getConfig();
+                
                 // how deep in the heirarchy it is (how many levels deep)
                 int getDepth();
                 
-                bool getActive();
+//                bool getActive();
                 
                 // 0: normal, 1:over, 2:active
                 int getState();
@@ -77,13 +81,11 @@ namespace msa {
                 
                 virtual void draw();
                 
-            protected:
-                Config  *config;
-                Panel   *parent;
-//                
+            private:
+                Config  *_config;
+                Panel   *_parent;
+
 //            private:
-                bool active;
-                
             };
             
             

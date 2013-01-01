@@ -26,7 +26,7 @@ namespace msa {
                 //                    //a click toggles focus state if we are off
                 //                    if(!hasFocus) {
                 //                        //expand the height for all choices
-                //                        //      setSize(config->layout.gridSize.x - config->layout.padding.x, config->dropdownListHeight * choices.size());
+                //                        //      setSize(getConfig().layout.gridSize.x - getConfig().layout.padding.x, getConfig().dropdownListHeight * choices.size());
                 //                        hasFocus = true;
                 //                        //notify that we want to steal all events from the parent
                 ////                        parent->setActiveControl(this);
@@ -60,7 +60,7 @@ namespace msa {
                 ////                    mouseMovedSinceClick=true;
                 //                    if(hasFocus) {
                 //                        //see which index was selected.
-                //                        float fChoice = (y - (height - config->dropdownListTextHeight) - (this->y + config->dropdownListTextHeight))/config->dropdownListTextHeight;
+                //                        float fChoice = (y - (height - getConfig().dropdownListTextHeight) - (this->y + getConfig().dropdownListTextHeight))/getConfig().dropdownListTextHeight;
                 //                        //TODO:replace with OF constrain macro.
                 //                        mouseChoice = fChoice < 0?-1:(fChoice>= choices.size()? -1:fChoice);
                 //                    }
@@ -81,7 +81,7 @@ namespace msa {
                 //                    if(!hasFocus)
                 //                        return ofxMSAInteractiveObject::hitTest(tx,ty);
                 //
-                //                    int fullheight = height + config->dropdownListTextHeight * choices.size();
+                //                    int fullheight = height + getConfig().dropdownListTextHeight * choices.size();
                 //                    return ofInRange(tx, x, x + width) && ofInRange(ty, y, y + fullheight);
                 //                    //                ((tx > x) && (tx < x + width) && (ty > y) && (ty < y + fullheight));
                 //                }
@@ -103,7 +103,7 @@ namespace msa {
                     setTextColor();
                     //	sprintf(choiceBuf, "%s: %s", title, choices.size() ? choices[selectedChoice] : "(No Choices Available)");
                     
-                    config->drawString(parameter->getName() + ": " + parameter->getSelectedLabel(), kSGCBTextPaddingX, kSGCBTextPaddingY);
+                    getConfig().drawString(parameter->getName() + ": " + parameter->getSelectedLabel(), kSGCBTextPaddingX, kSGCBTextPaddingY);
                     //draw a combobox down triangle icon so the users know to click
                     ofTriangle(width - (kSGCBTriangleWidth + KSGCBTrianglePadding), kSGCBTextPaddingY/2,
                                width - (KSGCBTrianglePadding), kSGCBTextPaddingY/2,
@@ -112,27 +112,27 @@ namespace msa {
                     if(getState() == 2) {
                         int numLabels = parameter->getNumLabels();
                         setBGColor();
-                        ofRect(0, height, width, config->layout.dropdownListTextHeight * (numLabels + 0.5));
+                        ofRect(0, height, width, getConfig().layout.dropdownListTextHeight * (numLabels + 0.5));
                         
                         ofNoFill();
                         ofSetLineWidth(1);
                         setBorderColor();
-                        ofRect(0, config->layout.buttonHeight-1, width, config->layout.dropdownListTextHeight * (numLabels + 0.5));
+                        ofRect(0, getConfig().layout.buttonHeight-1, width, getConfig().layout.dropdownListTextHeight * (numLabels + 0.5));
 
                         ofFill();
-                        //                    ofLine(0, config->dropdownListHeight-1, width, config->dropdownListHeight-1);
+                        //                    ofLine(0, getConfig().dropdownListHeight-1, width, getConfig().dropdownListHeight-1);
 
                         for(int i=0; i < numLabels; i++) {
                             setTextColor();
                             //invert for selected choice
-                            float curY = height + i*config->layout.dropdownListTextHeight;
+                            float curY = height + i*getConfig().layout.dropdownListTextHeight;
                             //                        if(i==mouseChoice){
                             //draw a text colored rect so we can see the inverse
-//                            ofRect(0, curY+3, width, config->layout.dropdownListTextHeight);
+//                            ofRect(0, curY+3, width, getConfig().layout.dropdownListTextHeight);
 //                            setBGColor();
                             //                        }
                             
-                            config->drawString(parameter->getLabel(i), kSGCBTextPaddingX, curY + kSGCBTextPaddingY);
+                            getConfig().drawString(parameter->getLabel(i), kSGCBTextPaddingX, curY + kSGCBTextPaddingY);
                         }
                     }
                 }
@@ -140,15 +140,15 @@ namespace msa {
                 
             protected:
 //                void setCBTextColor() {
-//                    //                    if(hasFocus) ofSetColor(config->colors.text[1]);
+//                    //                    if(hasFocus) ofSetColor(getConfig().colors.text[1]);
 //                    //                    else
-//                    ofSetColor(config->colors.text[0]);
+//                    ofSetColor(getConfig().colors.text[0]);
 //                }
 //                
 //                void setCBTextBGColor() {
-//                    //                    if(hasFocus) ofSetColor(config->colors.bg[1]);
+//                    //                    if(hasFocus) ofSetColor(getConfig().colors.bg[1]);
 //                    //                    else
-//                    ofSetColor(config->colors.bg[0]);
+//                    ofSetColor(getConfig().colors.bg[0]);
 //                }
                 
                 //--------------------------------------------------------------
@@ -159,7 +159,7 @@ namespace msa {
                     //a release toggles focus state if we are on - TODO: unless x and y don't change
                     //                    hasFocus = false;
                     
-                    //      setSize(config->layout.gridSize.x - config->layout.padding.x, config->dropdownListHeight);
+                    //      setSize(getConfig().layout.gridSize.x - getConfig().layout.padding.x, getConfig().dropdownListHeight);
                     //also let the parent know we don't need to steal all the events and draw over anymore
                     //                    parent->releaseActiveControl();
                 }
