@@ -41,8 +41,8 @@ namespace msa {
                     setToggleColor(parameter->getValue());
                     ofRect(0, 0, width, height);
                     
-                    if(bMouseOverRecursive) ofSetColor(255, 100);
-                    else ofSetColor(0, 100);
+                    if(bMouseOverRecursive) setColor(ofColor(255, 100));
+                    else setColor(ofColor(0, 100));
                     ofCircle(width - height/2, height/2, height/4);
                     
                     drawText(3, 15, (parameter->getValue() ? "-" : "+"));

@@ -50,11 +50,12 @@ namespace msa {
 
         //--------------------------------------------------------------
 		string ParameterNamedIndex::getSelectedLabel() {
-			return _labels.at(getValue());
+			return getLabel(getValue());
 		}
 		
         //--------------------------------------------------------------
         string ParameterNamedIndex::getLabel(int i) {
+//            i = ofClamp(i, 0, getNumLabels()-1);
             return _labels[i];
         }
 

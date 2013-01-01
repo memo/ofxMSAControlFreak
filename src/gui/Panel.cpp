@@ -140,7 +140,7 @@ namespace msa {
                         curPos.y = layout->maxRect.y;
                     }
                     
-                    control.setWidth(getConfig().layout.gridSize.x - indent);
+                    control.setWidth(getConfig().layout.columnWidth - indent);
                     control.setLayout(curPos.x + indent, curPos.y);
                     Renderer::instance().addControl(&control);  // TODO: why does this break the order?
                     layout->rect.growToInclude((ofRectangle&)control);
@@ -151,8 +151,7 @@ namespace msa {
                 // add some padding at end of group
                 curPos.y += getConfig().layout.buttonHeight;// * getParentHeightScale();
                 
-                width = 0;
-                height = 0;
+                ofRectangle::set(*titleButton);
             }
             
             
@@ -223,7 +222,7 @@ namespace msa {
             
             //--------------------------------------------------------------
             Content& Panel::addContent(Parameter *p, ofBaseDraws &content, float fixwidth) {
-                if(fixwidth == -1) fixwidth = getConfig().layout.gridSize.x;
+                if(fixwidth == -1) fixwidth = getConfig().layout.columnWidth;
                 return (Content&)addControl(new Content(this, p, content, fixwidth));
             }
             

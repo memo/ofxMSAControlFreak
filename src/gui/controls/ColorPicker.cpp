@@ -21,7 +21,7 @@
 //            }
 //            
 //            void ColorPicker::setup() {
-//                setSize(getConfig().layout.gridSize.x - getConfig().layout.padding.x, getConfig().layout.sliderHeight * 8 + getConfig().layout.sliderTextHeight);
+//                setSize(getConfig().layout.columnWidth - getConfig().layout.padding.x, getConfig().layout.sliderHeight * 8 + getConfig().layout.sliderTextHeight);
 //                for(int i=0; i<4; i++) {
 //                    pct[i] = ofMap(getValue(i), 0, max, 0.0, width);
 //                    barwidth[i] = pct[i];

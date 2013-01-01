@@ -9,21 +9,21 @@ namespace msa {
             Config::Config() {
                 layout.buttonHeight			= 23;
                 layout.sliderHeight         = 7;
-//                layout.sliderTextHeight     = 16;
-//                layout.slider2DTextHeight	= buttonHeight * 1.5;
                 layout.dropdownListTextHeight	= 15;
                 
                 layout.textPos              = ofVec2f(5, 16);
                 layout.padding              = ofVec2f(10, 10);
                 layout.indent               = 5;
-//                layout.offset               = ofVec2f(layout.buttonHeight/2, layout.buttonHeight/2);
 //                layout.slider2DSize         = ofVec2f(buttonHeight * 4, buttonHeight * 4);
                 
-                layout.gridSize.x			= 200 + layout.padding.x;
-//                layout.gridSize.y			= buttonHeight + padding.y;
+                layout.columnWidth			= 200 + layout.padding.x;
                 
 
                 // Colors
+                colors.fade.alpha       = 0.0;
+                colors.fade.speed       = 0.2;
+                colors.fade.delayMillis = 250;
+                
                 // 0: normal, 1:over, 2:active
                 colors.bg[0]        = ofColor(0);
                 colors.bg[1]		= ofColor(30);

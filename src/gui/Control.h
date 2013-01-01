@@ -26,20 +26,21 @@ namespace msa {
                 
                 Control(Panel *parent);
                 Control& setConfig(Config *config);
+                Config &getConfig();
+
                 Control& setNewColumn(bool b);
                 
-                Panel *getParent();
-                Panel *getRoot();
-                Config &getConfig();
-                
-                // how deep in the heirarchy it is (how many levels deep)
-                int getDepth();
-                
-//                bool getActive();
+                Panel *getParent();     // parent panel
+                Panel *getRoot();       // root panel
+                int getDepth();         // how deep in the heirarchy it is (how many levels deep)
+                bool getActive();       // whether the control is active or not
+                bool getParentActive(); // whether any of the controls parents are active or not
+                float getAlpha();       // alpha of this control
                 
                 // 0: normal, 1:over, 2:active
                 int getState();
                 
+                ofColor setColor(ofColor c);
                 ofColor setColor(ofColor *c);
                 ofColor setBGColor();
                 ofColor setTextColor();
@@ -84,6 +85,7 @@ namespace msa {
             private:
                 Config  *_config;
                 Panel   *_parent;
+                float    _alpha;
 
 //            private:
             };

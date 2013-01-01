@@ -11,7 +11,7 @@ namespace msa {
                 ofTrueTypeFont font;
                 
                 struct {
-                    ofPoint	gridSize;
+                    int	columnWidth;
                     
                     int	buttonHeight;
                     int	sliderHeight;
@@ -30,6 +30,12 @@ namespace msa {
                 // Colors
                 // 0: normal, 1:over, 2:active
                 struct {
+                    struct {
+                        float alpha;
+                        float speed;
+                        int delayMillis;
+                    } fade;
+                    
                     ofColor bg[3];
                     ofColor text[3];
                     struct {

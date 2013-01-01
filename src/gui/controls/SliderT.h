@@ -100,9 +100,7 @@ namespace msa {
                     if(p.getSnap()) {
                         float xinc = ofMap(p.getIncrement(), p.getMin(), p.getMax(), 0, width);
                         if(xinc >=2) {
-                            ofColor col = c.colors.bg[0];
-//                            col.a = 128;
-                            ofSetColor(col);
+                            this->setColor(c.colors.bg[0]);
                             ofSetLineWidth(1);
                             for(float f=0; f<=width; f+=xinc) {
                                 ofLine(f, 0, f, c.layout.sliderHeight);
@@ -111,8 +109,7 @@ namespace msa {
                     }
                     
                     if(p.getClamp()) {
-                        ofColor &col = c.colors.text[1];
-                        ofSetColor(col.r, col.g, col.b, 128);
+                        this->setColor(ofColor(c.colors.text[1].r, c.colors.text[1].g, c.colors.text[1].b, 128));
                         int w = 2;
                         int h = c.layout.sliderHeight;
                         ofRect(0, 0, w, h);
@@ -120,7 +117,7 @@ namespace msa {
                     }
                     
                     if(this->isMouseOver()) {
-                        ofSetColor(c.colors.text[0]);
+                        this->setColor(c.colors.text[0]);
                         int ts = height * 0.5;
                         ofTriangle(width, height, width, height - ts, width - ts, height);
                     }
