@@ -53,8 +53,6 @@ namespace msa {
                 colors.border[1]	= ofColor(90);
                 colors.border[2]	= ofColor(150);
                 
-                
-                
                 tooltip.offset      = ofVec2f(0, -10);
                 tooltip.padding     = ofRectangle(6, 4, 13, 7);
                 tooltip.bgColor     = ofColor(255, 255, 160);
