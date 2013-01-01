@@ -321,9 +321,9 @@ namespace msa {
 //                headerPage->draw(0, 0);		// this is the header
 //                pages[currentPageIndex]->maxRect.set(config.padding.x, headerPage->height + config.padding.y, 0, 0);
 //                pages[currentPageIndex]->draw(config.padding.x, headerPage->height + config.padding.y);
-                if(pages[currentPageIndex]->layout == NULL) pages[currentPageIndex]->layout = Panel::LayoutPtr(new Panel::Layout);
+                if(pages[currentPageIndex]->layoutManager == NULL) pages[currentPageIndex]->layoutManager = LayoutManagerPtr(new LayoutManager);
                
-                Panel::Layout &l = *pages[currentPageIndex]->layout;
+                LayoutManager &l = *pages[currentPageIndex]->layoutManager;
                 l.maxRect.set(config.layout.padding.x, config.layout.padding.y, 0, 0);
                 l.curPos.set(0, 0);
                 l.rect.set(l.maxRect.x, l.maxRect.y, 0, 0);

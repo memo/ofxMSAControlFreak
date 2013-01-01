@@ -109,16 +109,16 @@ namespace msa {
                 }
 
                 // if we are drawing this Panel inside another Panel, use auto-layout parameters of that
-                if(getParent()) layout = getParent()->layout;
+                if(getParent()) layoutManager = getParent()->layoutManager;
                 
                 // find the maximum position we are allowed to draw at before wrapping
-                ofVec2f maxPos(layout->getMaxPos());
+                ofVec2f maxPos(layoutManager->getMaxPos());
                 
                 // save reference to current position for quick access
-                ofVec2f &curPos = layout->curPos;
+                ofVec2f &curPos = layoutManager->curPos;
                 
                 // set start position for panel
-                curPos = layout->clampPoint(curPos);
+                curPos = layoutManager->clampPoint(curPos);
                 setPosition(curPos);
                 
                 width = 0;
@@ -136,14 +136,14 @@ namespace msa {
                     
                     // if forced to be new column, or the height of the control is going to reach across the bottom of the screen, start new column
                     if(control.newColumn || curPos.y + (control.height + getConfig().layout.padding.y) * heightMult > maxPos.y) {
-                        curPos.x = layout->rect.x + layout->rect.width + getConfig().layout.padding.x;
-                        curPos.y = layout->maxRect.y;
+                        curPos.x = layoutManager->rect.x + layoutManager->rect.width + getConfig().layout.padding.x;
+                        curPos.y = layoutManager->maxRect.y;
                     }
                     
                     control.setWidth(getConfig().layout.columnWidth - indent);
                     control.setLayout(curPos.x + indent, curPos.y);
                     Renderer::instance().addControl(&control);  // TODO: why does this break the order?
-                    layout->rect.growToInclude((ofRectangle&)control);
+                    layoutManager->rect.growToInclude((ofRectangle&)control);
                     
                     curPos.y += (control.height + getConfig().layout.padding.y) * heightMult;
                 }
