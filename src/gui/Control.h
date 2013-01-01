@@ -31,7 +31,7 @@ namespace msa {
                 // how deep in the heirarchy it is (how many levels deep)
                 int getDepth();
                 
-//                bool getActive();
+                bool getActive();
                 
                 // 0: normal, 1:over, 2:active
                 int getState();
@@ -78,8 +78,11 @@ namespace msa {
                 virtual void draw();
                 
             protected:
-                Config	*config;
-                Panel    *parent;
+                Config  *config;
+                Panel   *parent;
+//                
+//            private:
+                bool active;
                 
             };
             

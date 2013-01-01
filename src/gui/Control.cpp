@@ -13,24 +13,17 @@ namespace msa {
                     height  = config->layout.buttonHeight;
                 }
                 
-//                name = "[COULD NOT READ FROM PARAMETER]";
                 z = 0;
-                localRect.set(0, 0, 0, 0);
-                //                this->controlType = controlType;
-                //                setName(name);
-                //                setKey(key);
-                setPosition(0, 0);
-                //                lock	  = false;
-                //                focused	  = false;
+                active = false;
                 newColumn = false;
+                localRect.set(0, 0, 0, 0);
+
                 setKeyboardShortcut(0);
                 
                 setup();
-                
-                disableAllEvents();		// just for safety to make sure nothing is registered twice
-                //	enableAppEvents();
-                //	enableMouseEvents();
-                //	disableKeyEvents();
+
+                // we don't want auto events (they will be controlled via the parent panels)
+                disableAllEvents();
             }
             
             //--------------------------------------------------------------
@@ -52,9 +45,9 @@ namespace msa {
             }
 
             //--------------------------------------------------------------
-//            bool Control::getActive() {
-//                return isMousePressed();
-//            }
+            bool Control::getActive() {
+                return active;
+            }
             
             //--------------------------------------------------------------
             int Control::getState() {
@@ -115,7 +108,6 @@ namespace msa {
                 return *this;
             }
             
-            
             //--------------------------------------------------------------
             void Control::drawBorder(ofColor *c) {
                 ofNoFill();
@@ -123,7 +115,6 @@ namespace msa {
                 glLineWidth(1.0);
                 ofRect(0, 0, width, height);
             }
-            
             
             //--------------------------------------------------------------
             void Control::draw() {
