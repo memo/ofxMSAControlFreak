@@ -138,8 +138,10 @@ void testApp::setup(){
     params.addFloat("size");    // 3rd Parameter in this Group
     params.endGroup();          // any future Parameters will now be outside this group
     
+        
+        
     
-    
+    //--------------------------------------------------------------
     // clear all parameters (so we have a clean slate to carry on)
     params.clear();
     
@@ -201,6 +203,22 @@ void testApp::setup(){
     
     // TESTERS
     params.startGroup("Testers");
+        
+        
+    params.startGroup("floats");
+    params.addFloat("no clamp, no snap").setRange(0, 5).setIncrement(0.1);
+    params.addFloat("yes clamp, no snap").setRange(0, 5).setIncrement(0.1).setClamp(true);
+    params.addFloat("yes clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(true).setSnap(true);
+    params.addFloat("no clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(false).setSnap(true);
+    params.endGroup();
+    
+    params.startGroup("ints");
+    params.addInt("no clamp, no snap").setRange(0, 100).setIncrement(5);
+    params.addInt("yes clamp, no snap").setRange(0, 100).setIncrement(5).setClamp(true);
+    params.addInt("yes clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(true).setSnap(true);
+    params.addInt("no clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(false).setSnap(true);
+    params.endGroup();
+        
 	params.addBool("doAnimate1").setTooltip("Enable or disable the auto-animation of slider 'animated1'");
     params.addFloat("animated1").setRange(-1, 1).setClamp(true);
 	params.addBool("doAnimate2").setValue(true).setTooltip("Enable or disable the auto-animation of slider 'animated2'");;
@@ -237,20 +255,7 @@ void testApp::setup(){
     } params.endGroup();
     
     }
-    
-    params.startGroup("floats");
-    params.addFloat("no clamp, no snap").setRange(0, 5).setIncrement(0.1);
-    params.addFloat("yes clamp, no snap").setRange(0, 5).setIncrement(0.1).setClamp(true);
-    params.addFloat("yes clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(true).setSnap(true);
-    params.addFloat("no clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(false).setSnap(true);
-    params.endGroup();
-    
-    params.startGroup("ints");
-    params.addInt("no clamp, no snap").setRange(0, 100).setIncrement(5);
-    params.addInt("yes clamp, no snap").setRange(0, 100).setIncrement(5).setClamp(true);
-    params.addInt("yes clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(true).setSnap(true);
-    params.addInt("no clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(false).setSnap(true);
-    params.endGroup();
+
     
     // you can create groups and add any parameters to that group
     
