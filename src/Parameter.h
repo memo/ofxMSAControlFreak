@@ -56,7 +56,7 @@ namespace msa {
 			Type::Index			_typeIndex;
 			string				_name;
             string              _tooltip;
-			ParameterGroup		*_parent;
+			ParameterGroup		*_pparent;
             
             string              _xmlTag;
             int                 _xmlTagId;

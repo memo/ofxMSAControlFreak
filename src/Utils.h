@@ -25,7 +25,6 @@ namespace msa {
                 kFloat,
                 kInt,
                 kBool,
-//                kBang,
                 kNamedIndex,
                 kGroup,
                 kVec2f,

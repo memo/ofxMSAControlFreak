@@ -16,7 +16,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         Parameter::Parameter(ParameterGroup *parent, string name, Type::Index typeIndex)
-        : _parent(parent), _name(name), _typeIndex(typeIndex) {
+        : _pparent(parent), _name(name), _typeIndex(typeIndex) {
 //            ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter " <<  getPath();
         }
         
@@ -46,18 +46,18 @@ namespace msa {
 
         //--------------------------------------------------------------
 		string Parameter::getPath() const {
-			return _parent ? _parent->getPath() + getPathDivider() + _name : _name;
+			return _pparent ? _pparent->getPath() + getPathDivider() + _name : _name;
 		}
 		
         //--------------------------------------------------------------
         void Parameter::setParent(ParameterGroup *parent) {
 			ofLogVerbose() << "msa::ControlFreak::Parameter::setName " << getPath() << " " << (parent ? parent->getName() : "NULL");
-            _parent = parent;
+            _pparent = parent;
         }
         
         //--------------------------------------------------------------
         ParameterGroup* Parameter::getParent() const {
-            return _parent;
+            return _pparent;
         }
 
 
@@ -83,7 +83,7 @@ namespace msa {
             if(bFull) {
                 xml.addAttribute(_xmlTag, "path", getPath(), _xmlTagId);
                 xml.addAttribute(_xmlTag, "tooltip", getTooltip(), _xmlTagId);
-                //            xml.addAttribute(_xmlTag, "parent", _parent ? _parent->getName() : "none", _xmlTagId);
+                //            xml.addAttribute(_xmlTag, "parent", _pparent ? _pparent->getName() : "none", _xmlTagId);
             }
         }
         
