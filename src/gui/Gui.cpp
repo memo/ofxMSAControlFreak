@@ -248,9 +248,6 @@ namespace msa {
             Panel& Gui::addPage(string name) {
                 if(!isSetup) setup();
                 
-//                paramsRoot.startGroup(name);
-//                paramsRoot.endGroup();
-                
                 Panel *newPage = new Panel(NULL, &paramsRoot);//ofToString(pages.size(), 0) + ": " + name);
                 newPage->setConfig(&config);
                 pages.push_back(std::tr1::shared_ptr<Panel>(newPage));

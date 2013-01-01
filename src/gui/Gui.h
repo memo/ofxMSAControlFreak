@@ -14,24 +14,18 @@
 namespace msa {
     namespace ControlFreak {
 
-//        class ParameterGroup;
-        
         namespace gui {
             
-//            class Panel;
             class BoolButton;
             class Config;
             
             class Gui {
             public:
-//                int guiFocus;
-                
                 Config config;
                 
                 Gui();
                 
                 void setup();
-                
                 
 //                void loadXml();
 //                void saveXml();
@@ -73,8 +67,9 @@ namespace msa {
                 void disableAutoEvents();
                 bool getAutoEvents();
                 
+                
                 // by default these are called automatically so you don't need to call them
-                // if you've disabled AutoEvents, then you need to call them manually. IMPORTANT!
+                // however if you've disabled AutoEvents, then you need to call them manually from your app. IMPORTANT!
                 void update(ofEventArgs& e);
                 void draw(ofEventArgs& e);
                 void mouseMoved(ofMouseEventArgs& e);
@@ -102,7 +97,6 @@ namespace msa {
                 bool		doDraw;
                 float		border;
                 
-//                Panel				*headerPage;
                 BoolButton				*titleButton;
                 vector<PanelPtr>		pages;				// 0 is for headerPage
                 
@@ -112,25 +106,7 @@ namespace msa {
                 void drawFocus(float x, float y);
                 
                 ParameterGroup paramsRoot;
-                
-                
-//                Control&        addControl(Control& control);
-//                Content&        addContent(string name, ofBaseDraws& content, float fixwidth = -1);
-//                BoolButton&         addButton(string name, bool& value);
-//                FPSCounter&     addFPSCounter();
-//                QuadWarp&       addQuadWarper(string name, ofBaseDraws& baseDraw, ofPoint *pts);
-//                SliderInt&      addSlider(string name, int& value, int min, int max);
-//                SliderFloat&    addSlider(string name, float& value, float min, float max);
-//                Slider2d&       addSlider2d(string name, ofPoint& value, float xmin, float xmax, float ymin, float ymax);
-//                BoolTitle&          addTitle(string name="", float height = 0);
-//                BoolToggle&         addToggle(string name, bool& value);
-//                ColorPicker&    addColorPicker(string name, ofFloatColor& color);
-//                DropdownList&       addDropdownList(string name, int& value, int numChoices, string* choiceTitles=NULL);
-//                DropdownList&       addDropdownList(string name, int& value, vector<string>& choiceTitles);
             };
-            
-            
-//            extern Gui gui;
             
         }
     }
