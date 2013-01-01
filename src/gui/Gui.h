@@ -125,8 +125,8 @@ namespace msa {
 //                BoolTitle&          addTitle(string name="", float height = 0);
 //                BoolToggle&         addToggle(string name, bool& value);
 //                ColorPicker&    addColorPicker(string name, ofFloatColor& color);
-//                ComboBox&       addComboBox(string name, int& value, int numChoices, string* choiceTitles=NULL);
-//                ComboBox&       addComboBox(string name, int& value, vector<string>& choiceTitles);
+//                DropdownList&       addDropdownList(string name, int& value, int numChoices, string* choiceTitles=NULL);
+//                DropdownList&       addDropdownList(string name, int& value, vector<string>& choiceTitles);
             };
             
             

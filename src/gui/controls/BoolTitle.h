@@ -36,10 +36,6 @@ namespace msa {
                     
                     bMouseOverRecursive = isMouseOver() && getMouseX() > (x + width - height);
                     
-                    ofPushMatrix();
-                    ofTranslate(x, y);
-                    ofEnableAlphaBlending();
-                    
                     // draw bg
                     ofFill();
                     setToggleColor(parameter->getValue());
@@ -51,10 +47,8 @@ namespace msa {
                     
                     drawText(3, 15, (parameter->getValue() ? "-" : "+"));
                     drawText(15, 15);
+                    ofSetLineWidth(2);
                     drawBorder(config->colors.text);
-                    
-                    ofDisableAlphaBlending();
-                    ofPopMatrix();
                     
                     if(doTooltip()) {
                         string sverb = parameter->getValue() ? "close" : "open";

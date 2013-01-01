@@ -11,7 +11,7 @@ namespace msa {
                 layout.sliderHeight         = 7;
 //                layout.sliderTextHeight     = 16;
 //                layout.slider2DTextHeight	= buttonHeight * 1.5;
-//                layout.comboBoxTextHeight	= 15;
+                layout.dropdownListTextHeight	= 15;
                 
                 layout.textPos              = ofVec2f(5, 16);
                 layout.padding              = ofVec2f(10, 10);

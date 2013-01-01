@@ -21,19 +21,13 @@ namespace msa {
                     
                     if(parameter->getName().empty()) return;
                     
-                    ofPushMatrix();
-                    ofTranslate(x, y);
-                    ofEnableAlphaBlending();
-                    
                     // draw bg
                     ofFill();
                     setToggleColor(parameter->getValue());
                     ofRect(0, 0, width, height);
                     
                     drawText(3, 15);
-                    drawBorder();
-                    ofDisableAlphaBlending();
-                    ofPopMatrix();
+//                    drawBorder();
                     
                     BoolBase::onDraw();
                 }

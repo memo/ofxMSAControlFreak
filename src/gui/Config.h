@@ -17,8 +17,8 @@ namespace msa {
                     int	sliderHeight;
 //                    int	sliderTextHeight;
 //                    int	slider2DTextHeight;
-//                    int	comboBoxHeight;
-//                    int	comboBoxTextHeight;
+//                    int	dropdownListHeight;
+                    int	dropdownListTextHeight;
                     
                     ofVec2f textPos;
                     ofVec2f padding;

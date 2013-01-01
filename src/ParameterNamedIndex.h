@@ -29,8 +29,10 @@ namespace msa {
             ParameterNamedIndex& setLabels(vector<string>& labels);
             ParameterNamedIndex& setLabels(int count, ...);
 			
-			vector<string>& getLabels();
+            int getNumLabels();
+            string getLabel(int i);
 			string getSelectedLabel();
+			vector<string>& getLabels();
 			
 		protected:
 			vector<string> _labels;

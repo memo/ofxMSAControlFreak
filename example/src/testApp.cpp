@@ -171,9 +171,9 @@ void testApp::setup(){
         
         params.startGroup("optical flow"); {
             params.addBool("enabled");
+            params.addNamedIndex("method").setLabels(3, "Lucas-Kanade", "Horn–Schunck", "Buxton–Buxton");
             params.addFloat("velMult").setRange(0, 10);
             params.addInt("windowSize").setRange(1, 11).setIncrement(2);
-            params.addNamedIndex("method").setLabels(3, "Lucas-Kanade", "Horn–Schunck", "Buxton–Buxton");
         } params.endGroup();	// optical flow
 	} params.endGroup();	// vision
 	

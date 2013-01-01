@@ -30,15 +30,13 @@ namespace msa {
                 void updateSlider() {
                     if(!this->enabled) return;
                     if(!this->parameter) return;
-                    if(this->active) {
-                        this->parameter->setMappedFrom(this->getMouseX(), this->x, this->x + this->width);
+                    if(this->isMousePressed()) {
+                        this->parameter->setMappedFrom(ofGetMouseX(), this->x, this->x + this->width);
                     }
                 }
                 
                 //--------------------------------------------------------------
                 void onPress(int x, int y, int button) {
-                    this->active = button == 0;//this->getMouseY() < this->y + this->height/2;
-
                     updateSlider();
                 }
                 
@@ -76,10 +74,6 @@ namespace msa {
                 void onDraw() {
                     if(!this->parameter) return;
                     
-                    ofPushStyle();
-                    ofEnableAlphaBlending();
-                    ofPushMatrix();
-                    ofTranslate(this->x, this->y);
                     ofFill();
                     
                     float width = this->width;
@@ -106,8 +100,10 @@ namespace msa {
                     if(p.getSnap()) {
                         float xinc = ofMap(p.getIncrement(), p.getMin(), p.getMax(), 0, width);
                         if(xinc >=2) {
-                            ofColor &col = c.colors.bg[0];
-                            ofSetColor(col.r, col.g, col.b, 128);
+                            ofColor col = c.colors.bg[0];
+//                            col.a = 128;
+                            ofSetColor(col);
+                            ofSetLineWidth(1);
                             for(float f=0; f<=width; f+=xinc) {
                                 ofLine(f, 0, f, c.layout.sliderHeight);
                             }
@@ -130,10 +126,7 @@ namespace msa {
                     }
                     
                     // draw border
-                    this->drawBorder();
-
-                    ofPopMatrix();
-                    ofPopStyle();
+//                    this->drawBorder();
                 }
                 
             };

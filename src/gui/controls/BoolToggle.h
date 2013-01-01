@@ -19,10 +19,6 @@ namespace msa {
                 void onDraw() {
                     if(!parameter) return;
                     
-                    ofPushMatrix();
-                    ofTranslate(x, y);
-                    
-                    ofEnableAlphaBlending();
                     ofFill();
                     setToggleColor(parameter->getValue());
                     ofRect(0, 0, height, height);
@@ -38,10 +34,7 @@ namespace msa {
                     ofRect(height, 0, width - height, height);
                     
                     drawText(height + config->layout.textPos.x, config->layout.textPos.y);
-                    drawBorder();
-
-                    ofDisableAlphaBlending();
-                    ofPopMatrix();
+//                    drawBorder();
                     
                     BoolBase::onDraw();
                 }

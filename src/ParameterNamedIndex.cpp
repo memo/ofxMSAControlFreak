@@ -43,15 +43,24 @@ namespace msa {
         }
         
         
-        
         //--------------------------------------------------------------
-		vector<string>& ParameterNamedIndex::getLabels() {
-			return _labels;
-		}
-		
+        int ParameterNamedIndex::getNumLabels() {
+            return _labels.size();
+        }
+
         //--------------------------------------------------------------
 		string ParameterNamedIndex::getSelectedLabel() {
 			return _labels.at(getValue());
+		}
+		
+        //--------------------------------------------------------------
+        string ParameterNamedIndex::getLabel(int i) {
+            return _labels[i];
+        }
+
+        //--------------------------------------------------------------
+		vector<string>& ParameterNamedIndex::getLabels() {
+			return _labels;
 		}
 		
         

@@ -11,7 +11,7 @@ namespace msa {
                 disableAllEvents();
                 width = 0;
                 height = 0;//ofGetHeight();
-                activeControl = NULL;
+//                activeControl = NULL;
                 isOpen = false;
 //                setXMLName(p->getName() + "_settings.xml");
                 
@@ -217,8 +217,8 @@ namespace msa {
             }
             
             //--------------------------------------------------------------
-            ComboBox& Panel::addComboBox(Parameter *p) {
-                return (ComboBox&)addControl(new ComboBox(this, p));
+            DropdownList& Panel::addDropdownList(Parameter *p) {
+                return (DropdownList&)addControl(new DropdownList(this, p));
             }
             
             //--------------------------------------------------------------
@@ -285,7 +285,7 @@ namespace msa {
                     }
                         break;
                         
-                    case Type::kNamedIndex: addComboBox(p);
+                    case Type::kNamedIndex: addDropdownList(p);
 
                     case Type::kGroup:
                         break;
@@ -313,36 +313,36 @@ namespace msa {
             }
             
             //--------------------------------------------------------------
-            void Panel::setActiveControl(Control* control) {
-                // if old control exists, put it at the back
-                if(activeControl) activeControl->z = 0;
-                
-                activeControl = control;
-                
-                // put new active control at the front
-                if(activeControl) {
-                    activeControl->z = -1000;
-//                    ofLogNotice() << "setting active control [" << activeControl->name << "] for panel [" << name;
-//                } else {
-//                    ofLogNotice() << "setting active control NULL for panel [" << name;
-                }
-            }
+//            void Panel::setActiveControl(Control* control) {
+//                // if old control exists, put it at the back
+//                if(activeControl) activeControl->z = 0;
+//                
+//                activeControl = control;
+//                
+//                // put new active control at the front
+//                if(activeControl) {
+//                    activeControl->z = -1000;
+////                    ofLogNotice() << "setting active control [" << activeControl->name << "] for panel [" << name;
+////                } else {
+////                    ofLogNotice() << "setting active control NULL for panel [" << name;
+//                }
+//            }
+//            
+//            //--------------------------------------------------------------
+//            Control* Panel::getActiveControl() {
+//                return activeControl;
+//            }
+//            
+//            //--------------------------------------------------------------
+//            void Panel::releaseActiveControl() {
+//                setActiveControl(NULL);
+//            }
             
             //--------------------------------------------------------------
-            Control* Panel::getActiveControl() {
-                return activeControl;
-            }
-            
-            //--------------------------------------------------------------
-            void Panel::releaseActiveControl() {
-                setActiveControl(NULL);
-            }
-            
-            //--------------------------------------------------------------
-            bool Panel::getActive() {
-                bool b = activeControl == titleButton;//activeControl != NULL;
-                return parent ? b | parent->getActive() : b;
-            }
+//            bool Panel::getActive() {
+//                bool b = activeControl == titleButton;//activeControl != NULL;
+//                return parent ? b | parent->getActive() : b;
+//            }
 
             
             //--------------------------------------------------------------
@@ -353,50 +353,50 @@ namespace msa {
             
             //--------------------------------------------------------------
             void Panel::mouseMoved(ofMouseEventArgs &e) {
-                if(activeControl)
-                    activeControl->_mouseMoved(e);
-                else {
+//                if(activeControl)
+//                    activeControl->_mouseMoved(e);
+//                else {
                     if(controls[0]) controls[0]->_mouseMoved(e);
                     if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) controls[i]->_mouseMoved(e);
-                }
+//                }
             }
             
             //--------------------------------------------------------------
             void Panel::mousePressed(ofMouseEventArgs &e) {
-                if(activeControl)
-                    activeControl->_mousePressed(e);
-                else {
+//                if(activeControl)
+//                    activeControl->_mousePressed(e);
+//                else {
                     if(controls[0]) {
                         controls[0]->_mousePressed(e);
-                        if(controls[0]->hitTest(e.x, e.y)) setActiveControl(controls[0].get());
+//                        if(controls[0]->hitTest(e.x, e.y)) setActiveControl(controls[0].get());
                     }
                     if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) {
                         controls[i]->_mousePressed(e);
-                        if(controls[i]->hitTest(e.x, e.y)) setActiveControl(controls[i].get());
+//                        if(controls[i]->hitTest(e.x, e.y)) setActiveControl(controls[i].get());
                     }
-                }
+//                }
             }
             
             //--------------------------------------------------------------
             void Panel::mouseDragged(ofMouseEventArgs &e) {
-                if(activeControl)
-                    activeControl->_mouseDragged(e);
-                else {
+//                if(activeControl)
+//                    activeControl->_mouseDragged(e);
+//                else {
                     if(controls[0]) controls[0]->_mouseDragged(e);
                     if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) controls[i]->_mouseDragged(e);
-                }
+//                }
             }
             
             //--------------------------------------------------------------
             void Panel::mouseReleased(ofMouseEventArgs &e) {
-                if(activeControl)
-                    activeControl->_mouseReleased(e);
-                else {
+//                if(activeControl)
+//                    activeControl->_mouseReleased(e);
+//                else {
                     if(controls[0]) controls[0]->_mouseReleased(e);
                     if(getHeightScale()>0.9) for(int i=1; i<controls.size(); i++) controls[i]->_mouseReleased(e);
-                }
+//                }
                 
-                releaseActiveControl();
+//                releaseActiveControl();
             }
             
             //--------------------------------------------------------------

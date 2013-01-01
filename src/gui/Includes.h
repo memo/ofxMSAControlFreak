@@ -5,7 +5,7 @@
 #include "ofxMSAControlFreak/src/gui/Controls/BoolTitle.h"
 #include "ofxMSAControlFreak/src/gui/Controls/BoolToggle.h"
 #include "ofxMSAControlFreak/src/gui/Controls/ColorPicker.h"
-#include "ofxMSAControlFreak/src/gui/Controls/ComboBox.h"
+#include "ofxMSAControlFreak/src/gui/Controls/DropdownList.h"
 #include "ofxMSAControlFreak/src/gui/Controls/Content.h"
 #include "ofxMSAControlFreak/src/gui/Controls/FPSCounter.h"
 #include "ofxMSAControlFreak/src/gui/Controls/QuadWarp.h"

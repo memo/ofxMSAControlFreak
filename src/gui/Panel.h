@@ -16,7 +16,7 @@ namespace msa {
             class BoolTitle;
             class BoolToggle;
             class ColorPicker;
-            class ComboBox;
+            class DropdownList;
             class Content;
             class FPSCounter;
             class QuadWarp;
@@ -34,12 +34,12 @@ namespace msa {
                 
                 void setLayout(int x, int y);
                 
-                void setActiveControl(Control *control);
-                void releaseActiveControl();
-                Control* getActiveControl();
+//                void setActiveControl(Control *control);
+//                void releaseActiveControl();
+//                Control* getActiveControl();
                 
                 // returns whether this panel, or any of it's parents have an active control
-                bool getActive();
+//                bool getActive();
                 
                 void update();
                 void mouseMoved(ofMouseEventArgs &e);
@@ -98,14 +98,14 @@ namespace msa {
                 
                 
                 // currently active control (only that receives events)
-                Control         *activeControl;
+//                Control         *activeControl;
                 
                 Control			&addControl(Control *control);
                 
                 Panel           &addPanel(Parameter *p);
                 BoolButton		&addButton(Parameter *p);
                 ColorPicker		&addColorPicker(Parameter *p);
-                ComboBox&       addComboBox(Parameter *p);
+                DropdownList&   addDropdownList(Parameter *p);
                 Content			&addContent(Parameter *p, ofBaseDraws &content, float fixwidth = -1);
                 FPSCounter		&addFPSCounter();
                 QuadWarp		&addQuadWarper(Parameter *p);

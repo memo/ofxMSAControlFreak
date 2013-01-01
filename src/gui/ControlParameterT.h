@@ -46,14 +46,6 @@ namespace msa {
                 }
                 
                 //--------------------------------------------------------------
-                void drawBorder(ofColor *c = NULL) {
-                    ofNoFill();
-                    setColor(c ? c : config->colors.border);
-                    glLineWidth(1.0);
-                    ofRect(0, 0, width, height);
-                }
-                
-                //--------------------------------------------------------------
                 void setTooltip(string s="") {
                     // if s is empty, use string from parameter
                     if(s.empty()) s = parameter->getTooltip();
@@ -66,7 +58,6 @@ namespace msa {
                 virtual void draw() {
                     setTooltip();
                     Control::draw();
-                    onDraw();
                 }
                 
             protected:

@@ -16,7 +16,6 @@ namespace msa {
 //                name = "[COULD NOT READ FROM PARAMETER]";
                 z = 0;
                 localRect.set(0, 0, 0, 0);
-                active = false;
                 //                this->controlType = controlType;
                 //                setName(name);
                 //                setKey(key);
@@ -47,13 +46,19 @@ namespace msa {
                 return *this;
             }
             
+            //--------------------------------------------------------------
             int Control::getDepth() {
                 return parent ? parent->getDepth() + 1 : 0;
             }
 
             //--------------------------------------------------------------
+//            bool Control::getActive() {
+//                return isMousePressed();
+//            }
+            
+            //--------------------------------------------------------------
             int Control::getState() {
-                if(parent && parent->getActiveControl() == this) return 2;
+                if(isMousePressed()) return 2;
                 else if(isMouseOver()) return 1;
                 else return 0;
             }
@@ -109,6 +114,37 @@ namespace msa {
                 }
                 return *this;
             }
+            
+            
+            //--------------------------------------------------------------
+            void Control::drawBorder(ofColor *c) {
+                ofNoFill();
+                setColor(c ? c : config->colors.border);
+                glLineWidth(1.0);
+                ofRect(0, 0, width, height);
+            }
+            
+            
+            //--------------------------------------------------------------
+            void Control::draw() {
+                ofPushStyle();
+                ofPushMatrix();
+                ofTranslate(x, y);
+                ofEnableAlphaBlending();
+                
+                onDraw();
+//                if(!getActive()) {
+//                    ofSetColor(0, 128);
+//                    ofFill();
+//                    ofRect(0, 0, width, height);
+//                }
+                
+                drawBorder();
+                
+                ofPopMatrix();
+                ofPopStyle();
+            }
+
           
         }
     }

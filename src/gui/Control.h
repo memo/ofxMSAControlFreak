@@ -18,7 +18,6 @@ namespace msa {
             class Control : public ofxMSAInteractiveObject {
             public:
                 int         z;  // draw order (0 draw last, i.e. drawn on top)
-                bool		active;
                 bool		newColumn;
                 char		keyboardShortcut;
                 
@@ -32,8 +31,11 @@ namespace msa {
                 // how deep in the heirarchy it is (how many levels deep)
                 int getDepth();
                 
+//                bool getActive();
+                
                 // 0: normal, 1:over, 2:active
-                virtual int getState();
+                int getState();
+                
                 ofColor setColor(ofColor *c);
                 ofColor setBGColor();
                 ofColor setTextColor();
@@ -42,6 +44,7 @@ namespace msa {
                 ofColor setBorderColor();
                 
                 bool doTooltip(int millis = -1);
+                void drawBorder(ofColor *c = NULL);
                 
                 Control& setKeyboardShortcut(char c);
                 
@@ -72,9 +75,12 @@ namespace msa {
                 virtual void keyPressed( int key ){}
                 virtual void keyReleased( int key ){}
                 
+                virtual void draw();
+                
             protected:
                 Config	*config;
                 Panel    *parent;
+                
             };
             
             
