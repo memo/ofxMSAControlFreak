@@ -42,6 +42,7 @@ namespace msa {
                 }
             };
             
+            //--------------------------------------------------------------
             void Renderer::draw(Config *config) {
                 this->config = config;
                 sort(controls.begin(), controls.end(), PointerCompare());

@@ -201,12 +201,12 @@ void testApp::setup(){
     
     // TESTERS
     params.startGroup("Testers");
-	params.addBool("doAnimate1");
+	params.addBool("doAnimate1").setTooltip("Enable or disable the auto-animation of slider 'animated1'");
     params.addFloat("animated1").setRange(-1, 1).setClamp(true);
-	params.addBool("doAnimate2").setValue(true);
+	params.addBool("doAnimate2").setValue(true).setTooltip("Enable or disable the auto-animation of slider 'animated2'");;
     params.addFloat("animated2").setRange(-1, 1).setClamp(false);
-    params.addFloat("float snap").setRange(0.25, 2).setIncrement(0.5).setSnap(true);
-    params.addInt("int snap").setRange(1, 15).setIncrement(2).setSnap(true);
+    params.addFloat("float snap").setRange(0.25, 2).setIncrement(0.5).setSnap(true).setTooltip("This is a float slider");
+    params.addInt("int snap").setRange(1, 15).setIncrement(2).setSnap(true).setTooltip("This is an int slider");
     params.endGroup();
     
     

@@ -48,8 +48,7 @@ namespace msa {
                 }
                 
                 //--------------------------------------------------------------
-                void draw() {
-                    
+                void onDraw() {
                     if(parameter->getMode() == ParameterBool::kBang && parameter->getValue()) parameter->setValue(false);
                 }
             };

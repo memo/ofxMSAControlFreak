@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofxMSAControlFreak/src/gui/controls/BoolBase.h"
-#include "ofxMSAControlFreak/src/gui/Renderer.h"
 
 namespace msa {
     namespace ControlFreak {
@@ -30,7 +29,7 @@ namespace msa {
                 }
                 
                 //--------------------------------------------------------------
-                void draw() {
+                void onDraw() {
                     if(!parameter) return;
                     
                     if(parameter->getName().empty()) return;
@@ -50,7 +49,7 @@ namespace msa {
                     else ofSetColor(0, 100);
                     ofCircle(width - height/2, height/2, height/4);
                     
-                    drawText(3, 15, (parameter->getValue() ? "+" : "-"));
+                    drawText(3, 15, (parameter->getValue() ? "-" : "+"));
                     drawText(15, 15);
                     drawBorder(config->colors.text);
                     
@@ -62,10 +61,10 @@ namespace msa {
                         string starget = bMouseOverRecursive ? "panel and all sub-panels" : "panel";
 //                        if(parameter->getValue()) s = "Click to close panel [" + parameter->getName() + "]";
 //                        else s = "Click to open panel";
-                        Renderer::instance().setToolTip(" Click to " + sverb + " " + starget);
+                        Renderer::instance().setToolTip("Click to " + sverb + " " + starget);
                     }
                     
-                    BoolBase::draw();
+                    BoolBase::onDraw();
                 }
             };
             

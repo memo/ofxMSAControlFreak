@@ -102,7 +102,7 @@ namespace msa {
             Control &Control::setKeyboardShortcut(char c) {
                 keyboardShortcut = c;
                 if(c) {
-                    //	printf( "ofxMSAControlFreak/src/gui/Control::setKeyboardShortcut %s %c\n", name.c_str(), c);
+                    //	printf("ofxMSAControlFreak/src/gui/Control::setKeyboardShortcut %s %c\n", name.c_str(), c);
                     //                    name = origName + " (" + c + ")";
                 } else {
                     //                    name = origName;

@@ -36,6 +36,9 @@ namespace msa {
             Parameter& setName(string s);
 			string getName() const;
             
+            Parameter& setTooltip(string s);
+            string getTooltip() const;
+            
 			string getPath() const;        // return path (including parents)
 
             ParameterGroup* getParent() const;
@@ -52,6 +55,7 @@ namespace msa {
 
 			Type::Index			_typeIndex;
 			string				_name;
+            string              _tooltip;
 			ParameterGroup		*_parent;
             
             string              _xmlTag;

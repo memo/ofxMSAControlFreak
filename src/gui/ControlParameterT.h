@@ -3,6 +3,7 @@
 #include "ofxMSAControlFreak/src/gui/Control.h"
 #include "ofxMSAControlFreak/src/gui/Config.h"
 #include "ofxMSAControlFreak/src/ControlFreak.h"
+#include "ofxMSAControlFreak/src/gui/Renderer.h"
 
 namespace msa {
     namespace ControlFreak {
@@ -52,7 +53,21 @@ namespace msa {
                     ofRect(0, 0, width, height);
                 }
                 
+                //--------------------------------------------------------------
+                void setTooltip(string s="") {
+                    // if s is empty, use string from parameter
+                    if(s.empty()) s = parameter->getTooltip();
+                    if(doTooltip() && !s.empty()) {
+                        Renderer::instance().setToolTip(parameter->getTooltip());
+                    }
+                }
 
+                //--------------------------------------------------------------
+                virtual void draw() {
+                    setTooltip();
+                    Control::draw();
+                    onDraw();
+                }
                 
             protected:
                 T *parameter;

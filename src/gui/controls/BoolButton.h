@@ -16,7 +16,7 @@ namespace msa {
                 BoolButton(Panel *parent, Parameter *p) : BoolBase(parent, p) {}
                 
                 //--------------------------------------------------------------
-                void draw() {
+                void onDraw() {
                     if(!parameter) return;
                     
                     if(parameter->getName().empty()) return;
@@ -32,11 +32,10 @@ namespace msa {
                     
                     drawText(3, 15);
                     drawBorder();
-
                     ofDisableAlphaBlending();
                     ofPopMatrix();
                     
-                    BoolBase::draw();
+                    BoolBase::onDraw();
                 }
             };
             

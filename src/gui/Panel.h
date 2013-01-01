@@ -32,8 +32,7 @@ namespace msa {
                 Panel(Panel *parent, Parameter *p);
                 ~Panel();
                 
-//                void predraw();
-                void draw();
+                void setLayout(int x, int y);
                 
                 void setActiveControl(Control *control);
                 void releaseActiveControl();

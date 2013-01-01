@@ -33,7 +33,17 @@ namespace msa {
 			return _name;
 		}
         
+        //--------------------------------------------------------------
+        Parameter& Parameter::setTooltip(string s) {
+            _tooltip = s;
+            return *this;
+        }
         
+        //--------------------------------------------------------------
+        string Parameter::getTooltip() const {
+            return _tooltip;
+        }
+
         //--------------------------------------------------------------
 		string Parameter::getPath() const {
 			return _parent ? _parent->getPath() + getPathDivider() + _name : _name;
@@ -72,6 +82,7 @@ namespace msa {
             xml.addAttribute(_xmlTag, "name", getName(), _xmlTagId);
             if(bFull) {
                 xml.addAttribute(_xmlTag, "path", getPath(), _xmlTagId);
+                xml.addAttribute(_xmlTag, "tooltip", getTooltip(), _xmlTagId);
                 //            xml.addAttribute(_xmlTag, "parent", _parent ? _parent->getName() : "none", _xmlTagId);
             }
         }

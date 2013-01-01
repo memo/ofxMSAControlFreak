@@ -16,7 +16,7 @@ namespace msa {
                 BoolToggle(Panel *parent, Parameter *p) : BoolBase(parent, p) {}
                
                 //--------------------------------------------------------------
-                void draw() {
+                void onDraw() {
                     if(!parameter) return;
                     
                     ofPushMatrix();
@@ -43,7 +43,7 @@ namespace msa {
                     ofDisableAlphaBlending();
                     ofPopMatrix();
                     
-                    BoolBase::draw();
+                    BoolBase::onDraw();
                 }
                 
             };

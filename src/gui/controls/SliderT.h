@@ -11,8 +11,7 @@ namespace msa {
             public:
 
                 //--------------------------------------------------------------
-                SliderT(Panel *parent, Parameter *p) : ControlParameterT<ParameterSingleValueT<T> >(parent, p) {
-                }
+                SliderT(Panel *parent, Parameter *p) : ControlParameterT<ParameterSingleValueT<T> >(parent, p) {}
 
                 //--------------------------------------------------------------
                 void inc(T amount) {
@@ -74,7 +73,7 @@ namespace msa {
                 }
 
                 //--------------------------------------------------------------
-                void draw() {
+                void onDraw() {
                     if(!this->parameter) return;
                     
                     ofPushStyle();
@@ -90,7 +89,6 @@ namespace msa {
                     ParameterSingleValueT<T> &p = *this->parameter;
                     
                     float barwidth = ofClamp(p.getMappedTo(0, width), 0, width);
-                    
                     
                     this->setBGColor();
                     ofRect(0, 0, width, height);

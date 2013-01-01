@@ -92,7 +92,7 @@ namespace msa {
             }
             
             //--------------------------------------------------------------
-            void Panel::draw() {
+            void Panel::setLayout(int x, int y) {
                 titleButton->z = -10000;
                 
                 // how open is this panel
@@ -141,28 +141,21 @@ namespace msa {
                     }
                     
                     control.setWidth(config->layout.gridSize.x - indent);
-                    control.setPosition(floor(curPos.x + indent), floor(curPos.y));
-//                    Renderer::instance().addControl(&control);
-                    control.draw();
+                    control.setLayout(curPos.x + indent, curPos.y);
+                    Renderer::instance().addControl(&control);  // TODO: why does this break the order?
                     layout->rect.growToInclude((ofRectangle&)control);
                     
                     curPos.y += (control.height + config->layout.padding.y) * heightMult;
                 }
                 
                 // add some padding at end of group
-                curPos.y += config->layout.buttonHeight * getParentHeightScale();
+                curPos.y += config->layout.buttonHeight;// * getParentHeightScale();
                 
                 width = 0;
                 height = 0;
             }
             
             
-//            struct PointerCompare {
-//                bool operator()(const Control* l, const Control* r) {
-//                    return l->z > r->z;
-//                }
-//            };
-//            
 //            //--------------------------------------------------------------
 //            void Panel::draw() {
 //                ofPushStyle();

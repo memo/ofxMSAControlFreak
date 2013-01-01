@@ -330,11 +330,9 @@ namespace msa {
                 l.maxRect.set(config.layout.padding.x, config.layout.padding.y, 0, 0);
                 l.curPos.set(0, 0);
                 l.rect.set(l.maxRect.x, l.maxRect.y, 0, 0);
-                pages[currentPageIndex]->setPosition(config.layout.padding.x, config.layout.padding.y);
-//                pages[currentPageIndex]->predraw();
 
                 Renderer::instance().clearControls();
-                pages[currentPageIndex]->draw();
+                pages[currentPageIndex]->setLayout(config.layout.padding.x, config.layout.padding.y);
                 Renderer::instance().draw(&config);
                 
                 ofPopStyle();

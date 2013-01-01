@@ -48,11 +48,8 @@ namespace msa {
                 //                virtual void readFromXml(ofxXmlSettings &XML) {}
                 //                virtual void writeToXml(ofxXmlSettings &XML) {}
                 
-                virtual void setup() {}
-                
-//                virtual void draw(float x, float y) {}
-//                virtual void predraw() {}           // first pass during draw, updating position, z-sorting etc.
-                virtual void draw() {}
+                virtual void setLayout(int x, int y) { setPosition(floor(x), floor(y)); }
+                virtual void onDraw() {}
                 
                 virtual void onKeyUp() {}			// up key is pressed
                 virtual void onKeyDown() {}			// down key is pressed

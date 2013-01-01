@@ -8,9 +8,22 @@ namespace msa {
             
             class FPSCounter : public ControlParameterT<Parameter> {
             public:
-                FPSCounter(Panel *parent);
-                void setup();
-                void draw();
+                FPSCounter(Panel *parent) : ControlParameterT<Parameter>(parent, NULL) {}
+                
+                void onDraw() {
+                    glPushMatrix();
+                    glTranslatef(x, y, 0);
+                    
+                    ofEnableAlphaBlending();
+                    ofFill();
+                    setBGColor();
+                    ofRect(0, 0, width, height);
+                    
+                    setTextColor();
+                    config->drawString("FPS: " + ofToString(ofGetFrameRate()), 3, 15);
+                    
+                    glPopMatrix();
+                }
             };
             
         }
