@@ -64,6 +64,10 @@ namespace msa {
             T getMappedTo(T newMin, T newMax) const;
             
             
+            // set to a random value between min, max range
+            ParameterValueT<T>& setRandom();
+            
+            
             // OPTIONAL
             // track variables and keep values in sync (send NULL to clear)
             virtual ParameterValueT<T>& trackVariable(T *pv);
@@ -303,6 +307,14 @@ namespace msa {
 //            return ((getValue() - getMin()) / (getMax() - getMin()) * (newMax - newMin) + newMin);
 		}
 		
+
+        
+        //--------------------------------------------------------------
+		template <typename T>
+        ParameterValueT<T>& ParameterValueT<T>::setRandom() {
+            setValue(ofRandom(getMin(), getMax()));
+            return *this;
+        }
 
         //--------------------------------------------------------------
 		template <typename T>
