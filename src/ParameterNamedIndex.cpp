@@ -84,6 +84,7 @@ namespace msa {
         void ParameterNamedIndex::readFromXml(ofxXmlSettings &xml, bool bFull) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::readFromXml " << getPath();
             
+            ParameterInt::readFromXml(xml, bFull);
         }
         
         
