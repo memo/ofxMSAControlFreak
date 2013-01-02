@@ -16,7 +16,16 @@ msa::ControlFreak::gui::Gui            gui;
 float fvar1;
 float fvar2;
 
-bool doDebug = false;
+struct Ball {
+    ofVec2f pos;
+    ofVec2f vel;
+    ofVec2f size;
+    float rot;
+    float rotSpeed;
+    float dieTime;
+};
+
+vector<Ball> balls;
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -27,14 +36,15 @@ void testApp::setup(){
     // Set name for our ParameterGroup
 	params.setName("ControlFreak Demo");
     
-    if(!doDebug) {
     
-	// CREATING PARAMETERS
+    
+    
+    // CREATING PARAMETERS
     // All Parameters are created via the addXXXX methods of a ParameterGroup
     // Adding basic value Parameters
-	params.addFloat("float1");  // float: can be any real number
-	params.addInt("int1");      // int: can be any whole number
-	params.addBool("bool1");    // bool: can be true or false
+    params.addFloat("float1");  // float: can be any real number
+    params.addInt("int1");      // int: can be any whole number
+    params.addBool("bool1");    // bool: can be true or false
     
     
     
@@ -46,15 +56,16 @@ void testApp::setup(){
     params.addFloat("float4").setIncrement(0.2);            // create and set increment value (e.g. if you use up/down on keyboard)
     params.addFloat("float5").setIncrement(0.2).setSnap(true);  // create and enable snap, so even if you use mouse or any other means, values always snap
     
-	params.addInt("int2").setValue(ofRandom(30));           // create and set value. default value for int is 0
-	params.addInt("int3").setRange(-10, 10);                // create and set range. default range for int is 0...100
-	params.addInt("int4").setIncrement(5);                  // create and set increment value (e.g. if you use up/down on keyboard)
-	params.addInt("int5").setIncrement(5).setSnap(true);    // create and enable snap, so even if you use mouse or any other means, values always snap
+    params.addInt("int2").setValue(ofRandom(30));           // create and set value. default value for int is 0
+    params.addInt("int3").setRange(-10, 10);                // create and set range. default range for int is 0...100
+    params.addInt("int4").setIncrement(5);                  // create and set increment value (e.g. if you use up/down on keyboard)
+    params.addInt("int5").setIncrement(5).setSnap(true);    // create and enable snap, so even if you use mouse or any other means, values always snap
     
     params.addBool("bool2").setValue(true);                 // create and set value. default value for bool is 0
     params.addBool("bool3").setMode(msa::ControlFreak::ParameterBool::kBang);                  // create and enable momentary bool (i.e. a button, or 'bang')
     
     // NOTE: The Parameter names used must be unique!
+    
     
     
     
@@ -122,7 +133,7 @@ void testApp::setup(){
     // NAMED INDEXES
     // this is one way of adding a named-index parameter (i.e. dropbox box or option list)
     string labels[] = {"first option", "another option", "yet another option", "even more", "and last one"};
-	params.addNamedIndex("a dropdown").setLabels(5, labels);
+    params.addNamedIndex("a dropdown").setLabels(5, labels);
     
     // this is another way of adding a named-index parameter
     params.addNamedIndex("animals").setLabels(4, "cow", "camel", "dolphin", "monkey");
@@ -138,19 +149,14 @@ void testApp::setup(){
     params.addFloat("size");    // 3rd Parameter in this Group
     params.endGroup();          // any future Parameters will now be outside this group
     
-        
-        
-    
-    //--------------------------------------------------------------
-    // clear all parameters (so we have a clean slate to carry on)
-    params.clear();
     
     
     
     // You can even create Groups inside Groups inside Groups .... (until you run out of memory)
     // Parameter names MUST be unique ONLY within the groups they are in
     // (the { } curly braces are not needed. I'm only using that to help with the indenting to help visualize the structure)
-	params.startGroup("vision"); {
+    params.startGroup("vision");
+    {
         params.addBool("enabled");
         params.addFloat("brightness").setRange(0, 100);
         params.addFloat("contrast").setRange(-100, 100);
@@ -158,27 +164,36 @@ void testApp::setup(){
         params.addBool("flip y");
         params.addBang("reset");
         
-        params.startGroup("pre-processing"); {
-            params.startGroup("blur"); {
+        params.startGroup("pre-processing");
+        {
+            params.startGroup("blur");
+            {
                 params.addBool("enabled");
                 params.addInt("kernelSize").setRange(3, 11).setIncrement(2);
                 params.addInt("iterations").setRange(1, 20);
-            } params.endGroup();  // blur
-            params.startGroup("median"); {
+            }
+            params.endGroup();  // blur
+            params.startGroup("median");
+            {
                 params.addBool("enabled");
                 params.addInt("kernelSize").setRange(3, 11).setIncrement(2);
                 params.addInt("iterations").setRange(1, 20);
-            } params.endGroup();  // median
-        } params.endGroup();  // pre-processing
+            }
+            params.endGroup();  // median
+        }
+        params.endGroup();  // pre-processing
         
-        params.startGroup("optical flow"); {
+        params.startGroup("optical flow");
+        {
             params.addBool("enabled");
             params.addNamedIndex("method").setLabels(3, "Lucas-Kanade", "Horn–Schunck", "Buxton–Buxton");
             params.addFloat("velMult").setRange(0, 10);
             params.addInt("windowSize").setRange(1, 11).setIncrement(2);
-        } params.endGroup();	// optical flow
-	} params.endGroup();	// vision
-	
+        }
+        params.endGroup();	// optical flow
+    }
+    params.endGroup();	// vision
+    
     
     
     // ACCESSING PARAMETERS IN A GROUP
@@ -200,34 +215,77 @@ void testApp::setup(){
     params.getInt("vision.pre-processing.blur.iterations") = 3;
     
     
-    
     // TESTERS
     params.startGroup("Testers");
+    {
+        params.startGroup("floats");
+        {
+            params.addFloat("no clamp, no snap").setRange(0, 5).setIncrement(0.1);
+            params.addFloat("yes clamp, no snap").setRange(0, 5).setIncrement(0.1).setClamp(true);
+            params.addFloat("yes clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(true).setSnap(true);
+            params.addFloat("no clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(false).setSnap(true);
+        }
+        params.endGroup();
         
-        
-    params.startGroup("floats");
-    params.addFloat("no clamp, no snap").setRange(0, 5).setIncrement(0.1);
-    params.addFloat("yes clamp, no snap").setRange(0, 5).setIncrement(0.1).setClamp(true);
-    params.addFloat("yes clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(true).setSnap(true);
-    params.addFloat("no clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(false).setSnap(true);
-    params.endGroup();
-    
-    params.startGroup("ints");
-    params.addInt("no clamp, no snap").setRange(0, 100).setIncrement(5);
-    params.addInt("yes clamp, no snap").setRange(0, 100).setIncrement(5).setClamp(true);
-    params.addInt("yes clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(true).setSnap(true);
-    params.addInt("no clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(false).setSnap(true);
-    params.endGroup();
-        
-	params.addBool("doAnimate1").setTooltip("Enable or disable the auto-animation of slider 'animated1'");
-    params.addFloat("animated1").setRange(-1, 1).setClamp(true);
-	params.addBool("doAnimate2").setValue(true).setTooltip("Enable or disable the auto-animation of slider 'animated2'");;
-    params.addFloat("animated2").setRange(-1, 1).setClamp(false);
-    params.addFloat("float snap").setRange(0.25, 2).setIncrement(0.5).setSnap(true).setTooltip("This is a float slider");
-    params.addInt("int snap").setRange(1, 15).setIncrement(2).setSnap(true).setTooltip("This is an int slider");
+        params.startGroup("ints");
+        {
+            params.addInt("no clamp, no snap").setRange(0, 100).setIncrement(5);
+            params.addInt("yes clamp, no snap").setRange(0, 100).setIncrement(5).setClamp(true);
+            params.addInt("yes clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(true).setSnap(true);
+            params.addInt("no clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(false).setSnap(true);
+        }
+        params.endGroup();
+    }
     params.endGroup();
     
     
+    
+    
+    //--------------------------------------------------------------
+    // clear all parameters (so we have a clean slate to carry on)
+    params.clear();
+    
+    params.startGroup("particle system"); {
+        params.addInt("count").setRange(1, 20).setValue(5);
+        params.startGroup("emitter position"); {
+            params.addFloat("x").setRange(0, ofGetWidth()).setValue(ofGetWidth()/2);
+            params.addFloat("y").setRange(0, ofGetHeight()).setValue(ofGetHeight()/2);
+        } params.endGroup();
+        params.startGroup("emit velocity"); {
+            params.startGroup("min"); {
+                params.addFloat("x").setRange(0, 20).setValue(3);
+                params.addFloat("y").setRange(0, 20).setValue(3);
+            } params.endGroup();
+            params.startGroup("max"); {
+                params.addFloat("x").setRange(0, 20).setValue(10);
+                params.addFloat("y").setRange(0, 20).setValue(10);
+            } params.endGroup();
+        } params.endGroup();
+        params.startGroup("physics"); {
+            params.addFloat("gravity").setRange(-1, 1).setValue(0.03);
+            params.addFloat("friction").setRange(0, 1).setValue(0.05);
+            params.addFloat("maxRotSpeed").setRange(0, 10).setValue(5);
+        } params.endGroup();
+        params.startGroup("age"); {
+            params.addFloat("min age").setRange(1, 10).setValue(2);
+            params.addFloat("max age").setRange(1, 10).setValue(5);
+        } params.endGroup();
+        
+        params.startGroup("display options"); {
+            params.addNamedIndex("shape type").setLabels(3, "circle", "rectangle", "triangle");
+            params.addBool("fill").setValue(true);
+            params.startGroup("size"); {
+                params.addFloat("x").setRange(0, 200).setValue(50);
+                params.addFloat("y").setRange(0, 200).setValue(50);
+            } params.endGroup();
+        } params.endGroup();
+
+        params.addBang("randomize");
+        params.addBang("save preset");
+        params.addNamedIndex("presets").setLabels(1, "default");
+        
+    }
+    params.endGroup();
     
     
     // you can add complex types
@@ -237,25 +295,6 @@ void testApp::setup(){
     
     
     
-    // AN EXAMPLE
-    params.startGroup("shape"); {
-        params.startGroup("transform");{
-            params.addInt("posx").setRange(0, ofGetWidth()).setValue(ofGetWidth()/2);
-            params.addInt("posy").setRange(0, ofGetHeight()).setValue(ofGetHeight()/2);
-            params.addFloat("sizex").setRange(0, ofGetWidth()).setValue(ofGetHeight()/2);
-            params.addFloat("sizey").setRange(0, ofGetHeight()).setValue(ofGetHeight()/2);
-            params.addInt("rotation").setRange(0, 360);
-        } params.endGroup();
-        params.startGroup("display options"); {
-            params.addNamedIndex("shape type").setLabels(3, "circle", "rectangle", "triangle");
-            params.addBool("fill").setValue(true);
-        } params.endGroup();
-        params.addBang("randomize");
-        params.addBang("reset");
-    } params.endGroup();
-    
-    }
-
     
     // you can create groups and add any parameters to that group
     
@@ -275,12 +314,67 @@ void testApp::setup(){
 void testApp::update() {
     params.update();
     
-    if(!doDebug) {
+    // resize vector if nessecary
+    int count = params.getInt("particle system.count");
+    if(balls.size() != count) {
+        ofLogNotice() << "INIT BALLS " << count;
+        balls.resize(count);
+    }
+    
+    
+    if(params.getBool("particle system.randomize")) {
+        params.getFloat("particle system.emitter position.x").setRandom();
+        params.getFloat("particle system.emitter position.y").setRandom();
+        params.getFloat("particle system.emit velocity.min.x").setRandom();
+        params.getFloat("particle system.emit velocity.min.y").setRandom();
+        params.getFloat("particle system.emit velocity.max.x").setRandom();
+        params.getFloat("particle system.emit velocity.max.y").setRandom();
+        params.getFloat("particle system.physics.gravity").setRandom();
+        params.getFloat("particle system.physics.friction").setRandom();
+        params.getFloat("particle system.physics.maxRotSpeed").setRandom();
+        params.getFloat("particle system.age.min age").setRandom();
+        params.getFloat("particle system.age.max age").setRandom();
+        params.getBool("particle system.display options.fill").setRandom();
+        params.getFloat("particle system.display options.size.x").setRandom();
+        params.getFloat("particle system.display options.size.y").setRandom();
+        params.getNamedIndex("particle system.display options.shape type").setRandom();
+    }
+    
+    // cache relevant values
+    ofVec2f emitterPos = ofVec2f(params.getFloat("particle system.emitter position.x"), params.getFloat("particle system.emitter position.y"));
+    ofVec2f emitVelMin = ofVec2f(params.getFloat("particle system.emit velocity.min.x"), params.getFloat("particle system.emit velocity.min.y"));
+    ofVec2f emitVelMax = ofVec2f(params.getFloat("particle system.emit velocity.max.x"), params.getFloat("particle system.emit velocity.max.x"));
+    float gravity = params.getFloat("particle system.physics.gravity");
+    float friction = params.getFloat("particle system.physics.friction");
+    float maxRotSpeed = params.getFloat("particle system.physics.maxRotSpeed");
+    float minAge = params.getFloat("particle system.age.min age");
+    float maxAge = params.getFloat("particle system.age.max age");
+
+    
+    // iterate all balls. update position, rotation and speed
+    for(int i=0; i<balls.size(); i++) {
+        Ball &b = balls[i];
+        b.pos += b.vel;
+        b.vel.y += gravity;
+        b.vel -= b.vel * friction;
+        b.rot += b.rotSpeed;
+
+        // if offscreen, reset
+        if(ofGetElapsedTimef() > b.dieTime || !ofInRange(b.pos.x, 1, ofGetWidth()) || !ofInRange(b.pos.y, 1, ofGetHeight())) {
+            b.dieTime = ofGetElapsedTimef() + ofRandom(minAge, maxAge);
+            b.pos = emitterPos;
+            b.vel = ofVec2f(ofRandom(emitVelMin.x, emitVelMax.x) * ofSign(ofRandomf()), ofRandom(emitVelMin.y, emitVelMax.y) * ofSign(ofRandomf()));
+            b.rot = ofRandom(360);
+            b.rotSpeed = ofRandom(0, maxRotSpeed) * ofSign(ofRandomf());
+            b.size = ofVec2f(ofRandomuf(), ofRandomuf());
+        }
+    }
+
+    
     // read from the bool parameters, and update the float parameters if they are true
     // note that parameter 'animated2' had had it's 'clamp' set to true, so it will never go outside of -1...1
-    if(params.getBool("Testers.doAnimate1")) params.getFloat("Testers.animated1") = sin(ofGetElapsedTimef()) * 2;
-    if(params.getBool("Testers.doAnimate2")) params.getFloat("Testers.animated2") = sin(ofGetElapsedTimef()) * 2;
-    }
+    //    if(params.getBool("Testers.doAnimate1")) params.getFloat("Testers.animated1") = sin(ofGetElapsedTimef()) * 2;
+    //    if(params.getBool("Testers.doAnimate2")) params.getFloat("Testers.animated2") = sin(ofGetElapsedTimef()) * 2;
     
     // 'trackTester' is a normal variable, which we had set to sync to the parameter 'trackTester'
     // if we write to this variable, the gui updates
@@ -313,53 +407,48 @@ void testApp::update() {
 //--------------------------------------------------------------
 void testApp::draw(){
     //	ofBackground(color.r * 255, color.g * 255.0f, color.b * 255.0);
-    if(!doDebug) {
     
     ofPushStyle();
     ofSetRectMode(OF_RECTMODE_CENTER);
     
-    // draw shape
-    if(params.getBool("shape.randomize") && params.getBool("shape.randomize").hasChanged()) {
-        params.getInt("shape.transform.posx") = ofRandom(params.getInt("shape.transform.posx").getMin(), params.getInt("shape.transform.posx").getMax());
-        params.getInt("shape.transform.posy") = ofRandom(params.getInt("shape.transform.posy").getMin(), params.getInt("shape.transform.posy").getMax());
-        params.getInt("shape.transform.rotation") = ofRandom(params.getInt("shape.transform.rotation").getMin(), params.getInt("shape.transform.rotation").getMax());
-        params.getFloat("shape.transform.sizex") = ofRandom(params.getFloat("shape.transform.sizex").getMin(), params.getFloat("shape.transform.sizex").getMax());
-        params.getFloat("shape.transform.sizey") = ofRandom(params.getFloat("shape.transform.sizey").getMin(), params.getFloat("shape.transform.sizey").getMax());
-        params.getNamedIndex("shape.display options.shape type") = ofRandom(0, params.getNamedIndex("shape.display options.shape type").getMax());
-    }
-    
-    if(params.getBool("shape.reset")) {
-        params.getInt("shape.transform.posx") = ofGetWidth()/2;
-        params.getInt("shape.transform.posy") = ofGetHeight()/2;
-        params.getInt("shape.transform.rotation") = 0;
-        params.getFloat("shape.transform.sizex") = ofGetHeight()/2;
-        params.getFloat("shape.transform.sizey") = ofGetHeight()/2;
-        params.getNamedIndex("shape.display options.shape type") = 0;
-    }
-    
-    if(params.getBool("shape.display options.fill")) ofFill();
+    // draw emitter
+    ofVec2f emitterPos = ofVec2f(params.getFloat("particle system.emitter position.x"), params.getFloat("particle system.emitter position.y"));
+    ofNoFill();
+    ofCircle(emitterPos, 10);
+
+    // set fill options
+    if(params.getBool("particle system.display options.fill")) ofFill();
     else ofNoFill();
-    ofPushMatrix();
-    ofTranslate(params.getInt("shape.transform.posx"), params.getInt("shape.transform.posy"));
-    ofRotate(params.getInt("shape.transform.rotation"));
-    ofScale(params.getFloat("shape.transform.sizex"), params.getFloat("shape.transform.sizey"));
     
-    switch(params.getNamedIndex("shape.display options.shape type")) {
-        case 0:
-            ofCircle(0, 0, 0.5);
-            break;
-            
-        case 1:
-            ofRect(0, 0, 1, 1);
-            break;
-            
-        case 2:
-            ofTriangle(-0.5, 0.33, 0, -0.67, 0.5, 0.33);
-            break;
+    // cache size value
+    ofVec2f size = ofVec2f(params.getFloat("particle system.display options.size.x"), params.getFloat("particle system.display options.size.y"));
+
+    int shapeType = params.getNamedIndex("particle system.display options.shape type");
+    for(int i=0; i<balls.size(); i++) {
+        Ball &b = balls[i];
+        
+        ofPushMatrix();
+        ofTranslate(b.pos);
+        ofRotate(b.rot);
+        ofScale(b.size.x * size.x, b.size.y * size.y, 1);
+        
+        switch(shapeType) {
+            case 0:
+                ofCircle(0, 0, 0.5);
+                break;
+                
+            case 1:
+                ofRect(0, 0, 1, 1);
+                break;
+                
+            case 2:
+                ofTriangle(-0.5, 0.33, 0, -0.67, 0.5, 0.33);
+                break;
+        }
+        ofPopMatrix();
     }
-    ofPopMatrix();
-    ofPopStyle();
-    }
+    
+     ofPopStyle();
 }
 
 void testApp::exit() {
