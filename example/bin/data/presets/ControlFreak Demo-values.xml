@@ -1,0 +1,31 @@
+<ofxMSAControlFreak version="1.000000000">
+    <Parameter type="group" name="ControlFreak Demo">
+        <Parameter type="group" name="particle system">
+            <Parameter type="int" name="count" value="5"></Parameter>
+            <Parameter type="group" name="emitter">
+                <Parameter type="float" name="x" value="550.000000000"></Parameter>
+                <Parameter type="float" name="y" value="300.000000000"></Parameter>
+                <Parameter type="float" name="radius" value="20.000000000"></Parameter>
+            </Parameter>
+            <Parameter type="group" name="physics">
+                <Parameter type="float" name="maxEmitVelocity" value="30.000000000"></Parameter>
+                <Parameter type="float" name="maxRotSpeed" value="5.000000000"></Parameter>
+                <Parameter type="float" name="gravity" value="0.029999999"></Parameter>
+                <Parameter type="float" name="friction" value="0.050000001"></Parameter>
+            </Parameter>
+            <Parameter type="group" name="age">
+                <Parameter type="float" name="min age" value="1.000000000"></Parameter>
+                <Parameter type="float" name="max age" value="5.000000000"></Parameter>
+            </Parameter>
+            <Parameter type="group" name="display options">
+                <Parameter type="namedindex" name="shape type" value="0"></Parameter>
+                <Parameter type="bool" name="fill" value="1"></Parameter>
+                <Parameter type="group" name="size">
+                    <Parameter type="float" name="x" value="50.000000000"></Parameter>
+                    <Parameter type="float" name="y" value="50.000000000"></Parameter>
+                </Parameter>
+            </Parameter>
+            <Parameter type="bool" name="randomize" value="0"></Parameter>
+        </Parameter>
+    </Parameter>
+</ofxMSAControlFreak>
