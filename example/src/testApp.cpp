@@ -462,20 +462,20 @@ void testApp::keyPressed (int key){
 	
 	switch(key) {
 		case 's':
-            params.saveXml(false);
+            params.saveXml(false, params.getName() + "-values.xml");
             break;
             
 		case 'S':
-            params.saveXml(true);
+            params.saveXml(true, params.getName() + "-schema.xml");
             break;
             
             
 		case 'l':
-			params.loadXml(false);
+			params.loadXml(false, params.getName() + "-values.xml");
 			break;
 			
 		case 'L':
-			params.loadXml(true);
+			params.loadXml(true, params.getName() + "-schema.xml");
 			break;
             
             

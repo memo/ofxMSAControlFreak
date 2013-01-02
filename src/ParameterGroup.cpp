@@ -59,12 +59,18 @@ namespace msa {
             xml.pushTag("ofxMSAControlFreak");
             writeToXml(xml, bFull);
             xml.popTag();
-            return xml.saveFile(_filename + (bFull ? "-schema.xml" : "-values.xml"));
+            return xml.saveFile(_filename);// + (bFull ? "-schema.xml" : "-values.xml"));
 		}
 		
         //--------------------------------------------------------------
 		bool ParameterGroup::loadXml(bool bFull, string filename) {
 			setFilename(filename);
+            ofxXmlSettings xml;
+            bool b = xml.loadFile(_filename);
+            xml.pushTag("ofxMSAControlFreak");
+            readFromXml(xml, bFull);
+            xml.popTag();
+            return b;
 		}
         
         //--------------------------------------------------------------
@@ -86,6 +92,20 @@ namespace msa {
         void ParameterGroup::readFromXml(ofxXmlSettings &xml, bool bFull) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::readFromXml " << getPath();
             
+            Parameter::readFromXml(xml, bFull);
+            xml.pushTag(_xmlTag, _xmlTagId);
+            
+            int numTags = xml.getNumTags(_xmlTag);
+            printf("readFromXml\n");
+            // TODO, add parameters to group if they aren't in there?
+            for(int i=0; i<numTags; i++) {
+                string s = xml.getAttribute(_xmlTag, "name", "", i);
+                printf("%i %s\n", i, s.c_str());
+                Parameter &p = getParameter(s);
+                p.readFromXml(xml, bFull);
+            }
+            
+            xml.popTag();
         }
         
         

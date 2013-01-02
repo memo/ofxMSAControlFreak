@@ -60,6 +60,9 @@ namespace msa {
         void ParameterSingleValueT<T>::readFromXml(ofxXmlSettings &xml, bool bFull) {
             kCheckBadParameter();
             
+            Parameter::readFromXml(xml, bFull);
+            this->setValue(xml.getAttribute(this->_xmlTag, "value", T(), this->_xmlTagId));
+            
 			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::readFromXml " << this->getPath();
         }
         

@@ -17,6 +17,8 @@ namespace msa {
         //--------------------------------------------------------------
         Parameter::Parameter(ParameterGroup *parent, string name, Type::Index typeIndex)
         : _pparent(parent), _name(name), _typeIndex(typeIndex) {
+            _xmlTag = "Parameter";
+            _xmlTagId = 0;
 //            ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter " <<  getPath();
         }
         
@@ -76,7 +78,6 @@ namespace msa {
         void Parameter::writeToXml(ofxXmlSettings &xml, bool bFull) {
 			ofLogVerbose() << "msa::ControlFreak::Parameter::writeToXml " << getPath();
 
-            _xmlTag = "Parameter";// + ofToString(i);
             _xmlTagId = xml.addTag(_xmlTag);
             xml.addAttribute(_xmlTag, "type", getTypeName(), _xmlTagId);
             xml.addAttribute(_xmlTag, "name", getName(), _xmlTagId);
