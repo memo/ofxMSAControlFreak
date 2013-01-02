@@ -281,9 +281,6 @@ void testApp::setup(){
         } params.endGroup();
 
         params.addBang("randomize");
-        params.addBang("save preset");
-        params.addNamedIndex("presets").setLabels(1, "default");
-        
     }
     params.endGroup();
     

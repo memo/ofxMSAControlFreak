@@ -93,6 +93,11 @@ namespace msa {
 			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::readFromXml " << getPath();
             
             Parameter::readFromXml(xml, bFull);
+            string s = xml.getAttribute(_xmlTag, "name", "", _xmlTagId);
+            if(s != getName()) {
+                ofLogError() << "msa::ControlFreak::ParameterGroup::readFromXml - trying to load '" << s << "' into ParameterGroup '" << getPath() <<"'";
+                return;
+            }
             xml.pushTag(_xmlTag, _xmlTagId);
             
             int numTags = xml.getNumTags(_xmlTag);
