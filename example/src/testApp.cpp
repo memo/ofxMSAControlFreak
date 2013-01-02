@@ -247,27 +247,19 @@ void testApp::setup(){
     
     params.startGroup("particle system"); {
         params.addInt("count").setRange(1, 20).setValue(5);
-        params.startGroup("emitter position"); {
+        params.startGroup("emitter"); {
             params.addFloat("x").setRange(0, ofGetWidth()).setValue(ofGetWidth()/2);
             params.addFloat("y").setRange(0, ofGetHeight()).setValue(ofGetHeight()/2);
-        } params.endGroup();
-        params.startGroup("emit velocity"); {
-            params.startGroup("min"); {
-                params.addFloat("x").setRange(0, 20).setValue(3);
-                params.addFloat("y").setRange(0, 20).setValue(3);
-            } params.endGroup();
-            params.startGroup("max"); {
-                params.addFloat("x").setRange(0, 20).setValue(10);
-                params.addFloat("y").setRange(0, 20).setValue(10);
-            } params.endGroup();
+            params.addFloat("radius").setRange(0, 100).setValue(20);
         } params.endGroup();
         params.startGroup("physics"); {
+            params.addFloat("maxEmitVelocity").setRange(0, 100).setValue(30);
+            params.addFloat("maxRotSpeed").setRange(0, 10).setValue(5);
             params.addFloat("gravity").setRange(-1, 1).setValue(0.03);
             params.addFloat("friction").setRange(0, 1).setValue(0.05);
-            params.addFloat("maxRotSpeed").setRange(0, 10).setValue(5);
         } params.endGroup();
         params.startGroup("age"); {
-            params.addFloat("min age").setRange(1, 10).setValue(2);
+            params.addFloat("min age").setRange(1, 10).setValue(1);
             params.addFloat("max age").setRange(1, 10).setValue(5);
         } params.endGroup();
         
@@ -320,15 +312,13 @@ void testApp::update() {
     
     
     if(params.getBool("particle system.randomize")) {
-        params.getFloat("particle system.emitter position.x").setRandom();
-        params.getFloat("particle system.emitter position.y").setRandom();
-        params.getFloat("particle system.emit velocity.min.x").setRandom();
-        params.getFloat("particle system.emit velocity.min.y").setRandom();
-        params.getFloat("particle system.emit velocity.max.x").setRandom();
-        params.getFloat("particle system.emit velocity.max.y").setRandom();
+        params.getFloat("particle system.emitter.x").setRandom();
+        params.getFloat("particle system.emitter.y").setRandom();
+        params.getFloat("particle system.emitter.radius").setRandom();
+        params.getFloat("particle system.physics.maxEmitVelocity").setRandom();
+        params.getFloat("particle system.physics.maxRotSpeed").setRandom();
         params.getFloat("particle system.physics.gravity").setRandom();
         params.getFloat("particle system.physics.friction").setRandom();
-        params.getFloat("particle system.physics.maxRotSpeed").setRandom();
         params.getFloat("particle system.age.min age").setRandom();
         params.getFloat("particle system.age.max age").setRandom();
         params.getBool("particle system.display options.fill").setRandom();
@@ -338,12 +328,12 @@ void testApp::update() {
     }
     
     // cache relevant values
-    ofVec2f emitterPos = ofVec2f(params.getFloat("particle system.emitter position.x"), params.getFloat("particle system.emitter position.y"));
-    ofVec2f emitVelMin = ofVec2f(params.getFloat("particle system.emit velocity.min.x"), params.getFloat("particle system.emit velocity.min.y"));
-    ofVec2f emitVelMax = ofVec2f(params.getFloat("particle system.emit velocity.max.x"), params.getFloat("particle system.emit velocity.max.x"));
+    ofVec2f emitterPos = ofVec2f(params.getFloat("particle system.emitter.x"), params.getFloat("particle system.emitter.y"));
+    float emitterRadius = params.getFloat("particle system.emitter.radius");
+    float maxEmitVelocity = params.getFloat("particle system.physics.maxEmitVelocity");
+    float maxRotSpeed = params.getFloat("particle system.physics.maxRotSpeed");
     float gravity = params.getFloat("particle system.physics.gravity");
     float friction = params.getFloat("particle system.physics.friction");
-    float maxRotSpeed = params.getFloat("particle system.physics.maxRotSpeed");
     float minAge = params.getFloat("particle system.age.min age");
     float maxAge = params.getFloat("particle system.age.max age");
 
@@ -359,8 +349,9 @@ void testApp::update() {
         // if offscreen, reset
         if(ofGetElapsedTimef() > b.dieTime || !ofInRange(b.pos.x, 1, ofGetWidth()) || !ofInRange(b.pos.y, 1, ofGetHeight())) {
             b.dieTime = ofGetElapsedTimef() + ofRandom(minAge, maxAge);
-            b.pos = emitterPos;
-            b.vel = ofVec2f(ofRandom(emitVelMin.x, emitVelMax.x) * ofSign(ofRandomf()), ofRandom(emitVelMin.y, emitVelMax.y) * ofSign(ofRandomf()));
+            b.pos = emitterPos + ofVec2f(ofRandom(-emitterRadius, emitterRadius), ofRandom(-emitterRadius, emitterRadius));
+            b.vel = ofVec2f(ofRandom(-maxEmitVelocity, maxEmitVelocity), 0);
+            b.vel.rotate(ofRandom(0, 1080));
             b.rot = ofRandom(360);
             b.rotSpeed = ofRandom(0, maxRotSpeed) * ofSign(ofRandomf());
             b.size = ofVec2f(ofRandomuf(), ofRandomuf());
@@ -409,9 +400,9 @@ void testApp::draw(){
     ofSetRectMode(OF_RECTMODE_CENTER);
     
     // draw emitter
-    ofVec2f emitterPos = ofVec2f(params.getFloat("particle system.emitter position.x"), params.getFloat("particle system.emitter position.y"));
+    ofVec2f emitterPos = ofVec2f(params.getFloat("particle system.emitter.x"), params.getFloat("particle system.emitter.y"));
     ofNoFill();
-    ofCircle(emitterPos, 10);
+    ofCircle(emitterPos, params.getFloat("particle system.emitter.radius"));
 
     // set fill options
     if(params.getBool("particle system.display options.fill")) ofFill();
