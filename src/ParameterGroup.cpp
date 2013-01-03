@@ -74,7 +74,8 @@ namespace msa {
             
             ofxXmlSettings xml;
             xml.addTag("ofxMSAControlFreak");
-            xml.addAttribute("ofxMSAControlFreak", "version", 1.0f, 0);
+            xml.addAttribute("ofxMSAControlFreak", "version", 1.0f, 0); // TODO: global version number?
+            xml.addAttribute("ofxMSAControlFreak", "bOnlyValues", bOnlyValues, 0);
             xml.pushTag("ofxMSAControlFreak");
             writeToXml(xml, bOnlyValues);
             xml.popTag();
