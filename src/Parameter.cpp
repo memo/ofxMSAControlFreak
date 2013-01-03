@@ -91,6 +91,10 @@ namespace msa {
         //--------------------------------------------------------------
         void Parameter::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
 			ofLogVerbose() << "msa::ControlFreak::Parameter::readFromXml " << getPath();
+            
+            if(!bOnlyValues) {
+                setTooltip(xml.getAttribute(_xmlTag, "tooltip", "", _xmlTagId));
+            }
         }
 
  
