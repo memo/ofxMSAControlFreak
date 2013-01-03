@@ -122,7 +122,15 @@ namespace msa {
         
         //--------------------------------------------------------------
         void ParameterGroup::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::readFromXml " << getPath();
+			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::readFromXml " << getPath() << " pushLevel : " << xml.getPushLevel();
+
+            
+            //TODO: fix hack: run through everything writing to a temp xml first, to fill in _xmlTagId parameters correctly
+//            {
+//                ofxXmlSettings xmlTemp;
+////                writeToXml(xmlTemp, false);
+//            }
+            
             
             Parameter::readFromXml(xml, bOnlyValues);
             string s = xml.getAttribute(_xmlTag, "name", "", _xmlTagId);
@@ -133,12 +141,12 @@ namespace msa {
             xml.pushTag(_xmlTag, _xmlTagId);
             
             int numTags = xml.getNumTags(_xmlTag);
-            printf("readFromXml\n");
             // TODO, add parameters to group if they aren't in there?
             for(int i=0; i<numTags; i++) {
                 string s = xml.getAttribute(_xmlTag, "name", "", i);
-                printf("%i %s\n", i, s.c_str());
+                printf("Parameter %i %s\n", i, s.c_str());
                 Parameter &p = getParameter(s);
+                p._xmlTagId = i;
                 p.readFromXml(xml, bOnlyValues);
             }
             
