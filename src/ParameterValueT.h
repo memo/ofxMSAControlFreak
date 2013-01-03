@@ -93,8 +93,8 @@ namespace msa {
             void _setValue(T v);
             
             // from Parameter:
-            virtual void writeToXml(ofxXmlSettings &xml, bool bFull) = 0;
-            virtual void readFromXml(ofxXmlSettings &xml, bool bFull) = 0;
+            virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues) = 0;
+            virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues) = 0;
             virtual void update();
             
 		private:

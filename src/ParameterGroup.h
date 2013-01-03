@@ -30,14 +30,19 @@ namespace msa {
             // if name is omitted, last used name is used (by default same as group name)
 			void setFilename(string filename = "");
 			
-            // save and load all parameters to an xml file
-			bool saveXml(bool bFull, string filename = "");
-			bool loadXml(bool bFull, string filename = "");
-            
+            // save and load all parameter (values only) to an xml file
+            // leave filename blank for default (inherits name of parameter group + "-values.xml")
+			bool saveXmlValues(string filename = "");
+			bool loadXmlValues(string filename = "");
+
+            // save and load all parameter (full schema) to an xml file
+            // leave filename blank for default (inherits name of parameter group + "-schema.xml")
+			bool saveXmlSchema(string filename = "");
+			bool loadXmlSchema(string filename = "");
             
             // write or read all parameters to an xml variable
-            void writeToXml(ofxXmlSettings &xml, bool bFull);
-            void readFromXml(ofxXmlSettings &xml, bool bFull);
+            void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
+            void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
             
             // call this every frame to make sure any external controllers (e.g. midi, osc etc.) stay in sync
             void update();
@@ -107,6 +112,10 @@ namespace msa {
             // generic function to get value as any type (type==parameter class, not basic type)
             template <typename T>
             T& get(string path);
+            
+            // save and load all parameters to an xml file
+			bool saveXml(string filename, bool bOnlyValues);
+			bool loadXml(string filename, bool bOnlyValues);
             
             static ParameterGroup dummy;
         };

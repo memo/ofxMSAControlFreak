@@ -26,8 +26,8 @@ namespace msa {
             virtual void snap() {}
             
             // from Parameter
-            virtual void writeToXml(ofxXmlSettings &xml, bool bFull) { ParameterGroup::writeToXml(xml, bFull); }
-            virtual void readFromXml(ofxXmlSettings &xml, bool bFull) { ParameterGroup::readFromXml(xml, bFull); }
+            virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues) { ParameterGroup::writeToXml(xml, bOnlyValues); }
+            virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues) { ParameterGroup::readFromXml(xml, bOnlyValues); }
         };
         
         //--------------------------------------------------------------

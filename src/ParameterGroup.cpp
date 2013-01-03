@@ -34,8 +34,6 @@ namespace msa {
         
         //--------------------------------------------------------------
 		void ParameterGroup::clear() {
-//            int np = getNumParams();
-//            for(int i=0; i<np; i++) delete _paramArr[i];
             _paramArr.clear();
             _paramMap.clear();
             
@@ -47,52 +45,86 @@ namespace msa {
 		// if parameter non empty, saves the filename
 		void ParameterGroup::setFilename(string filename) {
 			if(filename.empty() == false) _filename = filename;
-            if(_filename.empty()) _filename = _name;
+            if(_filename.empty()) {
+                ofDirectory::createDirectory("presets");
+                _filename = "presets/" + getName();
+            }
 		}
 		
         //--------------------------------------------------------------
-		bool ParameterGroup::saveXml(bool bFull, string filename) {
+        bool ParameterGroup::saveXmlValues(string filename) {
+            return saveXml(filename, true);
+        }
+        
+        //--------------------------------------------------------------
+        bool ParameterGroup::loadXmlValues(string filename) {
+            return loadXml(filename, true);
+        }
+        
+        //--------------------------------------------------------------
+        bool ParameterGroup::saveXmlSchema(string filename) {
+            return saveXml(filename, false);
+        }
+        
+        //--------------------------------------------------------------
+        bool ParameterGroup::loadXmlSchema(string filename) {
+            return loadXml(filename, false);
+        }
+
+        //--------------------------------------------------------------
+		bool ParameterGroup::saveXml(string filename, bool bOnlyValues) {
 			setFilename(filename);
+            
+            // when saving, always append suffix
+            string fullFilename = _filename;
+//            if(filename.empty())
+                fullFilename +=  bOnlyValues ? ".values.xml" : ".schema.xml";
+            
             ofxXmlSettings xml;
             xml.addTag("ofxMSAControlFreak");
             xml.addAttribute("ofxMSAControlFreak", "version", 1.0f, 0);
             xml.pushTag("ofxMSAControlFreak");
-            writeToXml(xml, bFull);
+            writeToXml(xml, bOnlyValues);
             xml.popTag();
-            return xml.saveFile(_filename);// + (bFull ? "-schema.xml" : "-values.xml"));
+            return xml.saveFile(fullFilename);
 		}
 		
         //--------------------------------------------------------------
-		bool ParameterGroup::loadXml(bool bFull, string filename) {
+		bool ParameterGroup::loadXml(string filename, bool bOnlyValues) {
 			setFilename(filename);
+            
+            // when loading, only append suffix if no filename is passed in
+            string fullFilename = _filename;
+            if(filename.empty()) fullFilename +=  bOnlyValues ? ".values.xml" : ".schema.xml";
+            
             ofxXmlSettings xml;
-            bool b = xml.loadFile(_filename);
+            bool b = xml.loadFile(fullFilename);
             xml.pushTag("ofxMSAControlFreak");
-            readFromXml(xml, bFull);
+            readFromXml(xml, bOnlyValues);
             xml.popTag();
             return b;
 		}
         
         //--------------------------------------------------------------
-        void ParameterGroup::writeToXml(ofxXmlSettings &xml, bool bFull) {
+        void ParameterGroup::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::writeToXml " << getPath();
             
-            Parameter::writeToXml(xml, bFull);
+            Parameter::writeToXml(xml, bOnlyValues);
             xml.pushTag(_xmlTag, _xmlTagId);
             
             for(int i=0; i<_paramArr.size(); i++) {
                 Parameter &p = *_paramArr[i];
-                p.writeToXml(xml, bFull);
+                p.writeToXml(xml, bOnlyValues);
             }
             
             xml.popTag();
         }
         
         //--------------------------------------------------------------
-        void ParameterGroup::readFromXml(ofxXmlSettings &xml, bool bFull) {
+        void ParameterGroup::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::readFromXml " << getPath();
             
-            Parameter::readFromXml(xml, bFull);
+            Parameter::readFromXml(xml, bOnlyValues);
             string s = xml.getAttribute(_xmlTag, "name", "", _xmlTagId);
             if(s != getName()) {
                 ofLogError() << "msa::ControlFreak::ParameterGroup::readFromXml - trying to load '" << s << "' into ParameterGroup '" << getPath() <<"'";
@@ -107,7 +139,7 @@ namespace msa {
                 string s = xml.getAttribute(_xmlTag, "name", "", i);
                 printf("%i %s\n", i, s.c_str());
                 Parameter &p = getParameter(s);
-                p.readFromXml(xml, bFull);
+                p.readFromXml(xml, bOnlyValues);
             }
             
             xml.popTag();

@@ -30,8 +30,8 @@ namespace msa {
             virtual void snap();
             
             // from Parameter
-            virtual void writeToXml(ofxXmlSettings &xml, bool bFull);
-            virtual void readFromXml(ofxXmlSettings &xml, bool bFull);
+            virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
+            virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
         };
         
         
@@ -39,14 +39,14 @@ namespace msa {
         //--------------------------------------------------------------
         //--------------------------------------------------------------
 		template <typename T>
-        void ParameterSingleValueT<T>::writeToXml(ofxXmlSettings &xml, bool bFull) {
+        void ParameterSingleValueT<T>::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::writeToXml " << this->getPath();
             
             kCheckBadParameter();
             
-            Parameter::writeToXml(xml, bFull);  // IMPORTANT: always start with parents write to xml
+            Parameter::writeToXml(xml, bOnlyValues);  // IMPORTANT: always start with parents write to xml
             xml.addAttribute(this->_xmlTag, "value", this->getValue(), this->_xmlTagId);
-            if(bFull) {
+            if(!bOnlyValues) {
                 xml.addAttribute(this->_xmlTag, "min", this->getMin(), this->_xmlTagId);
                 xml.addAttribute(this->_xmlTag, "max", this->getMax(), this->_xmlTagId);
                 xml.addAttribute(this->_xmlTag, "doClamp", this->getClamp(), this->_xmlTagId);
@@ -57,10 +57,10 @@ namespace msa {
         
         //--------------------------------------------------------------
 		template <typename T>
-        void ParameterSingleValueT<T>::readFromXml(ofxXmlSettings &xml, bool bFull) {
+        void ParameterSingleValueT<T>::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
             kCheckBadParameter();
             
-            Parameter::readFromXml(xml, bFull);
+            Parameter::readFromXml(xml, bOnlyValues);
             this->setValue(xml.getAttribute(this->_xmlTag, "value", T(), this->_xmlTagId));
             
 			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::readFromXml " << this->getPath();

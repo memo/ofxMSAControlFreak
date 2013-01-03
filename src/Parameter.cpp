@@ -75,13 +75,13 @@ namespace msa {
 
 		
         //--------------------------------------------------------------
-        void Parameter::writeToXml(ofxXmlSettings &xml, bool bFull) {
+        void Parameter::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
 			ofLogVerbose() << "msa::ControlFreak::Parameter::writeToXml " << getPath();
 
             _xmlTagId = xml.addTag(_xmlTag);
             xml.addAttribute(_xmlTag, "type", getTypeName(), _xmlTagId);
             xml.addAttribute(_xmlTag, "name", getName(), _xmlTagId);
-            if(bFull) {
+            if(!bOnlyValues) {
                 xml.addAttribute(_xmlTag, "path", getPath(), _xmlTagId);
                 xml.addAttribute(_xmlTag, "tooltip", getTooltip(), _xmlTagId);
                 //            xml.addAttribute(_xmlTag, "parent", _pparent ? _pparent->getName() : "none", _xmlTagId);
@@ -89,7 +89,7 @@ namespace msa {
         }
         
         //--------------------------------------------------------------
-        void Parameter::readFromXml(ofxXmlSettings &xml, bool bFull) {
+        void Parameter::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
 			ofLogVerbose() << "msa::ControlFreak::Parameter::readFromXml " << getPath();
         }
 
