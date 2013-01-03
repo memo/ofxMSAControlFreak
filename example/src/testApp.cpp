@@ -249,7 +249,7 @@ void testApp::setup(){
     
     //--------------------------------------------------------------
     // clear all parameters (so we have a clean slate to carry on)
-//    params->clear();
+    params->clear();
     
     
     
