@@ -99,6 +99,15 @@ namespace msa {
             
             ofxXmlSettings xml;
             bool b = xml.loadFile(fullFilename);
+            
+            // only do full schema if it's requested, and the xml has the data
+            bool bOnlyValuesInXml = xml.getAttribute("ofxMSAControlFreak", "bOnlyValues", 1, 0);
+            if(!bOnlyValues && bOnlyValuesInXml) {
+                ofLogWarning() << "msa::ControlFreak::ParameterGroup::loadXml: requested full schema load but XML contains only values. Loading just values.";
+            } else if(bOnlyValues && !bOnlyValuesInXml) {
+                ofLogWarning() << "msa::ControlFreak::ParameterGroup::loadXml: requested only values load but XML contains full schema. Loading just values.";
+            }
+            
             xml.pushTag("ofxMSAControlFreak");
             readFromXml(xml, bOnlyValues);
             xml.popTag();
