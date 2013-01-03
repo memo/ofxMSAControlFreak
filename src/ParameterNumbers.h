@@ -57,7 +57,7 @@ namespace msa {
             };
             
             ParameterBool& setMode(Mode mode) {
-                                _mode = mode;
+                _mode = mode;
                 return *this;
             }
             
