@@ -34,10 +34,10 @@ void testApp::setup(){
 //    ofSetLogLevel(OF_LOG_VERBOSE);
     
     
-    params = msa::ControlFreak::ParameterGroupPtr(new msa::ControlFreak::ParameterGroup());
+    params = msa::ControlFreak::ParameterGroup::create("ControlFreak Demo");
     
     // Set name for our ParameterGroup
-	params->setName("ControlFreak Demo");
+//	params->setName("ControlFreak Demo");
     
     
     

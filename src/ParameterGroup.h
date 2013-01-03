@@ -25,7 +25,10 @@ namespace msa {
         
         class ParameterGroup : public Parameter {
         public:
-            ParameterGroup(string name = "MSAControlFreak", ParameterGroup *parent = NULL, Type::Index typeIndex = Type::kGroup);
+            
+            // factory method for creating new instances
+            static ParameterGroupPtr create(string name = "MSAControlFreak", ParameterGroup *parent = NULL, Type::Index typeIndex = Type::kGroup);
+            
             ~ParameterGroup();
             
             // if name is omitted, last used name is used (by default same as group name)
@@ -109,6 +112,8 @@ namespace msa {
             
             
         protected:
+            ParameterGroup(string name = "MSAControlFreak", ParameterGroup *parent = NULL, Type::Index typeIndex = Type::kGroup);
+
 			map<string, ParameterPtr>	_paramMap;		// map for all parameters
 			vector<ParameterPtr>	_paramArr;		// array needed to access sequentially (for display etc.)
             

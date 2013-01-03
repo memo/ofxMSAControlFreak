@@ -18,6 +18,13 @@ namespace msa {
 //            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup: " <<  getPath();
         }
 
+        
+        ParameterGroupPtr ParameterGroup::create(string name, ParameterGroup *parent, Type::Index typeIndex) {
+            return ParameterGroupPtr(new ParameterGroup(name, parent, typeIndex));
+        }
+        
+            
+
         //--------------------------------------------------------------
 		ParameterGroup::~ParameterGroup() {
             ofLogVerbose() << "msa::ControlFreak::ParameterGroup::~ParameterGroup: " <<  getPath();
