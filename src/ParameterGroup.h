@@ -112,7 +112,7 @@ namespace msa {
             
             
         protected:
-            ParameterGroup(string name = "MSAControlFreak", ParameterGroup *parent = NULL, Type::Index typeIndex = Type::kGroup);
+            ParameterGroup(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kGroup);
 
 			map<string, ParameterPtr>	_paramMap;		// map for all parameters
 			vector<ParameterPtr>	_paramArr;		// array needed to access sequentially (for display etc.)

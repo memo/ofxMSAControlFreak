@@ -10,8 +10,6 @@ unsigned char * 	videoInverted;
 ofTexture			videoTexture;
 
 
-msa::ControlFreak::ParameterGroupPtr   params;
-msa::ControlFreak::gui::Gui            gui;
 
 float fvar1;
 float fvar2;
@@ -28,12 +26,18 @@ struct Ball {
 vector<Ball> balls;
 
 
+// this is a (smart) Pointer to a ParameterGroup
+msa::ControlFreak::ParameterGroupPtr   params;
+
+
+msa::ControlFreak::gui::Gui            gui;
+
 
 //--------------------------------------------------------------
 void testApp::setup(){
 //    ofSetLogLevel(OF_LOG_VERBOSE);
     
-    
+    // create and get a new instance of a ParameterGroup (returned as a ParameterGroupPtr)
     params = msa::ControlFreak::ParameterGroup::create("ControlFreak Demo");
     
     // Set name for our ParameterGroup
@@ -245,7 +249,10 @@ void testApp::setup(){
     
     //--------------------------------------------------------------
     // clear all parameters (so we have a clean slate to carry on)
-    params->clear();
+//    params->clear();
+    
+    
+    
     
     params->startGroup("particle system"); {
         params->addInt("count").setRange(1, 20).setValue(5);
@@ -289,7 +296,7 @@ void testApp::setup(){
     
     // you can create groups and add any parameters to that group
     
-    gui.addParameters(params);
+    gui.addPage(params);
 	gui.setDefaultKeys(true);
 	gui.show();
     
