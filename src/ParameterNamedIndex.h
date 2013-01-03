@@ -40,9 +40,6 @@ namespace msa {
             // from Parameter
             virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
             virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
-			
-            // dummy parameter, sent back from 'getParameter' functions, if parameter can't be found
-            static ParameterNamedIndex dummy;
 		};
 
 	}

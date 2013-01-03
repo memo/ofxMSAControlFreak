@@ -26,9 +26,6 @@ namespace msa {
             : ParameterSingleValueT<int>(parent, name, typeIndex) { setRange(0, 100); setIncrement(1); }
             
         protected:
-            
-            // dummy parameter, sent back from 'getParameter' functions, if parameter can't be found
-            static ParameterInt dummy;
         };
         
         
@@ -43,11 +40,6 @@ namespace msa {
             
             ParameterFloat(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kFloat)
             : ParameterSingleValueT<float>(parent, name, typeIndex) { setRange(0, 1); setIncrement(0.01); }
-            
-        protected:
-            
-            // dummy parameter, sent back from 'getParameter' functions, if parameter can't be found
-            static ParameterFloat dummy;
         };
         
         
@@ -82,10 +74,7 @@ namespace msa {
             
         protected:
             Mode _mode;
-            
-            // dummy parameter, sent back from 'getParameter' functions, if parameter can't be found
-            static ParameterBool dummy;
-            
+
             //--------------------------------------------------------------
 //            void update() {
 //                ParameterSingleValueT<bool>::update();

@@ -80,19 +80,26 @@ namespace msa {
             // get number of parameters in this group (only gets number of direct children, not children of children)
             int getNumParams() const;
             
+            
+            // getters, return NULL if they can't find the parameter
+            
             // get parameter by index
-            Parameter& getParameter(int index);
+            Parameter* getParameter(int index);
             
             // get parameter by name
-            Parameter& getParameter(string path);
+            Parameter* getParameter(string path);
             
             
             // get values by name
-            ParameterInt& getInt(string path);
-            ParameterFloat& getFloat(string path);
-            ParameterBool& getBool(string path);
-            ParameterNamedIndex& getNamedIndex(string path);
-            ParameterGroup& getGroup(string path);
+            ParameterInt* getInt(string path);
+            ParameterFloat* getFloat(string path);
+            ParameterBool* getBool(string path);
+            ParameterNamedIndex* getNamedIndex(string path);
+            ParameterGroup* getGroup(string path);
+            
+            // generic function to get value as any type (type==parameter class, not basic type)
+            template <typename T>
+            T* get(string path);
             
             // [] operator overloads for above
             //	Parameter& operator[](int index);
@@ -109,15 +116,9 @@ namespace msa {
             stack<ParameterGroup*> _groupStack;
             
             
-            // generic function to get value as any type (type==parameter class, not basic type)
-            template <typename T>
-            T& get(string path);
-            
             // save and load all parameters to an xml file
 			bool saveXml(string filename, bool bOnlyValues);
 			bool loadXml(string filename, bool bOnlyValues);
-            
-            static ParameterGroup dummy;
         };
         
         
@@ -125,20 +126,20 @@ namespace msa {
         //--------------------------------------------------------------
         //--------------------------------------------------------------
         template <typename T>
-        T& ParameterGroup::get(string path) {
-            T *p = NULL;
-            try {
-                Parameter &pp = getParameter(path);
-                p = dynamic_cast<T*>(&pp);
-            } catch(...) {
-                ofLogError() << "msa::ControlFreak::ParameterGroup::get<T> " << path << " - EXCEPTION in group " << getPath();
+        T* ParameterGroup::get(string path) {
+            Parameter *p = getParameter(path);
+            if(!p) {
+                ofLogError() << "msa::ControlFreak::ParameterGroup::get<T> - Could not FIND parameter " << path << " in group " << getPath();
+                return NULL;
             }
-            if(p == NULL) {
-                ofLogError() << "msa::ControlFreak::ParameterGroup::get<T> " << path << " is of wrong type in group " << getPath();
-                return T::dummy;//static_cast<T&>(badParameter);
-            } else {
-                return *p;
+            
+            T *tp = dynamic_cast<T*>(p);
+            if(!tp) {
+                ofLogError() << "msa::ControlFreak::ParameterGroup::get<T> - Could not CONVERT parameter " << path << " in group " << getPath();
+                return NULL;
             }
+            
+            return tp;
         }
         
     }
