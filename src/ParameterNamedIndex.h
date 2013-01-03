@@ -22,8 +22,8 @@ namespace msa {
 			ParameterNamedIndex(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kNamedIndex)
             : ParameterInt(parent, name, typeIndex) { setClamp(true); }
           
-            template <typename T> T operator=(const T & v) { kCheckBadParameter(T()); this->setValue(v); }
-			template <typename T> operator T() const { kCheckBadParameter(T()); return this->getValue(); }
+            template <typename T> T operator=(const T & v) { this->setValue(v); }
+			template <typename T> operator T() const { return this->getValue(); }
 
 			ParameterNamedIndex& setLabels(int count, string* labels);
             ParameterNamedIndex& setLabels(vector<string>& labels);

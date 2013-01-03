@@ -22,17 +22,21 @@ namespace msa {
 		
 		class ParameterGroup;
         
+        class Parameter;
+        typedef std::tr1::shared_ptr<Parameter> ParameterPtr;
+
+        
 		class Parameter {
 		public:
             
-#define kCheckBadParameter(ret) 
+//#define kCheckBadParameter(ret)
             //{ if(this->getType() == Type::kUnknown) return ret; }
 
-			
 			friend class ParameterGroup;
             
-			virtual ~Parameter() {}
-			
+			Parameter(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kUnknown);
+			virtual ~Parameter();
+            
             Parameter& setName(string s);
 			string getName() const;
             
@@ -51,8 +55,6 @@ namespace msa {
 //			T& getValue() const;
             
 		protected:
-			Parameter(ParameterGroup *parent, string name, Type::Index typeIndex);
-
 			Type::Index			_typeIndex;
 			string				_name;
             string              _tooltip;
@@ -68,7 +70,5 @@ namespace msa {
             virtual void update() {}
 		};
 		
-	
-        typedef std::tr1::shared_ptr<Parameter> ParameterPtr;
 	}
 }

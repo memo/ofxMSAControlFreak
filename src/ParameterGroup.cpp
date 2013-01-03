@@ -15,12 +15,12 @@ namespace msa {
 		ParameterGroup::ParameterGroup(ParameterGroup *parent, string name, Type::Index typeIndex)
         : Parameter(parent, name, typeIndex) {
             clear();
-//            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup " <<  getPath();
+//            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup: " <<  getPath();
         }
 
         //--------------------------------------------------------------
 		ParameterGroup::~ParameterGroup() {
-            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::~ParameterGroup " <<  getPath();
+            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::~ParameterGroup: " <<  getPath();
             clear();
 		}
         
@@ -70,7 +70,7 @@ namespace msa {
             // when saving, always append suffix
             string fullFilename = _filename;
 //            if(filename.empty())
-                fullFilename +=  bOnlyValues ? ".values.xml" : ".schema.xml";
+                fullFilename +=  bOnlyValues ? ".values.xml": ".schema.xml";
             
             ofxXmlSettings xml;
             xml.addTag("ofxMSAControlFreak");
@@ -88,7 +88,7 @@ namespace msa {
             
             // when loading, only append suffix if no filename is passed in
             string fullFilename = _filename;
-            if(filename.empty()) fullFilename +=  bOnlyValues ? ".values.xml" : ".schema.xml";
+            if(filename.empty()) fullFilename +=  bOnlyValues ? ".values.xml": ".schema.xml";
             
             ofxXmlSettings xml;
             bool b = xml.loadFile(fullFilename);
@@ -100,7 +100,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         void ParameterGroup::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::writeToXml " << getPath();
+			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::writeToXml: " << getPath();
             
             Parameter::writeToXml(xml, bOnlyValues);
             xml.pushTag(_xmlTag, _xmlTagId);
@@ -115,12 +115,12 @@ namespace msa {
         
         //--------------------------------------------------------------
         void ParameterGroup::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::readFromXml " << getPath() << " pushLevel : " << xml.getPushLevel();
+			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::readFromXml: " << getPath() << " pushLevel: " << xml.getPushLevel();
 
             Parameter::readFromXml(xml, bOnlyValues);
             string s = xml.getAttribute(_xmlTag, "name", "", _xmlTagId);
             if(s != getName()) {
-                ofLogError() << "msa::ControlFreak::ParameterGroup::readFromXml - trying to load '" << s << "' into ParameterGroup '" << getPath() << "'";
+                ofLogError() << "msa::ControlFreak::ParameterGroup::readFromXml: trying to load '" << s << "' into ParameterGroup '" << getPath() << "'";
                 return;
             }
             xml.pushTag(_xmlTag, _xmlTagId);
@@ -131,7 +131,7 @@ namespace msa {
                 string xname = xml.getAttribute(_xmlTag, "name", "", i);
                 string xpath = xml.getAttribute(_xmlTag, "path", "", i);
                 printf("Parameter %i %s %s\n", i, xname.c_str(), xpath.c_str());
-                Parameter *p = getParameter(xname);
+                Parameter *p = getParameter(xname).get();
                 if(p) {
                     p->_xmlTagId = i;
                     p->readFromXml(xml, bOnlyValues);
@@ -150,7 +150,7 @@ namespace msa {
             Parameter::update();
             int np = getNumParams();
             for(int i=0; i<np; i++) {
-                Parameter *p = getParameter(i);
+                Parameter *p = getParameter(i).get();
                 p->update();
             }
         }
@@ -214,23 +214,28 @@ namespace msa {
 		}
         
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::addParameter(Parameter *param) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::addParameter " << param->getPath();
+        Parameter& ParameterGroup::addParameter(Parameter* param) {
+            return addParameter(ParameterPtr(param));
+        }
+        
+        //--------------------------------------------------------------
+		Parameter& ParameterGroup::addParameter(ParameterPtr param) {
+			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::addParameter: " << param->getPath();
 			
             ParameterGroup *currentGroup = _groupStack.top();
             // avoid infinite recursion
             if(currentGroup == this) {
-                map<string, Parameter*>::iterator p = _paramMap.find(param->getName());
+                map<string, ParameterPtr>::iterator p = _paramMap.find(param->getName());
                 if(p == _paramMap.end()) {
                     _paramMap[param->getName()] = param;
-                    _paramArr.push_back(ParameterPtr(param));
+                    _paramArr.push_back(param);
                     param->setParent(this);
                     getNumParams();	// to check if correctly added to both containers
                     return *param;
                 } else {
-                    ofLogError() << "msa::ControlFreak::ParameterGroup::addParameter - " << param->getPath() << " - path already exists, returning existing parameter";
-                    delete param;
-                    return *_paramMap[param->getName()];
+                    ofLogError() << "msa::ControlFreak::ParameterGroup::addParameter: " << param->getPath() << " - path already exists, returning existing parameter";
+//                    delete param;
+                    return *p->second;//_paramMap[param->getName()];
                 }
             } else {
                 return currentGroup->addParameter(param);
@@ -248,13 +253,13 @@ namespace msa {
 		
         
         //--------------------------------------------------------------
-        Parameter* ParameterGroup::getParameter(int index) {
-			return _paramArr[index].get();
+        ParameterPtr ParameterGroup::getParameter(int index) {
+			return _paramArr[index];
         }
         
         //--------------------------------------------------------------
-        Parameter* ParameterGroup::getParameter(string path) {
-            //            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::getParameter " << path;
+        ParameterPtr ParameterGroup::getParameter(string path) {
+            //            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::getParameter: " << path;
             
             // look for path divider
             size_t pathDividerPos = path.find(getPathDivider());
@@ -264,8 +269,8 @@ namespace msa {
                 
                 // if parameter doesn't exist, return with error
                 if(_paramMap.find(path) == _paramMap.end()) {
-                    ofLogError() << "msa::ControlFreak::ParameterGroup::getParameter - " << path << " does not exist in Group: " << getPath();
-                    return NULL;
+                    ofLogError() << "msa::ControlFreak::ParameterGroup::getParameter: " << path << " does not exist in Group: " << getPath();
+                    return ParameterPtr();  // return NULL
                 }
                 
                 return _paramMap[path];

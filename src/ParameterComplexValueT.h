@@ -18,7 +18,7 @@ namespace msa {
 		protected:
 			ParameterComplexValueT(ParameterGroup *parent, string name, Type::Index typeIndex)
             : ParameterGroup(parent, name, typeIndex) {
-//                ofLogVerbose() << "msa::ControlFreak::ParameterComplexValueT::ParameterComplexValueT " <<  this->getPath();
+//                ofLogVerbose() << "msa::ControlFreak::ParameterComplexValueT::ParameterComplexValueT: " <<  this->getPath();
             }
             
             // from ParameterValueT
