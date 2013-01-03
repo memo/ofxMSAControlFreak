@@ -15,7 +15,7 @@ namespace msa {
 
         
         //--------------------------------------------------------------
-        Parameter::Parameter(ParameterGroup *parent, string name, Type::Index typeIndex)
+        Parameter::Parameter(string name, ParameterGroup *parent, Type::Index typeIndex)
         : _pparent(parent), _name(name), _typeIndex(typeIndex) {
             _xmlTag = "Parameter";
             _xmlTagId = 0;

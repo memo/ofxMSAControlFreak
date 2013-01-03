@@ -12,11 +12,11 @@
 namespace msa {
     namespace ControlFreak {
 
-        ParameterVec3f::ParameterVec3f(ParameterGroup *parent, string name)
-        : ParameterComplexValueT<ofVec3f>(parent, name, Type::kVec3f) {
-            addParameter(new ParameterFloat(this, "x"));
-            addParameter(new ParameterFloat(this, "y"));
-            addParameter(new ParameterFloat(this, "z"));
+        ParameterVec3f::ParameterVec3f(string name, ParameterGroup *parent)
+        : ParameterComplexValueT<ofVec3f>(name, parent, Type::kVec3f) {
+            addParameter(new ParameterFloat("x", this));
+            addParameter(new ParameterFloat("y", this));
+            addParameter(new ParameterFloat("z", this));
         }
         
         

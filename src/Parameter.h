@@ -34,7 +34,7 @@ namespace msa {
 
 			friend class ParameterGroup;
             
-			Parameter(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kUnknown);
+			Parameter(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kUnknown);
 			virtual ~Parameter();
             
             Parameter& setName(string s);

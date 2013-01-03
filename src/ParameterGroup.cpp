@@ -12,8 +12,8 @@ namespace msa {
     namespace ControlFreak {
         
         //--------------------------------------------------------------
-		ParameterGroup::ParameterGroup(ParameterGroup *parent, string name, Type::Index typeIndex)
-        : Parameter(parent, name, typeIndex) {
+		ParameterGroup::ParameterGroup(string name, ParameterGroup *parent, Type::Index typeIndex)
+        : Parameter(name, parent, typeIndex) {
             clear();
 //            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup: " <<  getPath();
         }
@@ -159,19 +159,19 @@ namespace msa {
         //--------------------------------------------------------------
 		ParameterInt& ParameterGroup::addInt(string name) {
             if(_paramMap.find(name) != _paramMap.end()) return *getInt(name);
-            return (ParameterInt&) addParameter(new ParameterInt(_groupStack.top(), name, Type::kInt));
+            return (ParameterInt&) addParameter(new ParameterInt(name, _groupStack.top(), Type::kInt));
 		}
 		
         //--------------------------------------------------------------
 		ParameterFloat& ParameterGroup::addFloat(string name) {
             if(_paramMap.find(name) != _paramMap.end()) return *getFloat(name);
-			return (ParameterFloat&) addParameter(new ParameterFloat(_groupStack.top(), name, Type::kFloat));
+			return (ParameterFloat&) addParameter(new ParameterFloat(name, _groupStack.top(), Type::kFloat));
 		}
 		
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBool(string name) {
             if(_paramMap.find(name) != _paramMap.end()) return *getBool(name);
-            ParameterBool *p = new ParameterBool(_groupStack.top(), name, Type::kBool);
+            ParameterBool *p = new ParameterBool(name, _groupStack.top(), Type::kBool);
             p->setMode(ParameterBool::kToggle);
             addParameter(p);
 			return *p;
@@ -180,7 +180,7 @@ namespace msa {
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBang(string name) {
             if(_paramMap.find(name) != _paramMap.end()) return *getBool(name);
-            ParameterBool *p = new ParameterBool(_groupStack.top(), name, Type::kBool);
+            ParameterBool *p = new ParameterBool(name, _groupStack.top(), Type::kBool);
             p->setMode(ParameterBool::kBang);
             addParameter(p);
 			return *p;
@@ -189,14 +189,14 @@ namespace msa {
         //--------------------------------------------------------------
 		ParameterNamedIndex& ParameterGroup::addNamedIndex(string name) {
             if(_paramMap.find(name) != _paramMap.end()) return *getNamedIndex(name);
-			return (ParameterNamedIndex&) addParameter(new ParameterNamedIndex(_groupStack.top(), name));
+			return (ParameterNamedIndex&) addParameter(new ParameterNamedIndex(name, _groupStack.top()));
 		}
         
         
         //--------------------------------------------------------------
         ParameterVec3f& ParameterGroup::addVec3f(string name) {
 //            if(_paramMap.find(name) != _paramMap.end()) return *getVec3f(name);
-			return (ParameterVec3f&) addParameter(new ParameterVec3f(_groupStack.top(), name));
+			return (ParameterVec3f&) addParameter(new ParameterVec3f(name, _groupStack.top()));
         }
         
         
@@ -204,7 +204,7 @@ namespace msa {
 		void ParameterGroup::startGroup(string name) {
             ParameterGroup* g;
             if(_paramMap.find(name) != _paramMap.end()) g = getGroup(name);
-            else g = (ParameterGroup*)&addParameter(new ParameterGroup(_groupStack.top(), name));
+            else g = (ParameterGroup*)&addParameter(new ParameterGroup(name, _groupStack.top()));
             _groupStack.push(g);
 		}
 		

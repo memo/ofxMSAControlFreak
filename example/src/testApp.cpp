@@ -31,15 +31,13 @@ vector<Ball> balls;
 
 //--------------------------------------------------------------
 void testApp::setup(){
-    ofSetLogLevel(OF_LOG_VERBOSE);
-    
+//    ofSetLogLevel(OF_LOG_VERBOSE);
     
     
     params = msa::ControlFreak::ParameterGroupPtr(new msa::ControlFreak::ParameterGroup());
     
     // Set name for our ParameterGroup
 	params->setName("ControlFreak Demo");
-    
     
     
     

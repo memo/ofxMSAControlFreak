@@ -19,8 +19,8 @@ namespace msa {
 			operator T() const { return this->getValue(); }
 
 		protected:
-            ParameterSingleValueT(ParameterGroup *parent, string name, Type::Index typeIndex)
-            : ParameterValueT<T>(parent, name, typeIndex) {
+            ParameterSingleValueT(string name, ParameterGroup *parent, Type::Index typeIndex)
+            : ParameterValueT<T>(name, parent, typeIndex) {
 //                ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::ParameterSingleValueT: " <<  this->getPath();
                 this->setValue(0);
             }

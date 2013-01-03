@@ -80,7 +80,7 @@ namespace msa {
 			
             
         protected:
-            ParameterValueT(ParameterGroup *parent, string name, Type::Index typeIndex);
+            ParameterValueT(string name, ParameterGroup *parent, Type::Index typeIndex);
             
             // override these functions to implement clamping and snapping for any type
             virtual void clamp() {};
@@ -119,8 +119,8 @@ namespace msa {
         //--------------------------------------------------------------
         //--------------------------------------------------------------
 		template <typename T>
-        ParameterValueT<T>::ParameterValueT(ParameterGroup *parent, string name, Type::Index typeIndex)
-        : Parameter(parent, name, typeIndex) {
+        ParameterValueT<T>::ParameterValueT(string name, ParameterGroup *parent, Type::Index typeIndex)
+        : Parameter(name, parent, typeIndex) {
 //            ofLogVerbose() << "msa::ControlFreak::ParameterValueT::ParameterValueT: " <<  getPath();
             trackVariable(NULL);
             setClamp(false);

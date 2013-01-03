@@ -20,8 +20,8 @@ namespace msa {
             template <typename T> T operator=(const T & v) { this->setValue(v); }
 			template <typename T> operator T() const { return this->getValue(); }
             
-            ParameterInt(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kInt)
-            : ParameterSingleValueT<int>(parent, name, typeIndex) { setRange(0, 100); setIncrement(1); }
+            ParameterInt(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kInt)
+            : ParameterSingleValueT<int>(name, parent, typeIndex) { setRange(0, 100); setIncrement(1); }
             
         protected:
         };
@@ -34,8 +34,8 @@ namespace msa {
             template <typename T> T operator=(const T & v) { this->setValue(v); }
 			template <typename T> operator T() const { return this->getValue(); }
             
-            ParameterFloat(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kFloat)
-            : ParameterSingleValueT<float>(parent, name, typeIndex) { setRange(0, 1); setIncrement(0.01); }
+            ParameterFloat(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kFloat)
+            : ParameterSingleValueT<float>(name, parent, typeIndex) { setRange(0, 1); setIncrement(0.01); }
         };
         
         
@@ -46,8 +46,8 @@ namespace msa {
             template <typename T> T operator=(const T & v) { this->setValue(v); }
 			template <typename T> operator T() const { return this->getValue(); }
             
-            ParameterBool(ParameterGroup *parent, string name, Type::Index typeIndex = Type::kBool)
-            : ParameterSingleValueT<bool>(parent, name, typeIndex) { setRange(0, 1); setIncrement(1); setMode(kToggle); }
+            ParameterBool(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kBool)
+            : ParameterSingleValueT<bool>(name, parent, typeIndex) { setRange(0, 1); setIncrement(1); setMode(kToggle); }
             
             
             enum Mode {

@@ -25,7 +25,7 @@ namespace msa {
         
         class ParameterGroup : public Parameter {
         public:
-            ParameterGroup(ParameterGroup *parent = NULL, string name = "MSAControlFreak", Type::Index typeIndex = Type::kGroup);
+            ParameterGroup(string name = "MSAControlFreak", ParameterGroup *parent = NULL, Type::Index typeIndex = Type::kGroup);
             ~ParameterGroup();
             
             // if name is omitted, last used name is used (by default same as group name)
