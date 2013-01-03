@@ -46,7 +46,7 @@ namespace msa {
 		void ParameterGroup::setFilename(string filename) {
 			if(filename.empty() == false) _filename = filename;
             if(_filename.empty()) {
-                ofDirectory::createDirectory("presets");
+                if(!ofDirectory::doesDirectoryExist("presets")) ofDirectory::createDirectory("presets");
                 _filename = "presets/" + getName();
             }
 		}
