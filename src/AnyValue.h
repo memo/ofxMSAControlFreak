@@ -4,7 +4,10 @@
 // 
 // */
 //
-////#include "Poco/DynamicAny.h"
+//
+//#pragma once
+//
+//#include "Poco/DynamicAny.h"
 //
 //namespace msa {
 //	namespace ControlFreak {

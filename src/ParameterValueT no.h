@@ -111,7 +111,7 @@ namespace msa {
             
 			bool    _doClamp;
             bool    _doSnap;
-			vector<Controller*>		_controllers;
+//			vector<Controller*>		_controllers;
 		};
         
         
@@ -249,7 +249,7 @@ namespace msa {
 		ParameterValueT<T>& ParameterValueT<T>::setNormalized(float norm) {
             kCheckBadParameter(*this);
             
-			setValue(setMappedFrom(norm, 0, 1));
+			setMappedFrom(norm, 0, 1);
             return *this;
 		}
 		

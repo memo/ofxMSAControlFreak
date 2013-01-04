@@ -15,8 +15,13 @@ namespace msa {
 
         
         //--------------------------------------------------------------
-        Parameter::Parameter(string name, ParameterGroup *parent, Type::Index typeIndex)
+        Parameter::Parameter(string name, ParameterGroup *parent, Type::Index typeIndex, ParameterValue *pv)
         : _pparent(parent), _name(name), _typeIndex(typeIndex) {
+            if(pv) {
+                _value = ParameterValuePtr(pv);
+                pv->_parameter = this;
+            }
+                
             _xmlTag = "Parameter";
             _xmlTagId = 0;
 //            ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter: " <<  getPath();
@@ -101,7 +106,7 @@ namespace msa {
                 setTooltip(xml.getAttribute(_xmlTag, "tooltip", "", _xmlTagId));
             }
         }
-
+        
  
 	}
 }

@@ -50,7 +50,7 @@ namespace msa {
 
         //--------------------------------------------------------------
 		string ParameterNamedIndex::getSelectedLabel() {
-			return getLabel(getValue());
+			return getLabel(value());
 		}
 		
         //--------------------------------------------------------------

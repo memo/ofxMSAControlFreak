@@ -89,11 +89,12 @@ namespace msa {
             // getters, return NULL if they can't find the parameter
             
             // get parameter by index
-            ParameterPtr getParameter(int index);
+            ParameterPtr get(int index);
+            AnyValue getValue(int index);
             
             // get parameter by name
-            ParameterPtr getParameter(string path);
-            
+            ParameterPtr get(string path);
+            AnyValue getValue(string path);
             
             // get values by name
             ParameterInt* getInt(string path);
@@ -107,8 +108,8 @@ namespace msa {
             T* get(string path);
             
             // [] operator overloads for above
-            //	Parameter& operator[](int index);
-            //  Parameter& operator[](string path);
+            ParameterPtr operator[](int index);
+            ParameterPtr operator[](string path);
             
             
         protected:
@@ -134,7 +135,7 @@ namespace msa {
         //--------------------------------------------------------------
         template <typename T>
         T* ParameterGroup::get(string path) {
-            Parameter *p = getParameter(path).get();
+            Parameter *p = get(path).get();
             if(!p) {
                 ofLogError() << "msa::ControlFreak::ParameterGroup::get<T>: Could not FIND parameter " << path << " in group " << getPath();
                 return NULL;

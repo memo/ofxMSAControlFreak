@@ -29,19 +29,19 @@ vector<Ball> balls;
 // this is a (smart) Pointer to a ParameterGroup
 msa::ControlFreak::ParameterGroupPtr   params;
 
-
 msa::ControlFreak::gui::Gui            gui;
+
 
 
 //--------------------------------------------------------------
 void testApp::setup(){
-//    ofSetLogLevel(OF_LOG_VERBOSE);
+    //    ofSetLogLevel(OF_LOG_VERBOSE);
     
     // create and get a new instance of a ParameterGroup (returned as a ParameterGroupPtr)
     params = msa::ControlFreak::ParameterGroup::create("ControlFreak Demo");
     
     // Set name for our ParameterGroup
-//	params->setName("ControlFreak Demo");
+    //	params->setName("ControlFreak Demo");
     
     
     
@@ -88,51 +88,45 @@ void testApp::setup(){
     // CHANGING PROPERTIES AFTER CREATION
     // the addXXXX methods used above create the Parameter and change the properties at the same time
     // If you want to change properties AFTER creating the Parameter you should use getXXXX methods of ParameterGroup instead of addXXXXX
-    params->getFloat("float1")->setRange(0, 100);
-    params->getFloat("float1")->setValue(50);
-    params->getFloat("float1")->setIncrement(5);
+    params->get("float1")->setRange(0, 100);
+    params->get("float1")->setValue(50);
+    params->get("float1")->setIncrement(5);
     
     // of course daisy chaining the property methods still work
-    params->getFloat("float1")->setRange(0, 1000).setValue(ofRandom(1000)).setIncrement(10).setSnap(true);
+    params->get("float1")->setRange(0, 1000).setValue(ofRandom(1000)).setIncrement(10).setSnap(true);
     
     
     
     
     // GETTING VALUES
-    // to extract the value, simply use the getXXXX methods and (possibly) type-cast it if need be
-    ofLogNotice() << "Sending straight to ofLogVerbose needs an explicit type-cast to avoid ambiguity: " << (float)*params->getFloat("float1");
-    
-    // or
-    float f = *params->getFloat("float1");
-    ofLogNotice() << "Saving to a variable doesn't need a type-cast. type-cast is done implicitly: " << f;
-    
+    // to extract the value, simply use the getValue method
+    ofLogNotice() << "value of 'float1': " << (float)params->getValue("float1");
     
     
     
     // SETTING VALUES
     // you saw above you can use setValue method
-    params->getFloat("float1")->setValue(0.5);
+    params->get("float1")->setValue(0.1);
+    ofLogNotice() << (float)params->getValue("float1");
     
     // you can actually use the '=' operator instead of setValue
-    *params->getFloat("float1") = 0.5;    // identical to using '.setValue(0.5)
+    *params->get("float1") = 0.2;    // identical to using 'setValue(0.5)
+    ofLogNotice() << (float)params->getValue("float1");
     
-    // or use arithmetic operators
-    *params->getFloat("float2") = *params->getFloat("float1") * 2.0;
-    
-    // explicit type-cast needed to avoid ambiguity on * operator
-    *params->getFloat("float3") = *params->getFloat("float1") * (float)*params->getFloat("float2");
+    *params->get("float2") = params->getValue("float1") * 0.5;
+    ofLogNotice() << (float)params->getValue("float2");
     
     
     
     
-    // EXTERNAL
+    // EXTERNAL // TODO
     // you can also assign an external variable, which is kept track of and kept in sync, at no performance cost
     
     // assigning the tracked variable upon Parameter creation (i.e. using addXXXX method)
-    params->addFloat("float8").trackVariable(&fvar1);
+//    params->addFloat("float8").trackVariable(&fvar1);
     
     // assigning the tracked variable after Parameter creation (i.e. using getXXXX method)
-    params->getFloat("float1")->trackVariable(&fvar2);
+//    params->get("float1")->trackVariable(&fvar2);
     
     
     
@@ -205,7 +199,7 @@ void testApp::setup(){
     // ACCESSING PARAMETERS IN A GROUP
     // Option1: The simple, but long-winded way
     *params->getGroup("vision")->getBool("enabled") = true;
-    *params->getGroup("vision")->getGroup("pre-processing")->getGroup("blur")->getInt("iterations") = 1;
+    *params->getGroup("vision")->getGroup("pre-processing")->getGroup("blur")->get("iterations") = 1;
     
     
     // Option2: Cache groups, slightly more optimum
@@ -213,12 +207,12 @@ void testApp::setup(){
     msa::ControlFreak::ParameterGroup *gVisionPre = gVision->getGroup("pre-processing");
     msa::ControlFreak::ParameterGroup *gVisionPreBlur = gVisionPre->getGroup("blur");
     *gVision->getBool("enabled") = true;
-    *gVisionPreBlur->getInt("iterations") = 2;
+    *gVisionPreBlur->get("iterations") = 2;
     
     
     // Option3: List full path (my favorite)
     *params->getBool("vision.enabled") = true;
-    *params->getInt("vision.pre-processing.blur.iterations") = 3;
+    *params->get("vision.pre-processing.blur.iterations") = 3;
     
     
     // TESTERS
@@ -280,7 +274,7 @@ void testApp::setup(){
                 params->addFloat("y").setRange(0, 200).setValue(50);
             } params->endGroup();
         } params->endGroup();
-
+        
         params->addBang("randomize");
     }
     params->endGroup();
@@ -313,7 +307,7 @@ void testApp::update() {
     params->update();
     
     // resize vector if nessecary
-    int count = *params->getInt("particle system.count");
+    int count = *params->get("particle system.count");
     if(balls.size() != count) {
         ofLogNotice() << "INIT BALLS " << count;
         balls.resize(count);
@@ -321,31 +315,31 @@ void testApp::update() {
     
     
     if(*params->getBool("particle system.randomize")) {
-        params->getFloat("particle system.emitter.x")->setRandom();
-        params->getFloat("particle system.emitter.y")->setRandom();
-        params->getFloat("particle system.emitter.radius")->setRandom();
-        params->getFloat("particle system.physics.maxEmitVelocity")->setRandom();
-        params->getFloat("particle system.physics.maxRotSpeed")->setRandom();
-        params->getFloat("particle system.physics.gravity")->setRandom();
-        params->getFloat("particle system.physics.friction")->setRandom();
-        params->getFloat("particle system.age.min age")->setRandom();
-        params->getFloat("particle system.age.max age")->setRandom();
+        params->get("particle system.emitter.x")->setRandom();
+        params->get("particle system.emitter.y")->setRandom();
+        params->get("particle system.emitter.radius")->setRandom();
+        params->get("particle system.physics.maxEmitVelocity")->setRandom();
+        params->get("particle system.physics.maxRotSpeed")->setRandom();
+        params->get("particle system.physics.gravity")->setRandom();
+        params->get("particle system.physics.friction")->setRandom();
+        params->get("particle system.age.min age")->setRandom();
+        params->get("particle system.age.max age")->setRandom();
         params->getBool("particle system.display options.fill")->setRandom();
-        params->getFloat("particle system.display options.size.x")->setRandom();
-        params->getFloat("particle system.display options.size.y")->setRandom();
+        params->get("particle system.display options.size.x")->setRandom();
+        params->get("particle system.display options.size.y")->setRandom();
         params->getNamedIndex("particle system.display options.shape type")->setRandom();
     }
     
     // cache relevant values
-    ofVec2f emitterPos = ofVec2f(*params->getFloat("particle system.emitter.x"), *params->getFloat("particle system.emitter.y"));
-    float emitterRadius = *params->getFloat("particle system.emitter.radius");
-    float maxEmitVelocity = *params->getFloat("particle system.physics.maxEmitVelocity");
-    float maxRotSpeed = *params->getFloat("particle system.physics.maxRotSpeed");
-    float gravity = *params->getFloat("particle system.physics.gravity");
-    float friction = *params->getFloat("particle system.physics.friction");
-    float minAge = *params->getFloat("particle system.age.min age");
-    float maxAge = *params->getFloat("particle system.age.max age");
-
+    ofVec2f emitterPos = ofVec2f(*params->get("particle system.emitter.x"), *params->get("particle system.emitter.y"));
+    float emitterRadius = *params->get("particle system.emitter.radius");
+    float maxEmitVelocity = *params->get("particle system.physics.maxEmitVelocity");
+    float maxRotSpeed = *params->get("particle system.physics.maxRotSpeed");
+    float gravity = *params->get("particle system.physics.gravity");
+    float friction = *params->get("particle system.physics.friction");
+    float minAge = *params->get("particle system.age.min age");
+    float maxAge = *params->get("particle system.age.max age");
+    
     
     // iterate all balls. update position, rotation and speed
     for(int i=0; i<balls.size(); i++) {
@@ -354,7 +348,7 @@ void testApp::update() {
         b.vel.y += gravity;
         b.vel -= b.vel * friction;
         b.rot += b.rotSpeed;
-
+        
         // if offscreen, reset
         if(ofGetElapsedTimef() > b.dieTime || !ofInRange(b.pos.x, 1, ofGetWidth()) || !ofInRange(b.pos.y, 1, ofGetHeight())) {
             b.dieTime = ofGetElapsedTimef() + ofRandom(minAge, maxAge);
@@ -366,12 +360,12 @@ void testApp::update() {
             b.size = ofVec2f(ofRandomuf(), ofRandomuf());
         }
     }
-
+    
     
     // read from the bool parameters, and update the float parameters if they are true
     // note that parameter 'animated2' had had it's 'clamp' set to true, so it will never go outside of -1...1
-    //    if(*params->getBool("Testers.doAnimate1")) *params->getFloat("Testers.animated1") = sin(ofGetElapsedTimef()) * 2;
-    //    if(*params->getBool("Testers.doAnimate2")) *params->getFloat("Testers.animated2") = sin(ofGetElapsedTimef()) * 2;
+    //    if(*params->getBool("Testers.doAnimate1")) *params->get("Testers.animated1") = sin(ofGetElapsedTimef()) * 2;
+    //    if(*params->getBool("Testers.doAnimate2")) *params->get("Testers.animated2") = sin(ofGetElapsedTimef()) * 2;
     
     // 'trackTester' is a normal variable, which we had set to sync to the parameter 'trackTester'
     // if we write to this variable, the gui updates
@@ -379,7 +373,7 @@ void testApp::update() {
     
     //	if(myBool1Animate) myFloat1 = ofNoise(ofGetElapsedTimef());
     //
-    //	if(gui.control("myBool1 Animate").getValue()) myFloat1 = ofNoise(ofGetElapsedTimef());
+    //	if(gui.control("myBool1 Animate").value()) myFloat1 = ofNoise(ofGetElapsedTimef());
     //
     //	if(randomizeButton) {
     //		randomizeButton = false;
@@ -409,17 +403,17 @@ void testApp::draw(){
     ofSetRectMode(OF_RECTMODE_CENTER);
     
     // draw emitter
-    ofVec2f emitterPos = ofVec2f(*params->getFloat("particle system.emitter.x"), *params->getFloat("particle system.emitter.y"));
+    ofVec2f emitterPos = ofVec2f(*params->get("particle system.emitter.x"), *params->get("particle system.emitter.y"));
     ofNoFill();
-    ofCircle(emitterPos, *params->getFloat("particle system.emitter.radius"));
-
+    ofCircle(emitterPos, *params->get("particle system.emitter.radius"));
+    
     // set fill options
     if(*params->getBool("particle system.display options.fill")) ofFill();
     else ofNoFill();
     
     // cache size value
-    ofVec2f size = ofVec2f(*params->getFloat("particle system.display options.size.x"), *params->getFloat("particle system.display options.size.y"));
-
+    ofVec2f size = ofVec2f(*params->get("particle system.display options.size.x"), *params->get("particle system.display options.size.y"));
+    
     int shapeType = *params->getNamedIndex("particle system.display options.shape type");
     for(int i=0; i<balls.size(); i++) {
         Ball &b = balls[i];
@@ -445,7 +439,7 @@ void testApp::draw(){
         ofPopMatrix();
     }
     
-     ofPopStyle();
+    ofPopStyle();
 }
 
 void testApp::exit() {
