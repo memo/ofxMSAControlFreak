@@ -55,7 +55,7 @@ namespace msa {
             // set and get value
             // operators for assigning and casting
             template<typename T> T operator=(const T & v) { setValue(v); }
-			template<typename T> operator T() const { return value(); }
+			template<typename T> operator T() const { return (T)value(); }
 			
 
             //--------------------------------------------------------------

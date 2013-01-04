@@ -88,33 +88,38 @@ void testApp::setup(){
     // CHANGING PROPERTIES AFTER CREATION
     // the addXXXX methods used above create the Parameter and change the properties at the same time
     // If you want to change properties AFTER creating the Parameter you should use getXXXX methods of ParameterGroup instead of addXXXXX
-    params->get("float1")->setRange(0, 100);
-    params->get("float1")->setValue(50);
-    params->get("float1")->setIncrement(5);
+    params->get("float1").setRange(0, 100);
+    params->get("float1").setValue(50);
+    params->get("float1").setIncrement(5);
     
     // of course daisy chaining the property methods still work
-    params->get("float1")->setRange(0, 1000).setValue(ofRandom(1000)).setIncrement(10).setSnap(true);
+    params->get("float1").setRange(0, 1000).setValue(ofRandom(1000)).setIncrement(10).setSnap(true);
     
     
     
     
     // GETTING VALUES
     // to extract the value, simply use the getValue method
-    ofLogNotice() << "value of 'float1': " << (float)params->getValue("float1");
+    ofLogNotice() << "value of 'float1': " << (float)params->get("float1").value();
     
     
     
-    // SETTING VALUES
-    // you saw above you can use setValue method
-    params->get("float1")->setValue(0.1);
-    ofLogNotice() << (float)params->getValue("float1");
-    
-    // you can actually use the '=' operator instead of setValue
-    *params->get("float1") = 0.2;    // identical to using 'setValue(0.5)
-    ofLogNotice() << (float)params->getValue("float1");
-    
-    *params->get("float2") = params->getValue("float1") * 0.5;
-    ofLogNotice() << (float)params->getValue("float2");
+//    // SETTING VALUES
+//    // you saw above you can use setValue method
+//    params->get("float1").setValue(0.1);
+//    ofLogNotice() << (float)params->getValue("float1");
+//    
+//    // you can actually use the '=' operator instead of setValue
+//    params->get("float1") = 0.2;    // identical to using 'setValue(0.5)
+//    ofLogNotice() << (float)params->getValue("float1");
+//    
+//    float f1 = params->getValue("float1") * 0.5;
+//    
+//    params->get("float2") = f1;
+//    ofLogNotice() << (float)params->getValue("float2");
+//    
+//    params->get("float2") = (float)(params->getValue("float1") * 0.5);
+//    ofLogNotice() << (float)params->getValue("float2");
     
     
     
@@ -126,7 +131,7 @@ void testApp::setup(){
 //    params->addFloat("float8").trackVariable(&fvar1);
     
     // assigning the tracked variable after Parameter creation (i.e. using getXXXX method)
-//    params->get("float1")->trackVariable(&fvar2);
+//    params->get("float1").trackVariable(&fvar2);
     
     
     
@@ -197,22 +202,22 @@ void testApp::setup(){
     
     
     // ACCESSING PARAMETERS IN A GROUP
-    // Option1: The simple, but long-winded way
-    *params->getGroup("vision")->getBool("enabled") = true;
-    *params->getGroup("vision")->getGroup("pre-processing")->getGroup("blur")->get("iterations") = 1;
+    // Option1: The simple, but long-winded way, access each parameter from the group it's in
+    params->getGroup("vision").get("enabled") = true;
+    params->getGroup("vision").getGroup("pre-processing").getGroup("blur").get("iterations") = 1;
     
     
     // Option2: Cache groups, slightly more optimum
-    msa::ControlFreak::ParameterGroup *gVision = params->getGroup("vision");
-    msa::ControlFreak::ParameterGroup *gVisionPre = gVision->getGroup("pre-processing");
-    msa::ControlFreak::ParameterGroup *gVisionPreBlur = gVisionPre->getGroup("blur");
-    *gVision->getBool("enabled") = true;
-    *gVisionPreBlur->get("iterations") = 2;
+    msa::ControlFreak::ParameterGroup &gVision = params->getGroup("vision");
+    msa::ControlFreak::ParameterGroup &gVisionPre = gVision.getGroup("pre-processing");
+    msa::ControlFreak::ParameterGroup &gVisionPreBlur = gVisionPre.getGroup("blur");
+    gVision.get("enabled") = true;
+    gVisionPreBlur.get("iterations") = 2;
     
     
     // Option3: List full path (my favorite)
-    *params->getBool("vision.enabled") = true;
-    *params->get("vision.pre-processing.blur.iterations") = 3;
+    params->get("vision.enabled") = true;
+    params->get("vision.pre-processing.blur.iterations") = 3;
     
     
     // TESTERS
@@ -290,7 +295,7 @@ void testApp::setup(){
     
     // you can create groups and add any parameters to that group
     
-    gui.addPage(params);
+   gui.addPage(params);
 	gui.setDefaultKeys(true);
 	gui.show();
     
@@ -307,38 +312,38 @@ void testApp::update() {
     params->update();
     
     // resize vector if nessecary
-    int count = *params->get("particle system.count");
+    int count = params->get("particle system.count");
     if(balls.size() != count) {
         ofLogNotice() << "INIT BALLS " << count;
         balls.resize(count);
     }
     
     
-    if(*params->getBool("particle system.randomize")) {
-        params->get("particle system.emitter.x")->setRandom();
-        params->get("particle system.emitter.y")->setRandom();
-        params->get("particle system.emitter.radius")->setRandom();
-        params->get("particle system.physics.maxEmitVelocity")->setRandom();
-        params->get("particle system.physics.maxRotSpeed")->setRandom();
-        params->get("particle system.physics.gravity")->setRandom();
-        params->get("particle system.physics.friction")->setRandom();
-        params->get("particle system.age.min age")->setRandom();
-        params->get("particle system.age.max age")->setRandom();
-        params->getBool("particle system.display options.fill")->setRandom();
-        params->get("particle system.display options.size.x")->setRandom();
-        params->get("particle system.display options.size.y")->setRandom();
-        params->getNamedIndex("particle system.display options.shape type")->setRandom();
+    if((bool)params->get("particle system.randomize")) {
+        params->get("particle system.emitter.x").setRandom();
+        params->get("particle system.emitter.y").setRandom();
+        params->get("particle system.emitter.radius").setRandom();
+        params->get("particle system.physics.maxEmitVelocity").setRandom();
+        params->get("particle system.physics.maxRotSpeed").setRandom();
+        params->get("particle system.physics.gravity").setRandom();
+        params->get("particle system.physics.friction").setRandom();
+        params->get("particle system.age.min age").setRandom();
+        params->get("particle system.age.max age").setRandom();
+        params->get("particle system.display options.fill").setRandom();
+        params->get("particle system.display options.size.x").setRandom();
+        params->get("particle system.display options.size.y").setRandom();
+        params->get("particle system.display options.shape type").setRandom();
     }
     
     // cache relevant values
-    ofVec2f emitterPos = ofVec2f(*params->get("particle system.emitter.x"), *params->get("particle system.emitter.y"));
-    float emitterRadius = *params->get("particle system.emitter.radius");
-    float maxEmitVelocity = *params->get("particle system.physics.maxEmitVelocity");
-    float maxRotSpeed = *params->get("particle system.physics.maxRotSpeed");
-    float gravity = *params->get("particle system.physics.gravity");
-    float friction = *params->get("particle system.physics.friction");
-    float minAge = *params->get("particle system.age.min age");
-    float maxAge = *params->get("particle system.age.max age");
+    ofVec2f emitterPos = ofVec2f(params->get("particle system.emitter.x"), params->get("particle system.emitter.y"));
+    float emitterRadius = params->get("particle system.emitter.radius");
+    float maxEmitVelocity = params->get("particle system.physics.maxEmitVelocity");
+    float maxRotSpeed = params->get("particle system.physics.maxRotSpeed");
+    float gravity = params->get("particle system.physics.gravity");
+    float friction = params->get("particle system.physics.friction");
+    float minAge = params->get("particle system.age.min age");
+    float maxAge = params->get("particle system.age.max age");
     
     
     // iterate all balls. update position, rotation and speed
@@ -364,8 +369,8 @@ void testApp::update() {
     
     // read from the bool parameters, and update the float parameters if they are true
     // note that parameter 'animated2' had had it's 'clamp' set to true, so it will never go outside of -1...1
-    //    if(*params->getBool("Testers.doAnimate1")) *params->get("Testers.animated1") = sin(ofGetElapsedTimef()) * 2;
-    //    if(*params->getBool("Testers.doAnimate2")) *params->get("Testers.animated2") = sin(ofGetElapsedTimef()) * 2;
+    //    if(params->getBool("Testers.doAnimate1")) params->get("Testers.animated1") = sin(ofGetElapsedTimef()) * 2;
+    //    if(params->getBool("Testers.doAnimate2")) params->get("Testers.animated2") = sin(ofGetElapsedTimef()) * 2;
     
     // 'trackTester' is a normal variable, which we had set to sync to the parameter 'trackTester'
     // if we write to this variable, the gui updates
@@ -403,18 +408,18 @@ void testApp::draw(){
     ofSetRectMode(OF_RECTMODE_CENTER);
     
     // draw emitter
-    ofVec2f emitterPos = ofVec2f(*params->get("particle system.emitter.x"), *params->get("particle system.emitter.y"));
+    ofVec2f emitterPos = ofVec2f(params->get("particle system.emitter.x"), params->get("particle system.emitter.y"));
     ofNoFill();
-    ofCircle(emitterPos, *params->get("particle system.emitter.radius"));
+    ofCircle(emitterPos, params->get("particle system.emitter.radius"));
     
     // set fill options
-    if(*params->getBool("particle system.display options.fill")) ofFill();
+    if(params->get("particle system.display options.fill")) ofFill();
     else ofNoFill();
     
     // cache size value
-    ofVec2f size = ofVec2f(*params->get("particle system.display options.size.x"), *params->get("particle system.display options.size.y"));
+    ofVec2f size = ofVec2f(params->get("particle system.display options.size.x"), params->get("particle system.display options.size.y"));
     
-    int shapeType = *params->getNamedIndex("particle system.display options.shape type");
+    int shapeType = params->get("particle system.display options.shape type");
     for(int i=0; i<balls.size(); i++) {
         Ball &b = balls[i];
         

@@ -19,11 +19,11 @@ namespace msa {
         }
 
         
+        //--------------------------------------------------------------
         ParameterGroupPtr ParameterGroup::create(string name, ParameterGroup *parent, Type::Index typeIndex) {
             return ParameterGroupPtr(new ParameterGroup(name, parent, typeIndex));
         }
         
-            
 
         //--------------------------------------------------------------
 		ParameterGroup::~ParameterGroup() {
@@ -147,7 +147,7 @@ namespace msa {
                 string xname = xml.getAttribute(_xmlTag, "name", "", i);
                 string xpath = xml.getAttribute(_xmlTag, "path", "", i);
                 printf("Parameter %i %s %s\n", i, xname.c_str(), xpath.c_str());
-                Parameter *p = get(xname).get();
+                Parameter *p = getPtr(xname).get();
                 if(p) {
                     p->_xmlTagId = i;
                     p->readFromXml(xml, bOnlyValues);
@@ -166,27 +166,27 @@ namespace msa {
             Parameter::update();
             int np = getNumParams();
             for(int i=0; i<np; i++) {
-                Parameter *p = get(i).get();
-                p->update();
+                Parameter &p = get(i);
+                p.update();
             }
         }
         
 
         //--------------------------------------------------------------
 		ParameterInt& ParameterGroup::addInt(string name) {
-            if(_paramMap.find(name) != _paramMap.end()) return *getInt(name);
+            if(_paramMap.find(name) != _paramMap.end()) return get<ParameterInt>(name);
             return (ParameterInt&) addParameter(new ParameterInt(name, _groupStack.top(), Type::kInt));
 		}
 		
         //--------------------------------------------------------------
 		ParameterFloat& ParameterGroup::addFloat(string name) {
-            if(_paramMap.find(name) != _paramMap.end()) return *getFloat(name);
+            if(_paramMap.find(name) != _paramMap.end()) return get<ParameterFloat>(name);
 			return (ParameterFloat&) addParameter(new ParameterFloat(name, _groupStack.top(), Type::kFloat));
 		}
 		
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBool(string name) {
-            if(_paramMap.find(name) != _paramMap.end()) return *getBool(name);
+            if(_paramMap.find(name) != _paramMap.end()) return get<ParameterBool>(name);
             ParameterBool *p = new ParameterBool(name, _groupStack.top(), Type::kBool);
             p->setMode(ParameterBool::kToggle);
             addParameter(p);
@@ -195,7 +195,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBang(string name) {
-            if(_paramMap.find(name) != _paramMap.end()) return *getBool(name);
+            if(_paramMap.find(name) != _paramMap.end()) return get<ParameterBool>(name);
             ParameterBool *p = new ParameterBool(name, _groupStack.top(), Type::kBool);
             p->setMode(ParameterBool::kBang);
             addParameter(p);
@@ -204,7 +204,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
 		ParameterNamedIndex& ParameterGroup::addNamedIndex(string name) {
-            if(_paramMap.find(name) != _paramMap.end()) return *getNamedIndex(name);
+            if(_paramMap.find(name) != _paramMap.end()) return get<ParameterNamedIndex>(name);
 			return (ParameterNamedIndex&) addParameter(new ParameterNamedIndex(name, _groupStack.top()));
 		}
         
@@ -219,7 +219,7 @@ namespace msa {
         //--------------------------------------------------------------
 		void ParameterGroup::startGroup(string name) {
             ParameterGroup* g;
-            if(_paramMap.find(name) != _paramMap.end()) g = getGroup(name);
+            if(_paramMap.find(name) != _paramMap.end()) g = getGroupPtr(name);
             else g = (ParameterGroup*)&addParameter(new ParameterGroup(name, _groupStack.top()));
             _groupStack.push(g);
 		}
@@ -258,8 +258,6 @@ namespace msa {
             }
 		}
         
-     
-        
         
         //--------------------------------------------------------------
         int ParameterGroup::getNumParams() const {
@@ -267,21 +265,29 @@ namespace msa {
 			return _paramMap.size();
 		}
 		
+        //--------------------------------------------------------------
+        Parameter& ParameterGroup::get(int index) {
+            return *getPtr(index);
+        }
+
+        Parameter& ParameterGroup::get(string path) {
+            return *getPtr(path);
+        }
         
         //--------------------------------------------------------------
-        ParameterPtr ParameterGroup::get(int index) {
+        ParameterPtr ParameterGroup::getPtr(int index) {
 			return _paramArr[index];
         }
         
         //--------------------------------------------------------------
-        AnyValue ParameterGroup::getValue(int index) {
-            ParameterPtr p = get(index);
-//            return p ? p->value() : AnyValue(0);
-            return p->value();
-        }
+//        AnyValue ParameterGroup::getValue(int index) {
+//            ParameterPtr p = get(index);
+////            return p ? p->value() : AnyValue(0);
+//            return p->value();
+//        }
 
         //--------------------------------------------------------------
-        ParameterPtr ParameterGroup::get(string path) {
+        ParameterPtr ParameterGroup::getPtr(string path) {
             // look for path divider
             size_t pathDividerPos = path.find(getPathDivider());
             
@@ -302,54 +308,59 @@ namespace msa {
                 string part1 = path.substr(0, pathDividerPos);
                 string part2 = path.substr(pathDividerPos+1);
 //                ofLogNotice() << "FIRST GROUP: " << part1 << " PART2: " << part2;
-                return getGroup(part1)->get(part2);
+                return getGroupPtr(part1)->getPtr(part2);
             }
         }
         
-        //--------------------------------------------------------------
-        AnyValue ParameterGroup::getValue(string path) {
-            ParameterPtr p = get(path);
-            //            return p ? p->value() : AnyValue(0);
-            return p->value();
-        }
+//        //--------------------------------------------------------------
+//        AnyValue ParameterGroup::getValue(string path) {
+//            ParameterPtr p = get(path);
+//            //            return p ? p->value() : AnyValue(0);
+//            return p->value();
+//        }
+//        
+//        
+//        //--------------------------------------------------------------
+//        ParameterInt* ParameterGroup::getInt(string path) {
+//            return get<ParameterInt>(path);
+//        }
+//        
+//        //--------------------------------------------------------------
+//        ParameterFloat* ParameterGroup::getFloat(string path) {
+//            return get<ParameterFloat>(path);
+//        }
+//        
+//        //--------------------------------------------------------------
+//        ParameterBool* ParameterGroup::getBool(string path) {
+//            return get<ParameterBool>(path);
+//        }
+//        
+//        //--------------------------------------------------------------
+//        ParameterNamedIndex* ParameterGroup::getNamedIndex(string path) {
+//            return get<ParameterNamedIndex>(path);
+//        }
         
-        
         //--------------------------------------------------------------
-        ParameterInt* ParameterGroup::getInt(string path) {
-            return get<ParameterInt>(path);
-        }
-        
-        //--------------------------------------------------------------
-        ParameterFloat* ParameterGroup::getFloat(string path) {
-            return get<ParameterFloat>(path);
-        }
-        
-        //--------------------------------------------------------------
-        ParameterBool* ParameterGroup::getBool(string path) {
-            return get<ParameterBool>(path);
-        }
-        
-        //--------------------------------------------------------------
-        ParameterNamedIndex* ParameterGroup::getNamedIndex(string path) {
-            return get<ParameterNamedIndex>(path);
-        }
-        
-        //--------------------------------------------------------------
-        ParameterGroup* ParameterGroup::getGroup(string path) {
+        ParameterGroup& ParameterGroup::getGroup(string path) {
             return get<ParameterGroup>(path);
         }
         
+        //--------------------------------------------------------------
+        ParameterGroup* ParameterGroup::getGroupPtr(string path) {
+            return getPtr<ParameterGroup>(path);
+        }
         
-        //--------------------------------------------------------------
-		ParameterPtr ParameterGroup::operator[](int index) {
-            return get(index);
-		}
-
-        //--------------------------------------------------------------
-		ParameterPtr ParameterGroup::operator[](string path) {
-            return get(path);
-		}
-		
+//        
+//        //--------------------------------------------------------------
+//		ParameterPtr ParameterGroup::operator[](int index) {
+//            return get(index);
+//		}
+//
+//        //--------------------------------------------------------------
+//		ParameterPtr ParameterGroup::operator[](string path) {
+//            return get(path);
+//		}
+//		
         
         
         

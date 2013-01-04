@@ -35,6 +35,7 @@ namespace msa {
             template<typename T>
             ParameterValue(T t) {
                 trackVariable(NULL);
+                setValue(t);
                 setClamp(false);
                 setSnap(false);
             }

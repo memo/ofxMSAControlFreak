@@ -82,34 +82,57 @@ namespace msa {
             
             //---- Accessing parameters -----------------------
 			
+            // getters for Parameters, so you access parameter properties etc.
+
+            // These return a reference to the Parameter
+            // they throw an exception if you enter a wrong name
+            Parameter& get(int index);         // get parameter by index
+            Parameter& get(string path);       // get parameter by name
+
+
+            // returns a SHARED pointer to the Parameter
+            ParameterPtr getPtr(int index);     // get parameter by index
+            ParameterPtr getPtr(string path);   // get parameter by name
+
+            
+            // get a reference or pointer to a Group
+            // same as the get() above, but with a type-cast in the method
+            ParameterGroup& getGroup(string path);
+            ParameterGroup* getGroupPtr(string path);
+
+            
+            // returns a reference of pointer type-cast to the correct Parameter sub-class (e.g. ParameterNamedIndex)
+            // use this if you need to access properties and methods unique to that Parameter sub-class
+            template <typename ParameterType> ParameterType& get(string path);
+            template <typename ParameterType> ParameterType* getPtr(string path);
+
+            
+            
+            // get values directly out of thhe Parameter Group
+//            AnyValue getValue(int index);
+//            AnyValue getValue(string path);
+            
+//            template <typename ValueType> ValueType getValue(string path);
+            
+            
             // get number of parameters in this group (only gets number of direct children, not children of children)
             int getNumParams() const;
             
             
-            // getters, return NULL if they can't find the parameter
-            
-            // get parameter by index
-            ParameterPtr get(int index);
-            AnyValue getValue(int index);
-            
-            // get parameter by name
-            ParameterPtr get(string path);
-            AnyValue getValue(string path);
+
             
             // get values by name
-            ParameterInt* getInt(string path);
-            ParameterFloat* getFloat(string path);
-            ParameterBool* getBool(string path);
-            ParameterNamedIndex* getNamedIndex(string path);
-            ParameterGroup* getGroup(string path);
+//            ParameterInt* getInt(string path);
+//            ParameterFloat* getFloat(string path);
+//            ParameterBool* getBool(string path);
+//            ParameterNamedIndex* getNamedIndex(string path);
+//            ParameterGroup* getGroup(string path);
             
             // generic function to get value as any type (type==parameter class, not basic type)
-            template <typename T>
-            T* get(string path);
             
             // [] operator overloads for above
-            ParameterPtr operator[](int index);
-            ParameterPtr operator[](string path);
+//            ParameterPtr operator[](int index);
+//            ParameterPtr operator[](string path);
             
             
         protected:
@@ -133,22 +156,43 @@ namespace msa {
         //--------------------------------------------------------------
         //--------------------------------------------------------------
         //--------------------------------------------------------------
-        template <typename T>
-        T* ParameterGroup::get(string path) {
-            Parameter *p = get(path).get();
+        template <typename ParameterType>
+        ParameterType* ParameterGroup::getPtr(string path) {
+            ParameterPtr p = getPtr(path);
             if(!p) {
-                ofLogError() << "msa::ControlFreak::ParameterGroup::get<T>: Could not FIND parameter " << path << " in group " << getPath();
+                ofLogError() << "msa::ControlFreak::ParameterGroup::get<ParameterType>: Could not FIND parameter " << path << " in group " << getPath();
                 return NULL;
             }
             
-            T *tp = dynamic_cast<T*>(p);
+            ParameterType *tp = dynamic_cast<ParameterType*>(p.get());
             if(!tp) {
-                ofLogError() << "msa::ControlFreak::ParameterGroup::get<T>: Could not CONVERT parameter " << path << " in group " << getPath();
+                ofLogError() << "msa::ControlFreak::ParameterGroup::get<ParameterType>: Could not CONVERT parameter " << path << " in group " << getPath();
                 return NULL;
             }
             
             return tp;
         }
+
+        
+        //--------------------------------------------------------------
+        template <typename ParameterType>
+        ParameterType& ParameterGroup::get(string path) {
+            return *getPtr<ParameterType>(path);
+        }
+
+        
+        
+        //--------------------------------------------------------------
+//        template <typename ValueType>
+//        ValueType ParameterGroup::getValue(string path) {
+//            ParameterPtr p = getPtr(path);
+//            if(!p) {
+//                ofLogError() << "msa::ControlFreak::ParameterGroup::getValue<ValueType>: Could not FIND parameter " << path << " in group " << getPath();
+//                return ValueType();
+//            }
+//            return p->value().extract<ValueType>();
+//        }
+
         
     }
 }
