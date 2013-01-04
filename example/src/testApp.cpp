@@ -31,11 +31,25 @@ msa::ControlFreak::ParameterGroupPtr   params;
 
 msa::ControlFreak::gui::Gui            gui;
 
-
-
 //--------------------------------------------------------------
 void testApp::setup(){
     //    ofSetLogLevel(OF_LOG_VERBOSE);
+    
+//    {
+//        int i = 3;
+//        Poco::DynamicAny any;
+//        void *addr;
+////        Poco::Any any;
+//        
+//        
+//        any = 3;
+//        
+//        void *a = const_cast<int*>(&any.extract<int>());
+//        
+//        *a = (int)5;
+//        ofLogNotice() << (int)any;
+//        std::exit(0);
+//    }
     
     // create and get a new instance of a ParameterGroup (returned as a ParameterGroupPtr)
     params = msa::ControlFreak::ParameterGroup::create("ControlFreak Demo");
@@ -99,27 +113,30 @@ void testApp::setup(){
     
     
     // GETTING VALUES
-    // to extract the value, simply use the getValue method
-    ofLogNotice() << "value of 'float1': " << (float)params->get("float1").value();
+    // to extract the value, simply use the get method
+    
+    float float1 = params->get("float1");
+    ofLogNotice() << "value of 'float1': " << float1;
+    
+    // the .get() method actually returns a reference to the whole Parameter, which has a cast operator
+    // if this causes ambiguity, just cast it
+    ofLogNotice() << "value of 'float2': " << (float)params->get("float2");  // e.g. this works
+    //    ofLogNotice() << "value of 'float2': " << params->get("float2");  // e.g. but this will not compile
     
     
     
-//    // SETTING VALUES
-//    // you saw above you can use setValue method
-//    params->get("float1").setValue(0.1);
-//    ofLogNotice() << (float)params->getValue("float1");
-//    
-//    // you can actually use the '=' operator instead of setValue
-//    params->get("float1") = 0.2;    // identical to using 'setValue(0.5)
-//    ofLogNotice() << (float)params->getValue("float1");
-//    
-//    float f1 = params->getValue("float1") * 0.5;
-//    
-//    params->get("float2") = f1;
-//    ofLogNotice() << (float)params->getValue("float2");
-//    
-//    params->get("float2") = (float)(params->getValue("float1") * 0.5);
-//    ofLogNotice() << (float)params->getValue("float2");
+    // SETTING VALUES
+    // you saw above you can use setValue method
+    params->get("float1").setValue(0.1);
+    ofLogNotice() << (float)params->get("float1");
+    
+    // you can actually use the '=' operator instead of setValue
+    params->get("float2") = 0.2;    // identical to using 'setValue(0.5)
+    ofLogNotice() << (float)params->get("float1");
+    
+    // remember to cast as nessecary
+    params->get("float3") = (float)params->get("float1") * (float)params->get("float2");
+    ofLogNotice() << (float)params->get("float2");
     
     
     
