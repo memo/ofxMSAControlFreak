@@ -142,7 +142,7 @@ namespace msa {
             xml.pushTag(_xmlTag, _xmlTagId);
             
             int numTags = xml.getNumTags(_xmlTag);
-            // TODO, add parameters to group if they aren't in there?
+
             for(int i=0; i<numTags; i++) {
                 string xname = xml.getAttribute(_xmlTag, "name", "", i);
                 string xpath = xml.getAttribute(_xmlTag, "path", "", i);
@@ -153,7 +153,7 @@ namespace msa {
                     p->readFromXml(xml, bOnlyValues);
                 } else {
                     ofLogWarning() << "Parameter " << xname << " (" << xpath << ") not found in group" << getPath();
-                    // add?
+                    // TODO: add?
                 }
             }
             

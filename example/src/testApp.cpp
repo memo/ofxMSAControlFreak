@@ -11,9 +11,6 @@ ofTexture			videoTexture;
 
 
 
-float fvar1;
-float fvar2;
-
 struct Ball {
     ofVec2f pos;
     ofVec2f vel;
@@ -72,13 +69,13 @@ void tutorial1() {
 }
 
 
-
+// ACCESS PARAMETERS AND VALUES
 void tutorial2() {
     ofLogNotice() << "TUTORIAL 2";
     
     // CHANGING PROPERTIES AFTER CREATION
     // the addXXXX methods used above create the Parameter and change the properties at the same time
-    // If you want to change properties AFTER creating the Parameter you should use getXXXX methods of ParameterGroup instead of addXXXXX
+    // If you want to change properties AFTER creating the Parameter you should use get methods of ParameterGroup instead of addXXXXX
     params->get("float1").setRange(0, 100);
     params->get("float1").setValue(50);
     params->get("float1").setIncrement(5);
@@ -100,10 +97,10 @@ void tutorial2() {
 }
 
 
+// SETTING VALUES
 void tutorial3() {
     ofLogNotice() << "TUTORIAL 3";
     
-    // SETTING VALUES
     // you saw above you can use setValue method
     params->get("float1").setValue(12);
     ofLogNotice() << "new float1 value: " << (float)params->get("float1");
@@ -115,6 +112,44 @@ void tutorial3() {
     // remember to cast as nessecary
     params->get("float3") = (float)params->get("float1") * (float)params->get("float2");
     ofLogNotice() << "new float3 value " << (float)params->get("float3");
+}
+
+
+// tracking external variables
+void tutorial4() {
+    ofLogNotice() << "TUTORIAL 4";
+    
+    // you can also assign an external variable, which is kept track of and kept in sync, at no performance cost
+    
+    // assigning the tracked variable upon Parameter creation (i.e. using addXXXX method)
+
+    float var1 = 0;
+    
+    params->addFloat("param1").trackVariable(&var1);
+    
+    ofLogNotice() << " var1 : " << var1 << ", param1 : " << (float)params->get("param1");
+    
+    // modify variable
+    var1 = 15;
+    ofLogNotice() << " var1 : " << var1 << ", param1 : " << (float)params->get("param1");
+    
+    // modify variable
+    params->get("param1") = 25;
+    ofLogNotice() << " var1 : " << var1 << ", param1 : " << (float)params->get("param1");
+    
+}
+
+
+// NAMED INDEXES
+void tutorial5() {
+    ofLogNotice() << "TUTORIAL 5";
+    
+    // this is one way of adding a named-index parameter (i.e. dropbox box or option list)
+    string labels[] = {"first option", "another option", "yet another option", "even more", "and last one"};
+    params->addNamedIndex("a dropdown").setLabels(5, labels);
+    
+    // this is another way of adding a named-index parameter
+    params->addNamedIndex("animals").setLabels(4, "cow", "camel", "dolphin", "monkey");
 }
 
 
@@ -133,30 +168,10 @@ void testApp::setup(){
     tutorial1();
     tutorial2();
     tutorial3();
-    
+    tutorial4();
+    tutorial5();
 
-    
-    
-    
-    
-    // EXTERNAL // TODO
-    // you can also assign an external variable, which is kept track of and kept in sync, at no performance cost
-    
-    // assigning the tracked variable upon Parameter creation (i.e. using addXXXX method)
-//    params->addFloat("float8").trackVariable(&fvar1);
-    
-    // assigning the tracked variable after Parameter creation (i.e. using getXXXX method)
-//    params->get("float1").trackVariable(&fvar2);
-    
-    
-    
-    // NAMED INDEXES
-    // this is one way of adding a named-index parameter (i.e. dropbox box or option list)
-    string labels[] = {"first option", "another option", "yet another option", "even more", "and last one"};
-    params->addNamedIndex("a dropdown").setLabels(5, labels);
-    
-    // this is another way of adding a named-index parameter
-    params->addNamedIndex("animals").setLabels(4, "cow", "camel", "dolphin", "monkey");
+
     
     
     
