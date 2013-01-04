@@ -54,7 +54,7 @@
 #pragma once
 
 #include "ofxMSAControlFreak/src/Parameter.h"
-#include "ofxMSAControlFreak/src/ParameterValue.h"
+#include "ofxMSAControlFreak/src/ParameterValueT.h"
 #include "ofxMSAControlFreak/src/ParameterNumbers.h"
 #include "ofxMSAControlFreak/src/ParameterNamedIndex.h"
 #include "ofxMSAControlFreak/src/ParameterGroup.h"

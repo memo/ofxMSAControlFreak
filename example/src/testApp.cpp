@@ -31,35 +31,12 @@ msa::ControlFreak::ParameterGroupPtr   params;
 
 msa::ControlFreak::gui::Gui            gui;
 
-//--------------------------------------------------------------
-void testApp::setup(){
-    //    ofSetLogLevel(OF_LOG_VERBOSE);
+
+// CREATING PARAMETERS
+void tutorial1() {
     
-//    {
-//        int i = 3;
-//        Poco::DynamicAny any;
-//        void *addr;
-////        Poco::Any any;
-//        
-//        
-//        any = 3;
-//        
-//        void *a = const_cast<int*>(&any.extract<int>());
-//        
-//        *a = (int)5;
-//        ofLogNotice() << (int)any;
-//        std::exit(0);
-//    }
+    ofLogNotice() << "TUTORIAL 1";
     
-    // create and get a new instance of a ParameterGroup (returned as a ParameterGroupPtr)
-    params = msa::ControlFreak::ParameterGroup::create("ControlFreak Demo");
-    
-    // Set name for our ParameterGroup
-    //	params->setName("ControlFreak Demo");
-    
-    
-    
-    // CREATING PARAMETERS
     // All Parameters are created via the addXXXX methods of a ParameterGroup
     // Adding basic value Parameters
     params->addFloat("float1");  // float: can be any real number
@@ -68,15 +45,14 @@ void testApp::setup(){
     
     
     
-    
     // CHANGING PROPERTIES ON CREATION
     // while you're adding, you can change various properties
-    params->addFloat("float2").setValue(ofRandom(0, 1));     // create and set value. default value for float is 0
+    params->addFloat("float2").setValue(0.7);     // create and set value. default value for float is 0
     params->addFloat("float3").setRange(-1, 1);              // create and set range. default range for float is 0...1
     params->addFloat("float4").setIncrement(0.2);            // create and set increment value (e.g. if you use up/down on keyboard)
     params->addFloat("float5").setIncrement(0.2).setSnap(true);  // create and enable snap, so even if you use mouse or any other means, values always snap
     
-    params->addInt("int2").setValue(ofRandom(30));           // create and set value. default value for int is 0
+    params->addInt("int2").setValue(17);           // create and set value. default value for int is 0
     params->addInt("int3").setRange(-10, 10);                // create and set range. default range for int is 0...100
     params->addInt("int4").setIncrement(5);                  // create and set increment value (e.g. if you use up/down on keyboard)
     params->addInt("int5").setIncrement(5).setSnap(true);    // create and enable snap, so even if you use mouse or any other means, values always snap
@@ -87,17 +63,18 @@ void testApp::setup(){
     // NOTE: The Parameter names used must be unique!
     
     
-    
-    
     // DAISY CHAINING
     // all property methods can be daisy chained in any order
     params->addFloat("float6").setRange(0, 1000).setValue(500).setClamp(true).setIncrement(10).setSnap(true);
     
     // ... but are evaluated left to right, so if you try to set a high value before setting the range, it wont work
     params->addFloat("float7").setClamp(true).setValue(500).setRange(0, 1000).setIncrement(10).setSnap(true);
-    
-    
-    
+}
+
+
+
+void tutorial2() {
+    ofLogNotice() << "TUTORIAL 2";
     
     // CHANGING PROPERTIES AFTER CREATION
     // the addXXXX methods used above create the Parameter and change the properties at the same time
@@ -107,36 +84,57 @@ void testApp::setup(){
     params->get("float1").setIncrement(5);
     
     // of course daisy chaining the property methods still work
-    params->get("float1").setRange(0, 1000).setValue(ofRandom(1000)).setIncrement(10).setSnap(true);
-    
-    
+    params->get("float1").setRange(0, 1000).setValue(50).setIncrement(10).setSnap(false);
     
     
     // GETTING VALUES
     // to extract the value, simply use the get method
     
-    float float1 = params->get("float1");
-    ofLogNotice() << "value of 'float1': " << float1;
+    float a = params->get("float1");
+    ofLogNotice() << "value of 'float1': " << a;
     
     // the .get() method actually returns a reference to the whole Parameter, which has a cast operator
     // if this causes ambiguity, just cast it
     ofLogNotice() << "value of 'float2': " << (float)params->get("float2");  // e.g. this works
     //    ofLogNotice() << "value of 'float2': " << params->get("float2");  // e.g. but this will not compile
-    
-    
+}
+
+
+void tutorial3() {
+    ofLogNotice() << "TUTORIAL 3";
     
     // SETTING VALUES
     // you saw above you can use setValue method
-    params->get("float1").setValue(0.1);
-    ofLogNotice() << (float)params->get("float1");
+    params->get("float1").setValue(12);
+    ofLogNotice() << "new float1 value: " << (float)params->get("float1");
     
     // you can actually use the '=' operator instead of setValue
     params->get("float2") = 0.2;    // identical to using 'setValue(0.5)
-    ofLogNotice() << (float)params->get("float1");
+    ofLogNotice() << "new float2 value " << (float)params->get("float2");
     
     // remember to cast as nessecary
     params->get("float3") = (float)params->get("float1") * (float)params->get("float2");
-    ofLogNotice() << (float)params->get("float2");
+    ofLogNotice() << "new float3 value " << (float)params->get("float3");
+}
+
+
+//--------------------------------------------------------------
+void testApp::setup(){
+    //    ofSetLogLevel(OF_LOG_VERBOSE);
+ 
+    
+    // create and get a new instance of a ParameterGroup (returned as a ParameterGroupPtr)
+    params = msa::ControlFreak::ParameterGroup::create("ControlFreak Demo");
+    
+    // Set name for our ParameterGroup
+    //	params->setName("ControlFreak Demo");
+    
+    
+    tutorial1();
+    tutorial2();
+    tutorial3();
+    
+
     
     
     

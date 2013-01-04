@@ -17,11 +17,21 @@ namespace msa {
         
         typedef Poco::DynamicAny AnyValue;
         
+        
+        class ParameterValueI;
+        typedef std::tr1::shared_ptr<ParameterValueI> ParameterValueIPtr;
+
+        class Parameter;
+        
 		class ParameterValueI {
 		public:
             
+            virtual ~ParameterValueI() {};
+            
+            virtual void setParameter(Parameter *p) {}
+            
             virtual ParameterValueI& setValue(AnyValue v) = 0;
-			virtual AnyValue& value() const = 0;
+			virtual AnyValue value() const = 0;
             
             // whether the value changed this frame or not
             virtual bool hasChanged() = 0;
@@ -65,7 +75,7 @@ namespace msa {
             
             // OPTIONAL
             // track variables and keep values in sync (send NULL to clear)
-            virtual ParameterValueI& trackVariable(AnyValue *pv) = 0;
+            virtual ParameterValueI& trackVariable(void *pv) = 0;
 
 		};
         

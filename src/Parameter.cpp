@@ -15,11 +15,11 @@ namespace msa {
 
         
         //--------------------------------------------------------------
-        Parameter::Parameter(string name, ParameterGroup *parent, Type::Index typeIndex, ParameterValue *pv)
+        Parameter::Parameter(string name, ParameterGroup *parent, Type::Index typeIndex, ParameterValueI *pv)
         : _pparent(parent), _name(name), _typeIndex(typeIndex) {
             if(pv) {
-                _value = ParameterValuePtr(pv);
-                pv->_parameter = this;
+                _paramValue = ParameterValueIPtr(pv);
+                _paramValue->setParameter(this);
             }
                 
             _xmlTag = "Parameter";

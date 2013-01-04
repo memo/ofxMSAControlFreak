@@ -21,7 +21,7 @@ namespace msa {
 			template <typename T> operator T() const { return value(); }
             
             ParameterInt(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kInt)
-            : Parameter(name, parent, typeIndex, new ParameterValue(0)) { setRange(0, 100); setIncrement(1); }
+            : Parameter(name, parent, typeIndex, new ParameterValueT<int>()) { setRange(0, 100); setIncrement(1); }
             
         protected:
         };
@@ -35,7 +35,7 @@ namespace msa {
 			template <typename T> operator T() const { return value(); }
             
             ParameterFloat(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kFloat)
-            : Parameter(name, parent, typeIndex, new ParameterValue(0.0f)) { setRange(0.0f, 1.0f); setIncrement(0.01f); }
+            : Parameter(name, parent, typeIndex, new ParameterValueT<float>()) { setRange(0.0f, 1.0f); setIncrement(0.01f); }
         };
         
         
@@ -47,7 +47,7 @@ namespace msa {
 			template <typename T> operator T() const { return value(); }
             
             ParameterBool(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kBool)
-            : Parameter(name, parent, typeIndex, new ParameterValue(false)) { setRange(0, 1); setIncrement(1); }
+            : Parameter(name, parent, typeIndex, new ParameterValueT<bool>()) { setRange(0, 1); setIncrement(1); }
             
             
             enum Mode {
