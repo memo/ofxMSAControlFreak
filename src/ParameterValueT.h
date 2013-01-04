@@ -14,14 +14,10 @@
 #include "ofxXmlSettings.h"
 
 #include "ofxMSAControlFreak/src/ParameterValueI.h"
-//#include "ofxMSAControlFreak/src/ParameterValueT.h"
 
-#include "Poco/DynamicAny.h"
 
 namespace msa {
 	namespace ControlFreak {
-        
-        typedef Poco::DynamicAny AnyValue;
         
         class Parameter;
         

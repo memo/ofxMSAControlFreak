@@ -11,6 +11,7 @@ Interface for any Parameter that has a value
 #include "ofxXmlSettings.h"
 
 #include "Poco/DynamicAny.h"
+//#include "Poco/Any.h"
 
 namespace msa {
 	namespace ControlFreak {
