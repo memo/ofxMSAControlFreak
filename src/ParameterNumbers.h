@@ -17,7 +17,7 @@ namespace msa {
         //--------------------------------------------------------------
         class ParameterInt : public Parameter {
         public:
-            template <typename T> T operator=(const T & v) { setValue(v); }
+            template <typename T> T operator=(const T & v) { set(v); }
 			template <typename T> operator T() const { return value(); }
             
             ParameterInt(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kInt)
@@ -31,7 +31,7 @@ namespace msa {
         //--------------------------------------------------------------
         class ParameterFloat : public Parameter {
         public:
-            template <typename T> T operator=(const T & v) { setValue(v); }
+            template <typename T> T operator=(const T & v) { set(v); }
 			template <typename T> operator T() const { return value(); }
             
             ParameterFloat(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kFloat)
@@ -43,7 +43,7 @@ namespace msa {
         //--------------------------------------------------------------
         class ParameterBool : public Parameter {
         public:
-            template <typename T> T operator=(const T & v) { setValue(v); }
+            template <typename T> T operator=(const T & v) { set(v); }
 			template <typename T> operator T() const { return value(); }
             
             ParameterBool(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kBool)
@@ -66,7 +66,7 @@ namespace msa {
             }
             
             void toggle() {
-                setValue(!value());
+                set(!value());
             }
             
         protected:
@@ -76,7 +76,7 @@ namespace msa {
 //            void update() {
 //                ParameterSingleValueT<bool>::update();
 //                if(_isBang && value() && _oldValue) {
-//                    setValue(false);
+//                    set(false);
 //                    _oldValue = false;
 //                }
 //            }

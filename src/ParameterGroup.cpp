@@ -20,12 +20,6 @@ namespace msa {
 
         
         //--------------------------------------------------------------
-        ParameterGroupPtr ParameterGroup::create(string name, ParameterGroup *parent, Type::Index typeIndex) {
-            return ParameterGroupPtr(new ParameterGroup(name, parent, typeIndex));
-        }
-        
-
-        //--------------------------------------------------------------
 		ParameterGroup::~ParameterGroup() {
             ofLogVerbose() << "msa::ControlFreak::ParameterGroup::~ParameterGroup: " <<  getPath();
             clear();
@@ -33,6 +27,7 @@ namespace msa {
         
         //--------------------------------------------------------------
 		void ParameterGroup::clear() {
+            for(int i=0; i<_paramArr.size(); i++) delete _paramArr[i];
             _paramArr.clear();
             _paramMap.clear();
             
@@ -147,7 +142,7 @@ namespace msa {
                 string xname = xml.getAttribute(_xmlTag, "name", "", i);
                 string xpath = xml.getAttribute(_xmlTag, "path", "", i);
                 printf("Parameter %i %s %s\n", i, xname.c_str(), xpath.c_str());
-                Parameter *p = getPtr(xname).get();
+                Parameter *p = getPtr(xname);
                 if(p) {
                     p->_xmlTagId = i;
                     p->readFromXml(xml, bOnlyValues);
@@ -229,19 +224,15 @@ namespace msa {
 			_groupStack.pop();
 		}
         
-        //--------------------------------------------------------------
-        Parameter& ParameterGroup::addParameter(Parameter* param) {
-            return addParameter(ParameterPtr(param));
-        }
         
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::addParameter(ParameterPtr param) {
+		Parameter& ParameterGroup::addParameter(Parameter* param) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::addParameter: " << param->getPath();
 			
             ParameterGroup *currentGroup = _groupStack.top();
             // avoid infinite recursion
             if(currentGroup == this) {
-                map<string, ParameterPtr>::iterator p = _paramMap.find(param->getName());
+                map<string, Parameter*>::iterator p = _paramMap.find(param->getName());
                 if(p == _paramMap.end()) {
                     _paramMap[param->getName()] = param;
                     _paramArr.push_back(param);
@@ -275,19 +266,19 @@ namespace msa {
         }
         
         //--------------------------------------------------------------
-        ParameterPtr ParameterGroup::getPtr(int index) {
+        Parameter* ParameterGroup::getPtr(int index) {
 			return _paramArr[index];
         }
         
         //--------------------------------------------------------------
 //        AnyValue ParameterGroup::getValue(int index) {
-//            ParameterPtr p = get(index);
+//            Parameter* p = get(index);
 ////            return p ? p->value() : AnyValue(0);
 //            return p->value();
 //        }
 
         //--------------------------------------------------------------
-        ParameterPtr ParameterGroup::getPtr(string path) {
+        Parameter* ParameterGroup::getPtr(string path) {
             // look for path divider
             size_t pathDividerPos = path.find(getPathDivider());
             
@@ -297,7 +288,7 @@ namespace msa {
                 // if parameter doesn't exist, return with error
                 if(_paramMap.find(path) == _paramMap.end()) {
                     ofLogError() << "msa::ControlFreak::ParameterGroup::get: " << path << " does not exist in Group: " << getPath();
-                    return ParameterPtr();  // return NULL
+                    return NULL;  // return NULL
                 }
                 
                 return _paramMap[path];
@@ -314,7 +305,7 @@ namespace msa {
         
 //        //--------------------------------------------------------------
 //        AnyValue ParameterGroup::getValue(string path) {
-//            ParameterPtr p = get(path);
+//            Parameter* p = get(path);
 //            //            return p ? p->value() : AnyValue(0);
 //            return p->value();
 //        }
@@ -350,18 +341,21 @@ namespace msa {
             return getPtr<ParameterGroup>(path);
         }
         
-//        
-//        //--------------------------------------------------------------
-//		ParameterPtr ParameterGroup::operator[](int index) {
-//            return get(index);
-//		}
-//
-//        //--------------------------------------------------------------
-//		ParameterPtr ParameterGroup::operator[](string path) {
-//            return get(path);
-//		}
-//		
         
+        //--------------------------------------------------------------
+		Parameter& ParameterGroup::operator[](int index) {
+            return get(index);
+		}
+
+        //--------------------------------------------------------------
+		Parameter& ParameterGroup::operator[](string path) {
+            return get(path);
+		}
+		
+        //--------------------------------------------------------------
+		Parameter& ParameterGroup::operator[](const char* path) {
+            return get(path);
+		}
         
         
           //--------------------------------------------------------------

@@ -19,8 +19,8 @@ namespace msa {
         typedef Poco::DynamicAny AnyValue;
         
         
-        class ParameterValueI;
-        typedef std::tr1::shared_ptr<ParameterValueI> ParameterValueIPtr;
+//        class ParameterValueI;
+//        typedef std::tr1::shared_ptr<ParameterValueI> ParameterValueIPtr;
 
         class Parameter;
         
@@ -31,7 +31,7 @@ namespace msa {
             
             virtual void setParameter(Parameter *p) {}
             
-            virtual ParameterValueI& setValue(AnyValue v) = 0;
+            virtual ParameterValueI& set(AnyValue v) = 0;
 			virtual AnyValue value() const = 0;
             
             // whether the value changed this frame or not

@@ -20,7 +20,7 @@ namespace msa {
 		
 		
 //		void Controller::checkValueHasChanged() {
-//			if(_param->getValue() != _oldValue) {
+//			if(_param->get() != _oldValue) {
 //				_oldValue = *_param;
 //				sendValue();
 //			}

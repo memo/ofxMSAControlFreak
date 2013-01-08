@@ -89,27 +89,27 @@
 ////                ofLogVerbose() << "~AnyValue()";
 //            }
 //            
-//            template <typename T> T operator=(const T &v) { setValue(v); }
-//            template <typename T> operator T() const { return getValue<T>(); }
+//            template <typename T> T operator=(const T &v) { set(v); }
+//            template <typename T> operator T() const { return get<T>(); }
 //            
-//            template <typename T> void setValue(const T &v) {
-//                ofLogVerbose() << "AnyValue::setValue(T) " << v;
+//            template <typename T> void set(const T &v) {
+//                ofLogVerbose() << "AnyValue::set(T) " << v;
 //                checkValueContainer<T>();
 ////                _valueContainer->setFromContainer(ValueContainerT<T>(v));
 ////                assert(_valueContainer);
 ////                any = v;
 ////                _valueContainer->setData((void*)&v);
-////                ValueContainerT<T> *vc = dynamic_cast<ValueContainerT<T> *>(_valueContainer.get());
+////                ValueContainerT<T> *vc = dynamic_cast<ValueContainerT<T> *>(_valueContainer);
 ////                if(vc) vc->set(v);
 ////                else ofLogWarning() << "cannot cast";
 //            }
 //            
-//            template <typename T> T getValue() const {
-//                ofLogVerbose() << "(T) AnyValue::getValue";
+//            template <typename T> T get() const {
+//                ofLogVerbose() << "(T) AnyValue::get";
 ////                checkValueContainer<T>();
 //                assert(_valueContainer);
 ////                return any;
-////                ValueContainerT<T> *vc = dynamic_cast<ValueContainerT<T> *>(_valueContainer.get());
+////                ValueContainerT<T> *vc = dynamic_cast<ValueContainerT<T> *>(_valueContainer);
 ////                if(vc) return vc->get();
 ////                return *(T*)_valueContainer->getData();
 //                

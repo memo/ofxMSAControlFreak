@@ -31,7 +31,7 @@ namespace msa {
             
 			// set and get value
             // operators for assigning and casting
-            T operator=(const T & v) { setValue(v); }
+            T operator=(const T & v) { set(v); }
             operator T() const { return *_pvalue; }
 			
 
@@ -40,7 +40,7 @@ namespace msa {
             
             void setParameter(Parameter *p);
             
-            ParameterValueT<T>& setValue(AnyValue v);
+            ParameterValueT<T>& set(AnyValue v);
 			AnyValue value() const;
             
             // whether the value changed this frame or not
@@ -96,7 +96,7 @@ namespace msa {
             
             
             // this actually changes the value
-            // while setValue is used externally, that also does clamp and snap
+            // while set is used externally, that also does clamp and snap
             // this just sets the variable
             void _setValue(AnyValue v);
             
@@ -134,7 +134,7 @@ namespace msa {
             setIncrement(T(1));
             setClamp(false);
             setSnap(false);
-            setValue(v);
+            set(v);
         }
         
         
@@ -146,7 +146,7 @@ namespace msa {
 
         //--------------------------------------------------------------
         template<typename T>
-        ParameterValueT<T>& ParameterValueT<T>::setValue(AnyValue v) {
+        ParameterValueT<T>& ParameterValueT<T>::set(AnyValue v) {
             _setValue(v);
             if(_doClamp) clamp();
             if(_doSnap) snap();
@@ -184,7 +184,7 @@ namespace msa {
             _min = vmin;
             _max = vmax;
             
-			setValue(*_pvalue);
+			set(*_pvalue);
 			return *this;
 		}
         
@@ -246,14 +246,14 @@ namespace msa {
         //--------------------------------------------------------------
         template<typename T>
 		ParameterValueT<T>& ParameterValueT<T>::inc(AnyValue amount) {
-            setValue(*_pvalue + _inc * amount);
+            set(*_pvalue + _inc * amount);
             return *this;
         }
         
         //--------------------------------------------------------------
         template<typename T>
 		ParameterValueT<T>& ParameterValueT<T>::dec(AnyValue amount) {
-            setValue(*_pvalue - _inc * amount);
+            set(*_pvalue - _inc * amount);
             return *this;
         }
 		
@@ -275,8 +275,8 @@ namespace msa {
         //--------------------------------------------------------------
         template<typename T>
 		ParameterValueT<T>& ParameterValueT<T>::setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) {
-			setValue(ofMap(v, inputMin, inputMax, _min, _max));
-            //            setValue(  ((v - inputMin) / (inputMax - inputMin) * (_max - _min) + _min)  );
+			set(ofMap(v, inputMin, inputMax, _min, _max));
+            //            set(  ((v - inputMin) / (inputMax - inputMin) * (_max - _min) + _min)  );
             return *this;
 		}
 		
@@ -292,7 +292,7 @@ namespace msa {
         //--------------------------------------------------------------
         template<typename T>
         ParameterValueT<T>& ParameterValueT<T>::setRandom() {
-            setValue(ofRandom(_min, _max));
+            set(ofRandom(_min, _max));
             return *this;
         }
         
@@ -355,7 +355,7 @@ namespace msa {
         template<typename T>    // TODO
         void ParameterValueT<T>::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
 //            //            Parameter::readFromXml(xml, bOnlyValues);
-//            setValue(xml.getAttribute(_parameter->_xmlTag, "value", T(), _parameter->_xmlTagId));
+//            set(xml.getAttribute(_parameter->_xmlTag, "value", T(), _parameter->_xmlTagId));
 //            
 //			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::readFromXml: " << _parameter->getPath();
         }

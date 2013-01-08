@@ -18,7 +18,7 @@ namespace msa {
         Parameter::Parameter(string name, ParameterGroup *parent, Type::Index typeIndex, ParameterValueI *pv)
         : _pparent(parent), _name(name), _typeIndex(typeIndex) {
             if(pv) {
-                _paramValue = ParameterValueIPtr(pv);
+                _paramValue = pv;
                 _paramValue->setParameter(this);
             }
                 
@@ -38,6 +38,7 @@ namespace msa {
         //--------------------------------------------------------------
         Parameter::~Parameter() {
             ofLogVerbose() << "msa::ControlFreak::Parameter::~Parameter(): " << getPath();
+//            if(_paramValue) delete _paramValue;   // TODO
         }
         
         //--------------------------------------------------------------

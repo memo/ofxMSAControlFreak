@@ -22,8 +22,8 @@ namespace msa {
 		
 		class ParameterGroup;
         
-        class Parameter;
-        typedef std::tr1::shared_ptr<Parameter> ParameterPtr;
+//        class Parameter;
+//        typedef std::tr1::shared_ptr<Parameter> ParameterPtr;
 
 //        class ParameterValueT;
         
@@ -54,14 +54,14 @@ namespace msa {
             //--------------------------------------------------------------
             // set and get value
             // operators for assigning and casting
-            template<typename T> T operator=(const T & v) { setValue(v); }
+            template<typename T> T operator=(const T & v) { set(v); }
 			template<typename T> operator T() const { return (T)value(); }
 			
 
             //--------------------------------------------------------------
             // from ParameterValueI
             
-            virtual ParameterValueI& setValue(AnyValue v) { if(_paramValue) return _paramValue->setValue(v); }
+            virtual ParameterValueI& set(AnyValue v) { if(_paramValue) return _paramValue->set(v); }
 			virtual AnyValue value() const { if(_paramValue) return _paramValue->value(); }
             
             // whether the value changed this frame or not
@@ -124,7 +124,7 @@ namespace msa {
 			string				_name;
             string              _tooltip;
 			ParameterGroup		*_pparent;
-            ParameterValueIPtr   _paramValue;
+            ParameterValueI*   _paramValue;
 			
             
             

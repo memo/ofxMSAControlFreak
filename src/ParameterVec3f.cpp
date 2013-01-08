@@ -26,7 +26,7 @@ namespace msa {
 //            int np = getNumParams();
 //            for(int i=0; i<np; i++) {
 ////                ParameterFloat &p = (ParameterFloat&)getParameterPtr(i);
-////                p.setValueVariable(&getValue()[i]);
+////                p.setValueVariable(&get()[i]);
 //            }
 //        }
 //        

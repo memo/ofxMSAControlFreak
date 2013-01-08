@@ -19,15 +19,14 @@ namespace msa {
         class ParameterNamedIndex;
         class ParameterVec3f;
 
-        class ParameterGroup;
-        typedef std::tr1::shared_ptr<ParameterGroup> ParameterGroupPtr;
+//        class ParameterGroup;
+//        typedef std::tr1::shared_ptr<ParameterGroup> ParameterGroupPtr;
         
         
         class ParameterGroup : public Parameter {
         public:
             
-            // factory method for creating new instances
-            static ParameterGroupPtr create(string name = "MSAControlFreak", ParameterGroup *parent = NULL, Type::Index typeIndex = Type::kGroup);
+            ParameterGroup(string name = "MSAControlFreak", ParameterGroup *parent = NULL, Type::Index typeIndex = Type::kGroup);
             
             ~ParameterGroup();
             
@@ -75,8 +74,7 @@ namespace msa {
 			void endGroup();
             
             // ADVANCED, RESERVED FOR FUTURE USE
-            Parameter& addParameter(Parameter* param);      // if you create a new pointer
-            Parameter& addParameter(ParameterPtr param);    // if you already have a smart pointer
+            Parameter& addParameter(Parameter* param);      // if you create a new pointer (it will be owned and deleted by this Group)
             
             
             
@@ -89,10 +87,15 @@ namespace msa {
             Parameter& get(int index);         // get parameter by index
             Parameter& get(string path);       // get parameter by name
 
+            // [] operator overloads for above
+            Parameter& operator[](int index);
+            Parameter& operator[](string path);
+            Parameter& operator[](const char* path);
 
-            // returns a SHARED pointer to the Parameter
-            ParameterPtr getPtr(int index);     // get parameter by index
-            ParameterPtr getPtr(string path);   // get parameter by name
+
+            // returns a pointer to the Parameter (if you want to check if it exists first)
+            Parameter* getPtr(int index);     // get parameter by index
+            Parameter* getPtr(string path);   // get parameter by name
 
             
             // get a reference or pointer to a Group
@@ -105,41 +108,17 @@ namespace msa {
             // use this if you need to access properties and methods unique to that Parameter sub-class
             template <typename ParameterType> ParameterType& get(string path);
             template <typename ParameterType> ParameterType* getPtr(string path);
-
-            
-            
-            // get values directly out of thhe Parameter Group
-//            AnyValue getValue(int index);
-//            AnyValue getValue(string path);
-            
-//            template <typename ValueType> ValueType getValue(string path);
             
             
             // get number of parameters in this group (only gets number of direct children, not children of children)
             int getNumParams() const;
-            
-            
 
-            
-            // get values by name
-//            ParameterInt* getInt(string path);
-//            ParameterFloat* getFloat(string path);
-//            ParameterBool* getBool(string path);
-//            ParameterNamedIndex* getNamedIndex(string path);
-//            ParameterGroup* getGroup(string path);
-            
-            // generic function to get value as any type (type==parameter class, not basic type)
-            
-            // [] operator overloads for above
-//            ParameterPtr operator[](int index);
-//            ParameterPtr operator[](string path);
-            
-            
+        
+        
         protected:
-            ParameterGroup(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kGroup);
 
-			map<string, ParameterPtr>	_paramMap;		// map for all parameters
-			vector<ParameterPtr>	_paramArr;		// array needed to access sequentially (for display etc.)
+			map<string, Parameter*>	_paramMap;		// map for all parameters
+			vector<Parameter*>	_paramArr;		// array needed to access sequentially (for display etc.)
             
             string _filename;
             
@@ -158,13 +137,13 @@ namespace msa {
         //--------------------------------------------------------------
         template <typename ParameterType>
         ParameterType* ParameterGroup::getPtr(string path) {
-            ParameterPtr p = getPtr(path);
+            Parameter* p = getPtr(path);
             if(!p) {
                 ofLogError() << "msa::ControlFreak::ParameterGroup::get<ParameterType>: Could not FIND parameter " << path << " in group " << getPath();
                 return NULL;
             }
             
-            ParameterType *tp = dynamic_cast<ParameterType*>(p.get());
+            ParameterType *tp = dynamic_cast<ParameterType*>(p);
             if(!tp) {
                 ofLogError() << "msa::ControlFreak::ParameterGroup::get<ParameterType>: Could not CONVERT parameter " << path << " in group " << getPath();
                 return NULL;
@@ -180,19 +159,6 @@ namespace msa {
             return *getPtr<ParameterType>(path);
         }
 
-        
-        
-        //--------------------------------------------------------------
-//        template <typename ValueType>
-//        ValueType ParameterGroup::getValue(string path) {
-//            ParameterPtr p = getPtr(path);
-//            if(!p) {
-//                ofLogError() << "msa::ControlFreak::ParameterGroup::getValue<ValueType>: Could not FIND parameter " << path << " in group " << getPath();
-//                return ValueType();
-//            }
-//            return p->value().extract<ValueType>();
-//        }
-
-        
+                
     }
 }
