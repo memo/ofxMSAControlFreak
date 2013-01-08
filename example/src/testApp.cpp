@@ -18,6 +18,7 @@ struct Raindrop {
     float rot;
     float rotSpeed;
     float dieTime;
+    Raindrop() : dieTime(0){}
 };
 
 vector<Raindrop> rain;
@@ -295,7 +296,7 @@ void testApp::setup(){
     
     
     params.startGroup("rain"); {
-        params.addInt("count").setRange(1, 1000).setClamp(true).set(300);
+        params.addInt("count").setRange(1, 1000).setClamp(true).set(400);
         params.startGroup("emitter"); { // should be ofRectangle
             params.addFloat("x").setRange(0, 100).setClamp(true).set(50);
             params.addFloat("y").setRange(0, 100).setClamp(true).set(10);
@@ -303,12 +304,12 @@ void testApp::setup(){
             params.addFloat("height").setRange(0, 100).setClamp(true).set(20);
         } params.endGroup();
         params.startGroup("physics"); {
-            params.addFloat("initialVelocity").setRange(0, 100).set(30);
+            params.addFloat("initialVelocity").setRange(0, 100).set(10);
             params.addFloat("initialVelocityVariance").setRange(0, 1).setClamp(true).set(0.5);
-            params.addFloat("spread").setRange(0, 180).set(10).setClamp(true);
+            params.addFloat("spread").setRange(0, 180).set(20).setClamp(true);
             params.addFloat("maxRotSpeed").setRange(0, 10).set(5);
-            params.addFloat("gravity").setRange(-1, 1).set(0.03);
-            params.addFloat("friction").setRange(0, 1).set(0.05).setClamp(true);;
+            params.addFloat("gravity").setRange(-1, 1).set(0.1);
+            params.addFloat("friction").setRange(0, 1).set(0.02).setClamp(true);;
         } params.endGroup();
         params.startGroup("age"); {
             params.addFloat("min age").setRange(1, 10).set(1);
@@ -362,6 +363,7 @@ void testApp::update() {
     int count = params["rain.count"];
     if(rain.size() != count) {
         ofLogNotice() << "INIT RAIN " << count;
+        rain.clear();
         rain.resize(count);
     }
     

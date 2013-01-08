@@ -12,7 +12,7 @@
 
 #include "ofxMSACore/src/MSACore.h"
 
-#include "ofxMSAControlFreak/src/ParameterValueT.h"
+#include "ofxMSAControlFreak/src/ParameterValueI.h"
 #include "ofxMSAControlFreak/src/Utils.h"
 
 #include "ofxXmlSettings.h"
@@ -31,7 +31,8 @@ namespace msa {
 		public:
 
 			friend class ParameterGroup;
-//            friend class ParameterValueT;
+            template<typename T>
+            friend class ParameterValueT;
             
 			Parameter(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kUnknown, ParameterValueI *pv = NULL);
 			virtual ~Parameter();
@@ -48,6 +49,9 @@ namespace msa {
             
 			Type::Index getType() const;
 			string getTypeName() const;
+            
+            
+            ParameterValueI* getParamValue();
             
             
 
@@ -117,7 +121,6 @@ namespace msa {
             
             virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
             virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
-            virtual void update() {}
             
         private:
 			Type::Index			_typeIndex;

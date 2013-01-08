@@ -13,7 +13,8 @@
 #include "ofMain.h"
 #include "ofxXmlSettings.h"
 
-#include "ofxMSAControlFreak/src/ParameterValueI.h"
+#include "ofxMSAControlFreak/src/Parameter.h"
+//#include "ofxMSAControlFreak/src/ParameterValueI.h"
 
 
 namespace msa {
@@ -90,20 +91,18 @@ namespace msa {
 
             
         protected:
+            virtual void update();
             // override these functions to implement clamping and snapping for any type
             virtual void clamp();
             virtual void snap();
+            virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
+            virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
             
             
             // this actually changes the value
             // while set is used externally, that also does clamp and snap
             // this just sets the variable
             void _setValue(AnyValue v);
-            
-            // from Parameter:
-            virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
-            virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
-            virtual void update();
             
 
 		private:
@@ -333,32 +332,7 @@ namespace msa {
             
             //            _oldValue = *_pvalue;
         }
-        
-        //--------------------------------------------------------------
-        template<typename T> // TODO
-        void ParameterValueT<T>::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
-//			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::writeToXml: " << _parameter->getPath();
-//            
-//            
-////            Parameter::writeToXml(xml, bOnlyValues);  // IMPORTANT: always start with parents write to xml
-//            xml.addAttribute(_parameter->_xmlTag, "value", *_pvalue, _parameter->_xmlTagId);
-//            if(!bOnlyValues) {
-//                xml.addAttribute(_parameter->_xmlTag, "min", _min, _parameter->_xmlTagId);
-//                xml.addAttribute(_parameter->_xmlTag, "max", _max, _parameter->_xmlTagId);
-//                xml.addAttribute(_parameter->_xmlTag, "doClamp", getClamp(), _parameter->_xmlTagId);
-//                xml.addAttribute(_parameter->_xmlTag, "inc", _inc, _parameter->_xmlTagId);
-//                xml.addAttribute(_parameter->_xmlTag, "doSnap", getSnap(), _parameter->_xmlTagId);
-//            }
-        }
-        
-        //--------------------------------------------------------------
-        template<typename T>    // TODO
-        void ParameterValueT<T>::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
-//            //            Parameter::readFromXml(xml, bOnlyValues);
-//            set(xml.getAttribute(_parameter->_xmlTag, "value", T(), _parameter->_xmlTagId));
-//            
-//			ofLogVerbose() << "msa::ControlFreak::ParameterSingleValueT::readFromXml: " << _parameter->getPath();
-        }
+
         
         //--------------------------------------------------------------
         template<typename T>
@@ -373,7 +347,37 @@ namespace msa {
             int ival = floor((*_pvalue - _min) / _inc);
             _setValue(_min + (ival * _inc) );
         }
+        
+        //--------------------------------------------------------------
+        template<typename T>
+        void ParameterValueT<T>::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
+			ofLogVerbose() << "msa::ControlFreak::ParameterValueT<T>::writeToXml: " << _parameter->getPath();
 
+//            Parameter::writeToXml(xml, bOnlyValues);  // IMPORTANT: always start with parents write to xml
+            xml.addAttribute(_parameter->_xmlTag, "value", *_pvalue, _parameter->_xmlTagId);
+            if(!bOnlyValues) {
+                xml.addAttribute(_parameter->_xmlTag, "min", _min, _parameter->_xmlTagId);
+                xml.addAttribute(_parameter->_xmlTag, "max", _max, _parameter->_xmlTagId);
+                xml.addAttribute(_parameter->_xmlTag, "doClamp", getClamp(), _parameter->_xmlTagId);
+                xml.addAttribute(_parameter->_xmlTag, "inc", _inc, _parameter->_xmlTagId);
+                xml.addAttribute(_parameter->_xmlTag, "doSnap", getSnap(), _parameter->_xmlTagId);
+            }
+        }
+        
+        //--------------------------------------------------------------
+        template<typename T>
+        void ParameterValueT<T>::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
+			ofLogVerbose() << "msa::ControlFreak::ParameterValueT<T>::readFromXml: " << _parameter->getPath();
+            //            Parameter::readFromXml(xml, bOnlyValues);
+            set(xml.getAttribute(_parameter->_xmlTag, "value", T(), _parameter->_xmlTagId));
+            if(!bOnlyValues) {
+                setRange(xml.getAttribute(_parameter->_xmlTag, "min", _min, _parameter->_xmlTagId), 
+                         xml.getAttribute(_parameter->_xmlTag, "max", _max, _parameter->_xmlTagId));
+                setIncrement(xml.getAttribute(_parameter->_xmlTag, "inc", _inc, _parameter->_xmlTagId));
+                setClamp(xml.getAttribute(_parameter->_xmlTag, "doClamp", getClamp(), _parameter->_xmlTagId));
+                setSnap(xml.getAttribute(_parameter->_xmlTag, "doSnap", getSnap(), _parameter->_xmlTagId));
+            }
+        }
         
 	}
 }

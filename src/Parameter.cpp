@@ -17,8 +17,8 @@ namespace msa {
         //--------------------------------------------------------------
         Parameter::Parameter(string name, ParameterGroup *parent, Type::Index typeIndex, ParameterValueI *pv)
         : _pparent(parent), _name(name), _typeIndex(typeIndex) {
+            _paramValue = pv;
             if(pv) {
-                _paramValue = pv;
                 _paramValue->setParameter(this);
             }
                 
@@ -26,6 +26,13 @@ namespace msa {
             _xmlTagId = 0;
 //            ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter: " <<  getPath();
         }
+		
+        //--------------------------------------------------------------
+        Parameter::~Parameter() {
+            ofLogVerbose() << "msa::ControlFreak::Parameter::~Parameter(): " << getPath();
+//            if(_paramValue) delete _paramValue;   // TODO
+        }
+        
         
         //--------------------------------------------------------------
 		Parameter& Parameter::setName(string s) {
@@ -34,12 +41,6 @@ namespace msa {
             _name = s;
             return *this;
 		}
-		
-        //--------------------------------------------------------------
-        Parameter::~Parameter() {
-            ofLogVerbose() << "msa::ControlFreak::Parameter::~Parameter(): " << getPath();
-//            if(_paramValue) delete _paramValue;   // TODO
-        }
         
         //--------------------------------------------------------------
 		string Parameter::getName() const {
@@ -84,7 +85,11 @@ namespace msa {
 			return nameForIndex(_typeIndex);
 		}
 
-		
+        //--------------------------------------------------------------
+        ParameterValueI* Parameter::getParamValue() {
+            return _paramValue;
+        }
+
         //--------------------------------------------------------------
         void Parameter::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
 			ofLogVerbose() << "msa::ControlFreak::Parameter::writeToXml: " << getPath();
@@ -92,6 +97,8 @@ namespace msa {
             _xmlTagId = xml.addTag(_xmlTag);
             xml.addAttribute(_xmlTag, "type", getTypeName(), _xmlTagId);
             xml.addAttribute(_xmlTag, "name", getName(), _xmlTagId);
+            if(_paramValue) _paramValue->writeToXml(xml, bOnlyValues);
+
             if(!bOnlyValues) {
                 xml.addAttribute(_xmlTag, "path", getPath(), _xmlTagId);
                 xml.addAttribute(_xmlTag, "tooltip", getTooltip(), _xmlTagId);
@@ -103,6 +110,7 @@ namespace msa {
         void Parameter::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
 			ofLogVerbose() << "msa::ControlFreak::Parameter::readFromXml: " << getPath();
             
+            if(_paramValue) _paramValue->readFromXml(xml, bOnlyValues);
             if(!bOnlyValues) {
                 setTooltip(xml.getAttribute(_xmlTag, "tooltip", "", _xmlTagId));
             }

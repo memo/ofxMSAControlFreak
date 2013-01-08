@@ -27,6 +27,8 @@ namespace msa {
 		class ParameterValueI {
 		public:
             
+            friend class Parameter;
+            
             virtual ~ParameterValueI() {};
             
             virtual void setParameter(Parameter *p) {}
@@ -77,7 +79,13 @@ namespace msa {
             // OPTIONAL
             // track variables and keep values in sync (send NULL to clear)
             virtual ParameterValueI& trackVariable(void *pv) = 0;
-
+            
+        protected:
+            virtual void update() {}
+            virtual void clamp() {}
+            virtual void snap() {}
+            virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues) = 0;
+            virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues) = 0;
 		};
         
         
