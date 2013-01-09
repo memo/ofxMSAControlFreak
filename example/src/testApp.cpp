@@ -168,6 +168,20 @@ void tutorial5() {
 }
 
 
+
+// GROUPS
+void tutorial6() {
+    // GROUPS
+    // you can create Groups inside ParameterGroups
+    // any parameter added after startGroup(....) and before corresponding endGroup() will be created in that group
+    params.startGroup("particles"); // now this becomes the active group for following Parameters
+    params.addBool("enabled");  // 1st Parameter in this Group
+    params.addInt("count");     // 2nd Parameter in this Group
+    params.addFloat("size");    // 3rd Parameter in this Group
+    params.endGroup();          // any future Parameters will now be outside this group
+}
+
+
 //--------------------------------------------------------------
 void testApp::setup(){
 //    ofSetLogLevel(OF_LOG_VERBOSE);
@@ -185,17 +199,10 @@ void testApp::setup(){
     tutorial3();
     tutorial4();
     tutorial5();
+    tutorial6();
+
     
-    
-    // GROUPS
-    // you can create Groups inside ParameterGroups
-    // any parameter added after startGroup(....) and before corresponding endGroup() will be created in that group
-    params.startGroup("particles"); // now this becomes the active group for following Parameters
-    params.addBool("enabled");  // 1st Parameter in this Group
-    params.addInt("count");     // 2nd Parameter in this Group
-    params.addFloat("size");    // 3rd Parameter in this Group
-    params.endGroup();          // any future Parameters will now be outside this group
-    
+    params.clear();
     
     
     
@@ -266,7 +273,7 @@ void testApp::setup(){
     
     //--------------------------------------------------------------
     // clear all parameters (so we have a clean slate to carry on)
-    params.clear();
+//    params.clear();
     
     
     
