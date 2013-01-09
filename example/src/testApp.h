@@ -3,10 +3,6 @@
 
 #include "ofMain.h"
 
-#include "ofxMSAControlFreakGui/src/Gui.h"
-#include "ofxMSAControlFreak/src/ControlFreak.h"
-
-
 class testApp : public ofSimpleApp{
 	
 public:

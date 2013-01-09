@@ -1,14 +1,7 @@
 #include "testApp.h"
-#include "AnyValue.h"
 
-//using namespace msa;
-//using namespace ControlFreak;
-
-// for demonstrating adding any drawable object (that extends ofBaseDraw);
-ofVideoGrabber		vidGrabber;
-unsigned char * 	videoInverted;
-ofTexture			videoTexture;
-
+#include "ofxMSAControlFreakGui/src/Gui.h"
+#include "ofxMSAControlFreak/src/ControlFreak.h"
 
 
 struct Raindrop {
@@ -106,7 +99,7 @@ void tutorial2() {
     // .get(...) and [] operator actually returns a reference to the whole Parameter
     // sometimes this causes ambiguity, so you need to use a type-cast
     ofLogNotice() << "value of 'float2': " << (float)params.get("float2");  // e.g. this works
-//    ofLogNotice() << "value of 'float2': " << params.get("float2");  // e.g. but this will not compile
+    //    ofLogNotice() << "value of 'float2': " << params.get("float2");  // e.g. but this will not compile
 }
 
 
@@ -124,7 +117,7 @@ void tutorial3() {
     ofLogNotice() << "new float1 value " << (float)params.get("float2");
     ofLogNotice() << "new float2 value " << (float)params["float2"];
     
-
+    
     params["float3"] = (float)params["float1"] * (float)params["float2"];
     ofLogNotice() << "new float3 value " << (float)params["float3"];
 }
@@ -137,7 +130,7 @@ void tutorial4() {
     // you can also assign an external variable, which is kept track of and kept in sync, at no performance cost
     
     // assigning the tracked variable upon Parameter creation (i.e. using addXXXX method)
-
+    
     float var1 = 0;
     
     params.addFloat("param1").trackVariable(&var1);
@@ -184,11 +177,11 @@ void tutorial6() {
 
 //--------------------------------------------------------------
 void testApp::setup(){
-//    ofSetLogLevel(OF_LOG_VERBOSE);
- 
+    //    ofSetLogLevel(OF_LOG_VERBOSE);
+    
     
     // create and get a new instance of a ParameterGroup (returned as a ParameterGroupPtr)
-//    params = msa::ControlFreak::ParameterGroup::create("ControlFreak Demo");
+    //    params = msa::ControlFreak::ParameterGroup::create("ControlFreak Demo");
     
     // Set name for our ParameterGroup
     //	params.setName("ControlFreak Demo");
@@ -200,7 +193,7 @@ void testApp::setup(){
     tutorial4();
     tutorial5();
     tutorial6();
-
+    
     
     params.clear();
     
@@ -267,13 +260,13 @@ void testApp::setup(){
     // Option3: List full path (my favorite)
     params["vision.enabled"] = true;
     params["vision.pre-processing.blur.iterations"] = 3;
-
+    
     
     
     
     //--------------------------------------------------------------
     // clear all parameters (so we have a clean slate to carry on)
-//    params.clear();
+    //    params.clear();
     
     
     
@@ -302,13 +295,13 @@ void testApp::setup(){
         params.startGroup("display options"); {
             params.addNamedIndex("shape type").setLabels(3, "circle", "rectangle", "triangle");
             params.addBool("fill").set(true);
-//            params.addColorf32("color");
+            //            params.addColorf32("color");
             params.addFloat("size").setRange(0, 100).set(10);
             params.addFloat("sizeVari").setRange(0, 1).setClamp(true).set(0.5);
-//            {    // should be ofVec2f
-//                params.addFloat("x").setRange(0, 200).set(50);
-//                params.addFloat("y").setRange(0, 200).set(50);
-//            } params.endGroup();
+            //            {    // should be ofVec2f
+            //                params.addFloat("x").setRange(0, 200).set(50);
+            //                params.addFloat("y").setRange(0, 200).set(50);
+            //            } params.endGroup();
         } params.endGroup();
         
         params.addBang("randomize");
@@ -353,7 +346,7 @@ void testApp::setup(){
     
     // you can create groups and add any parameters to that group
     
-   gui.addPage(&params);
+    gui.addPage(&params);
 	gui.setDefaultKeys(true);
 	gui.show();
     
@@ -394,7 +387,7 @@ void testApp::update() {
         params["rain.display options.fill"].setRandom();
         params["rain.display options.size"].setRandom();
         params["rain.display options.sizeVari"].setRandom();
-//        params["rain.display options.size.y"].setRandom();
+        //        params["rain.display options.size.y"].setRandom();
         params["rain.display options.shape type"].setRandom();
     }
     
@@ -402,7 +395,7 @@ void testApp::update() {
     ofVec2f emitterPos = ofVec2f(
                                  params["rain.emitter.x"].getMappedTo(0, ofGetWidth()),  // a fancy method to map the output to this range
                                  params["rain.emitter.y"].getMappedTo(0, ofGetHeight())
-                                                                      );
+                                 );
     float emitterWidth = params["rain.emitter.width"].getMappedTo(0, ofGetWidth());
     float emitterHeight = params["rain.emitter.height"].getMappedTo(0, ofGetHeight());
     float initialVel = params["rain.physics.initialVel"];
