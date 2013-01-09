@@ -54,12 +54,12 @@ namespace msa {
             
             // set and get whether clamping to range is enabled
 			ParameterValueT<T>& setClamp(bool b);
-            bool getClamp() const;
+            bool& getClamp();
             
             // set and get whether snapping is enabled.
             // if enabled, value is snapped to the closest increment (as set by setIncrement())
             ParameterValueT<T>& setSnap(bool b);
-            bool getSnap() const;
+            bool& getSnap();
             
             // set and get increment amount, which snapping snaps to
             // if snapping is disabled, sliders still use this value when using keyboard up/down or inc/dec
@@ -87,14 +87,17 @@ namespace msa {
             // OPTIONAL
             // track variables and keep values in sync (send NULL to clear)
             ParameterValueT<T>& trackVariable(void *pv);
-            
+            virtual void* getTrackedVariable();
 
             
-        protected:
             virtual void update();
+
+        protected:
+        
             // override these functions to implement clamping and snapping for any type
             virtual void clamp();
             virtual void snap();
+            
             virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
             virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
             
@@ -172,9 +175,9 @@ namespace msa {
         template<typename T>
         bool ParameterValueT<T>::hasChanged() {
             // TODO
-            //            bool ret = (*_pvalue != _oldValue);
-            //            if(ret) _oldValue = *_pvalue;
-            return true;
+            bool ret = (*_pvalue != _oldValue);
+            if(ret) _oldValue = *_pvalue;
+            return ret;
         }
         
         //--------------------------------------------------------------
@@ -210,7 +213,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
         template<typename T>
-		bool ParameterValueT<T>::getClamp() const {
+		bool& ParameterValueT<T>::getClamp() {
 			return _doClamp;
 		}
         
@@ -224,7 +227,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-        bool ParameterValueT<T>::getSnap() const {
+        bool& ParameterValueT<T>::getSnap() {
             return _doSnap;
         }
         
@@ -303,6 +306,12 @@ namespace msa {
             return *this;
         }
         
+        
+        //--------------------------------------------------------------
+        template<typename T>
+        void* ParameterValueT<T>::getTrackedVariable() {
+            return _pvalue;
+        }
         
         //--------------------------------------------------------------
         //        //		ParameterValueT<T>& ParameterValueT<T>::addController(Controller *controller) {

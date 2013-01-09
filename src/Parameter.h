@@ -78,12 +78,12 @@ namespace msa {
             
             // set and get whether clamping to range is enabled
 			virtual ParameterValueI& setClamp(bool b) { if(_paramValue) return _paramValue->setClamp(b); }
-            virtual bool getClamp() const { if(_paramValue) return _paramValue->getClamp(); }
+            virtual bool& getClamp() { if(_paramValue) return _paramValue->getClamp(); }
             
             // set and get whether snapping is enabled.
             // if enabled, value is snapped to the closest increment (as set by setIncrement())
             virtual ParameterValueI& setSnap(bool b) { if(_paramValue) return _paramValue->setSnap(b); }
-            virtual bool getSnap() const { if(_paramValue) return _paramValue->getSnap(); }
+            virtual bool& getSnap() { if(_paramValue) return _paramValue->getSnap(); }
             
             // set and get increment amount, which snapping snaps to
             // if snapping is disabled, sliders still use this value when using keyboard up/down or inc/dec
@@ -111,9 +111,15 @@ namespace msa {
             // OPTIONAL
             // track variables and keep values in sync (send NULL to clear)
             virtual ParameterValueI& trackVariable(void *pv) { if(_paramValue) return _paramValue->trackVariable(pv); }
+            virtual void* getTrackedVariable() { if(_paramValue) return _paramValue->getTrackedVariable(); }
             
             
-		protected:
+            virtual void update() { if(_paramValue) _paramValue->update(); }
+            
+        protected:
+            virtual void clamp() { if(_paramValue) _paramValue->clamp(); }
+            virtual void snap() { if(_paramValue) _paramValue->snap(); }
+            
             string              _xmlTag;
             int                 _xmlTagId;
             

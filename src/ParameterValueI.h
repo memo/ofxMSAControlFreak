@@ -11,7 +11,7 @@ Interface for any Parameter that has a value
 #include "ofxXmlSettings.h"
 
 #include "Poco/DynamicAny.h"
-//#include "Poco/Any.h"
+#include "Poco/Any.h"
 
 namespace msa {
 	namespace ControlFreak {
@@ -46,12 +46,12 @@ namespace msa {
             
             // set and get whether clamping to range is enabled
 			virtual ParameterValueI& setClamp(bool b) = 0;
-            virtual bool getClamp() const = 0;
+            virtual bool& getClamp() = 0;
             
             // set and get whether snapping is enabled.
             // if enabled, value is snapped to the closest increment (as set by setIncrement())
             virtual ParameterValueI& setSnap(bool b) = 0;
-            virtual bool getSnap() const = 0;
+            virtual bool& getSnap() = 0;
             
             // set and get increment amount, which snapping snaps to
             // if snapping is disabled, sliders still use this value when using keyboard up/down or inc/dec
@@ -79,11 +79,14 @@ namespace msa {
             // OPTIONAL
             // track variables and keep values in sync (send NULL to clear)
             virtual ParameterValueI& trackVariable(void *pv) = 0;
+            virtual void* getTrackedVariable() = 0;
+            
+            virtual void update() = 0;
             
         protected:
-            virtual void update() {}
-            virtual void clamp() {}
-            virtual void snap() {}
+            virtual void clamp() = 0;
+            virtual void snap() = 0;
+            
             virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues) = 0;
             virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues) = 0;
 		};
