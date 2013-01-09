@@ -260,31 +260,7 @@ void testApp::setup(){
     // Option3: List full path (my favorite)
     params["vision.enabled"] = true;
     params["vision.pre-processing.blur.iterations"] = 3;
-    
-    
-    // TESTERS
-    params.startGroup("Testers");
-    {
-        params.startGroup("floats");
-        {
-            params.addFloat("no clamp, no snap").setRange(0, 5).setIncrement(0.1);
-            params.addFloat("yes clamp, no snap").setRange(0, 5).setIncrement(0.1).setClamp(true);
-            params.addFloat("yes clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(true).setSnap(true);
-            params.addFloat("no clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(false).setSnap(true);
-        }
-        params.endGroup();
-        
-        params.startGroup("ints");
-        {
-            params.addInt("no clamp, no snap").setRange(0, 100).setIncrement(5);
-            params.addInt("yes clamp, no snap").setRange(0, 100).setIncrement(5).setClamp(true);
-            params.addInt("yes clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(true).setSnap(true);
-            params.addInt("no clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(false).setSnap(true);
-        }
-        params.endGroup();
-    }
-    params.endGroup();
-    
+
     
     
     
@@ -331,6 +307,33 @@ void testApp::setup(){
         params.addBang("randomize");
     }
     params.endGroup();
+    
+    
+    
+    
+    // TESTERS
+    params.startGroup("Testers");
+    {
+        params.startGroup("floats");
+        {
+            params.addFloat("no clamp, no snap").setRange(0, 5).setIncrement(0.1);
+            params.addFloat("yes clamp, no snap").setRange(0, 5).setIncrement(0.1).setClamp(true);
+            params.addFloat("yes clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(true).setSnap(true);
+            params.addFloat("no clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(false).setSnap(true);
+        }
+        params.endGroup();
+        
+        params.startGroup("ints");
+        {
+            params.addInt("no clamp, no snap").setRange(0, 100).setIncrement(5);
+            params.addInt("yes clamp, no snap").setRange(0, 100).setIncrement(5).setClamp(true);
+            params.addInt("yes clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(true).setSnap(true);
+            params.addInt("no clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(false).setSnap(true);
+        }
+        params.endGroup();
+    }
+    params.endGroup();
+    
     
     
     // you can add complex types
