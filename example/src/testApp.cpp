@@ -287,8 +287,8 @@ void testApp::setup(){
             params.addFloat("height").setRange(0, 100).setClamp(true).set(20);
         } params.endGroup();
         params.startGroup("physics"); {
-            params.addFloat("initialVelocity").setRange(0, 100).set(10);
-            params.addFloat("initialVelocityVariance").setRange(0, 1).setClamp(true).set(0.5);
+            params.addFloat("initialVel").setRange(0, 100).set(10);
+            params.addFloat("initialVelVari").setRange(0, 1).setClamp(true).set(0.5);
             params.addFloat("spread").setRange(0, 180).set(20).setClamp(true);
             params.addFloat("maxRotSpeed").setRange(0, 10).set(5);
             params.addFloat("gravity").setRange(-1, 1).set(0.1);
@@ -304,7 +304,7 @@ void testApp::setup(){
             params.addBool("fill").set(true);
 //            params.addColorf32("color");
             params.addFloat("size").setRange(0, 100).set(10);
-            params.addFloat("sizeVariance").setRange(0, 1).setClamp(true).set(0.5);
+            params.addFloat("sizeVari").setRange(0, 1).setClamp(true).set(0.5);
 //            {    // should be ofVec2f
 //                params.addFloat("x").setRange(0, 200).set(50);
 //                params.addFloat("y").setRange(0, 200).set(50);
@@ -383,8 +383,8 @@ void testApp::update() {
         params["rain.emitter.y"].setRandom();
         params["rain.emitter.width"].setRandom();
         params["rain.emitter.height"].setRandom();
-        params["rain.physics.initialVelocity"].setRandom();
-        params["rain.physics.initialVelocityVariance"].setRandom();
+        params["rain.physics.initialVel"].setRandom();
+        params["rain.physics.initialVelVari"].setRandom();
         params["rain.physics.spread"].setRandom();
         params["rain.physics.maxRotSpeed"].setRandom();
         params["rain.physics.gravity"].setRandom();
@@ -393,7 +393,7 @@ void testApp::update() {
         params["rain.age.max age"].setRandom();
         params["rain.display options.fill"].setRandom();
         params["rain.display options.size"].setRandom();
-        params["rain.display options.sizeVariance"].setRandom();
+        params["rain.display options.sizeVari"].setRandom();
 //        params["rain.display options.size.y"].setRandom();
         params["rain.display options.shape type"].setRandom();
     }
@@ -405,15 +405,15 @@ void testApp::update() {
                                                                       );
     float emitterWidth = params["rain.emitter.width"].getMappedTo(0, ofGetWidth());
     float emitterHeight = params["rain.emitter.height"].getMappedTo(0, ofGetHeight());
-    float initialVelocity = params["rain.physics.initialVelocity"];
-    float initialVelocityVariance = params["rain.physics.initialVelocityVariance"];
+    float initialVel = params["rain.physics.initialVel"];
+    float initialVelVari = params["rain.physics.initialVelVari"];
     float spread = params["rain.physics.spread"];
     float maxRotSpeed = params["rain.physics.maxRotSpeed"];
     float gravity = params["rain.physics.gravity"];
     float friction = params["rain.physics.friction"];
     float minAge = params["rain.age.min age"];
     float maxAge = params["rain.age.max age"];
-    float sizeVariance = params["rain.display options.sizeVariance"];
+    float sizeVari = params["rain.display options.sizeVari"];
     
     
     // iterate all rain. update position, rotation and speed
@@ -428,11 +428,11 @@ void testApp::update() {
         if(ofGetElapsedTimef() > b.dieTime || !ofInRange(b.pos.x, 1, ofGetWidth()) || !ofInRange(b.pos.y, 1, ofGetHeight())) {
             b.dieTime = ofGetElapsedTimef() + ofRandom(minAge, maxAge);
             b.pos = emitterPos + ofVec2f(ofRandom(-emitterWidth/2, emitterWidth/2), ofRandom(-emitterHeight/2, emitterHeight/2));
-            b.vel = ofVec2f(0, initialVelocity * ofRandom(1 - initialVelocityVariance));
+            b.vel = ofVec2f(0, initialVel * ofRandom(1 - initialVelVari));
             b.vel.rotate(ofRandom(-spread/2, spread/2));
             b.rot = ofRandom(360);
             b.rotSpeed = ofRandom(0, maxRotSpeed) * ofSign(ofRandomf());
-            b.size = ofVec2f(ofRandom(1 - sizeVariance, 1), ofRandom(1 - sizeVariance, 1));
+            b.size = ofVec2f(ofRandom(1 - sizeVari, 1), ofRandom(1 - sizeVari, 1));
         }
     }
     
