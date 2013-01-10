@@ -151,6 +151,8 @@ void tutorial5() {
 
 // GROUPS
 void tutorial6() {
+    ofLogNotice() << "TUTORIAL 6";
+    
     // you can create Groups inside ParameterGroups
     // any parameter added after startGroup(....) and before corresponding endGroup() will be created in that group
     params.startGroup("particles"); // now this becomes the active group for following Parameters
@@ -158,14 +160,11 @@ void tutorial6() {
     params.addInt("count");     // 2nd Parameter in this Group
     params.addFloat("size");    // 3rd Parameter in this Group
     params.endGroup();          // any future Parameters will now be outside this group
-    params.addBool("enabled");
-    params.startGroup("g2"); // now this becomes the active group for following Parameters
-    params.addBool("b1");  // 1st Parameter in this Group
-    params.endGroup();          // any future Parameters will now be outside this group
 }
 
 
 void tutorial7() {
+    ofLogNotice() << "TUTORIAL 7";
     
     // You can even create Groups inside Groups inside Groups .... (until you run out of memory)
     // Parameter names MUST be unique ONLY within the groups they are in
@@ -233,7 +232,7 @@ void tutorial7() {
 
 //--------------------------------------------------------------
 void testApp::setup(){
-    //    ofSetLogLevel(OF_LOG_VERBOSE);
+//    ofSetLogLevel(OF_LOG_VERBOSE);
 
     // OPTIONAL
     // Set name for our ParameterGroup
@@ -245,32 +244,33 @@ void testApp::setup(){
     tutorial3();
     tutorial4();
     tutorial5();
-//    tutorial6();
-//    tutorial7();
+    tutorial6();
+    tutorial7();
     
     
-//    params.startGroup("Snap'n'Clamp");
-//    {
-//        params.startGroup("floats");
-//        {
-//            params.addFloat("no clamp, no snap").setRange(0, 5).setIncrement(0.1);
-//            params.addFloat("yes clamp, no snap").setRange(0, 5).setIncrement(0.1).setClamp(true);
-//            params.addFloat("yes clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(true).setSnap(true);
-//            params.addFloat("no clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(false).setSnap(true);
-//        }
-//        params.endGroup();
-//        
-//        params.startGroup("ints");
-//        {
-//            params.addInt("no clamp, no snap").setRange(0, 100).setIncrement(5);
-//            params.addInt("yes clamp, no snap").setRange(0, 100).setIncrement(5).setClamp(true);
-//            params.addInt("yes clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(true).setSnap(true);
-//            params.addInt("no clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(false).setSnap(true);
-//        }
-//        params.endGroup();
-//    }
-//    params.endGroup();
+    params.startGroup("Snap'n'Clamp");
+    {
+        params.startGroup("floats");
+        {
+            params.addFloat("no clamp, no snap").setRange(0, 5).setIncrement(0.1);
+            params.addFloat("yes clamp, no snap").setRange(0, 5).setIncrement(0.1).setClamp(true);
+            params.addFloat("yes clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(true).setSnap(true);
+            params.addFloat("no clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(false).setSnap(true);
+        }
+        params.endGroup();
+        
+        params.startGroup("ints");
+        {
+            params.addInt("no clamp, no snap").setRange(0, 100).setIncrement(5);
+            params.addInt("yes clamp, no snap").setRange(0, 100).setIncrement(5).setClamp(true);
+            params.addInt("yes clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(true).setSnap(true);
+            params.addInt("no clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(false).setSnap(true);
+        }
+        params.endGroup();
+    }
+    params.endGroup();
 
+    
     gui.addPage(&params);
 	gui.setDefaultKeys(true);
 	gui.show();
@@ -291,6 +291,7 @@ void testApp::update() {
 //--------------------------------------------------------------
 void testApp::draw(){
     // gui.draw();
+    ofDrawBitmapString(ofToString(ofGetFrameRate()), ofGetWidth()-100, 30);
 }
 
 void testApp::exit() {

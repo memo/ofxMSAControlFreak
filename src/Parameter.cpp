@@ -65,7 +65,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
         void Parameter::setParent(ParameterGroup *parent) {
-			ofLogVerbose() << "msa::ControlFreak::Parameter::setName: " << getPath() << " " << (parent ? parent->getName(): "NULL");
+			ofLogVerbose() << "msa::ControlFreak::Parameter::setParent: '" << getPath() << "' to '" << (parent ? parent->getName(): "NULL") << "'";
             _pparent = parent;
         }
         
