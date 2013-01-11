@@ -55,7 +55,9 @@
 
 #include "ofxMSAControlFreak/src/Parameter.h"
 #include "ofxMSAControlFreak/src/ParameterValueT.h"
-#include "ofxMSAControlFreak/src/ParameterNumbers.h"
+#include "ofxMSAControlFreak/src/ParameterBool.h"
+#include "ofxMSAControlFreak/src/ParameterInt.h"
+#include "ofxMSAControlFreak/src/ParameterFloat.h"
 #include "ofxMSAControlFreak/src/ParameterNamedIndex.h"
 #include "ofxMSAControlFreak/src/ParameterGroup.h"
 #include "ofxMSAControlFreak/src/ParameterVec3f.h"
