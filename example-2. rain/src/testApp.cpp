@@ -226,7 +226,7 @@ void testApp::draw(){
     // set fill options
     if(params["display options.fill"]) ofFill();
     else ofNoFill();
-    
+
     // cache size value
     float size = params["display options.size"];
     

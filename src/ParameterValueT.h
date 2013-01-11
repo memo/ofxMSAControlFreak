@@ -121,6 +121,7 @@ namespace msa {
             
 			bool    _doClamp;
             bool    _doSnap;
+            bool    _hasChanged;
 //			vector<Controller*>		_controllers;
 		};
         
@@ -175,9 +176,9 @@ namespace msa {
         template<typename T>
         bool ParameterValueT<T>::hasChanged() {
             // TODO
-            bool ret = (*_pvalue != _oldValue);
-            if(ret) _oldValue = *_pvalue;
-            return ret;
+//            bool changed = (*_pvalue != _oldValue);
+//            if(changed) _oldValue = *_pvalue;
+            return _hasChanged;
         }
         
         //--------------------------------------------------------------
@@ -338,8 +339,10 @@ namespace msa {
         void ParameterValueT<T>::update() {
             if(_doClamp) clamp();
             if(_doSnap) snap();
-            
-            //            _oldValue = *_pvalue;
+            _hasChanged = (*_pvalue != _oldValue);
+            if(_hasChanged) {
+                _oldValue = *_pvalue;
+            }
         }
 
         
