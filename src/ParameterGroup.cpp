@@ -72,7 +72,7 @@ namespace msa {
             // when saving, always append suffix
             string fullFilename = _filename;
 //            if(filename.empty())
-                fullFilename +=  bOnlyValues ? ".values.xml": ".schema.xml";
+                fullFilename +=  bOnlyValues ? ".xml": "-schema.xml";
             
             ofxXmlSettings xml;
             xml.addTag("ofxMSAControlFreak");
@@ -90,7 +90,7 @@ namespace msa {
             
             // when loading, only append suffix if no filename is passed in
             string fullFilename = _filename;
-            if(filename.empty()) fullFilename +=  bOnlyValues ? ".values.xml": ".schema.xml";
+            if(filename.empty()) fullFilename +=  bOnlyValues ? ".xml": "-schema.xml";
             
             ofxXmlSettings xml;
             bool b = xml.loadFile(fullFilename);

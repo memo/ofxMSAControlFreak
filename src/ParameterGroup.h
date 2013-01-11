@@ -34,7 +34,7 @@ namespace msa {
 			void setFilename(string filename = "");
 			
             // save and load all parameter (values only) to an xml file
-            // leave filename blank for default (inherits name of parameter group + "-values.xml")
+            // leave filename blank for default (inherits name of parameter group + ".xml")
 			bool saveXmlValues(string filename = "");
 			bool loadXmlValues(string filename = "");
 
