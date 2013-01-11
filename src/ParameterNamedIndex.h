@@ -57,8 +57,8 @@ namespace msa {
 			vector<string> _labels;
             
             // from Parameter
-            virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
-            virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
+            virtual void writeToXml(ofxXmlSettings &xml, bool bFullSchema);
+            virtual void readFromXml(ofxXmlSettings &xml, bool bFullSchema);
 		};
 
 	}

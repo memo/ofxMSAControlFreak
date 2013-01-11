@@ -38,71 +38,72 @@ namespace msa {
         //--------------------------------------------------------------
 		// if parameter non empty, saves the filename
 		void ParameterGroup::setFilename(string filename) {
+            _filename = filename;
+		}
+        
+        //--------------------------------------------------------------
+        string ParameterGroup::getFullFilename(string filename, bool bFullSchema) {
+            setFilename(filename);
 			if(filename.empty() == false) _filename = filename;
             if(_filename.empty()) {
                 if(!ofDirectory::doesDirectoryExist("presets")) ofDirectory::createDirectory("presets");
                 _filename = "presets/" + getName();
             }
-		}
+            
+            string fullFilename = _filename;
+            if(filename.empty()) fullFilename +=  bFullSchema ? "-schema.xml" :  ".xml";
+            string ext = ofFilePath::getFileExt(fullFilename);
+            if(ext.empty()) fullFilename += ".xml";
+            
+            return fullFilename;
+        }
+
 		
         //--------------------------------------------------------------
         bool ParameterGroup::saveXmlValues(string filename) {
-            return saveXml(filename, true);
-        }
-        
-        //--------------------------------------------------------------
-        bool ParameterGroup::loadXmlValues(string filename) {
-            return loadXml(filename, true);
-        }
-        
-        //--------------------------------------------------------------
-        bool ParameterGroup::saveXmlSchema(string filename) {
             return saveXml(filename, false);
         }
         
         //--------------------------------------------------------------
-        bool ParameterGroup::loadXmlSchema(string filename) {
+        bool ParameterGroup::loadXmlValues(string filename) {
             return loadXml(filename, false);
+        }
+        
+        //--------------------------------------------------------------
+        bool ParameterGroup::saveXmlSchema(string filename) {
+            return saveXml(filename, true);
+        }
+        
+        //--------------------------------------------------------------
+        bool ParameterGroup::loadXmlSchema(string filename) {
+            return loadXml(filename, true);
         }
 
         //--------------------------------------------------------------
-		bool ParameterGroup::saveXml(string filename, bool bOnlyValues) {
-			setFilename(filename);
-            
-            // when saving, always append suffix
-            string fullFilename = _filename;
-//            if(filename.empty())
-                fullFilename +=  bOnlyValues ? ".xml": "-schema.xml";
-            
+		bool ParameterGroup::saveXml(string filename, bool bFullSchema) {
             ofxXmlSettings xml;
             xml.addTag("ofxMSAControlFreak");
             xml.addAttribute("ofxMSAControlFreak", "version", 1.0f, 0); // TODO: global version number?
-            xml.addAttribute("ofxMSAControlFreak", "bOnlyValues", bOnlyValues, 0);
+            xml.addAttribute("ofxMSAControlFreak", "bFullSchema", bFullSchema, 0);
             xml.pushTag("ofxMSAControlFreak");
-            writeToXml(xml, bOnlyValues);
+            writeToXml(xml, bFullSchema);
             xml.popTag();
-            return xml.saveFile(fullFilename);
+            return xml.saveFile(getFullFilename(filename, bFullSchema));
 		}
 		
         //--------------------------------------------------------------
-		bool ParameterGroup::loadXml(string filename, bool bOnlyValues) {
-			setFilename(filename);
-            
-            // when loading, only append suffix if no filename is passed in
-            string fullFilename = _filename;
-            if(filename.empty()) fullFilename +=  bOnlyValues ? ".xml": "-schema.xml";
-            
+		bool ParameterGroup::loadXml(string filename, bool bFullSchema) {
             ofxXmlSettings xml;
-            bool b = xml.loadFile(fullFilename);
+            bool b = xml.loadFile(getFullFilename(filename, bFullSchema));
             if(!b) {
                 ofLogError() << "msa::ControlFreak::ParameterGroup::loadXml: file not found " << filename;
                 return false;
             }
             
             // only do full schema if it's requested, and the xml has the data
-            bool bOnlyValuesInXml = xml.getAttribute("ofxMSAControlFreak", "bOnlyValues", 1, 0);
-            if(bOnlyValues != bOnlyValuesInXml) {
-                if(bOnlyValuesInXml) {
+            bool bFullSchemaInXml = xml.getAttribute("ofxMSAControlFreak", "bFullSchema", 1, 0);
+            if(bFullSchema != bFullSchemaInXml) {
+                if(bFullSchema) {
                     ofLogWarning() << "msa::ControlFreak::ParameterGroup::loadXml: requested full schema load but XML contains only values. Loading just values.";
                 } else {
                     ofLogWarning() << "msa::ControlFreak::ParameterGroup::loadXml: requested only values load but XML contains full schema. Loading just values.";
@@ -110,21 +111,21 @@ namespace msa {
             }
             
             xml.pushTag("ofxMSAControlFreak");
-            readFromXml(xml, bOnlyValues);
+            readFromXml(xml, bFullSchema);
             xml.popTag();
             return b;
 		}
         
         //--------------------------------------------------------------
-        void ParameterGroup::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
+        void ParameterGroup::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::writeToXml: " << getPath();
             
-            Parameter::writeToXml(xml, bOnlyValues);
+            Parameter::writeToXml(xml, bFullSchema);
             xml.pushTag(_xmlTag, _xmlTagId);
             
             for(int i=0; i<_paramArr.size(); i++) {
                 Parameter &p = *_paramArr[i];
-                p.writeToXml(xml, bOnlyValues);
+                p.writeToXml(xml, bFullSchema);
             }
             
             xml.popTag();
@@ -132,10 +133,10 @@ namespace msa {
         
         // TODO: if xml contains more panels, only load panel which is relevant. if xml contains less panels, only load panels which exist
         //--------------------------------------------------------------
-        void ParameterGroup::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
+        void ParameterGroup::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::readFromXml: " << getPath() << " pushLevel: " << xml.getPushLevel();
 
-            Parameter::readFromXml(xml, bOnlyValues);
+            Parameter::readFromXml(xml, bFullSchema);
             string s = xml.getAttribute(_xmlTag, "name", "", _xmlTagId);
             if(s != getName()) {
                 ofLogError() << "msa::ControlFreak::ParameterGroup::readFromXml: trying to load '" << s << "' into ParameterGroup '" << getPath() << "'";
@@ -152,7 +153,7 @@ namespace msa {
                 Parameter *p = getPtr(xname);
                 if(p) {
                     p->_xmlTagId = i;
-                    p->readFromXml(xml, bOnlyValues);
+                    p->readFromXml(xml, bFullSchema);
                 } else {
                     ofLogWarning() << "Parameter " << xname << " (" << xpath << ") not found in group" << getPath();
                     // TODO: add missing controls if in schema mode?

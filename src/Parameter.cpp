@@ -85,15 +85,15 @@ namespace msa {
         }
 
         //--------------------------------------------------------------
-        void Parameter::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
+        void Parameter::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
 			ofLogVerbose() << "msa::ControlFreak::Parameter::writeToXml: " << getPath();
 
             _xmlTagId = xml.addTag(_xmlTag);
             xml.addAttribute(_xmlTag, "type", getTypeName(), _xmlTagId);
             xml.addAttribute(_xmlTag, "name", getName(), _xmlTagId);
-            if(_paramValue) _paramValue->writeToXml(xml, bOnlyValues);
+            if(_paramValue) _paramValue->writeToXml(xml, bFullSchema);
 
-            if(!bOnlyValues) {
+            if(bFullSchema) {
                 xml.addAttribute(_xmlTag, "path", getPath(), _xmlTagId);
                 xml.addAttribute(_xmlTag, "tooltip", getTooltip(), _xmlTagId);
                 //            xml.addAttribute(_xmlTag, "parent", _pparent ? _pparent->getName(): "none", _xmlTagId);
@@ -101,11 +101,11 @@ namespace msa {
         }
         
         //--------------------------------------------------------------
-        void Parameter::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
+        void Parameter::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
 			ofLogVerbose() << "msa::ControlFreak::Parameter::readFromXml: " << getPath();
             
-            if(_paramValue) _paramValue->readFromXml(xml, bOnlyValues);
-            if(!bOnlyValues) {
+            if(_paramValue) _paramValue->readFromXml(xml, bFullSchema);
+            if(bFullSchema) {
                 setTooltip(xml.getAttribute(_xmlTag, "tooltip", "", _xmlTagId));
             }
         }

@@ -124,8 +124,8 @@ namespace msa {
             
             void setParent(ParameterGroup *parent);
             
-            virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
-            virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
+            virtual void writeToXml(ofxXmlSettings &xml, bool bFullSchema);
+            virtual void readFromXml(ofxXmlSettings &xml, bool bFullSchema);
             
         private:
 			string				_name;

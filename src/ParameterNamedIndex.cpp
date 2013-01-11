@@ -76,11 +76,11 @@ namespace msa {
 
 
         //--------------------------------------------------------------
-        void ParameterNamedIndex::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
+        void ParameterNamedIndex::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::writeToXml: " << getPath();
             
-            ParameterInt::writeToXml(xml, bOnlyValues);  // IMPORTANT: always start with parents write to xml
-            if(!bOnlyValues) {
+            ParameterInt::writeToXml(xml, bFullSchema);  // IMPORTANT: always start with parents write to xml
+            if(bFullSchema) {
                 xml.addAttribute(_xmlTag, "selectedLabel", getSelectedLabel(), _xmlTagId);
                 xml.pushTag(_xmlTag, _xmlTagId);
                 for(int i=0; i<_labels.size(); i++) {
@@ -91,10 +91,10 @@ namespace msa {
         }
         
         //--------------------------------------------------------------
-        void ParameterNamedIndex::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
+        void ParameterNamedIndex::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::readFromXml: " << getPath();
             
-            ParameterInt::readFromXml(xml, bOnlyValues);
+            ParameterInt::readFromXml(xml, bFullSchema);
         }
         
         

@@ -115,6 +115,8 @@ namespace msa {
         
         
         protected:
+            
+            string getFullFilename(string filename, bool bFullSchema);
 
 			map<string, Parameter*>	_paramMap;		// map for all parameters
 			vector<Parameter*>	_paramArr;		// array needed to access sequentially (for display etc.)

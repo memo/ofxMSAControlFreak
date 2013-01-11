@@ -87,8 +87,8 @@ namespace msa {
             virtual void clamp() = 0;
             virtual void snap() = 0;
             
-            virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues) = 0;
-            virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues) = 0;
+            virtual void writeToXml(ofxXmlSettings &xml, bool bFullSchema) = 0;
+            virtual void readFromXml(ofxXmlSettings &xml, bool bFullSchema) = 0;
 		};
         
         

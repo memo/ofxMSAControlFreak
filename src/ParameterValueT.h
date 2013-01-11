@@ -98,8 +98,8 @@ namespace msa {
             virtual void clamp();
             virtual void snap();
             
-            virtual void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
-            virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
+            virtual void writeToXml(ofxXmlSettings &xml, bool bFullSchema);
+            virtual void readFromXml(ofxXmlSettings &xml, bool bFullSchema);
             
             
             // this actually changes the value
@@ -362,12 +362,12 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-        void ParameterValueT<T>::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
+        void ParameterValueT<T>::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterValueT<T>::writeToXml: " << _parameter->getPath();
 
-//            Parameter::writeToXml(xml, bOnlyValues);  // IMPORTANT: always start with parents write to xml
+//            Parameter::writeToXml(xml, bFullSchema);  // IMPORTANT: always start with parents write to xml
             xml.addAttribute(_parameter->_xmlTag, "value", *_pvalue, _parameter->_xmlTagId);
-            if(!bOnlyValues) {
+            if(bFullSchema) {
                 xml.addAttribute(_parameter->_xmlTag, "min", _min, _parameter->_xmlTagId);
                 xml.addAttribute(_parameter->_xmlTag, "max", _max, _parameter->_xmlTagId);
                 xml.addAttribute(_parameter->_xmlTag, "doClamp", getClamp(), _parameter->_xmlTagId);
@@ -378,11 +378,11 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-        void ParameterValueT<T>::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
+        void ParameterValueT<T>::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterValueT<T>::readFromXml: " << _parameter->getPath();
-            //            Parameter::readFromXml(xml, bOnlyValues);
+            //            Parameter::readFromXml(xml, bFullSchema);
             set(xml.getAttribute(_parameter->_xmlTag, "value", T(), _parameter->_xmlTagId));
-            if(!bOnlyValues) {
+            if(bFullSchema) {
                 setRange(xml.getAttribute(_parameter->_xmlTag, "min", _min, _parameter->_xmlTagId), 
                          xml.getAttribute(_parameter->_xmlTag, "max", _max, _parameter->_xmlTagId));
                 setIncrement(xml.getAttribute(_parameter->_xmlTag, "inc", _inc, _parameter->_xmlTagId));
