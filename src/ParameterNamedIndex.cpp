@@ -56,7 +56,7 @@ namespace msa {
         //--------------------------------------------------------------
         string ParameterNamedIndex::getLabel(int i) {
 //            i = ofClamp(i, 0, getNumLabels()-1);
-            return _labels[i];
+            return _labels.size() ? _labels[i] : "empty";
         }
 
         //--------------------------------------------------------------
@@ -64,7 +64,11 @@ namespace msa {
 			return _labels;
 		}
 		
-        
+        //--------------------------------------------------------------
+        void ParameterNamedIndex::clearLabels() {
+            _labels.clear();
+        }
+
         //--------------------------------------------------------------
         void ParameterNamedIndex::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::writeToXml: " << getPath();

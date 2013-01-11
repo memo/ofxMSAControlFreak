@@ -33,6 +33,7 @@ namespace msa {
             string getLabel(int i);
 			string getSelectedLabel();
 			vector<string>& getLabels();
+            void clearLabels();
 			
 		protected:
 			vector<string> _labels;
