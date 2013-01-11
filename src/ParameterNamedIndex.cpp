@@ -68,6 +68,12 @@ namespace msa {
         void ParameterNamedIndex::clearLabels() {
             _labels.clear();
         }
+        
+        //--------------------------------------------------------------
+        void ParameterNamedIndex::addLabel(string s) {
+            _labels.push_back(s);
+        }
+
 
         //--------------------------------------------------------------
         void ParameterNamedIndex::writeToXml(ofxXmlSettings &xml, bool bOnlyValues) {

@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "ofxMSAControlFreak/src/ParameterNumbers.h"
+#include "ofxMSAControlFreak/src/ParameterInt.h"
 
 
 namespace msa {
@@ -20,7 +20,7 @@ namespace msa {
 			friend class ParameterGroup;
             
 			ParameterNamedIndex(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kNamedIndex)
-            : ParameterInt(name, parent, typeIndex) { setClamp(true); }
+            : ParameterInt(name, parent, typeIndex) { setClamp(true); setMode(kDropdown); }
           
             template <typename T> T operator=(const T & v) { set(v); }
 			template <typename T> operator T() const { return value(); }
@@ -34,8 +34,26 @@ namespace msa {
 			string getSelectedLabel();
 			vector<string>& getLabels();
             void clearLabels();
+            void addLabel(string s);
+            
+            enum Mode {
+                kDropdown,
+                kList,
+            };
+            
+            ParameterNamedIndex& setMode(Mode mode) {
+                _mode = mode;
+                return *this;
+            }
+            
+            Mode getMode() {
+                return _mode;
+            }
+            
+
 			
 		protected:
+            Mode _mode;
 			vector<string> _labels;
             
             // from Parameter
