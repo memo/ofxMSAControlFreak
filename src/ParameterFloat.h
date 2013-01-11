@@ -17,8 +17,8 @@ namespace msa {
             template <typename T> T operator=(const T & v) { set(v); }
 			template <typename T> operator T() const { return value(); }
             
-            ParameterFloat(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kFloat)
-            : Parameter(name, parent, typeIndex, new ParameterValueT<float>()) { setRange(0.0f, 1.0f); setIncrement(0.01f); }
+            ParameterFloat(string name, ParameterGroup *parent)
+            : Parameter(name, parent, new ParameterValueT<float>()) { setRange(0.0f, 1.0f); setIncrement(0.01f); }
         };
         
     }

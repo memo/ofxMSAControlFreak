@@ -17,8 +17,8 @@ namespace msa {
             template <typename T> T operator=(const T & v) { set(v); }
 			template <typename T> operator T() const { return value(); }
             
-            ParameterBool(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kBool)
-            : Parameter(name, parent, typeIndex, new ParameterValueT<bool>()) { setRange(0, 1); setIncrement(1); setMode(kToggle); }
+            ParameterBool(string name, ParameterGroup *parent)
+            : Parameter(name, parent, new ParameterValueT<bool>()) { setRange(0, 1); setIncrement(1); setMode(kToggle); }
             
             
             enum Mode {

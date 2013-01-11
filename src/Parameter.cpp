@@ -15,8 +15,8 @@ namespace msa {
 
         
         //--------------------------------------------------------------
-        Parameter::Parameter(string name, ParameterGroup *parent, Type::Index typeIndex, ParameterValueI *pv)
-        : _pparent(parent), _name(name), _typeIndex(typeIndex) {
+        Parameter::Parameter(string name, ParameterGroup *parent, ParameterValueI *pv)
+        : _pparent(parent), _name(name) {
             _paramValue = pv;
             if(pv) {
                 _paramValue->setParameter(this);
@@ -74,15 +74,9 @@ namespace msa {
             return _pparent;
         }
 
-
-        //--------------------------------------------------------------
-		Type::Index Parameter::getType() const {
-			return _typeIndex;
-		}
-		
         //--------------------------------------------------------------
 		string Parameter::getTypeName() const {
-			return nameForIndex(_typeIndex);
+			return typeid(*this).name();
 		}
 
         //--------------------------------------------------------------

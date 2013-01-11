@@ -12,8 +12,8 @@ namespace msa {
     namespace ControlFreak {
         
         //--------------------------------------------------------------
-		ParameterGroup::ParameterGroup(string name, ParameterGroup *parent, Type::Index typeIndex)
-        : Parameter(name, parent, typeIndex) {
+		ParameterGroup::ParameterGroup(string name, ParameterGroup *parent)
+        : Parameter(name, parent) {
             clear();
 //            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup: " <<  getPath();
         }
@@ -130,6 +130,7 @@ namespace msa {
             xml.popTag();
         }
         
+        // TODO: if xml contains more panels, only load panel which is relevant. if xml contains less panels, only load panels which exist
         //--------------------------------------------------------------
         void ParameterGroup::readFromXml(ofxXmlSettings &xml, bool bOnlyValues) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::readFromXml: " << getPath() << " pushLevel: " << xml.getPushLevel();
@@ -154,7 +155,7 @@ namespace msa {
                     p->readFromXml(xml, bOnlyValues);
                 } else {
                     ofLogWarning() << "Parameter " << xname << " (" << xpath << ") not found in group" << getPath();
-                    // TODO: add?
+                    // TODO: add missing controls if in schema mode?
                 }
             }
             
@@ -176,19 +177,19 @@ namespace msa {
         //--------------------------------------------------------------
 		ParameterInt& ParameterGroup::addInt(string name) {
             if(_paramMap.find(name) != _paramMap.end()) return get<ParameterInt>(name);
-            return (ParameterInt&) addParameter(new ParameterInt(name, _groupStack.top(), Type::kInt));
+            return (ParameterInt&) addParameter(new ParameterInt(name, _groupStack.top()));
 		}
 		
         //--------------------------------------------------------------
 		ParameterFloat& ParameterGroup::addFloat(string name) {
             if(_paramMap.find(name) != _paramMap.end()) return get<ParameterFloat>(name);
-			return (ParameterFloat&) addParameter(new ParameterFloat(name, _groupStack.top(), Type::kFloat));
+			return (ParameterFloat&) addParameter(new ParameterFloat(name, _groupStack.top()));
 		}
 		
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBool(string name) {
             if(_paramMap.find(name) != _paramMap.end()) return get<ParameterBool>(name);
-            ParameterBool *p = new ParameterBool(name, _groupStack.top(), Type::kBool);
+            ParameterBool *p = new ParameterBool(name, _groupStack.top());
             p->setMode(ParameterBool::kToggle);
             addParameter(p);
 			return *p;
@@ -197,7 +198,7 @@ namespace msa {
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBang(string name) {
             if(_paramMap.find(name) != _paramMap.end()) return get<ParameterBool>(name);
-            ParameterBool *p = new ParameterBool(name, _groupStack.top(), Type::kBool);
+            ParameterBool *p = new ParameterBool(name, _groupStack.top());
             p->setMode(ParameterBool::kBang);
             addParameter(p);
 			return *p;

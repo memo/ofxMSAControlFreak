@@ -19,26 +19,5 @@ namespace msa {
         void setPathDivider(char divider = '.');
         char getPathDivider();
 
-        namespace Type {
-            enum Index {
-                kUnknown,
-                kFloat,
-                kInt,
-                kBool,
-                kNamedIndex,
-                kGroup,
-                kVec2f,
-                kVec3f,
-                kVec4f,
-                kColoru8,
-                kColorf32,
-                kNumTypes
-            };
-
-            Type::Index indexForName(string s);
-            string nameForIndex(Type::Index i);
-        }
-        
-        
 	}
 }

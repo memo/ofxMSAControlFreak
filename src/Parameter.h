@@ -34,7 +34,7 @@ namespace msa {
             template<typename T>
             friend class ParameterValueT;
             
-			Parameter(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kUnknown, ParameterValueI *pv = NULL);
+			Parameter(string name, ParameterGroup *parent, ParameterValueI *pv = NULL);
 			virtual ~Parameter();
             
             Parameter& setName(string s);
@@ -47,7 +47,6 @@ namespace msa {
 
             ParameterGroup* getParent() const;
             
-			Type::Index getType() const;
 			string getTypeName() const;
             
             
@@ -129,7 +128,6 @@ namespace msa {
             virtual void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
             
         private:
-			Type::Index			_typeIndex;
 			string				_name;
             string              _tooltip;
 			ParameterGroup		*_pparent;

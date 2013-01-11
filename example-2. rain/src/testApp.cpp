@@ -24,6 +24,7 @@ msa::ControlFreak::ParameterGroup params;
 msa::ControlFreak::gui::Gui gui;
 
 
+
 //--------------------------------------------------------------
 void testApp::setup(){
     //    ofSetLogLevel(OF_LOG_VERBOSE);

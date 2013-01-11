@@ -19,8 +19,8 @@ namespace msa {
 			
 			friend class ParameterGroup;
             
-			ParameterNamedIndex(string name, ParameterGroup *parent, Type::Index typeIndex = Type::kNamedIndex)
-            : ParameterInt(name, parent, typeIndex) { setClamp(true); setMode(kDropdown); }
+			ParameterNamedIndex(string name, ParameterGroup *parent)
+            : ParameterInt(name, parent) { setClamp(true); setMode(kDropdown); }
           
             template <typename T> T operator=(const T & v) { set(v); }
 			template <typename T> operator T() const { return value(); }
