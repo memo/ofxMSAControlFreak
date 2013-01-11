@@ -36,8 +36,8 @@ void tutorial1() {
     params.addInt("int4").setIncrement(5);                  // create and set increment value (e.g. if you use up/down on keyboard)
     params.addInt("int5").setIncrement(5).setSnap(true);    // create and enable snap, so even if you use mouse or any other means, values always snap
     
-    params.addBool("bool2").set(true);                 // create and set value. default value for bool is 0
-    params.addBool("bool3").setMode(msa::ControlFreak::ParameterBool::kBang);                  // create and enable momentary bool (i.e. a button, or 'bang')
+    params.addBool("toggle (bool)").set(true);                 // create and set value. default value for bool is 0
+    params.addBool("bang (bool)").setMode(msa::ControlFreak::ParameterBool::kBang);                  // create and enable momentary bool (i.e. a button, or 'bang')
     
     // NOTE: The Parameter names used must be unique!
     
@@ -270,6 +270,8 @@ void testApp::setup(){
     }
     params.endGroup();
 
+    //	params.loadFromInfo();
+
     
     gui.addPage(&params);
 	gui.setDefaultKeys(true);
@@ -278,7 +280,6 @@ void testApp::setup(){
     
     ofBackground(0, 0, 0);
 	ofSetVerticalSync(true);
-    //	params.loadFromInfo();
 }
 
 
@@ -289,9 +290,25 @@ void testApp::update() {
 }
 
 //--------------------------------------------------------------
-void testApp::draw(){
-    // gui.draw();
+void testApp::draw() {
+    
+    // draw something random and colorful
+    ofSetRectMode(OF_RECTMODE_CENTER);
+    float t = ofGetElapsedTimef()*0.5;
+    ofBackground(ofNoise(t)*255, ofNoise(t+28.234)*255, ofNoise(t+85.732)*255);
+    for(int i=0;i<50; i++) {
+        float f = t*0.4 + 34.7324 + i * 258.60293;
+        ofSetColor(ofNoise(f+92.8274)*255, ofNoise(f+8723.34576)*255, ofNoise(f+4768.976)*255);
+        ofPushMatrix();
+        ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
+        ofTranslate(ofSignedNoise(f+7682.28476)*ofGetWidth(), ofSignedNoise(f+283.525)*ofGetHeight());
+        ofRotate(ofSignedNoise(f*0.3+193.56259)*360);
+        ofRect(0, 0, ofSignedNoise(f*0.4+9273.442)*ofGetWidth(), ofSignedNoise(f*0.4+18363.5652)*ofGetHeight());
+        ofPopMatrix();
+    }
+    ofSetColor(255, 255, 255);
     ofDrawBitmapString(ofToString(ofGetFrameRate()), ofGetWidth()-100, 30);
+    // gui.draw();
 }
 
 void testApp::exit() {
