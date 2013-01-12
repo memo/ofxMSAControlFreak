@@ -26,25 +26,9 @@ namespace msa {
             
             ParameterGroup(string name = "MSAControlFreak", ParameterGroup *parent = NULL);
             ~ParameterGroup();
-            
-            // if name is omitted, last used name is used (by default same as group name)
-			void setFilename(string filename = "");
-			
-            // save and load all parameter (values only) to an xml file
-            // leave filename blank for default (inherits name of parameter group + ".xml")
-			bool saveXmlValues(string filename = "");
-			bool loadXmlValues(string filename = "");
 
-            // save and load all parameter (full schema) to an xml file
-            // leave filename blank for default (inherits name of parameter group + "-schema.xml")
-			bool saveXmlSchema(string filename = "");
-			bool loadXmlSchema(string filename = "");
             
-            // write or read all parameters to an xml variable
-            void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
-            void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
-            
-            // call this every frame to make sure any external controllers (e.g. midi, osc etc.) stay in sync
+            // call this once every frame to make sure any external controllers (e.g. midi, osc etc.) stay in sync and Parameter::hasChanged() is correct
             void update();
             
             
@@ -82,25 +66,24 @@ namespace msa {
             
 
             // get Parameter by index (returns reference to Parameter)
-            // they throw an exception if parameter doesn't exist
+            // throws an exception if parameter doesn't exist
             Parameter& get(int index) const;
             Parameter& operator[](int index) const;
             
             
             // get Parameter by path (returns reference to Parameter)
-            // they throw an exception if parameter doesn't exist
+            // throws an exception if parameter doesn't exist
             Parameter& get(string path) const;
             Parameter& operator[](string path) const;
             Parameter& operator[](const char* path) const;
 
-
-            // returns a pointer to the Parameter (so you can check against NULL to see if it exists)
+            // returns a pointer to the Parameter (so you can check against NULL to see if it exists and avoid an exception)
             Parameter* getPtr(string path) const;
 
             
             // get a reference or pointer to a Group
             // same as the get() above, but with a type-cast in the method
-            ParameterGroup& getGroup(string path) const;      // throws exception of group doesn't exist
+            ParameterGroup& getGroup(string path) const;      // throws exception if group doesn't exist
             ParameterGroup* getGroupPtr(string path) const;   // returns NULL if group doesn't exist
 
             
@@ -110,6 +93,28 @@ namespace msa {
             template <typename ParameterType> ParameterType* getPtr(string path) const;
             
             
+            
+            //---- Saving/loading from XML -----------------------
+
+            // if name is omitted, last used name is used (by default same as group name)
+			void setFilename(string filename = "");
+			
+            // save and load all parameter (values only) to an xml file
+            // leave filename blank for default (inherits name of parameter group + ".xml")
+			bool saveXmlValues(string filename = "");
+			bool loadXmlValues(string filename = "");
+            
+            // save and load all parameter (full schema) to an xml file
+            // leave filename blank for default (inherits name of parameter group + "-schema.xml")
+			bool saveXmlSchema(string filename = "");
+			bool loadXmlSchema(string filename = "");
+            
+            // write or read all parameters to an xml variable
+            void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
+            void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
+            
+
+        
         protected:
             
             string getFullFilename(string filename, bool bFullSchema);
