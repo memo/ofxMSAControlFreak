@@ -172,13 +172,13 @@ namespace msa {
         //--------------------------------------------------------------
 		ParameterInt& ParameterGroup::addInt(string name) {
             if(_params.exists(name)) return get<ParameterInt>(name);
-            return (ParameterInt&) addParameter(new ParameterInt(name, _groupStack.top()));
+            return (ParameterInt&) add(new ParameterInt(name, _groupStack.top()));
 		}
 		
         //--------------------------------------------------------------
 		ParameterFloat& ParameterGroup::addFloat(string name) {
             if(_params.exists(name)) return get<ParameterFloat>(name);
-			return (ParameterFloat&) addParameter(new ParameterFloat(name, _groupStack.top()));
+			return (ParameterFloat&) add(new ParameterFloat(name, _groupStack.top()));
 		}
 		
         //--------------------------------------------------------------
@@ -186,7 +186,7 @@ namespace msa {
             if(_params.exists(name)) return get<ParameterBool>(name);
             ParameterBool *p = new ParameterBool(name, _groupStack.top());
             p->setMode(ParameterBool::kToggle);
-            addParameter(p);
+            add(p);
 			return *p;
 		}
 		
@@ -195,21 +195,21 @@ namespace msa {
             if(_params.exists(name)) return get<ParameterBool>(name);
             ParameterBool *p = new ParameterBool(name, _groupStack.top());
             p->setMode(ParameterBool::kBang);
-            addParameter(p);
+            add(p);
 			return *p;
 		}
 		
         //--------------------------------------------------------------
 		ParameterNamedIndex& ParameterGroup::addNamedIndex(string name) {
             if(_params.exists(name)) return get<ParameterNamedIndex>(name);
-			return (ParameterNamedIndex&) addParameter(new ParameterNamedIndex(name, _groupStack.top()));
+			return (ParameterNamedIndex&) add(new ParameterNamedIndex(name, _groupStack.top()));
 		}
         
         
         //--------------------------------------------------------------
         ParameterVec3f& ParameterGroup::addVec3f(string name) {
 //            if(_params.exists(name)) return *getVec3f(name);
-//			return (ParameterVec3f&) addParameter(new ParameterVec3f(name, _groupStack.top()));
+//			return (ParameterVec3f&) add(new ParameterVec3f(name, _groupStack.top()));
         }
         
         
@@ -217,7 +217,7 @@ namespace msa {
 		void ParameterGroup::startGroup(string name) {
             ParameterGroup* g;
             if(_params.exists(name)) g = getGroupPtr(name);
-            else g = (ParameterGroup*)&addParameter(new ParameterGroup(name, _groupStack.top()));
+            else g = (ParameterGroup*)&add(new ParameterGroup(name, _groupStack.top()));
             _groupStack.push(g);
 		}
 		
@@ -228,13 +228,13 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::addParameter(Parameter* param) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::addParameter: " << param->getPath();
+		Parameter& ParameterGroup::add(Parameter* param) {
+			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::add: " << param->getPath();
 			
             ParameterGroup *currentGroup = _groupStack.top();
             if(currentGroup == this) {
                 if(_params.exists(param->getName())) {
-                    ofLogError() << "msa::ControlFreak::ParameterGroup::addParameter: " << param->getPath() << " - path already exists, returning existing parameter";
+                    ofLogError() << "msa::ControlFreak::ParameterGroup::add: " << param->getPath() << " - path already exists, returning existing parameter";
                     return _params[param->getName()];
                 } else {
                     _params.push_back(param->getName(), param);
@@ -242,7 +242,7 @@ namespace msa {
                     return *param;
                 }
             } else {
-                return currentGroup->addParameter(param);
+                return currentGroup->add(param);
             }
 		}
         
@@ -253,17 +253,17 @@ namespace msa {
 		}
 		
         //--------------------------------------------------------------
-        Parameter& ParameterGroup::get(int index) {
+        Parameter& ParameterGroup::get(int index) const {
             return _params[index];
         }
 
         //--------------------------------------------------------------
-        Parameter& ParameterGroup::get(string path) {
+        Parameter& ParameterGroup::get(string path) const {
             return *getPtr(path);
         }
         
         //--------------------------------------------------------------
-        Parameter* ParameterGroup::getPtr(string path) {
+        Parameter* ParameterGroup::getPtr(string path) const {
             // look for path divider
             size_t pathDividerPos = path.find(getPathDivider());
             
@@ -288,28 +288,28 @@ namespace msa {
         }
         
         //--------------------------------------------------------------
-        ParameterGroup& ParameterGroup::getGroup(string path) {
+        ParameterGroup& ParameterGroup::getGroup(string path) const {
             return get<ParameterGroup>(path);
         }
         
         //--------------------------------------------------------------
-        ParameterGroup* ParameterGroup::getGroupPtr(string path) {
+        ParameterGroup* ParameterGroup::getGroupPtr(string path) const {
             return getPtr<ParameterGroup>(path);
         }
         
         
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::operator[](int index) {
+		Parameter& ParameterGroup::operator[](int index) const {
             return get(index);
 		}
 
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::operator[](string path) {
+		Parameter& ParameterGroup::operator[](string path) const {
             return get(path);
 		}
 		
         //--------------------------------------------------------------
-		Parameter& ParameterGroup::operator[](const char* path) {
+		Parameter& ParameterGroup::operator[](const char* path) const {
             return get(path);
 		}
         

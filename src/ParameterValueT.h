@@ -315,8 +315,8 @@ namespace msa {
         }
         
         //--------------------------------------------------------------
-        //        //		ParameterValueT<T>& ParameterValueT<T>::addController(Controller *controller) {
-        //            ofLogVerbose() << "msa::ControlFreak::ParameterValueT<T>::addController: " <<  getPath() << " " << controller;
+        //        //		ParameterValueT<T>& ParameterValueT<T>::addler(Controller *controller) {
+        //            ofLogVerbose() << "msa::ControlFreak::ParameterValueT<T>::addler: " <<  getPath() << " " << controller;
         ////			controller->setParam(this);
         //			controller->updateController();
         //			_controllers.push_back(controller);

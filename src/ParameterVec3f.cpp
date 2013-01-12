@@ -14,9 +14,9 @@ namespace msa {
 
 //        ParameterVec3f::ParameterVec3f(string name, ParameterGroup *parent)
 //        : ParameterComplexValueT<ofVec3f>(name, parent) {
-//            addParameter(new ParameterFloat("x", this));
-//            addParameter(new ParameterFloat("y", this));
-//            addParameter(new ParameterFloat("z", this));
+//            add(new ParameterFloat("x", this));
+//            add(new ParameterFloat("y", this));
+//            add(new ParameterFloat("z", this));
 //        }
 //        
 //        

@@ -71,7 +71,7 @@ namespace msa {
 			void endGroup();
             
             // ADVANCED, RESERVED FOR FUTURE USE
-            Parameter& addParameter(Parameter* param);      // if you create a new pointer (it will be owned and deleted by this Group)
+            Parameter& add(Parameter* param);      // if you create a new pointer (it will be owned and deleted by this Group)
             
             
             
@@ -83,31 +83,31 @@ namespace msa {
 
             // get Parameter by index (returns reference to Parameter)
             // they throw an exception if parameter doesn't exist
-            Parameter& get(int index);
-            Parameter& operator[](int index);
+            Parameter& get(int index) const;
+            Parameter& operator[](int index) const;
             
             
             // get Parameter by path (returns reference to Parameter)
             // they throw an exception if parameter doesn't exist
-            Parameter& get(string path);
-            Parameter& operator[](string path);
-            Parameter& operator[](const char* path);
+            Parameter& get(string path) const;
+            Parameter& operator[](string path) const;
+            Parameter& operator[](const char* path) const;
 
 
             // returns a pointer to the Parameter (so you can check against NULL to see if it exists)
-            Parameter* getPtr(string path);
+            Parameter* getPtr(string path) const;
 
             
             // get a reference or pointer to a Group
             // same as the get() above, but with a type-cast in the method
-            ParameterGroup& getGroup(string path);      // throws exception of group doesn't exist
-            ParameterGroup* getGroupPtr(string path);   // returns NULL if group doesn't exist
+            ParameterGroup& getGroup(string path) const;      // throws exception of group doesn't exist
+            ParameterGroup* getGroupPtr(string path) const;   // returns NULL if group doesn't exist
 
             
             // returns a reference of pointer type-cast to the correct Parameter sub-class (e.g. ParameterNamedIndex)
             // use this if you need to access properties and methods unique to that Parameter sub-class
-            template <typename ParameterType> ParameterType& get(string path);
-            template <typename ParameterType> ParameterType* getPtr(string path);
+            template <typename ParameterType> ParameterType& get(string path) const;
+            template <typename ParameterType> ParameterType* getPtr(string path) const;
             
             
         protected:
@@ -132,7 +132,7 @@ namespace msa {
         //--------------------------------------------------------------
         //--------------------------------------------------------------
         template <typename ParameterType>
-        ParameterType* ParameterGroup::getPtr(string path) {
+        ParameterType* ParameterGroup::getPtr(string path) const {
             Parameter* p = getPtr(path);
             if(!p) {
                 ofLogError() << "msa::ControlFreak::ParameterGroup::get<ParameterType>: Could not FIND parameter " << path << " in group " << getPath();
@@ -151,7 +151,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         template <typename ParameterType>
-        ParameterType& ParameterGroup::get(string path) {
+        ParameterType& ParameterGroup::get(string path) const {
             return *getPtr<ParameterType>(path);
         }
 
