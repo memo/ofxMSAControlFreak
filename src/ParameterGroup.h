@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ofxMSAControlFreak/src/Parameter.h"
+#include "ofxMSAOrderedPointerMap/src/ofxMSAOrderedPointerMap.h"
 
 namespace msa {
     namespace ControlFreak {
@@ -19,10 +20,7 @@ namespace msa {
         class ParameterNamedIndex;
         class ParameterVec3f;
 
-//        class ParameterGroup;
-//        typedef std::tr1::shared_ptr<ParameterGroup> ParameterGroupPtr;
-        
-        
+
         class ParameterGroup : public Parameter {
         public:
             
@@ -79,28 +77,31 @@ namespace msa {
             
             //---- Accessing parameters -----------------------
 			
-            // getters for Parameters, so you access parameter properties etc.
+            // get number of parameters in this group (only gets number of direct children, not children of children)
+            int size() const;
+            
 
-            // These return a reference to the Parameter
-            // they throw an exception if you enter a wrong name
-            Parameter& get(int index);         // get parameter by index
-            Parameter& get(string path);       // get parameter by name
-
-            // [] operator overloads for above
+            // get Parameter by index (returns reference to Parameter)
+            // they throw an exception if parameter doesn't exist
+            Parameter& get(int index);
             Parameter& operator[](int index);
+            
+            
+            // get Parameter by path (returns reference to Parameter)
+            // they throw an exception if parameter doesn't exist
+            Parameter& get(string path);
             Parameter& operator[](string path);
             Parameter& operator[](const char* path);
 
 
-            // returns a pointer to the Parameter (if you want to check if it exists first)
-            Parameter* getPtr(int index);     // get parameter by index
-            Parameter* getPtr(string path);   // get parameter by name
+            // returns a pointer to the Parameter (so you can check against NULL to see if it exists)
+            Parameter* getPtr(string path);
 
             
             // get a reference or pointer to a Group
             // same as the get() above, but with a type-cast in the method
-            ParameterGroup& getGroup(string path);
-            ParameterGroup* getGroupPtr(string path);
+            ParameterGroup& getGroup(string path);      // throws exception of group doesn't exist
+            ParameterGroup* getGroupPtr(string path);   // returns NULL if group doesn't exist
 
             
             // returns a reference of pointer type-cast to the correct Parameter sub-class (e.g. ParameterNamedIndex)
@@ -109,17 +110,11 @@ namespace msa {
             template <typename ParameterType> ParameterType* getPtr(string path);
             
             
-            // get number of parameters in this group (only gets number of direct children, not children of children)
-            int getNumParams() const;
-
-        
-        
         protected:
             
             string getFullFilename(string filename, bool bFullSchema);
 
-			map<string, Parameter*>	_paramMap;		// map for all parameters
-			vector<Parameter*>	_paramArr;		// array needed to access sequentially (for display etc.)
+            OrderedPointerMap<Parameter> _params;
             
             string _filename;
             

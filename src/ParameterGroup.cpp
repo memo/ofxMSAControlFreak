@@ -27,9 +27,7 @@ namespace msa {
         
         //--------------------------------------------------------------
 		void ParameterGroup::clear() {
-            for(int i=0; i<_paramArr.size(); i++) delete _paramArr[i];
-            _paramArr.clear();
-            _paramMap.clear();
+            _params.clear();
             
             while (!_groupStack.empty()) _groupStack.pop();
             _groupStack.push(this); // start with this as current group for adding
@@ -123,8 +121,8 @@ namespace msa {
             Parameter::writeToXml(xml, bFullSchema);
             xml.pushTag(_xmlTag, _xmlTagId);
             
-            for(int i=0; i<_paramArr.size(); i++) {
-                Parameter &p = *_paramArr[i];
+            for(int i=0; i<_params.size(); i++) {
+                Parameter &p = _params[i];
                 p.writeToXml(xml, bFullSchema);
             }
             
@@ -167,29 +165,25 @@ namespace msa {
         //--------------------------------------------------------------
         void ParameterGroup::update() {
             Parameter::update();
-            int np = getNumParams();
-            for(int i=0; i<np; i++) {
-                Parameter &p = get(i);
-                p.update();
-            }
+            for(int i=0; i<_params.size(); i++) _params[i].update();
         }
         
 
         //--------------------------------------------------------------
 		ParameterInt& ParameterGroup::addInt(string name) {
-            if(_paramMap.find(name) != _paramMap.end()) return get<ParameterInt>(name);
+            if(_params.exists(name)) return get<ParameterInt>(name);
             return (ParameterInt&) addParameter(new ParameterInt(name, _groupStack.top()));
 		}
 		
         //--------------------------------------------------------------
 		ParameterFloat& ParameterGroup::addFloat(string name) {
-            if(_paramMap.find(name) != _paramMap.end()) return get<ParameterFloat>(name);
+            if(_params.exists(name)) return get<ParameterFloat>(name);
 			return (ParameterFloat&) addParameter(new ParameterFloat(name, _groupStack.top()));
 		}
 		
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBool(string name) {
-            if(_paramMap.find(name) != _paramMap.end()) return get<ParameterBool>(name);
+            if(_params.exists(name)) return get<ParameterBool>(name);
             ParameterBool *p = new ParameterBool(name, _groupStack.top());
             p->setMode(ParameterBool::kToggle);
             addParameter(p);
@@ -198,7 +192,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBang(string name) {
-            if(_paramMap.find(name) != _paramMap.end()) return get<ParameterBool>(name);
+            if(_params.exists(name)) return get<ParameterBool>(name);
             ParameterBool *p = new ParameterBool(name, _groupStack.top());
             p->setMode(ParameterBool::kBang);
             addParameter(p);
@@ -207,14 +201,14 @@ namespace msa {
 		
         //--------------------------------------------------------------
 		ParameterNamedIndex& ParameterGroup::addNamedIndex(string name) {
-            if(_paramMap.find(name) != _paramMap.end()) return get<ParameterNamedIndex>(name);
+            if(_params.exists(name)) return get<ParameterNamedIndex>(name);
 			return (ParameterNamedIndex&) addParameter(new ParameterNamedIndex(name, _groupStack.top()));
 		}
         
         
         //--------------------------------------------------------------
         ParameterVec3f& ParameterGroup::addVec3f(string name) {
-//            if(_paramMap.find(name) != _paramMap.end()) return *getVec3f(name);
+//            if(_params.exists(name)) return *getVec3f(name);
 //			return (ParameterVec3f&) addParameter(new ParameterVec3f(name, _groupStack.top()));
         }
         
@@ -222,7 +216,7 @@ namespace msa {
         //--------------------------------------------------------------
 		void ParameterGroup::startGroup(string name) {
             ParameterGroup* g;
-            if(_paramMap.find(name) != _paramMap.end()) g = getGroupPtr(name);
+            if(_params.exists(name)) g = getGroupPtr(name);
             else g = (ParameterGroup*)&addParameter(new ParameterGroup(name, _groupStack.top()));
             _groupStack.push(g);
 		}
@@ -238,19 +232,14 @@ namespace msa {
 			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::addParameter: " << param->getPath();
 			
             ParameterGroup *currentGroup = _groupStack.top();
-            // avoid infinite recursion
             if(currentGroup == this) {
-                map<string, Parameter*>::iterator p = _paramMap.find(param->getName());
-                if(p == _paramMap.end()) {
-                    _paramMap[param->getName()] = param;
-                    _paramArr.push_back(param);
-                    param->setParent(this);
-                    getNumParams();	// to check if correctly added to both containers
-                    return *param;
-                } else {
+                if(_params.exists(param->getName())) {
                     ofLogError() << "msa::ControlFreak::ParameterGroup::addParameter: " << param->getPath() << " - path already exists, returning existing parameter";
-//                    delete param;
-                    return *p->second;//_paramMap[param->getName()];
+                    return _params[param->getName()];
+                } else {
+                    _params.push_back(param->getName(), param);
+                    param->setParent(this);
+                    return *param;
                 }
             } else {
                 return currentGroup->addParameter(param);
@@ -259,32 +248,20 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-        int ParameterGroup::getNumParams() const {
-			assert(_paramArr.size() == _paramMap.size());	// probably tried to add a parameter with the same name (in the same group)
-			return _paramMap.size();
+        int ParameterGroup::size() const {
+			return _params.size();
 		}
 		
         //--------------------------------------------------------------
         Parameter& ParameterGroup::get(int index) {
-            return *getPtr(index);
+            return _params[index];
         }
 
+        //--------------------------------------------------------------
         Parameter& ParameterGroup::get(string path) {
             return *getPtr(path);
         }
         
-        //--------------------------------------------------------------
-        Parameter* ParameterGroup::getPtr(int index) {
-			return _paramArr[index];
-        }
-        
-        //--------------------------------------------------------------
-//        AnyValue ParameterGroup::getValue(int index) {
-//            Parameter* p = get(index);
-////            return p ? p->value() : AnyValue(0);
-//            return p->value();
-//        }
-
         //--------------------------------------------------------------
         Parameter* ParameterGroup::getPtr(string path) {
             // look for path divider
@@ -294,50 +271,21 @@ namespace msa {
             if(pathDividerPos == string::npos) {
                 
                 // if parameter doesn't exist, return with error
-                if(_paramMap.find(path) == _paramMap.end()) {
+                if(!_params.exists(path)) {
                     ofLogError() << "msa::ControlFreak::ParameterGroup::get: " << path << " does not exist in Group: " << getPath();
                     return NULL;  // return NULL
                 }
                 
-                return _paramMap[path];
+                return &_params[path];
                 
             } else {
                 // there is path divider, split the string and search the first group
-                
                 string part1 = path.substr(0, pathDividerPos);
                 string part2 = path.substr(pathDividerPos+1);
-//                ofLogNotice() << "FIRST GROUP: " << part1 << " PART2: " << part2;
+
                 return getGroupPtr(part1)->getPtr(part2);
             }
         }
-        
-//        //--------------------------------------------------------------
-//        AnyValue ParameterGroup::getValue(string path) {
-//            Parameter* p = get(path);
-//            //            return p ? p->value() : AnyValue(0);
-//            return p->value();
-//        }
-//        
-//        
-//        //--------------------------------------------------------------
-//        ParameterInt* ParameterGroup::getInt(string path) {
-//            return get<ParameterInt>(path);
-//        }
-//        
-//        //--------------------------------------------------------------
-//        ParameterFloat* ParameterGroup::getFloat(string path) {
-//            return get<ParameterFloat>(path);
-//        }
-//        
-//        //--------------------------------------------------------------
-//        ParameterBool* ParameterGroup::getBool(string path) {
-//            return get<ParameterBool>(path);
-//        }
-//        
-//        //--------------------------------------------------------------
-//        ParameterNamedIndex* ParameterGroup::getNamedIndex(string path) {
-//            return get<ParameterNamedIndex>(path);
-//        }
         
         //--------------------------------------------------------------
         ParameterGroup& ParameterGroup::getGroup(string path) {
@@ -365,25 +313,5 @@ namespace msa {
             return get(path);
 		}
         
-        
-          //--------------------------------------------------------------
-        //		void ParameterGroup::updateControllers(bool doChildGroups) {
-        //			int np = getNumParams();
-        //			for(int i=0; i<np; i++) _paramArr[i]->updateControllers();
-        //
-        //			if(doChildGroups) {
-        //				int ng = numGroups();
-        //				for(int i=0; i<ng; i++) _groupArr[i]->updateControllers();
-        //			}
-        //		}
-		
-		//		void ParameterGroup::checkValueHasChanged() {
-		//			for(int i=0; i<size(); i++) _paramArr[i]->checkValueHasChanged();
-		//		}
-		
-		
-        
-
-        
-    }
+     }
 }
