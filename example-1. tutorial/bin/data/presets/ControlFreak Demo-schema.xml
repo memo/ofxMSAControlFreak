@@ -1,35 +1,82 @@
-<ofxMSAControlFreak version="1.000000000">
-    <Parameter type="group" name="ControlFreak Demo" path="ControlFreak Demo" tooltip="">
-        <Parameter type="group" name="particle system" path="ControlFreak Demo.particle system" tooltip="">
-            <Parameter type="int" name="count" path="ControlFreak Demo.particle system.count" tooltip="" value="5" min="1" max="20" doClamp="0" inc="1" doSnap="0"></Parameter>
-            <Parameter type="group" name="emitter" path="ControlFreak Demo.particle system.emitter" tooltip="">
-                <Parameter type="float" name="x" path="ControlFreak Demo.particle system.emitter.x" tooltip="" value="550.000000000" min="0.000000000" max="1100.000000000" doClamp="0" inc="0.010000000" doSnap="0"></Parameter>
-                <Parameter type="float" name="y" path="ControlFreak Demo.particle system.emitter.y" tooltip="" value="300.000000000" min="0.000000000" max="600.000000000" doClamp="0" inc="0.010000000" doSnap="0"></Parameter>
-                <Parameter type="float" name="radius" path="ControlFreak Demo.particle system.emitter.radius" tooltip="" value="20.000000000" min="0.000000000" max="100.000000000" doClamp="0" inc="0.010000000" doSnap="0"></Parameter>
-            </Parameter>
-            <Parameter type="group" name="physics" path="ControlFreak Demo.particle system.physics" tooltip="">
-                <Parameter type="float" name="maxEmitVelocity" path="ControlFreak Demo.particle system.physics.maxEmitVelocity" tooltip="" value="30.000000000" min="0.000000000" max="100.000000000" doClamp="0" inc="0.010000000" doSnap="0"></Parameter>
-                <Parameter type="float" name="maxRotSpeed" path="ControlFreak Demo.particle system.physics.maxRotSpeed" tooltip="" value="5.000000000" min="0.000000000" max="10.000000000" doClamp="0" inc="0.010000000" doSnap="0"></Parameter>
-                <Parameter type="float" name="gravity" path="ControlFreak Demo.particle system.physics.gravity" tooltip="" value="0.029999999" min="-1.000000000" max="1.000000000" doClamp="0" inc="0.010000000" doSnap="0"></Parameter>
-                <Parameter type="float" name="friction" path="ControlFreak Demo.particle system.physics.friction" tooltip="" value="0.050000001" min="0.000000000" max="1.000000000" doClamp="0" inc="0.010000000" doSnap="0"></Parameter>
-            </Parameter>
-            <Parameter type="group" name="age" path="ControlFreak Demo.particle system.age" tooltip="">
-                <Parameter type="float" name="min age" path="ControlFreak Demo.particle system.age.min age" tooltip="" value="1.000000000" min="1.000000000" max="10.000000000" doClamp="0" inc="0.010000000" doSnap="0"></Parameter>
-                <Parameter type="float" name="max age" path="ControlFreak Demo.particle system.age.max age" tooltip="" value="5.000000000" min="1.000000000" max="10.000000000" doClamp="0" inc="0.010000000" doSnap="0"></Parameter>
-            </Parameter>
-            <Parameter type="group" name="display options" path="ControlFreak Demo.particle system.display options" tooltip="">
-                <Parameter type="namedindex" name="shape type" path="ControlFreak Demo.particle system.display options.shape type" tooltip="" value="0" min="0" max="3" doClamp="1" inc="1" doSnap="0" selectedLabel="circle">
-                    <label0>circle</label0>
-                    <label1>rectangle</label1>
-                    <label2>triangle</label2>
+<ofxMSAControlFreak version="1.000000000" bFullSchema="1">
+    <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="ControlFreak Demo" path="ControlFreak Demo" tooltip="">
+        <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="float1" value="12.000000000" min="0.000000000" max="100.000000000" doClamp="0" inc="5.000000000" doSnap="0" path="ControlFreak Demo.float1" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak12ParameterIntE" name="int1" value="0" min="0" max="100" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.int1" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="bool1" value="0" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.bool1" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="float2" value="5.000000000" min="0.000000000" max="1.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="ControlFreak Demo.float2" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="float3" value="60.000000000" min="-1.000000000" max="1.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="ControlFreak Demo.float3" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="float4" value="0.000000000" min="0.000000000" max="1.000000000" doClamp="0" inc="0.200000003" doSnap="0" path="ControlFreak Demo.float4" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="float5" value="0.000000000" min="0.000000000" max="1.000000000" doClamp="0" inc="0.200000003" doSnap="1" path="ControlFreak Demo.float5" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak12ParameterIntE" name="int2" value="17" min="0" max="100" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.int2" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak12ParameterIntE" name="int3" value="0" min="-10" max="10" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.int3" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak12ParameterIntE" name="int4" value="0" min="0" max="100" doClamp="0" inc="5" doSnap="0" path="ControlFreak Demo.int4" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak12ParameterIntE" name="int5" value="0" min="0" max="100" doClamp="0" inc="5" doSnap="1" path="ControlFreak Demo.int5" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="toggle (bool)" value="1" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.toggle (bool)" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="bang (bool)" value="0" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.bang (bool)" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="float6" value="500.000000000" min="0.000000000" max="1000.000000000" doClamp="1" inc="10.000000000" doSnap="1" path="ControlFreak Demo.float6" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="float7" value="0.000000000" min="0.000000000" max="1000.000000000" doClamp="1" inc="10.000000000" doSnap="1" path="ControlFreak Demo.float7" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="param1" value="-0.000000000" min="0.000000000" max="1.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="ControlFreak Demo.param1" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak19ParameterNamedIndexE" name="a dropdown" value="0" min="0" max="5" doClamp="1" inc="1" doSnap="0" path="ControlFreak Demo.a dropdown" tooltip="" selectedLabel="first option">
+            <label0>first option</label0>
+            <label1>another option</label1>
+            <label2>yet another option</label2>
+            <label3>even more</label3>
+            <label4>and last one</label4>
+        </Parameter>
+        <Parameter type="N3msa12ControlFreak19ParameterNamedIndexE" name="animals" value="0" min="0" max="4" doClamp="1" inc="1" doSnap="0" path="ControlFreak Demo.animals" tooltip="" selectedLabel="cow">
+            <label0>cow</label0>
+            <label1>camel</label1>
+            <label2>dolphin</label2>
+            <label3>monkey</label3>
+        </Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="particles" path="ControlFreak Demo.particles" tooltip="">
+            <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="enabled" value="0" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.particles.enabled" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak12ParameterIntE" name="count" value="0" min="0" max="100" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.particles.count" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="size" value="0.000000000" min="0.000000000" max="1.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="ControlFreak Demo.particles.size" tooltip=""></Parameter>
+        </Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="vision" path="ControlFreak Demo.vision" tooltip="">
+            <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="enabled" value="1" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.vision.enabled" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="brightness" value="0.000000000" min="0.000000000" max="100.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="ControlFreak Demo.vision.brightness" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="contrast" value="0.000000000" min="-100.000000000" max="100.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="ControlFreak Demo.vision.contrast" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="flip x" value="0" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.vision.flip x" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="flip y" value="0" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.vision.flip y" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="reset" value="0" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.vision.reset" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="pre-processing" path="ControlFreak Demo.vision.pre-processing" tooltip="">
+                <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="blur" path="ControlFreak Demo.vision.pre-processing.blur" tooltip="">
+                    <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="enabled" value="0" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.vision.pre-processing.blur.enabled" tooltip=""></Parameter>
+                    <Parameter type="N3msa12ControlFreak12ParameterIntE" name="kernelSize" value="0" min="3" max="11" doClamp="0" inc="2" doSnap="0" path="ControlFreak Demo.vision.pre-processing.blur.kernelSize" tooltip=""></Parameter>
+                    <Parameter type="N3msa12ControlFreak12ParameterIntE" name="iterations" value="3" min="1" max="20" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.vision.pre-processing.blur.iterations" tooltip=""></Parameter>
                 </Parameter>
-                <Parameter type="bool" name="fill" path="ControlFreak Demo.particle system.display options.fill" tooltip="" value="1" min="0" max="1" doClamp="0" inc="1" doSnap="0"></Parameter>
-                <Parameter type="group" name="size" path="ControlFreak Demo.particle system.display options.size" tooltip="">
-                    <Parameter type="float" name="x" path="ControlFreak Demo.particle system.display options.size.x" tooltip="" value="50.000000000" min="0.000000000" max="200.000000000" doClamp="0" inc="0.010000000" doSnap="0"></Parameter>
-                    <Parameter type="float" name="y" path="ControlFreak Demo.particle system.display options.size.y" tooltip="" value="50.000000000" min="0.000000000" max="200.000000000" doClamp="0" inc="0.010000000" doSnap="0"></Parameter>
+                <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="median" path="ControlFreak Demo.vision.pre-processing.median" tooltip="">
+                    <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="enabled" value="0" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.vision.pre-processing.median.enabled" tooltip=""></Parameter>
+                    <Parameter type="N3msa12ControlFreak12ParameterIntE" name="kernelSize" value="0" min="3" max="11" doClamp="0" inc="2" doSnap="0" path="ControlFreak Demo.vision.pre-processing.median.kernelSize" tooltip=""></Parameter>
+                    <Parameter type="N3msa12ControlFreak12ParameterIntE" name="iterations" value="0" min="1" max="20" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.vision.pre-processing.median.iterations" tooltip=""></Parameter>
                 </Parameter>
             </Parameter>
-            <Parameter type="bool" name="randomize" path="ControlFreak Demo.particle system.randomize" tooltip="" value="0" min="0" max="1" doClamp="0" inc="1" doSnap="0"></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="optical flow" path="ControlFreak Demo.vision.optical flow" tooltip="">
+                <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="enabled" value="0" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.vision.optical flow.enabled" tooltip=""></Parameter>
+                <Parameter type="N3msa12ControlFreak19ParameterNamedIndexE" name="method" value="0" min="0" max="3" doClamp="1" inc="1" doSnap="0" path="ControlFreak Demo.vision.optical flow.method" tooltip="" selectedLabel="Lucas-Kanade">
+                    <label0>Lucas-Kanade</label0>
+                    <label1>Horn–Schunck</label1>
+                    <label2>Buxton–Buxton</label2>
+                </Parameter>
+                <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="velMult" value="0.000000000" min="0.000000000" max="10.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="ControlFreak Demo.vision.optical flow.velMult" tooltip=""></Parameter>
+                <Parameter type="N3msa12ControlFreak12ParameterIntE" name="windowSize" value="0" min="1" max="11" doClamp="0" inc="2" doSnap="0" path="ControlFreak Demo.vision.optical flow.windowSize" tooltip=""></Parameter>
+            </Parameter>
+        </Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="Snap&apos;n&apos;Clamp" path="ControlFreak Demo.Snap&apos;n&apos;Clamp" tooltip="">
+            <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="floats" path="ControlFreak Demo.Snap&apos;n&apos;Clamp.floats" tooltip="">
+                <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="no clamp, no snap" value="0.000000000" min="0.000000000" max="5.000000000" doClamp="0" inc="0.100000001" doSnap="0" path="ControlFreak Demo.Snap&apos;n&apos;Clamp.floats.no clamp, no snap" tooltip=""></Parameter>
+                <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="yes clamp, no snap" value="0.000000000" min="0.000000000" max="5.000000000" doClamp="1" inc="0.100000001" doSnap="0" path="ControlFreak Demo.Snap&apos;n&apos;Clamp.floats.yes clamp, no snap" tooltip=""></Parameter>
+                <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="yes clamp, yes snap" value="0.000000000" min="0.000000000" max="5.000000000" doClamp="1" inc="0.100000001" doSnap="1" path="ControlFreak Demo.Snap&apos;n&apos;Clamp.floats.yes clamp, yes snap" tooltip=""></Parameter>
+                <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="no clamp, yes snap" value="0.000000000" min="0.000000000" max="5.000000000" doClamp="0" inc="0.100000001" doSnap="1" path="ControlFreak Demo.Snap&apos;n&apos;Clamp.floats.no clamp, yes snap" tooltip=""></Parameter>
+            </Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="ints" path="ControlFreak Demo.Snap&apos;n&apos;Clamp.ints" tooltip="">
+                <Parameter type="N3msa12ControlFreak12ParameterIntE" name="no clamp, no snap" value="0" min="0" max="100" doClamp="0" inc="5" doSnap="0" path="ControlFreak Demo.Snap&apos;n&apos;Clamp.ints.no clamp, no snap" tooltip=""></Parameter>
+                <Parameter type="N3msa12ControlFreak12ParameterIntE" name="yes clamp, no snap" value="0" min="0" max="100" doClamp="1" inc="5" doSnap="0" path="ControlFreak Demo.Snap&apos;n&apos;Clamp.ints.yes clamp, no snap" tooltip=""></Parameter>
+                <Parameter type="N3msa12ControlFreak12ParameterIntE" name="yes clamp, yes snap" value="0" min="0" max="100" doClamp="1" inc="5" doSnap="1" path="ControlFreak Demo.Snap&apos;n&apos;Clamp.ints.yes clamp, yes snap" tooltip=""></Parameter>
+                <Parameter type="N3msa12ControlFreak12ParameterIntE" name="no clamp, yes snap" value="0" min="0" max="100" doClamp="0" inc="5" doSnap="1" path="ControlFreak Demo.Snap&apos;n&apos;Clamp.ints.no clamp, yes snap" tooltip=""></Parameter>
+            </Parameter>
         </Parameter>
     </Parameter>
 </ofxMSAControlFreak>
