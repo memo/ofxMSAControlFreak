@@ -1,0 +1,30 @@
+<ofxMSAControlFreak version="1.000000000" bOnlyValues="1">
+    <Parameter type="group" name="Rain">
+        <Parameter type="int" name="count" value="400"></Parameter>
+        <Parameter type="group" name="emitter">
+            <Parameter type="float" name="x" value="14.341786385"></Parameter>
+            <Parameter type="float" name="y" value="42.415271759"></Parameter>
+            <Parameter type="float" name="width" value="73.495262146"></Parameter>
+            <Parameter type="float" name="height" value="34.891311646"></Parameter>
+        </Parameter>
+        <Parameter type="group" name="physics">
+            <Parameter type="float" name="initialVel" value="18.257757187"></Parameter>
+            <Parameter type="float" name="initialVelVari" value="0.581032038"></Parameter>
+            <Parameter type="float" name="spread" value="73.065002441"></Parameter>
+            <Parameter type="float" name="maxRotSpeed" value="2.417867661"></Parameter>
+            <Parameter type="float" name="gravity" value="0.420304656"></Parameter>
+            <Parameter type="float" name="friction" value="0.530088603"></Parameter>
+        </Parameter>
+        <Parameter type="group" name="age">
+            <Parameter type="float" name="min age" value="2.788734913"></Parameter>
+            <Parameter type="float" name="max age" value="4.266771317"></Parameter>
+        </Parameter>
+        <Parameter type="group" name="display options">
+            <Parameter type="namedindex" name="shape type" value="0"></Parameter>
+            <Parameter type="bool" name="fill" value="1"></Parameter>
+            <Parameter type="float" name="size" value="12.667325020"></Parameter>
+            <Parameter type="float" name="sizeVari" value="0.997384071"></Parameter>
+        </Parameter>
+        <Parameter type="bool" name="randomize" value="0"></Parameter>
+    </Parameter>
+</ofxMSAControlFreak>

@@ -31,66 +31,39 @@ void testApp::setup(){
     
     // Set name for our ParameterGroup
 	params.setName("Rain");
-        params.addInt("count").setRange(1, 1000).setClamp(true).set(400);
-        params.startGroup("emitter"); { // should be ofRectangle
-            params.addFloat("x").setRange(0, 100).setClamp(true).set(50);
-            params.addFloat("y").setRange(0, 100).setClamp(true).set(10);
-            params.addFloat("width").setRange(0, 100).setClamp(true).set(50);
-            params.addFloat("height").setRange(0, 100).setClamp(true).set(20);
-        } params.endGroup();
-        params.startGroup("physics"); {
-            params.addFloat("initialVel").setRange(0, 100).set(10);
-            params.addFloat("initialVelVari").setRange(0, 1).setClamp(true).set(0.5);
-            params.addFloat("spread").setRange(0, 180).set(20).setClamp(true);
-            params.addFloat("maxRotSpeed").setRange(0, 10).set(5);
-            params.addFloat("gravity").setRange(-1, 1).set(0.1);
-            params.addFloat("friction").setRange(0, 1).set(0.02).setClamp(true);;
-        } params.endGroup();
-        params.startGroup("age"); {
-            params.addFloat("min age").setRange(1, 10).set(1);
-            params.addFloat("max age").setRange(1, 10).set(5);
-        } params.endGroup();
-        
-        params.startGroup("display options"); {
-            params.addNamedIndex("shape type").setLabels(3, "circle", "rectangle", "triangle");
-            params.addBool("fill").set(true);
-            //            params.addColorf32("color");
-            params.addFloat("size").setRange(0, 100).set(10);
-            params.addFloat("sizeVari").setRange(0, 1).setClamp(true).set(0.5);
-            //            {    // should be ofVec2f
-            //                params.addFloat("x").setRange(0, 200).set(50);
-            //                params.addFloat("y").setRange(0, 200).set(50);
-            //            } params.endGroup();
-        } params.endGroup();
-        
-        params.addBang("randomize");
+    params.addInt("count").setRange(1, 1000).setClamp(true).set(400);
+    params.startGroup("emitter"); { // should be ofRectangle
+        params.addFloat("x").setRange(0, 100).setClamp(true).set(50);
+        params.addFloat("y").setRange(0, 100).setClamp(true).set(10);
+        params.addFloat("width").setRange(0, 100).setClamp(true).set(50);
+        params.addFloat("height").setRange(0, 100).setClamp(true).set(20);
+    } params.endGroup();
+    params.startGroup("physics"); {
+        params.addFloat("initialVel").setRange(0, 100).set(10);
+        params.addFloat("initialVelVari").setRange(0, 1).setClamp(true).set(0.5);
+        params.addFloat("spread").setRange(0, 180).set(20).setClamp(true);
+        params.addFloat("maxRotSpeed").setRange(0, 10).set(5);
+        params.addFloat("gravity").setRange(-1, 1).set(0.1);
+        params.addFloat("friction").setRange(0, 1).set(0.02).setClamp(true);;
+    } params.endGroup();
+    params.startGroup("age"); {
+        params.addFloat("min age").setRange(1, 10).set(1);
+        params.addFloat("max age").setRange(1, 10).set(5);
+    } params.endGroup();
     
+    params.startGroup("display options"); {
+        params.addNamedIndex("shape type").setLabels(3, "circle", "rectangle", "triangle");
+        params.addBool("fill").set(true);
+        //            params.addColorf32("color");
+        params.addFloat("size").setRange(0, 100).set(10);
+        params.addFloat("sizeVari").setRange(0, 1).setClamp(true).set(0.5);
+        //            {    // should be ofVec2f
+        //                params.addFloat("x").setRange(0, 200).set(50);
+        //                params.addFloat("y").setRange(0, 200).set(50);
+        //            } params.endGroup();
+    } params.endGroup();
     
-    
-    
-    // TESTERS
-//    params.startGroup("Testers");
-//    {
-//        params.startGroup("floats");
-//        {
-//            params.addFloat("no clamp, no snap").setRange(0, 5).setIncrement(0.1);
-//            params.addFloat("yes clamp, no snap").setRange(0, 5).setIncrement(0.1).setClamp(true);
-//            params.addFloat("yes clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(true).setSnap(true);
-//            params.addFloat("no clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(false).setSnap(true);
-//        }
-//        params.endGroup();
-//        
-//        params.startGroup("ints");
-//        {
-//            params.addInt("no clamp, no snap").setRange(0, 100).setIncrement(5);
-//            params.addInt("yes clamp, no snap").setRange(0, 100).setIncrement(5).setClamp(true);
-//            params.addInt("yes clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(true).setSnap(true);
-//            params.addInt("no clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(false).setSnap(true);
-//        }
-//        params.endGroup();
-//    }
-//    params.endGroup();
-//    
+    params.addBang("randomize");
     
     
     // you can create groups and add any parameters to that group
@@ -226,7 +199,7 @@ void testApp::draw(){
     // set fill options
     if(params["display options.fill"]) ofFill();
     else ofNoFill();
-
+    
     // cache size value
     float size = params["display options.size"];
     

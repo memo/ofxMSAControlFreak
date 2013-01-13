@@ -1,0 +1,34 @@
+<ofxMSAControlFreak version="1.000000000" bFullSchema="1">
+    <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="Rain" path="Rain" tooltip="">
+        <Parameter type="N3msa12ControlFreak12ParameterIntE" name="count" value="400" min="1" max="1000" doClamp="1" inc="1" doSnap="0" path="Rain.count" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="emitter" path="Rain.emitter" tooltip="">
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="x" value="3.566577911" min="0.000000000" max="100.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="Rain.emitter.x" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="y" value="43.475421906" min="0.000000000" max="100.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="Rain.emitter.y" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="width" value="91.429359436" min="0.000000000" max="100.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="Rain.emitter.width" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="height" value="53.264827728" min="0.000000000" max="100.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="Rain.emitter.height" tooltip=""></Parameter>
+        </Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="physics" path="Rain.physics" tooltip="">
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="initialVel" value="21.893835068" min="0.000000000" max="100.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="Rain.physics.initialVel" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="initialVelVari" value="0.696822405" min="0.000000000" max="1.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="Rain.physics.initialVelVari" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="spread" value="88.988960266" min="0.000000000" max="180.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="Rain.physics.spread" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="maxRotSpeed" value="0.967335045" min="0.000000000" max="10.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="Rain.physics.maxRotSpeed" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="gravity" value="0.599878907" min="-1.000000000" max="1.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="Rain.physics.gravity" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="friction" value="0.582395136" min="0.000000000" max="1.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="Rain.physics.friction" tooltip=""></Parameter>
+        </Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="age" path="Rain.age" tooltip="">
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="min age" value="3.833086491" min="1.000000000" max="10.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="Rain.age.min age" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="max age" value="6.682909489" min="1.000000000" max="10.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="Rain.age.max age" tooltip=""></Parameter>
+        </Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="display options" path="Rain.display options" tooltip="">
+            <Parameter type="N3msa12ControlFreak19ParameterNamedIndexE" name="shape type" value="1" min="0" max="3" doClamp="1" inc="1" doSnap="0" path="Rain.display options.shape type" tooltip="" selectedLabel="rectangle">
+                <label0>circle</label0>
+                <label1>rectangle</label1>
+                <label2>triangle</label2>
+            </Parameter>
+            <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="fill" value="1" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="Rain.display options.fill" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="size" value="21.859683990" min="0.000000000" max="100.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="Rain.display options.size" tooltip=""></Parameter>
+            <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="sizeVari" value="0.957299709" min="0.000000000" max="1.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="Rain.display options.sizeVari" tooltip=""></Parameter>
+        </Parameter>
+        <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="randomize" value="0" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="Rain.randomize" tooltip=""></Parameter>
+    </Parameter>
+</ofxMSAControlFreak>
