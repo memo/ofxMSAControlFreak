@@ -10,7 +10,7 @@ namespace msa {
         public:
             virtual ~Controllable() {}
             
-            OrderedPointerMap<ControllerI> controllers;
+            OrderedPointerMap<string, ControllerI> controllers;
             
             //--------------------------------------------------------------
             void addController(string name, ControllerI *controller) {

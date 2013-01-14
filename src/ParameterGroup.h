@@ -119,7 +119,7 @@ namespace msa {
             
             string getFullFilename(string filename, bool bFullSchema);
 
-            OrderedPointerMap<Parameter> _params;
+            OrderedPointerMap<string, Parameter> _params;
             
             string _filename;
             
