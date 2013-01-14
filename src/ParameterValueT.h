@@ -123,7 +123,6 @@ namespace msa {
 			bool    _doClamp;
             bool    _doSnap;
             bool    _hasChanged;
-//			vector<Controller*>		_controllers;
 		};
         
         

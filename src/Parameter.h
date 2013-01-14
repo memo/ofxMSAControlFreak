@@ -13,6 +13,7 @@
 #include "ofxMSACore/src/MSACore.h"
 
 #include "ofxMSAControlFreak/src/ParameterValueI.h"
+#include "ofxMSAControlFreak/src/Controllable.h"
 #include "ofxMSAControlFreak/src/Utils.h"
 
 #include "ofxXmlSettings.h"
@@ -22,7 +23,7 @@ namespace msa {
 		
 		class ParameterGroup;
         
-		class Parameter : public ParameterValueI {
+		class Parameter : public ParameterValueI, public Controllable {
 		public:
 
 			friend class ParameterGroup;

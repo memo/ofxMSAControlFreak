@@ -33,4 +33,3 @@
 #include "ofxMSAControlFreak/src/ParameterGroup.h"
 #include "ofxMSAControlFreak/src/ParameterVec3f.h"
 #include "ofxMSAControlFreak/src/Utils.h"
-#include "ofxMSAControlFreak/src/Controller.h"
