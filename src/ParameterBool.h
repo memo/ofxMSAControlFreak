@@ -42,15 +42,7 @@ namespace msa {
             
         protected:
             Mode _mode;
-            
-            //--------------------------------------------------------------
-            //            void update() {
-            //                ParameterSingleValueT<bool>::update();
-            //                if(_isBang && value() && _oldValue) {
-            //                    set(false);
-            //                    _oldValue = false;
-            //                }
-            //            }
+
         };
         
         

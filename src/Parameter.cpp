@@ -30,7 +30,7 @@ namespace msa {
         //--------------------------------------------------------------
         Parameter::~Parameter() {
             ofLogVerbose() << "msa::ControlFreak::Parameter::~Parameter(): " << getPath();
-//            if(_paramValue) delete _paramValue;   // TODO
+            if(_paramValue) delete _paramValue;   // TODO
         }
         
         

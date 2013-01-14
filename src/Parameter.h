@@ -22,11 +22,6 @@ namespace msa {
 		
 		class ParameterGroup;
         
-//        class Parameter;
-//        typedef std::tr1::shared_ptr<Parameter> ParameterPtr;
-
-//        class ParameterValueT;
-        
 		class Parameter : public ParameterValueI {
 		public:
 

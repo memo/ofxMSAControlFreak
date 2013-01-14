@@ -17,12 +17,8 @@ namespace msa {
 	namespace ControlFreak {
         
         typedef Poco::DynamicAny AnyValue;
-        
-        
-//        class ParameterValueI;
-//        typedef std::tr1::shared_ptr<ParameterValueI> ParameterValueIPtr;
-
         class Parameter;
+
         
 		class ParameterValueI {
 		public:

@@ -22,6 +22,7 @@ namespace msa {
         
         class Parameter;
         
+        
 		template <typename T>
 		class ParameterValueT : public ParameterValueI {
 		public:
