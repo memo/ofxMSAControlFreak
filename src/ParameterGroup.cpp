@@ -263,6 +263,7 @@ namespace msa {
             }
             
             xml.pushTag("ofxMSAControlFreak");
+            _xmlTagId = 0;
             readFromXml(xml, bFullSchema);
             xml.popTag();
             return b;
