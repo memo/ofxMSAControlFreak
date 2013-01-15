@@ -228,6 +228,21 @@ namespace msa {
         }
 
         //--------------------------------------------------------------
+        vector<string> ParameterGroup::getPresetsList() {
+            vector<string> ret;
+
+            ofDirectory dir;
+            dir.allowExt("xml");
+            dir.listDir(getPresetsDir());
+            for(int i=0; i<dir.size(); i++) {
+                // TODO: do format check here?
+                // TODO: only load presets which are relevant to that section?
+                ret.push_back(dir.getName(i));
+            }
+            return ret;
+        }
+
+        //--------------------------------------------------------------
         bool ParameterGroup::saveXmlValues(string filename) {
             return saveXml(filename, false);
         }

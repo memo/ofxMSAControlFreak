@@ -118,6 +118,7 @@ namespace msa {
         
             string getFullPath(string filename, bool bFullSchema);
             string getPresetsDir();
+            vector<string> getPresetsList();
             
         protected:
             
