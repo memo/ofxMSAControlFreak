@@ -20,7 +20,6 @@ namespace msa {
         class ParameterNamedIndex;
         class ParameterVec3f;
 
-
         class ParameterGroup : public Parameter {
         public:
             
@@ -97,17 +96,19 @@ namespace msa {
             //---- Saving/loading from XML -----------------------
 
             // if name is omitted, last used name is used (by default same as group name)
-			void setFilename(string filename = "");
+//			void setFilename(string filename = "");
 			
             // save and load all parameter (values only) to an xml file
-            // leave filename blank for default (inherits name of parameter group + ".xml")
+            // if no folder is given, file is placed in default location (presets/group-path/)
+            // if no filename is given, default file and location is used (presets/group-path/default.xml)
 			bool saveXmlValues(string filename = "");
 			bool loadXmlValues(string filename = "");
             
             // save and load all parameter (full schema) to an xml file
-            // leave filename blank for default (inherits name of parameter group + "-schema.xml")
+            // filename and folder defaults as above
 			bool saveXmlSchema(string filename = "");
 			bool loadXmlSchema(string filename = "");
+            
             
             // write or read all parameters to an xml variable
             void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
@@ -115,13 +116,14 @@ namespace msa {
             
 
         
+            string getFullPath(string filename, bool bFullSchema);
+            string getPresetsDir();
+            
         protected:
             
-            string getFullFilename(string filename, bool bFullSchema);
-
             OrderedPointerMap<string, Parameter> _params;
             
-            string _filename;
+//            string _filename;
             
             // keep track of stack of groups when creating with startGroup, endGroup
             stack<ParameterGroup*> _groupStack;

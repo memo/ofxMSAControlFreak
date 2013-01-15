@@ -189,28 +189,44 @@ namespace msa {
         
         //--------------------------------------------------------------
 		// if parameter non empty, saves the filename
-		void ParameterGroup::setFilename(string filename) {
-            _filename = filename;
-		}
+//		void ParameterGroup::setFilename(string filename) {
+//            _filename = filename;
+//		}
         
         //--------------------------------------------------------------
-        string ParameterGroup::getFullFilename(string filename, bool bFullSchema) {
-            setFilename(filename);
-			if(filename.empty() == false) _filename = filename;
-            if(_filename.empty()) {
-                if(!ofDirectory::doesDirectoryExist("presets")) ofDirectory::createDirectory("presets");
-                _filename = "presets/" + getName();
+        string ParameterGroup::getFullPath(string filename, bool bFullSchema) {
+            // default name if filename is blank
+            if(filename.empty()) {
+                filename = "default";
+                
+                // append -schema if no filename is given
+                filename +=  bFullSchema ? "-schema.xml" :  ".xml";
             }
             
-            string fullFilename = _filename;
-            if(filename.empty()) fullFilename +=  bFullSchema ? "-schema.xml" :  ".xml";
-            string ext = ofFilePath::getFileExt(fullFilename);
-            if(ext.empty()) fullFilename += ".xml";
+            // make sure filename has correct extension
+            string ext = ofFilePath::getFileExt(filename);
+            if(ext != "xml") filename += ".xml";
+
             
-            return fullFilename;
+            string path = filename;
+
+            // if no folder is given, use default folder
+            if(ofFilePath::getEnclosingDirectory(path, false).empty()) path = ofFilePath::join(getPresetsDir(), path);
+            
+            // create directory path
+            ofDirectory::createDirectory(ofFilePath::getEnclosingDirectory(path), true, true);
+            
+            return path;
         }
         
-		
+        //--------------------------------------------------------------
+        string ParameterGroup::getPresetsDir() {
+            string presetsDir = "presets/" + getPath();
+            ofStringReplace(presetsDir, ".", "/");
+            ofFilePath::addTrailingSlash(presetsDir);
+            return presetsDir;
+        }
+
         //--------------------------------------------------------------
         bool ParameterGroup::saveXmlValues(string filename) {
             return saveXml(filename, false);
@@ -240,13 +256,13 @@ namespace msa {
             xml.pushTag("ofxMSAControlFreak");
             writeToXml(xml, bFullSchema);
             xml.popTag();
-            return xml.saveFile(getFullFilename(filename, bFullSchema));
+            return xml.saveFile(getFullPath(filename, bFullSchema));
 		}
 		
         //--------------------------------------------------------------
 		bool ParameterGroup::loadXml(string filename, bool bFullSchema) {
             ofxXmlSettings xml;
-            bool b = xml.loadFile(getFullFilename(filename, bFullSchema));
+            bool b = xml.loadFile(getFullPath(filename, bFullSchema));
             if(!b) {
                 ofLogError() << "msa::ControlFreak::ParameterGroup::loadXml: file not found " << filename;
                 return false;
