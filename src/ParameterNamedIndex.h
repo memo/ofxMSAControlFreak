@@ -39,6 +39,7 @@ namespace msa {
             enum Mode {
                 kDropdown,
                 kList,
+                kOptions
             };
             
             ParameterNamedIndex& setMode(Mode mode) {

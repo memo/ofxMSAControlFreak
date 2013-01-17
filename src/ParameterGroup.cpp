@@ -253,6 +253,16 @@ namespace msa {
         }
         
         //--------------------------------------------------------------
+        bool ParameterGroup::saveXmlValues(int slot) {
+            return saveXml(slot, false);
+        }
+        
+        //--------------------------------------------------------------
+        bool ParameterGroup::loadXmlValues(int slot) {
+            return loadXml(slot, false);
+        }
+        
+        //--------------------------------------------------------------
         bool ParameterGroup::saveXmlSchema(string filename) {
             return saveXml(filename, true);
         }
@@ -260,6 +270,16 @@ namespace msa {
         //--------------------------------------------------------------
         bool ParameterGroup::loadXmlSchema(string filename) {
             return loadXml(filename, true);
+        }
+        
+        //--------------------------------------------------------------
+        bool ParameterGroup::saveXmlSchema(int slot) {
+            return saveXml(slot, true);
+        }
+        
+        //--------------------------------------------------------------
+        bool ParameterGroup::loadXmlSchema(int slot) {
+            return loadXml(slot, true);
         }
         
         //--------------------------------------------------------------
@@ -301,6 +321,24 @@ namespace msa {
 		}
         
         //--------------------------------------------------------------
+        bool ParameterGroup::saveXml(int slot, bool bOnlyValues) {
+            saveXml(getPresetForSlot(slot), bOnlyValues);
+        }
+        
+        //--------------------------------------------------------------
+        bool ParameterGroup::loadXml(int slot, bool bOnlyValues) {
+            loadXml(getPresetForSlot(slot), bOnlyValues);
+        }
+
+        //--------------------------------------------------------------
+        string ParameterGroup::getPresetForSlot(int slot) {
+            vector<string>filenames = getPresetsList();
+            if(filenames.empty()) return "";
+            slot = ofClamp(slot, 0, filenames.size()-1);
+            return filenames[slot];
+        }
+
+        //--------------------------------------------------------------
         void ParameterGroup::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterGroup::writeToXml: " << getPath();
             
@@ -333,7 +371,7 @@ namespace msa {
             for(int i=0; i<numTags; i++) {
                 string xname = xml.getAttribute(_xmlTag, "name", "", i);
                 string xpath = xml.getAttribute(_xmlTag, "path", "", i);
-                printf("Parameter %i %s %s\n", i, xname.c_str(), xpath.c_str());
+//                printf("Parameter %i %s %s\n", i, xname.c_str(), xpath.c_str());
                 Parameter *p = getPtr(xname);
                 if(p) {
                     p->_xmlTagId = i;

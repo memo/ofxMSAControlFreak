@@ -103,22 +103,29 @@ namespace msa {
             // if no filename is given, default file and location is used (presets/group-path/default.xml)
 			bool saveXmlValues(string filename = "");
 			bool loadXmlValues(string filename = "");
+
+            // save and load all parameter (values only) to an xml file (overwrite n'th file in the default presets folder
+            bool saveXmlValues(int slot);
+			bool loadXmlValues(int slot);
             
             // save and load all parameter (full schema) to an xml file
             // filename and folder defaults as above
 			bool saveXmlSchema(string filename = "");
 			bool loadXmlSchema(string filename = "");
             
+            // save and load all parameter (full schema) to an xml file (overwrite n'th file in the default presets folder
+			bool saveXmlSchema(int slot);
+			bool loadXmlSchema(int slot);
             
             // write or read all parameters to an xml variable
             void writeToXml(ofxXmlSettings &xml, bool bOnlyValues);
             void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
             
-
         
             string getFullPath(string filename, bool bFullSchema);
             string getPresetsDir();
             vector<string> getPresetsList();
+            string getPresetForSlot(int slot);
             
         protected:
             
@@ -133,6 +140,8 @@ namespace msa {
             // save and load all parameters to an xml file
 			bool saveXml(string filename, bool bOnlyValues);
 			bool loadXml(string filename, bool bOnlyValues);
+			bool saveXml(int slot, bool bOnlyValues);
+			bool loadXml(int slot, bool bOnlyValues);
         };
         
         
