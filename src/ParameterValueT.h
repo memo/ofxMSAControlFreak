@@ -356,7 +356,7 @@ namespace msa {
         template<typename T>
         void ParameterValueT<T>::snap() {
             //            float inv = 1.0f / _inc;
-            int ival = floor((*_pvalue - _min) / _inc);
+            int ival = round((*_pvalue - _min) / _inc);
             _setValue(_min + (ival * _inc) );
         }
         
