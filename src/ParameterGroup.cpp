@@ -85,11 +85,12 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-		void ParameterGroup::startGroup(string name) {
+		ParameterGroup& ParameterGroup::startGroup(string name) {
             ParameterGroup* g;
             if(_params.exists(name)) g = getGroupPtr(name);
             else g = (ParameterGroup*)&add(new ParameterGroup(name, _groupStack.top()));
             _groupStack.push(g);
+            return *g;
 		}
 		
         //--------------------------------------------------------------

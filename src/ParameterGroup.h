@@ -50,7 +50,7 @@ namespace msa {
             Parameter& addColorf32(string name);
             
             // create a group. groups can be nested in other groups (infinitely deep)
-			void startGroup(string name="");
+			ParameterGroup& startGroup(string name="");
 			void endGroup();
             
             // ADVANCED, RESERVED FOR FUTURE USE
