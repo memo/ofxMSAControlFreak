@@ -55,8 +55,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
         string ParameterNamedIndex::getLabel(int i) {
-//            i = ofClamp(i, 0, getNumLabels()-1);
-            return _labels.size() ? _labels[i] : "empty";
+            return _labels.size() && i >= 0 && i < getNumLabels() ? _labels[i] : "";
         }
 
         //--------------------------------------------------------------
