@@ -1,7 +1,7 @@
 #include "testApp.h"
 
-#include "ofxMSAControlFreakGui/src/Gui.h"
-#include "ofxMSAControlFreak/src/ControlFreak.h"
+#include "ofxMSAControlFreakGui/src/ofxMSAControlFreakGui.h"
+#include "ofxMSAControlFreak/src/ofxMSAControlFreak.h"
 
 
 // this is a ParameterGroup

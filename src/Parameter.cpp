@@ -8,7 +8,7 @@
  */
 
 
-#include "ofxMSAControlFreak/src/ControlFreak.h"
+#include "ofxMSAControlFreak/src/ofxMSAControlFreak.h"
 
 namespace msa {
 	namespace ControlFreak {
