@@ -36,8 +36,7 @@ namespace msa {
         
         //--------------------------------------------------------------
 		Parameter& Parameter::setName(string s) {
-			ofLogVerbose() << "msa::ControlFreak::Parameter::setName: " << s;
-            
+//			ofLogVerbose() << "msa::ControlFreak::Parameter::setName: " << s;
             _name = s;
             return *this;
 		}
