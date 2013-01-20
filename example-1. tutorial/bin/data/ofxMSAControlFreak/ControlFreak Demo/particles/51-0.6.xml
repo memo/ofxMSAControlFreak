@@ -1,0 +1,7 @@
+<ofxMSAControlFreak version="1.000000000" bFullSchema="1">
+    <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="particles" path="ControlFreak Demo.particles" tooltip="">
+        <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="enabled" value="1" min="0" max="1" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.particles.enabled" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak12ParameterIntE" name="count" value="51" min="0" max="100" doClamp="0" inc="1" doSnap="0" path="ControlFreak Demo.particles.count" tooltip=""></Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="size" value="0.604166687" min="0.000000000" max="1.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="ControlFreak Demo.particles.size" tooltip=""></Parameter>
+    </Parameter>
+</ofxMSAControlFreak>

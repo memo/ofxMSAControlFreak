@@ -15,7 +15,7 @@
         <Parameter type="N3msa12ControlFreak13ParameterBoolE" name="bang (bool)" value="0"></Parameter>
         <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="float6" value="500.000000000"></Parameter>
         <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="float7" value="0.000000000"></Parameter>
-        <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="param1" value="-0.000000000"></Parameter>
+        <Parameter type="N3msa12ControlFreak14ParameterFloatE" name="param1" value="0.129381359"></Parameter>
         <Parameter type="N3msa12ControlFreak19ParameterNamedIndexE" name="a dropdown" value="0"></Parameter>
         <Parameter type="N3msa12ControlFreak19ParameterNamedIndexE" name="animals" value="0"></Parameter>
         <Parameter type="N3msa12ControlFreak14ParameterGroupE" name="particles">
