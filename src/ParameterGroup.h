@@ -100,12 +100,12 @@ namespace msa {
 //			void setFilename(string filename = "");
 			
             // save and load all parameter (values only) to an xml file
-            // if no folder is given, file is placed in default location (presets/group-path/)
-            // if no filename is given, default file and location is used (presets/group-path/default.xml)
+            // if no folder is given, file is placed in default location (ofxMSAControlFreak/group-path/)
+            // if no filename is given, default file and location is used (ofxMSAControlFreak/group-path/default.xml)
 			bool saveXmlValues(string filename = "");
 			bool loadXmlValues(string filename = "");
 
-            // save and load all parameter (values only) to an xml file (overwrite n'th file in the default presets folder
+            // save and load all parameter (values only) to an xml file (overwrite n'th file in the default ofxMSAControlFreak folder
             bool saveXmlValues(int slot);
 			bool loadXmlValues(int slot);
             
@@ -114,7 +114,7 @@ namespace msa {
 			bool saveXmlSchema(string filename = "");
 			bool loadXmlSchema(string filename = "");
             
-            // save and load all parameter (full schema) to an xml file (overwrite n'th file in the default presets folder
+            // save and load all parameter (full schema) to an xml file (overwrite n'th file in the default ofxMSAControlFreak folder
 			bool saveXmlSchema(int slot);
 			bool loadXmlSchema(int slot);
             

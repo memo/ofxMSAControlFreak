@@ -223,7 +223,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         string ParameterGroup::getPresetsDir() {
-            string presetsDir = "presets/" + getPath();
+            string presetsDir = "ofxMSAControlFreak/" + getPath();
             ofStringReplace(presetsDir, ".", "/");
             ofFilePath::addTrailingSlash(presetsDir);
             return presetsDir;
