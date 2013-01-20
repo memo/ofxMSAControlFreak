@@ -14,10 +14,12 @@
  
  - implement curve types to sliders
  - for the parameter? or the controller?
- - implement smoothing (for floats)
  - adjust parameter range in runtime from GUI
  - link parameters to each other (as controller?)
  - add time element for loadValues, and morphing (for animation)
+ - presets don't load if you change the name of the parameter group in code (think of a way for that to work)
+ - implement smoothing (for floats)
+ - wrap up controllers (midi, osc, dmx etc).
  */
 
 
