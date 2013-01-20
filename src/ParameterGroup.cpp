@@ -15,6 +15,7 @@ namespace msa {
 		ParameterGroup::ParameterGroup(string name, ParameterGroup *parent)
         : Parameter(name, parent) {
             clear();
+            bOpen = true;
 //            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup: " <<  getPath();
         }
 

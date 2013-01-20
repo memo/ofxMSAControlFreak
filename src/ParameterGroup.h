@@ -22,6 +22,7 @@ namespace msa {
 
         class ParameterGroup : public Parameter {
         public:
+            bool bOpen;
             
             ParameterGroup(string name = "MSAControlFreak", ParameterGroup *parent = NULL);
             ~ParameterGroup();
