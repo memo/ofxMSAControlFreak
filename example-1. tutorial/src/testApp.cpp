@@ -273,7 +273,7 @@ void testApp::setup(){
     //	params.loadFromInfo();
 
     
-    gui.addPage(&params);
+    gui.addPage(params);
 	gui.setDefaultKeys(true);
 	gui.show();
     

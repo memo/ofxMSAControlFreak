@@ -67,7 +67,7 @@ void testApp::setup(){
     
     
     // you can create groups and add any parameters to that group
-    gui.addPage(&params);
+    gui.addPage(params);
 	gui.setDefaultKeys(true);
 	gui.show();
     
