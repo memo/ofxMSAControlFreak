@@ -44,7 +44,8 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-        int ParameterNamedIndex::getNumLabels() {
+//        int ParameterNamedIndex::size() {
+        int ParameterNamedIndex::size() {
             return _labels.size();
         }
 
@@ -55,7 +56,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
         string ParameterNamedIndex::getLabel(int i) {
-            return _labels.size() && i >= 0 && i < getNumLabels() ? _labels[i] : "";
+            return _labels.size() && i >= 0 && i < size() ? _labels[i] : "";
         }
 
         //--------------------------------------------------------------

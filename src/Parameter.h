@@ -62,6 +62,7 @@ namespace msa {
             
             virtual ParameterValueI& set(AnyValue v) { if(_paramValue) return _paramValue->set(v); }
 			virtual AnyValue value() const { if(_paramValue) return _paramValue->value(); }
+			virtual AnyValue oldValue() const { if(_paramValue) return _paramValue->oldValue(); }
             
             // whether the value changed this frame or not
             virtual bool hasChanged() { if(_paramValue) return _paramValue->hasChanged(); }

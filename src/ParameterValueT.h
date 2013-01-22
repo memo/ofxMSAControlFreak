@@ -44,6 +44,8 @@ namespace msa {
             
             ParameterValueT<T>& set(AnyValue v);
 			AnyValue value() const;
+			AnyValue oldValue() const;
+            
             
             // whether the value changed this frame or not
             bool hasChanged();
@@ -171,6 +173,11 @@ namespace msa {
 			return *_pvalue;
 		}
         
+        //--------------------------------------------------------------
+        template<typename T>
+		AnyValue ParameterValueT<T>::oldValue() const {
+			return _oldValue;
+		}
         
         //--------------------------------------------------------------
         template<typename T>

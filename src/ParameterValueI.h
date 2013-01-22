@@ -31,6 +31,7 @@ namespace msa {
             
             virtual ParameterValueI& set(AnyValue v) = 0;
 			virtual AnyValue value() const = 0;
+			virtual AnyValue oldValue() const = 0;
             
             // whether the value changed this frame or not
             virtual bool hasChanged() = 0;
