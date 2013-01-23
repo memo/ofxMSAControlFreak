@@ -33,6 +33,5 @@
 #include "ofxMSAControlFreak/src/ParameterFloat.h"
 #include "ofxMSAControlFreak/src/ParameterNamedIndex.h"
 #include "ofxMSAControlFreak/src/ParameterGroup.h"
-#include "ofxMSAControlFreak/src/ParameterString.h"
 #include "ofxMSAControlFreak/src/ParameterVec3f.h"
 #include "ofxMSAControlFreak/src/Utils.h"
