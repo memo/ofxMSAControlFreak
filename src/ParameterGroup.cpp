@@ -23,7 +23,7 @@ namespace msa {
         //--------------------------------------------------------------
 		ParameterGroup::~ParameterGroup() {
             ofLogVerbose() << "msa::ControlFreak::ParameterGroup::~ParameterGroup: " <<  getPath();
-            clear();
+                clear();    // TODO: bug if you add an existing (i.e. on the stack) parameter, since it tries to be deleted. 
 		}
         
         //--------------------------------------------------------------
