@@ -28,7 +28,7 @@ namespace msa {
 
 			friend class ParameterGroup;
             template<typename T>
-            friend class ParameterValueT;
+            friend class ParameterNumberValueT;
             
 			Parameter(string name, ParameterGroup *parent, ParameterValueI *pv = NULL);
 			virtual ~Parameter();
@@ -66,7 +66,10 @@ namespace msa {
             
             // whether the value changed this frame or not
             virtual bool hasChanged() { if(_paramValue) return _paramValue->hasChanged(); }
-            
+
+            // clear the changed flag (if you want to programmatically change the value, but don't want to trigger anything else)
+            virtual void clearChanged() { if(_paramValue) _paramValue->clearChanged(); }
+
             // set min/max range values
 			virtual ParameterValueI& setRange(AnyValue vmin, AnyValue vmax) { if(_paramValue) return _paramValue->setRange(vmin, vmax); }
 			virtual AnyValue getMin() const { if(_paramValue) return _paramValue->getMin(); }

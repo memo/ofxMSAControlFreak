@@ -36,6 +36,9 @@ namespace msa {
             // whether the value changed this frame or not
             virtual bool hasChanged() = 0;
             
+            // clear the changed flag (if you want to programmatically change the value, but don't want to trigger anything else)
+            virtual void clearChanged() = 0;
+            
             // set min/max range values
 			virtual ParameterValueI& setRange(AnyValue vmin, AnyValue vmax) = 0;
 			virtual AnyValue getMin() const = 0;

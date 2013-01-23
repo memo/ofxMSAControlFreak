@@ -18,7 +18,7 @@ namespace msa {
 			template <typename T> operator T() const { return value(); }
             
             ParameterInt(string name, ParameterGroup *parent)
-            : Parameter(name, parent, new ParameterValueT<int>()) { setRange(0, 100); setIncrement(1); }
+            : Parameter(name, parent, new ParameterNumberValueT<int>()) { setRange(0, 100); setIncrement(1); }
             
         };
         

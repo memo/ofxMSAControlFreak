@@ -18,7 +18,7 @@ namespace msa {
 			template <typename T> operator T() const { return value(); }
             
             ParameterFloat(string name, ParameterGroup *parent)
-            : Parameter(name, parent, new ParameterValueT<float>()) { setRange(0.0f, 1.0f); setIncrement(0.01f); }
+            : Parameter(name, parent, new ParameterNumberValueT<float>()) { setRange(0.0f, 1.0f); setIncrement(0.01f); }
         };
         
     }
