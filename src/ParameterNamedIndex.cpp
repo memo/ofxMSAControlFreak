@@ -44,10 +44,10 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-//        int ParameterNamedIndex::size() {
         int ParameterNamedIndex::size() {
             return _labels.size();
         }
+        
 
         //--------------------------------------------------------------
 		string ParameterNamedIndex::getSelectedLabel() {
@@ -74,7 +74,19 @@ namespace msa {
             _labels.push_back(s);
         }
 
-
+        
+        //--------------------------------------------------------------
+        ParameterNamedIndex& ParameterNamedIndex::setMode(Mode mode) {
+            _mode = mode;
+            return *this;
+        }
+        
+        //--------------------------------------------------------------
+        ParameterNamedIndex::Mode ParameterNamedIndex::getMode() {
+            return _mode;
+        }
+        
+        
         //--------------------------------------------------------------
         void ParameterNamedIndex::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
 			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::writeToXml: " << getPath();

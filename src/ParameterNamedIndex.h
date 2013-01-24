@@ -19,6 +19,12 @@ namespace msa {
 			
 			friend class ParameterGroup;
             
+            enum Mode {
+                kDropdown,
+                kList,
+                kOptions
+            };
+            
 			ParameterNamedIndex(string name, ParameterGroup *parent)
             : ParameterInt(name, parent) { setClamp(true); setMode(kDropdown); }
           
@@ -29,7 +35,6 @@ namespace msa {
             ParameterNamedIndex& setLabels(vector<string>& labels);
             ParameterNamedIndex& setLabels(int count, ...);
 			
-//            int size();
             int size();
             string getLabel(int i);
 			string getSelectedLabel();
@@ -37,22 +42,8 @@ namespace msa {
             void clearLabels();
             void addLabel(string s);
             
-            enum Mode {
-                kDropdown,
-                kList,
-                kOptions
-            };
-            
-            ParameterNamedIndex& setMode(Mode mode) {
-                _mode = mode;
-                return *this;
-            }
-            
-            Mode getMode() {
-                return _mode;
-            }
-            
-
+            ParameterNamedIndex& setMode(Mode mode);
+            Mode getMode();
 			
 		protected:
             Mode _mode;
