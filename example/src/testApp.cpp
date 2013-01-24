@@ -32,9 +32,6 @@ void tutorial_1a() {
     
     ofLogNotice() << "TUTORIAL 1";
     
-    // optionally, set the display name for your parameter group
-    params.setName("tutorial 1a");
-    
     // All Parameters are created via the 'add' methods of a ParameterGroup
     params.addFloat("float1");  // float: can be any real number
     params.addInt("int1");      // int: can be any whole number
@@ -331,10 +328,10 @@ void tutorial_2() {
     
     
     // tabs are just like groups. In fact they are groups, with a flag indicating that it should be considered a new tab
-    params.startPage("tutorial 2");
+    params.startPage("boxes");
     
     // the above is the same as doing this
-    //    params.startGroup("Tutorial 2").setMode(msa::ControlFreak::ParameterGroup::kTab);
+    //    params.startGroup("boxes").setMode(msa::ControlFreak::ParameterGroup::kTab);
     
     params.addFloat("speed").setRange(0, 2).setClamp(true);
     
@@ -343,6 +340,13 @@ void tutorial_2() {
         params.addFloat("width").setClamp(true);
         params.addFloat("height").setClamp(true);
     } params.endGroup();
+    
+    params.startGroup("spread");
+    {
+        params.addFloat("width").setClamp(true);
+        params.addFloat("height").setClamp(true);
+    } params.endGroup();
+
 
     params.startGroup("background color");
     {
@@ -358,6 +362,10 @@ void testApp::setup(){
     ofSetLogLevel(OF_LOG_VERBOSE);
     ofBackground(0, 0, 0);
 	ofSetVerticalSync(true);
+    
+    // optionally, set the display name for your parameter group
+    // this is also the default folder for the xml files
+    params.setName("tutorial");
     
 
     // fill our parameters
@@ -409,20 +417,24 @@ void testApp::draw() {
     ofSetRectMode(OF_RECTMODE_CENTER);
     static float t = 0;
     
-    t += (float)params["tutorial 2.speed"] * 0.01;
-    ofBackground(params["tutorial 2.background color.r"], params["tutorial 2.background color.g"], params["tutorial 2.background color.b"]);
+    t += (float)params["boxes.speed"] * 0.1;
+    ofBackground(params["boxes.background color.r"], params["boxes.background color.g"], params["boxes.background color.b"]);
     
-    float mw = (float)params["tutorial 2.max size.width"] * ofGetWidth();
-    float mh = (float)params["tutorial 2.max size.height"] * ofGetHeight();
+    float maxsizew = (float)params["boxes.max size.width"] * ofGetWidth();
+    float maxsizeh = (float)params["boxes.max size.height"] * ofGetHeight();
+    
+    float spreadw = (float)params["boxes.spread.width"] * ofGetWidth();
+    float spreadh = (float)params["boxes.spread.height"] * ofGetHeight();
+
 
     for(int i=0;i<50; i++) {
         float f = t*0.4 + 34.7324 + i * 258.60293;
         ofSetColor(ofNoise(f+92.8274)*255, ofNoise(f+8723.34576)*255, ofNoise(f+4768.976)*255);
         ofPushMatrix();
         ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
-        ofTranslate(ofSignedNoise(f+7682.28476)*ofGetWidth(), ofSignedNoise(f+283.525)*ofGetHeight());
+        ofTranslate(ofSignedNoise(f+7682.28476)*spreadw, ofSignedNoise(f+283.525)*spreadh);
         ofRotate(ofSignedNoise(f*0.3+193.56259)*360);
-        ofRect(0, 0, ofSignedNoise(f*0.4+9273.442)*mw, ofSignedNoise(f*0.4+18363.5652)*mh);
+        ofRect(0, 0, ofSignedNoise(f*0.4+9273.442)*maxsizew, ofSignedNoise(f*0.4+18363.5652)*maxsizeh);
         ofPopMatrix();
     }
     ofSetColor(255, 255, 255);
