@@ -24,8 +24,8 @@ namespace msa {
         public:
             
             enum Mode {
-                kGroup,    // just a normal group
-                kPage,      // treat this group as a separate page
+                kTab,      // treat this group as a separate tab, default for ParameterGroups created on their own or via ParameterGroup::startTab()
+                kGroup,    // just a normal (sub)group, default for ParameterGroups created via ParameterGroup::startGroup()
             };
             
 
@@ -71,8 +71,10 @@ namespace msa {
 			ParameterGroup& startGroup(string name);
 			void endGroup();
             
-            // create a page. this is basically the same as a group, but it's mode is set to be a page
-            ParameterGroup& addPage(string name);
+            // create a new tab. this is basically the same as a group, but it's mode is set to be a tab
+            ParameterGroup& startTab(string name);
+            void endTab();
+            
             
             // ADVANCED, RESERVED FOR FUTURE USE
             Parameter& add(Parameter* param);      // if you create a new pointer (it will be owned and deleted by this Group)

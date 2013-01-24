@@ -106,7 +106,8 @@ namespace msa {
         
         //--------------------------------------------------------------
 		ParameterGroup& ParameterGroup::startGroup(string name) {
-            ParameterGroup* g = (ParameterGroup*)&add(new ParameterGroup(name, _groupStack.top()));
+            ParameterGroup* g = static_cast<ParameterGroup*>(&add(new ParameterGroup(name, _groupStack.top())));
+            g->setMode(kGroup);
             _groupStack.push(g);
             return *g;
 		}
@@ -117,10 +118,14 @@ namespace msa {
 		}
         
         //--------------------------------------------------------------
-		ParameterGroup& ParameterGroup::addPage(string name) {
-            startGroup(name).setMode(kPage);
+		ParameterGroup& ParameterGroup::startTab(string name) {
+            startGroup(name).setMode(kTab);
         }
         
+        //--------------------------------------------------------------
+        void ParameterGroup::endTab() {
+            endGroup();
+        }
         
         //--------------------------------------------------------------
 		Parameter& ParameterGroup::add(Parameter* param) {
