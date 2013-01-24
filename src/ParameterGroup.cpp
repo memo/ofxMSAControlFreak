@@ -15,7 +15,7 @@ namespace msa {
 		ParameterGroup::ParameterGroup(string name, ParameterGroup *parent)
         : Parameter(name, parent) {
             clear();
-            bOpen = true;
+            _bOpen = true;
 //            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup: " <<  getPath();
         }
 
@@ -23,7 +23,7 @@ namespace msa {
         //--------------------------------------------------------------
 		ParameterGroup::~ParameterGroup() {
             ofLogVerbose() << "msa::ControlFreak::ParameterGroup::~ParameterGroup: " <<  getPath();
-                clear();    // TODO: bug if you add an existing (i.e. on the stack) parameter, since it tries to be deleted. 
+            clear();    // TODO: bug if you add an existing (i.e. on the stack) parameter, since it tries to be deleted. 
 		}
         
         //--------------------------------------------------------------
@@ -40,22 +40,44 @@ namespace msa {
             for(int i=0; i<_params.size(); i++) _params[i].update();
         }
         
+        //--------------------------------------------------------------
+        ParameterGroup& ParameterGroup::setMode(Mode mode) {
+            _mode = mode;
+        }
 
         //--------------------------------------------------------------
+        ParameterGroup::Mode ParameterGroup::getMode() const {
+            return _mode;
+        }
+        
+        //--------------------------------------------------------------
+        ParameterGroup& ParameterGroup::open() {
+            _bOpen = true;
+        }
+
+        //--------------------------------------------------------------
+        ParameterGroup& ParameterGroup::close() {
+            _bOpen = false;
+        }
+
+        
+        //--------------------------------------------------------------
+        bool& ParameterGroup::isOpen() {
+            return _bOpen;
+        }
+        
+        //--------------------------------------------------------------
 		ParameterInt& ParameterGroup::addInt(string name) {
-            if(_params.exists(name)) return get<ParameterInt>(name);
             return (ParameterInt&) add(new ParameterInt(name, _groupStack.top()));
 		}
 		
         //--------------------------------------------------------------
 		ParameterFloat& ParameterGroup::addFloat(string name) {
-            if(_params.exists(name)) return get<ParameterFloat>(name);
 			return (ParameterFloat&) add(new ParameterFloat(name, _groupStack.top()));
 		}
 		
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBool(string name) {
-            if(_params.exists(name)) return get<ParameterBool>(name);
             ParameterBool *p = new ParameterBool(name, _groupStack.top());
             p->setMode(ParameterBool::kToggle);
             add(p);
@@ -64,7 +86,6 @@ namespace msa {
 		
         //--------------------------------------------------------------
 		ParameterBool& ParameterGroup::addBang(string name) {
-            if(_params.exists(name)) return get<ParameterBool>(name);
             ParameterBool *p = new ParameterBool(name, _groupStack.top());
             p->setMode(ParameterBool::kBang);
             add(p);
@@ -73,23 +94,19 @@ namespace msa {
 		
         //--------------------------------------------------------------
 		ParameterNamedIndex& ParameterGroup::addNamedIndex(string name) {
-            if(_params.exists(name)) return get<ParameterNamedIndex>(name);
 			return (ParameterNamedIndex&) add(new ParameterNamedIndex(name, _groupStack.top()));
 		}
         
         
         //--------------------------------------------------------------
         ParameterVec3f& ParameterGroup::addVec3f(string name) {
-//            if(_params.exists(name)) return *getVec3f(name);
 //			return (ParameterVec3f&) add(new ParameterVec3f(name, _groupStack.top()));
         }
         
         
         //--------------------------------------------------------------
 		ParameterGroup& ParameterGroup::startGroup(string name) {
-            ParameterGroup* g;
-            if(_params.exists(name)) g = getGroupPtr(name);
-            else g = (ParameterGroup*)&add(new ParameterGroup(name, _groupStack.top()));
+            ParameterGroup* g = (ParameterGroup*)&add(new ParameterGroup(name, _groupStack.top()));
             _groupStack.push(g);
             return *g;
 		}
@@ -99,6 +116,11 @@ namespace msa {
 			_groupStack.pop();
 		}
         
+        //--------------------------------------------------------------
+		ParameterGroup& ParameterGroup::addPage(string name) {
+            startGroup(name).setMode(kPage);
+        }
+        
         
         //--------------------------------------------------------------
 		Parameter& ParameterGroup::add(Parameter* param) {
@@ -106,14 +128,17 @@ namespace msa {
 			
             ParameterGroup *currentGroup = _groupStack.top();
             if(currentGroup == this) {
+                
                 if(_params.exists(param->getName())) {
-                    ofLogError() << "msa::ControlFreak::ParameterGroup::add: " << param->getPath() << " - path already exists, returning existing parameter";
-                    return _params[param->getName()];
-                } else {
-                    _params.push_back(param->getName(), param);
-                    param->setParent(this);
-                    return *param;
+                    delete param;
+                    string s = "msa::ControlFreak::ParameterGroup::add: parameter [" + param->getPath() + "] already exists";
+                    ofLogError() << s;
+                    throw invalid_argument(s);
                 }
+                
+                _params.push_back(param->getName(), param);
+                param->setParent(this);
+                return *param;
             } else {
                 return currentGroup->add(param);
             }
@@ -138,6 +163,13 @@ namespace msa {
 
         //--------------------------------------------------------------
         Parameter& ParameterGroup::get(string path) const {
+            Parameter *p = getPtr(path);
+            if(p == NULL) {
+                string s = "msa::ControlFreak::get: parameter [" + path + "] doesn't exist";
+                ofLogError() << s;
+                throw invalid_argument(s);
+            }
+
             return *getPtr(path);
         }
         
@@ -160,10 +192,10 @@ namespace msa {
             // if path divider doesn't exist, search this group
             if(pathDividerPos == string::npos) {
                 
-                // if parameter doesn't exist, return with error
+                // if parameter doesn't exist, return NULL with error
                 if(!_params.exists(path)) {
-                    ofLogError() << "msa::ControlFreak::ParameterGroup::get: " << path << " does not exist in Group: " << getPath();
-                    return NULL;  // return NULL
+                    ofLogError() << "msa::ControlFreak::ParameterGroup::get: [" + path + "] does not exist in Group: " + getPath();
+                    return NULL;
                 }
                 
                 return &_params[path];
@@ -188,7 +220,6 @@ namespace msa {
         }
         
         
-        
         //--------------------------------------------------------------
 		// if parameter non empty, saves the filename
 //		void ParameterGroup::setFilename(string filename) {
@@ -196,7 +227,7 @@ namespace msa {
 //		}
         
         //--------------------------------------------------------------
-        string ParameterGroup::getFullPath(string filename, bool bFullSchema) {
+        string ParameterGroup::getFullFilepath(string filename, bool bFullSchema) {
             // default name if filename is blank
             if(filename.empty()) {
                 filename = "default";
@@ -293,13 +324,13 @@ namespace msa {
             xml.pushTag("ofxMSAControlFreak");
             writeToXml(xml, bFullSchema);
             xml.popTag();
-            return xml.saveFile(getFullPath(filename, bFullSchema));
+            return xml.saveFile(getFullFilepath(filename, bFullSchema));
 		}
 		
         //--------------------------------------------------------------
 		bool ParameterGroup::loadXml(string filename, bool bFullSchema) {
             ofxXmlSettings xml;
-            bool b = xml.loadFile(getFullPath(filename, bFullSchema));
+            bool b = xml.loadFile(getFullFilepath(filename, bFullSchema));
             if(!b) {
                 ofLogError() << "msa::ControlFreak::ParameterGroup::loadXml: file not found " << filename;
                 return false;

@@ -22,7 +22,13 @@ namespace msa {
 
         class ParameterGroup : public Parameter {
         public:
-            bool bOpen;
+            
+            enum Mode {
+                kGroup,    // just a normal group
+                kPage,      // treat this group as a separate page
+            };
+            
+
             
             ParameterGroup(string name = "MSAControlFreak", ParameterGroup *parent = NULL);
             ~ParameterGroup();
@@ -35,6 +41,17 @@ namespace msa {
             // remove all parameters
             void clear();
             
+            
+            // get and set the mode
+            // these are just states (i.e. data), they don't actually affect functionality of the parametergroup, only used when added to a GUI
+            ParameterGroup& setMode(Mode mode);
+            Mode getMode() const;
+
+            // open, close, get open state
+            // these are just states (i.e. data), they don't actually affect functionality of the parametergroup, only used when added to a GUI
+            ParameterGroup& open();
+            ParameterGroup& close();
+            bool& isOpen();
             
             //---- Adding parameters -----------------------
             
@@ -51,8 +68,11 @@ namespace msa {
             Parameter& addColorf32(string name);
             
             // create a group. groups can be nested in other groups (infinitely deep)
-			ParameterGroup& startGroup(string name="");
+			ParameterGroup& startGroup(string name);
 			void endGroup();
+            
+            // create a page. this is basically the same as a group, but it's mode is set to be a page
+            ParameterGroup& addPage(string name);
             
             // ADVANCED, RESERVED FOR FUTURE USE
             Parameter& add(Parameter* param);      // if you create a new pointer (it will be owned and deleted by this Group)
@@ -123,7 +143,7 @@ namespace msa {
             void readFromXml(ofxXmlSettings &xml, bool bOnlyValues);
             
         
-            string getFullPath(string filename, bool bFullSchema);
+            string getFullFilepath(string filename, bool bFullSchema);
             string getPresetsDir();
             vector<string> getPresetsList();
             string getPresetForSlot(int slot);
@@ -131,7 +151,9 @@ namespace msa {
         protected:
             
             OrderedPointerMap<string, Parameter> _params;
-            
+            bool _bOpen;
+            Mode _mode;
+
 //            string _filename;
             
             // keep track of stack of groups when creating with startGroup, endGroup
