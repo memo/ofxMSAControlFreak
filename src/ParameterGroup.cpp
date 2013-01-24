@@ -118,12 +118,12 @@ namespace msa {
 		}
         
         //--------------------------------------------------------------
-		ParameterGroup& ParameterGroup::startTab(string name) {
-            startGroup(name).setMode(kTab);
+		ParameterGroup& ParameterGroup::startPage(string name) {
+            startGroup(name).setMode(kPage);
         }
         
         //--------------------------------------------------------------
-        void ParameterGroup::endTab() {
+        void ParameterGroup::endPage() {
             endGroup();
         }
         
