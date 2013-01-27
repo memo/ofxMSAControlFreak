@@ -96,9 +96,9 @@ namespace msa {
             virtual void* getTrackedVariable();
             
             
-            virtual void update();
-            
         protected:
+            
+            virtual void update();
             
             // override these functions to implement clamping and snapping for any type
             virtual void clamp() {}

@@ -81,9 +81,9 @@ namespace msa {
             virtual ParameterValueI& trackVariable(void *pv) = 0;
             virtual void* getTrackedVariable() = 0;
             
+        protected:
             virtual void update() = 0;
             
-        protected:
             virtual void clamp() = 0;
             virtual void snap() = 0;
             

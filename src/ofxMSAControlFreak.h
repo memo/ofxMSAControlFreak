@@ -26,6 +26,7 @@
 
 #pragma once
 
+#include "ofxMSAControlFreak/src/Master.h"
 #include "ofxMSAControlFreak/src/Parameter.h"
 #include "ofxMSAControlFreak/src/ParameterNumberValueT.h"
 #include "ofxMSAControlFreak/src/ParameterBool.h"
@@ -35,3 +36,13 @@
 #include "ofxMSAControlFreak/src/ParameterGroup.h"
 #include "ofxMSAControlFreak/src/ParameterVec3f.h"
 #include "ofxMSAControlFreak/src/Utils.h"
+
+
+namespace msa {
+    namespace ControlFreak {
+        
+        
+        // update everything
+        void update();
+    }
+}

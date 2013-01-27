@@ -17,6 +17,7 @@ namespace msa {
             clear();
             _bOpen = true;
             setMode(kPage);
+            _params.setOwnsObjects(false);
 //            ofLogVerbose() << "msa::ControlFreak::ParameterGroup::ParameterGroup: " <<  getPath();
         }
 
@@ -36,10 +37,10 @@ namespace msa {
         }
         
         //--------------------------------------------------------------
-        void ParameterGroup::update() {
-            Parameter::update();
-            for(int i=0; i<_params.size(); i++) _params[i].update();
-        }
+//        void ParameterGroup::update() {
+//            Parameter::update();
+//            for(int i=0; i<_params.size(); i++) _params[i].update();
+//        }
         
         //--------------------------------------------------------------
         ParameterGroup& ParameterGroup::setMode(Mode mode) {
@@ -136,7 +137,8 @@ namespace msa {
             if(currentGroup == this) {
                 
                 if(_params.exists(param->getName())) {
-                    delete param;
+//                    delete param;
+                    Master::instance().erase(param);
                     string s = "msa::ControlFreak::ParameterGroup::add: parameter [" + param->getPath() + "] already exists";
                     ofLogError() << s;
                     throw invalid_argument(s);

@@ -27,6 +27,7 @@ namespace msa {
 		public:
 
 			friend class ParameterGroup;
+            friend class Master;
             template<typename T>
             friend class ParameterNumberValueT;
             
@@ -113,9 +114,9 @@ namespace msa {
             virtual void* getTrackedVariable() { if(_paramValue) return _paramValue->getTrackedVariable(); }
             
             
+        protected:
             virtual void update() { if(_paramValue) _paramValue->update(); }
             
-        protected:
             virtual void clamp() { if(_paramValue) _paramValue->clamp(); }
             virtual void snap() { if(_paramValue) _paramValue->snap(); }
             

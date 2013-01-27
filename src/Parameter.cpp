@@ -24,6 +24,9 @@ namespace msa {
                 
             _xmlTag = "Parameter";
             _xmlTagId = 0;
+            
+            Master::instance().add(this);
+            
 //            ofLogVerbose() << "msa::ControlFreak::Parameter::Parameter: " <<  getPath();
         }
 		

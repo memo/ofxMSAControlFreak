@@ -60,7 +60,7 @@ void tutorial_1a() {
     // this will throw an exception and break execution if the try/catch is commented out
     // (initially I made it fail silently and just return the existing Parameter, but I found an exception made it much simpler to debug)
     try {
-        params.addInt("int2");  // this will throw an exception
+        params.addInt("int2");  // this will throw an exception because 'int2' already exists
     } catch (invalid_argument e) {
         cout << e.what() << endl;
     }
@@ -333,6 +333,9 @@ void tutorial_2() {
     // the above is the same as doing this
     //    params.startGroup("boxes").setMode(msa::ControlFreak::ParameterGroup::kTab);
     
+    
+    params.addInt("count").setRange(0, 100).setClamp(true);
+    
     params.addFloat("speed").setRange(0, 2).setClamp(true);
     
     params.startGroup("max size");
@@ -353,7 +356,7 @@ void tutorial_2() {
         params.addInt("r").setRange(0, 255).setClamp(true);
         params.addInt("g").setRange(0, 255).setClamp(true);
         params.addInt("b").setRange(0, 255).setClamp(true);
-        
+        params.addBang("randomize");
     } params.endGroup();
 }
 
@@ -402,8 +405,8 @@ void testApp::setup(){
 //--------------------------------------------------------------
 void testApp::update() {
     
-    // you have to call params.update() for some things to work
-    params.update();
+    // this needs to be called for some things to work such as syncing to external controllers (midi etc), checking for changes, snapping / clamping etc.
+    msa::ControlFreak::update();
     
     // if you've disabled events for the gui, then you need to manually call this
     // if you have gui events enabled (default), then it's unnessecary
@@ -418,6 +421,12 @@ void testApp::draw() {
     static float t = 0;
     
     t += (float)params["boxes.speed"] * 0.1;
+    if(params["boxes.background color.randomize"]) {
+        params["boxes.background color.r"].setRandom(); // sets a random number between it's min and max
+        params["boxes.background color.g"].setRandom(); // sets a random number between it's min and max
+        params["boxes.background color.b"].setRandom(); // sets a random number between it's min and max
+    }
+    
     ofBackground(params["boxes.background color.r"], params["boxes.background color.g"], params["boxes.background color.b"]);
     
     float maxsizew = (float)params["boxes.max size.width"] * ofGetWidth();
@@ -427,7 +436,8 @@ void testApp::draw() {
     float spreadh = (float)params["boxes.spread.height"] * ofGetHeight();
 
 
-    for(int i=0;i<50; i++) {
+    int numBoxes = params["boxes.count"];
+    for(int i=0; i<numBoxes; i++) {
         float f = t*0.4 + 34.7324 + i * 258.60293;
         ofSetColor(ofNoise(f+92.8274)*255, ofNoise(f+8723.34576)*255, ofNoise(f+4768.976)*255);
         ofPushMatrix();

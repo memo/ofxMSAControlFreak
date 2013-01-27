@@ -33,11 +33,7 @@ namespace msa {
             ParameterGroup(string name = "MSAControlFreak", ParameterGroup *parent = NULL);
             ~ParameterGroup();
 
-            
-            // call this once every frame to make sure any external controllers (e.g. midi, osc etc.) stay in sync and Parameter::hasChanged() is correct
-            void update();
-            
-            
+                        
             // remove all parameters
             void clear();
             
@@ -161,6 +157,8 @@ namespace msa {
             // keep track of stack of groups when creating with startGroup, endGroup
             stack<ParameterGroup*> _groupStack;
             
+            // call this once every frame to make sure any external controllers (e.g. midi, osc etc.) stay in sync and Parameter::hasChanged() is correct
+//            void update();
             
             // save and load all parameters to an xml file
 			bool saveXml(string filename, bool bOnlyValues);
