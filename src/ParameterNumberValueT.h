@@ -57,6 +57,8 @@ namespace msa {
 			ParameterNumberValueT<T>& setRange(AnyValue vmin, AnyValue vmax);
 			AnyValue getMin() const;
 			AnyValue getMax() const;
+            AnyValue getRangeLength() const;
+
             
             // set and get whether clamping to range is enabled
 			ParameterNumberValueT<T>& setClamp(bool b);
@@ -218,7 +220,12 @@ namespace msa {
 			return _max;
 		}
         
-        
+        //--------------------------------------------------------------
+        template<typename T>
+		AnyValue ParameterNumberValueT<T>::getRangeLength() const {
+			return _max - _min;
+		}
+
         //--------------------------------------------------------------
         template<typename T>
 		ParameterNumberValueT<T>& ParameterNumberValueT<T>::setClamp(bool b) {

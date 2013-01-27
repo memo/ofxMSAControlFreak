@@ -57,7 +57,8 @@ namespace msa {
 			ParameterValueT<T>& setRange(AnyValue vmin, AnyValue vmax) {}
 			AnyValue getMin() const {}
 			AnyValue getMax() const {}
-            
+            AnyValue getRangeLength() {}
+
             // set and get whether clamping to range is enabled
 			ParameterValueT<T>& setClamp(bool b) {}
             bool& getClamp() {}

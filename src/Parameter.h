@@ -75,7 +75,8 @@ namespace msa {
 			virtual ParameterValueI& setRange(AnyValue vmin, AnyValue vmax) { if(_paramValue) return _paramValue->setRange(vmin, vmax); }
 			virtual AnyValue getMin() const { if(_paramValue) return _paramValue->getMin(); }
 			virtual AnyValue getMax() const { if(_paramValue) return _paramValue->getMax(); }
-            
+			virtual AnyValue getRangeLength() const { if(_paramValue) return _paramValue->getRangeLength(); }
+
             // set and get whether clamping to range is enabled
 			virtual ParameterValueI& setClamp(bool b) { if(_paramValue) return _paramValue->setClamp(b); }
             virtual bool& getClamp() { if(_paramValue) return _paramValue->getClamp(); }
