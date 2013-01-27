@@ -338,6 +338,8 @@ void tutorial_2() {
     
     params.addFloat("speed").setRange(0, 2).setClamp(true);
     
+    params.addFloat("a slider");
+    
     params.startGroup("max size");
     {
         params.addFloat("width").setClamp(true);
@@ -399,6 +401,8 @@ void testApp::setup(){
     // but if you do, you need to make sure you call the gui update/draw/mouse/keyboard events manually
     // automatic events are enabled by default
 //    gui.disableAllEvents();
+    
+    gui.setPage(2);
 }
 
 
@@ -434,6 +438,10 @@ void testApp::draw() {
     
     float spreadw = (float)params["boxes.spread.width"] * ofGetWidth();
     float spreadh = (float)params["boxes.spread.height"] * ofGetHeight();
+    
+    if(params["boxes.a slider"].hasChanged()) {
+        ofLogNotice() << "'boxes.a slider' has changed";
+    }
 
 
     int numBoxes = params["boxes.count"];
