@@ -66,11 +66,11 @@ namespace msa {
             
             // set and get as 0...1 values normalized to min/max range
 			virtual ParameterValueI& setNormalized(float norm) = 0;
-			virtual float getNormalized() const = 0;
+			virtual float getNormalized(bool bClamp = false) const = 0;
             
             // set and get mapped to a new range
             virtual ParameterValueI& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) = 0;
-            virtual AnyValue getMappedTo(AnyValue newMin, AnyValue newMax) const = 0;
+            virtual AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const = 0;
             
             
             // set to a random value between min, max range

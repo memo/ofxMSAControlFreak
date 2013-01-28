@@ -31,7 +31,7 @@ namespace msa {
             template<typename T>
             friend class ParameterNumberValueT;
             
-			Parameter(string name, ParameterGroup *parent, ParameterValueI *pv = NULL);
+			Parameter(string name, ParameterGroup *parent = NULL, ParameterValueI *pv = NULL);
 			virtual ~Parameter();
             
             Parameter& setName(string s);
@@ -98,11 +98,11 @@ namespace msa {
             
             // set and get as 0...1 values normalized to min/max range
 			virtual ParameterValueI& setNormalized(float norm) { if(_paramValue) return _paramValue->setNormalized(norm); }
-			virtual float getNormalized() const { if(_paramValue) return _paramValue->getNormalized(); }
+			virtual float getNormalized(bool bClamp = false) const { if(_paramValue) return _paramValue->getNormalized(bClamp); }
             
             // set and get mapped to a new range
             virtual ParameterValueI& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) { if(_paramValue) return _paramValue->setMappedFrom(v, inputMin, inputMax); }
-            virtual AnyValue getMappedTo(AnyValue newMin, AnyValue newMax) const  { if(_paramValue) return _paramValue->getMappedTo(newMin, newMax); }
+            virtual AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const  { if(_paramValue) return _paramValue->getMappedTo(newMin, newMax, bClamp); }
             
             
             // set to a random value between min, max range

@@ -25,7 +25,7 @@ namespace msa {
                 kOptions
             };
             
-			ParameterNamedIndex(string name, ParameterGroup *parent)
+			ParameterNamedIndex(string name, ParameterGroup *parent = NULL)
             : ParameterInt(name, parent) { setClamp(true); setMode(kDropdown); }
           
             template <typename T> T operator=(const T & v) { set(v); }

@@ -22,7 +22,7 @@ namespace msa {
             };
             
             //--------------------------------------------------------------
-            ParameterBool(string name, ParameterGroup *parent)
+            ParameterBool(string name, ParameterGroup *parent = NULL)
             : Parameter(name, parent, new ParameterNumberValueT<bool>()) { setRange(0, 1); setIncrement(1); setMode(kToggle); }
             
             template <typename T> T operator=(const T & v) { set(v); }

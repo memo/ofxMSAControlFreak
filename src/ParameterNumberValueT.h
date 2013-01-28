@@ -81,11 +81,11 @@ namespace msa {
             
             // set and get as 0...1 values normalized to min/max range
 			ParameterNumberValueT<T>& setNormalized(float norm);
-			float getNormalized() const;
+			float getNormalized(bool bClamp = false) const;
             
             // set and get mapped to a new range
             ParameterNumberValueT<T>& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax);
-            AnyValue getMappedTo(AnyValue newMin, AnyValue newMax) const;
+            AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const;
             
             
             // set to a random value between min, max range
@@ -292,8 +292,8 @@ namespace msa {
 		
         //--------------------------------------------------------------
         template<typename T>
-        float ParameterNumberValueT<T>::getNormalized() const {
-			return getMappedTo(0, 1);
+        float ParameterNumberValueT<T>::getNormalized(bool bClamp) const {
+			return getMappedTo(0, 1, bClamp);
 		}
 		
         
@@ -307,8 +307,8 @@ namespace msa {
 		
         //--------------------------------------------------------------
         template<typename T>
-		AnyValue ParameterNumberValueT<T>::getMappedTo(AnyValue newMin, AnyValue newMax) const {
-			return ofMap(*_pvalue, _min, _max, newMin, newMax);
+		AnyValue ParameterNumberValueT<T>::getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp) const {
+			return ofMap(*_pvalue, _min, _max, newMin, newMax, bClamp);
             //            return ((*_pvalue - _min) / (_max - _min) * (newMax - newMin) + newMin);
 		}
 		

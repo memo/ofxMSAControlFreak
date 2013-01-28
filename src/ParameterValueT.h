@@ -80,11 +80,11 @@ namespace msa {
             
             // set and get as 0...1 values normalized to min/max range
 			ParameterValueT<T>& setNormalized(float norm) {}
-			float getNormalized() const {}
+			float getNormalized(bool bClamp = false) const {}
             
             // set and get mapped to a new range
             ParameterValueT<T>& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) {}
-            AnyValue getMappedTo(AnyValue newMin, AnyValue newMax) const {}
+            AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const {}
             
             
             // set to a random value between min, max range
