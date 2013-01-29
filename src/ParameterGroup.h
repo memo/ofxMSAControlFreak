@@ -111,6 +111,9 @@ namespace msa {
             template <typename ParameterType> ParameterType* getPtr(string path) const;
             
             
+            // returns true if any of it's sub parameters (recursively) have changed
+            bool hasChanged();
+            
             
             //---- Saving/loading from XML -----------------------
 

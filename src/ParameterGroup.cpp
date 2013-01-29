@@ -234,6 +234,16 @@ namespace msa {
 //            _filename = filename;
 //		}
         
+        
+        //--------------------------------------------------------------
+        bool ParameterGroup::hasChanged() {
+            for(int i=0; i<_params.size(); i++) {
+                Parameter &p = _params[i];
+                if(p.hasChanged()) return true;
+            }
+            return false;
+        }
+        
         //--------------------------------------------------------------
         string ParameterGroup::getFullFilepath(string filename, bool bFullSchema) {
             // default name if filename is blank
