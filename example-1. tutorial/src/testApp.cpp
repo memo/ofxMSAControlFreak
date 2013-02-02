@@ -418,13 +418,13 @@ void testApp::setup() {
     
     // modify variable 'var1' and 'mytestvar' will also be instantly updated
     var1 = 15;
-    ofLogNotice() << " var1 : " << var1 << ", params['myfloat'] : " << (float)params["myfloat"];
+    ofLogNotice() << (float)params["myfloat"];  // this will print 15
     
     
     
     // or modify parameter 'myfloat' and the variable 'var1' will be instantly updated
     params["myfloat"] = 25;
-    ofLogNotice() << " var1 : " << var1 << ", params['myfloat'] : " << (float)params["myfloat"];
+    ofLogNotice() << var1;  // this will print 25
     
     
     
