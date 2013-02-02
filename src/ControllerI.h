@@ -17,14 +17,15 @@ namespace msa {
             friend class Controllable;
             
             virtual ~ControllerI() {}
-//			void setParam(Parameter *param);			
-//			void checkValueHasChanged();
 			
 			virtual void update() = 0;
-//			virtual string toString() = 0;
+            
+            void setParam(Parameter *p) { _param = p; }
+            string getName() const { return _name; }
 			
 		protected:
 			Parameter	*_param;
+            string _name;
 			
 			ControllerI() {}
 		};

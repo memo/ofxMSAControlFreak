@@ -13,7 +13,7 @@
 #include "ofxMSACore/src/MSACore.h"
 
 #include "ofxMSAControlFreak/src/ParameterValueI.h"
-#include "ofxMSAControlFreak/src/Controllable.h"
+#include "ofxMSAControlFreak/src/Controllers.h"
 #include "ofxMSAControlFreak/src/Utils.h"
 
 #include "ofxXmlSettings.h"
@@ -23,7 +23,7 @@ namespace msa {
 		
 		class ParameterGroup;
         
-		class Parameter : public ParameterValueI, public Controllable {
+		class Parameter : public ParameterValueI {
 		public:
 
 			friend class ParameterGroup;
@@ -115,7 +115,15 @@ namespace msa {
             virtual void* getTrackedVariable() { if(_paramValue) return _paramValue->getTrackedVariable(); }
             
             
+            
+            //--------------------------------------------------------------
+            // Controller stuff
+            void addSender(ControllerI *controller);
+            void addReceiver(ControllerI *controller);
+            
         protected:
+            Controllers controllers;
+            
             virtual void update() { if(_paramValue) _paramValue->update(); }
             
             virtual void clamp() { if(_paramValue) _paramValue->clamp(); }

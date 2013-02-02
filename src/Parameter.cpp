@@ -112,6 +112,19 @@ namespace msa {
             }
         }
         
+        //--------------------------------------------------------------
+        // Controller stuff
+        void Parameter::addSender(ControllerI *controller) {
+            controllers.addSender(controller);
+            controller->setParam(this);
+        }
+        
+        //--------------------------------------------------------------
+        void Parameter::addReceiver(ControllerI *controller) {
+            controllers.addReceiver(controller);
+            controller->setParam(this);
+        }
+
  
 	}
 }

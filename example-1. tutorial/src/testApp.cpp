@@ -439,6 +439,13 @@ void testApp::setup() {
     
     
     //--------------------------------------------------------------
+#pragma mark ADDING SENDERS AND RECEIVERS
+    // a 'Sender' is a controller which is sent when the parameter is changed.
+    // e.g.
+//    params["myfloat"].addSender(new msa::ControlFreak::MidiController); 
+    
+    
+    //--------------------------------------------------------------
 #pragma mark PRESETS: SAVING AND LOADING ALL VALUES IN A GROUP
     // you can save and load values in a parameter group
     
@@ -561,7 +568,7 @@ void testApp::setup() {
     
     // to avoid the exception and manage this at runtime, you can use try / catch
     try {
-        params.addInt("a test var");
+//        params.addInt("a test var");
     } catch (invalid_argument e) {
         cout << e.what() << endl;
     }
