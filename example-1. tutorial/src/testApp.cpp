@@ -389,9 +389,9 @@ void testApp::setup() {
     // in App::setup() let's create a bunch of initialization parameters
     params.startGroup("fbo init parameters");
     {
-        params.addInt("width").setRange(0, 1000);
-        params.addInt("height").setRange(0, 1000);
-        params.addNamedIndex("type").setLabels(3, "RGB", "RGBA","RGBA16F", "RGBA32F");
+        params.addInt("width").setRange(0, 4096);
+        params.addInt("height").setRange(0, 4096);
+        params.addNamedIndex("type").setLabels(4, "RGB", "RGBA","RGBA16F", "RGBA32F");
         params.addInt("numSamples").setRange(0, 8);
     } params.endGroup();
     
