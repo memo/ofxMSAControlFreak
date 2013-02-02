@@ -12,12 +12,15 @@ public:
     ofColor color;
     int index;
     
+    //--------------------------------------------------------------
     void setup(int index) {
         this->index = index;
     }
 
+    //--------------------------------------------------------------
+    // update position, size, rotation and color based on inputs and time
+    // just some fancy math to make a bunch of stuff move around on screen with style
     void update(float myTimer, ofVec2f maxSpread, ofVec2f maxSize) {
-        // just some fancy math to make a bunch of stuff move around on screen
         float f = myTimer * 0.4 + 34.7324 + index * 258.60293;
         pos.set(ofGetWidth()/2 + ofSignedNoise(f + 7682.28476) * maxSpread.x, ofGetHeight()/2 + ofSignedNoise(f + 283.525) * maxSpread.y);
         size.set(ofSignedNoise(f*0.4+9273.442) * maxSize.x, ofSignedNoise(f*0.4+18363.5652) * maxSize.y);
@@ -25,6 +28,8 @@ public:
         color.set(ofNoise(f+92.8274)*255, ofNoise(f+8723.34576)*255, ofNoise(f+4768.976)*255);
     }
     
+    //--------------------------------------------------------------
+    // draw the particle based on shapeType
     void draw(int shapeType) {
         ofPushMatrix();
         ofTranslate(pos);
@@ -34,15 +39,15 @@ public:
         
         // draw the shape depending on what is selected in the GUI (linked to the ParameterNamedIndex)
         switch(shapeType) {
-            case 0:
+            case 0: // draw rectangle
                 ofRect(0, 0, 1, 1);
                 break;
                 
-            case 1:
+            case 1: // draw triangle
                 ofTriangle(0, -0.33, -0.33, 0.66, 0.33, 0.66);
                 break;
                 
-            case 2:
+            case 2: // draw circle
                 ofCircle(0, 0, 0.5);
                 break;
         }
