@@ -8,6 +8,8 @@
  
  ***** THIS EXAMPLE IS MEANT AS A TUTORIAL. *****
  Start reading here, at the very top of the file, and read linearly down the page
+
+ Look at the #pragma marks for a rough Table Of Contents
  
  
  */
@@ -15,8 +17,8 @@
 
 #pragma mark START TUTORIAL
 
-// Create a ParameterGroup
 msa::ControlFreak::ParameterGroup params;
+// Create a ParameterGroup
 // this is one of the main Classes of ControlFreak and probably the only one you'll ever need to explicitly instantiate
 // i.e. almost everything is done through this
 // Parameters are NOT sliders, tickshapes, buttons etc.
@@ -24,8 +26,12 @@ msa::ControlFreak::ParameterGroup params;
 // And also functionality to sync to various controllers, save/load presets and a whole bunch of other stuff
 
 
-// Create a GUI
+
+
+
+
 msa::ControlFreak::gui::Gui gui;
+// Create a GUI
 // This is a class which can display and interact with Parameters
 // There can be many different types of gui's which can display and control Parameters
 // This particular one is an opengl gui very similar to ofxSimpleGuiToo. I also have a native Cocoa one etc.
@@ -35,10 +41,9 @@ msa::ControlFreak::gui::Gui gui;
 
 
 
-void testApp::setup() {
 
-    
-    
+
+void testApp::setup() {
     //--------------------------------------------------------------
 #pragma mark BASIC USAGE
     
@@ -136,6 +141,71 @@ void testApp::setup() {
     
     
     //--------------------------------------------------------------
+#pragma mark SETTING AND GETTING PARAMETER VALUES IN DIFFERENT RANGE
+    // sometimes you want to set or get the value in a different range,
+
+    // e.g. if we want the value of Parameter 'myfloat' mapped to 0...127 (so we can send it as a midi controller value)
+    // we can use ofMap to map from the Parameters min/max value range to the desired range
+    
+    int mappedValue1 = ofMap(params["myfloat"], params["myfloat"].getMin(), params["myfloat"].getMax(), 0, 127);
+    
+    // there is a much simpler way of doing that:
+    int mappedValue2 = params["myfloat"].getMappedTo(0, 127);   // much easier to read, quicker, and less likely for typos / errors
+    
+    
+    
+    
+    
+    
+    // similarly, if we have a value in a specific range, and we want to assign it to the Parameter mapping it to the Parameters range in the process.
+    // e.g. assume we have the value '50', which is in the range 0...127 (e.g. a midi controller value)
+    // we want to assign this to Parameter 'myfloat', which is in a different range
+    params["myfloat"] = ofMap(50, 0, 127, params["myfloat"].getMin(), params["myfloat"].getMax());
+    
+    // there is a much simpler way of doing that:
+    params["myfloat"].setMappedFrom(50, 0, 127);    // much easier to read, quicker, and less likely for typos / errors
+    
+    
+    
+    
+    
+    
+    // similarly, normalized versions of this exist, if you know the other range to be 0...1
+    
+    // gets the value of Parameter 'myfloat' as normalized between 0...1
+    float normalizedValue = params["myfloat"].getNormalized();
+    
+    // sets the value of Parameter 'myfloat' from a normalized value and maps it to it's own range
+    params["myfloat"].setNormalized(0.3);
+    
+    
+    
+    
+    // NOTE:
+    // Since the parameter may have clamping disabled, it's value may be outside it's own range
+    // so when getting the value using getMappedTo, or getNormalized, you may get a value which is outside of the target range too
+    // you can provide an optional (bool) parameter to these to clamp the return value.
+    
+    // e.g.
+    params.addFloat("unclamped float").setRange(0, 100).setClamp(false);
+
+    params["unclamped float"] = 150;    // this is fine, the Parameter is unclamped
+
+    float fret;
+    fret = params["unclamped float"].getNormalized();   // this will return 1.5
+    fret = params["unclamped float"].getMappedTo(2000, 3000);   // this will return 3500
+    fret = params["unclamped float"].getNormalized(true);   // this will return 1 (clamped)
+    fret = params["unclamped float"].getMappedTo(2000, 3000);   // this will return 3000 (clamped)
+    
+    // the original Parameter is still unclamped
+    fret = params["unclamped float"];  // this will return 150;
+    
+    
+    
+    
+    
+    
+    //--------------------------------------------------------------
 #pragma mark NAMED INDEXES
     // NamedIndex's are a list of strings / options. Basically the data for a dropdownbox, listbox, or radio options
     // There are a few different ways of creating them, all giving identical results
@@ -200,10 +270,10 @@ void testApp::setup() {
     // you can nest ParameterGroups inside ParameterGroups
     // any parameter added after startGroup(....) and before the corresponding endGroup() will be created in that group
     params.addFloat("rootvar");       // this goes in the root of params
-    params.startGroup("boids"); // create a group called 'boids', now this becomes the active group for following Parameters
-        params.addBool("enabled");  // 1st Parameter in the ParameterGroup 'boids'
-        params.addInt("count");     // 2nd Parameter in the ParameterGroup 'boids'
-        params.addFloat("size");    // 3rd Parameter in the ParameterGroup 'boids'
+    params.startGroup("particles"); // create a group called 'particles', now this becomes the active group for following Parameters
+        params.addBool("enabled");  // 1st Parameter in the ParameterGroup 'particles'
+        params.addInt("count");     // 2nd Parameter in the ParameterGroup 'particles'
+        params.addFloat("size");    // 3rd Parameter in the ParameterGroup 'particles'
     params.endGroup();          // finish the group
     params.addFloat("rootvar2");  // this goes back in the root of params
 
