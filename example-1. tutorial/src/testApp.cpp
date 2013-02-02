@@ -35,9 +35,7 @@ msa::ControlFreak::gui::Gui gui;
 
 
 
-
-
-void tutorial() {
+void testApp::setup() {
 
     
     
@@ -202,10 +200,10 @@ void tutorial() {
     // you can nest ParameterGroups inside ParameterGroups
     // any parameter added after startGroup(....) and before the corresponding endGroup() will be created in that group
     params.addFloat("rootvar");       // this goes in the root of params
-    params.startGroup("particles"); // create a group called 'particles', now this becomes the active group for following Parameters
-        params.addBool("enabled");  // 1st Parameter in the ParameterGroup 'particles'
-        params.addInt("count");     // 2nd Parameter in the ParameterGroup 'particles'
-        params.addFloat("size");    // 3rd Parameter in the ParameterGroup 'particles'
+    params.startGroup("boids"); // create a group called 'boids', now this becomes the active group for following Parameters
+        params.addBool("enabled");  // 1st Parameter in the ParameterGroup 'boids'
+        params.addInt("count");     // 2nd Parameter in the ParameterGroup 'boids'
+        params.addFloat("size");    // 3rd Parameter in the ParameterGroup 'boids'
     params.endGroup();          // finish the group
     params.addFloat("rootvar2");  // this goes back in the root of params
 
@@ -533,61 +531,10 @@ void tutorial() {
         fspeed = 0;
     }
 
-
-}
-
-
-//--------------------------------------------------------------
-// A PRACTICAL EXAMPLE
-void tutorial2() {
-
-    // pages are just like groups. In fact they are groups, with a flag indicating that it should be considered a new page in the GUI
-    params.startPage("shapes");
-    
-    // the above is the same as writing
-    //    params.startGroup("shapes").setMode(msa::ControlFreak::ParameterGroup::kTab);
     
     
-    params.addInt("count").setRange(0, 100).setClamp(true);
-    params.addFloat("speed").setRange(0, 2).setClamp(true);
-
-    params.startGroup("max size");
-    {
-        params.addFloat("width").setClamp(true);
-        params.addFloat("height").setClamp(true);
-    } params.endGroup();
     
-    params.startGroup("spread");
-    {
-        params.addFloat("width").setClamp(true);
-        params.addFloat("height").setClamp(true);
-    } params.endGroup();
 
-
-    params.startGroup("background color");
-    {
-        params.addInt("r").setRange(0, 255).setClamp(true);
-        params.addInt("g").setRange(0, 255).setClamp(true);
-        params.addInt("b").setRange(0, 255).setClamp(true);
-        params.addBang("randomize");
-    } params.endGroup();
-    
-    params.addNamedIndex("type").setLabels(3, "rectangle", "triangle", "circle");
-}
-
-
-//--------------------------------------------------------------
-void testApp::setup(){
-    ofSetLogLevel(OF_LOG_VERBOSE);
-    ofBackground(0, 0, 0);
-	ofSetVerticalSync(true);
-    
-    // fill our parameters
-    tutorial();
-    
-    tutorial2();
-
-    
     // load default values for all parameters
     params.loadXmlValues();
 
@@ -604,14 +551,11 @@ void testApp::setup(){
     // but if you do, you need to make sure you call the gui update/draw/mouse/keyboard events manually
     //    gui.enableAllEvents();    // this is the default
 //    gui.disableAllEvents();
-    
-    gui.setPage(2); // lets open the gui to page 2
 }
 
 
 //--------------------------------------------------------------
 void testApp::update() {
-    
     // this needs to be called once per frame for some things to work...
     // such as syncing to external controllers (midi etc), checking for changes, snapping / clamping etc.
     msa::ControlFreak::update();
@@ -625,69 +569,6 @@ void testApp::update() {
 
 //--------------------------------------------------------------
 void testApp::draw() {
-    
-    // draw something random and colorful
-    ofSetRectMode(OF_RECTMODE_CENTER);
-    
-    // if user clicked on 'randomize' button (bang), choose a new color
-    // we don't need to change for hasChanged() because a bang will only be true for one frame anyway
-    if(params["shapes.background color.randomize"]) {
-        params["shapes.background color.r"].setRandom(); // sets a random number between the Parameter's min and max
-        params["shapes.background color.g"].setRandom(); // sets a random number between the Parameter's min and max
-        params["shapes.background color.b"].setRandom(); // sets a random number between the Parameter's min and max
-    }
-    
-    // set the background color
-    ofBackground(params["shapes.background color.r"], params["shapes.background color.g"], params["shapes.background color.b"]);
-    
-    
-    // since we will be doing a for-loop with possibly many thousands of iterations per frame...
-    // it makes sense to cache the value of these parameters
-    float maxsizew = (float)params["shapes.max size.width"] * ofGetWidth();
-    float maxsizeh = (float)params["shapes.max size.height"] * ofGetHeight();
-    
-    float spreadw = (float)params["shapes.spread.width"] * ofGetWidth();
-    float spreadh = (float)params["shapes.spread.height"] * ofGetHeight();
-    
-    int shapetype = params["shapes.type"];
-    
-    // this is our timer
-    static float mytimer = 0;
-    mytimer += (float)params["shapes.speed"] * 0.1;
-
-    int numshapes = params["shapes.count"];
-    for(int i=0; i<numshapes; i++) {
-        
-        // just some fancy math to make a bunch of stuff move around on screen
-        float f = mytimer*0.4 + 34.7324 + i * 258.60293;
-        ofSetColor(ofNoise(f+92.8274)*255, ofNoise(f+8723.34576)*255, ofNoise(f+4768.976)*255);
-        ofPushMatrix();
-        ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
-        ofTranslate(ofSignedNoise(f+7682.28476)*spreadw, ofSignedNoise(f+283.525)*spreadh);
-        ofRotate(ofSignedNoise(f*0.3+193.56259)*360);
-        ofScale(ofSignedNoise(f*0.4+9273.442)*maxsizew, ofSignedNoise(f*0.4+18363.5652)*maxsizeh);
-        
-        // draw the shape depending on what is selected in the GUI (linked to the ParameterNamedIndex)
-        switch(shapetype) {
-            case 0:
-                ofRect(0, 0, 1, 1);
-                break;
-                
-            case 1:
-                ofTriangle(0, -0.33, -0.33, 0.66, 0.33, 0.66);
-                break;
-
-            case 2:
-                ofCircle(0, 0, 0.5);
-                break;
-        }
-        ofPopMatrix();
-    }
-    
-    ofSetColor(255, 255, 255);
-    ofDrawBitmapString(ofToString(ofGetFrameRate()), ofGetWidth()-100, 30);
-
-    
     // if you've disabled events for the gui, then you need to manually call this
     // if you have gui events enabled (default), then it's unnessecary
 //     gui.draw();
