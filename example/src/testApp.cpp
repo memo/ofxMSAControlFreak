@@ -13,252 +13,212 @@
  */
 
 
-// This is a ParameterGroup, everything is done through this
-// Parameters are NOT sliders, tickboxes, buttons etc.
+#pragma mark START TUTORIAL
+
+// Create a ParameterGroup
+msa::ControlFreak::ParameterGroup params;
+// this is one of the main Classes of ControlFreak and probably the only one you'll ever need to explicitly instantiate
+// i.e. almost everything is done through this
+// Parameters are NOT sliders, tickshapes, buttons etc.
 // They are just the data and properties behind all of that.
 // And also functionality to sync to various controllers, save/load presets and a whole bunch of other stuff
-msa::ControlFreak::ParameterGroup params;
 
 
-// This is a class which can display and handle the interactivity of Parameters
-// There can be many different types of gui's which can display and control Parameters
-// This particular one is an opengl gui very similar to ofxSimpleGuiToo. I also have a native Cocoa one etc. 
+// Create a GUI
 msa::ControlFreak::gui::Gui gui;
+// This is a class which can display and interact with Parameters
+// There can be many different types of gui's which can display and control Parameters
+// This particular one is an opengl gui very similar to ofxSimpleGuiToo. I also have a native Cocoa one etc.
+// The Gui class reads all of the (nested) Parameters in a ParameterGroup, and builds a Gui
+// it may sound complicated, but it's really really simple
 
 
-//--------------------------------------------------------------
-// CREATING PARAMETERS
-void tutorial_1a() {
-    
-    ofLogNotice() << "TUTORIAL 1";
-    
-    // All Parameters are created via the 'add' methods of a ParameterGroup
-    params.addFloat("float1");  // float: can be any real number
-    params.addInt("int1");      // int: can be any whole number
-    params.addBool("bool1");    // bool: can be true or false
-    
-    
-    // CHANGING PROPERTIES ON CREATION
-    // while you're adding, you can change various properties
-    params.addFloat("float2").set(0.7);     // create and set value. default value for float is 0
-    params.addFloat("float3").setRange(-1, 1);              // create and set range. default range for float is 0...1
-    params.addFloat("float4").setIncrement(0.2);            // create and set increment value (e.g. if you use up/down on keyboard)
-    params.addFloat("float5").setIncrement(0.2).setSnap(true);  // create and enable snap, so even if you use mouse or any other means, values always snap
-    
-    params.addInt("int2").set(17);           // create and set value. default value for int is 0
-    params.addInt("int3").setRange(-10, 10);                // create and set range. default range for int is 0...100
-    params.addInt("int4").setIncrement(5);                  // create and set increment value (e.g. if you use up/down on keyboard)
-    params.addInt("int5").setIncrement(5).setSnap(true);    // create and enable snap, so even if you use mouse or any other means, values always snap
-    
-    params.addBool("a toggle").set(true);                 // create and set value. default value for bool is 0
-    params.addBang("a bang");                       // create and enable momentary bool (i.e. a button, or 'bang')
-    params.addBool("another bang").setMode(msa::ControlFreak::ParameterBool::kBang);  // create a bool, and later change it to be a bang
-    params.addBool("a push button").setMode(msa::ControlFreak::ParameterBool::kPush);  // create a bool, and later change it to be a push button
-    
-    
-    // NOTE: The Parameter names used must be unique!
-    // this will throw an exception and break execution if the try/catch is commented out
-    // (initially I made it fail silently and just return the existing Parameter, but I found an exception made it much simpler to debug)
-    try {
-        params.addInt("int2");  // this will throw an exception because 'int2' already exists
-    } catch (invalid_argument e) {
-        cout << e.what() << endl;
-    }
-    
-    
-    // Daisy chaining methods
-    // as you've propbably noticed, all property methods can be daisy chained, and in any order
-    params.addFloat("float6").setRange(0, 1000).set(500).setClamp(true).setIncrement(10).setSnap(true);
-    
-    // ... but are evaluated left to right, so if you try to set a high value before setting the range, it wont work
-    // e.g. in this example first clamping is enabled, then the value is set to 500, then the range is set to 0-100, so the value is clamped to 100
-    params.addFloat("float7").setClamp(true).set(500).setRange(0, 100).setIncrement(10).setSnap(true);
-}
 
 
-//--------------------------------------------------------------
-// ACCESS PARAMETERS AND VALUES
-void tutorial_1b() {
-    ofLogNotice() << "TUTORIAL 1b";
-    
-    
-    // CHANGING PROPERTIES AFTER CREATION
-    // the addXXXX methods used above create the Parameter and change the properties at the same time
-    // If you want to change properties AFTER creating the Parameter you can use get methods of ParameterGroup
-    params.get("float1").setRange(0, 100);
-    params.get("float1").set(50);
-    params.get("float1").setIncrement(5);
 
-    
-    // you can also use the [] operator, it's identical to get(...)
-    params["float1"].setRange(0, 100);
-    params["float1"].set(50);
-    params["float1"].setIncrement(5);
-    
-    
-    
-    // of course daisy chaining the property methods still work
-    params["float1"].setRange(0, 1000).set(50).setIncrement(10).setSnap(false);
-    
-    
-    
-    // GETTING VALUES
-    // to extract the value, simply use the above methods (both are identical), and use a c-style type-cast if nessecary
-    
-    float f1 = params.get("float1");
-    ofLogNotice() << "value of 'float1': " << f1;
-    
-    float f2 = params["float2"];
-    ofLogNotice() << "value of 'float1': " << f2;
-    
-    // .get(...) and [] operator actually returns a reference to the whole Parameter
-    // sometimes this causes ambiguity, so you may need to use a type-cast
-    ofLogNotice() << "value of 'float2': " << (float)params.get("float2");  // this works
-    //    ofLogNotice() << "value of 'float2': " << params.get("float2");  // but this will not compile
-    
-    // or
-    float f3 = (float)params.get("float1") * (float)params.get("float2");   // this works
-//    float f4 =params.get("float1") * params.get("float2");   // but this will not compile
+
+void tutorial() {
 
     
     
-    // SETTING VALUES
+    //--------------------------------------------------------------
+#pragma mark BASIC USAGE
     
-    // you saw previously you can use set method to set the value
-    params["float1"].set(12);
-    ofLogNotice() << "new float1 value: " << (float)params.get("float1");
+    // optionally, set the display name for your parameter group
+    // this is also the default folder for preset xml files (SO REMEMBER IT FOR WHEN WE COME TO PRESETS)
+    params.setName("tutorial");
     
-    // you can actually use the '=' operator instead of set. they are identical
-    params["float2"] = 0.5;    // identical to using 'set(0.5)
-    ofLogNotice() << "new float2 value " << (float)params["float2"];
     
-    params["float3"] = (float)params["float1"] * (float)params["float2"];
-    ofLogNotice() << "new float3 value " << (float)params["float3"];
-}
+    
+    // creating basic parameters
+    params.addFloat("myfloat");  // create a float Parameter: can be any real number
+    params.addInt("myint");      // create an int Parameter: can be any whole number
+    params.addBool("mybool");    // create a bool (toggle) Parameter: can be true or false
+    params.addBang("mybang");    // create a bang Parameter: almost identical to Bool, but can only be true for one frame
 
+    
+    
+    // setting values
+    params["myfloat"] = 5.3;
+    params["myint"] = 7;
+    params["mybool"] = true;
+    
+    
+    
+    // getting values
+    float f = params["myfloat"];
+    int i = params["myint"];
+    bool b = params["mybool"];
+    
+    
+    
+    // params["parameter name"] actually returns a reference to a msa::ControlFreak::Parameter, not a simple number
+    // so sometimes when using parameters in expressions ambiguity can occur, to avoid this use a c-style type-cast. e.g.
+//    float answer1 = params["myfloat"] * params["myint"];   // compiler is confused so this may not compile, be explicit with types:
+    float answer2 = (float)params["myfloat"] *(int)params["myint"]; // this works, compiler knows exactly what to do
 
-//--------------------------------------------------------------
-// TRACKING EXTERNAL VARIABLES
-void tutorial_1c() {
-    ofLogNotice() << "TUTORIAL 1c";
-    
-    // by default ControlFreak keeps track of all values internally.
-    // however you can also assign an external variable, which is kept track of and kept in sync, at (virtually) no performance cost
-    // ControlFreak simply points it's internal data pointer to the external variable, so they share the same memory
     
     
-    // e.g. params['testvar'] and var1 are internally using the same memory storage, so any modifications to one affect the other
-    static float var1 = 0;
-    params.addFloat("testvar").trackVariable(&var1);
-    
-    ofLogNotice() << " var1 : " << var1 << ", params['testvar'] : " << (float)params["testvar"];
-    
-    // modify variable
-    var1 = 15;
-    ofLogNotice() << " var1 : " << var1 << ", params['testvar'] : " << (float)params["testvar"];
-    
-    // modify variable
-    params["testvar"] = 25;
-    ofLogNotice() << " var1 : " << var1 << ", params['testvar'] : " << (float)params["testvar"];
     
     
-    // so all clamping, snapping etc. constrainst apply to var1 as well
-    params["testvar"].setRange(0, 50).setClamp(true).setIncrement(5).setSnap(true);
-    params["testvar"] = 33;     // will snap to 35, and var1 will also be affected
-    ofLogNotice() << " var1 : " << var1 << ", params['testvar'] : " << (float)params["testvar"];
-}
+    
+    //--------------------------------------------------------------
+#pragma mark SETTING PARAMETER PROPERTIES (WHILE CREATING THE PARAMETER)
+    
+    // I'm not a big fan of long lists of arguments to functions or methods.
+    // e.g. params.addFloat("myfloat", 0, 100, 50, 5, true, false);
+    // It's difficult to read, you have no idea what is what, adding more options in the future gets quite confusing and generally it's quite error prone
+    // My personal preference is daisy chaining small methods with descriptive names, each of which do very specific things
+    // with auto-complete in most modern IDEs it's very quick to write, and it aids readibility and future expansion
+    
+    // creating and adding a Parameter actually returns a reference to msa::ControlFreak::Parameter
+    // so you can call further methods on it to change properties of that Parameter
+    params.addFloat("myfloat2").set(0.7);               // set value (this is equivalent to using =)
+    params.addFloat("myfloat3").setRange(-1, 1);        // set min/max values
+    params.addFloat("myfloat4").setIncrement(0.2);      // set increment value (when you use keyboard, or +/- buttons on the slider, how much to increment the value by)
+    params.addFloat("myfloat5").setSnap(true);          // if snap is enabled, values always snap to the increment value (even if you excplicitly assign values to it)
+    params.addFloat("myfloat6").setClamp(true);         // if clamp is enabled, values cannot be outside the set range
+    
+    
+    
+    // you can daisy chain these methods, in any order, and use as little or as many of them as you need.
+    params.addFloat("myfloat7").setRange(0, 50).setClamp(true);
+    params.addInt("myint2").setIncrement(5).setSnap(true).set(30);
+    
+    
+    
+    // the defaults are (i.e. if you don't explicitly call any of these methods, this is what will be assumed):
+    params.addFloat("myfloat8").setRange(0, 1).set(0).setClamp(false).setIncrement(0.01).setSnap(false);
+    params.addInt("myint3").setRange(0, 100).set(0).setClamp(false).setIncrement(1).setSnap(false);
 
-
-//--------------------------------------------------------------
-// NAMED INDEXES
-void tutorial_1d() {
-    ofLogNotice() << "TUTORIAL 1d";
-
-    // NamedIndex's are a list of strings / options. Basically a dropdownbox, listbox, or radio options
     
-    // a few different ways of creating them, all giving identical results
     
-    // this is one way of adding a named-index parameter (using variable argument lists)
+    
+
+    
+    //--------------------------------------------------------------
+#pragma mark CHANGING PARAMETER PROPERTIES (FOR EXISTING PARAMETERS)
+    // remember that params["parameter name"] actually returns a reference to a msa::ControlFreak::Parameter, not a simple number
+    // so you can call all msa::ControlFreak::Parameter methods on it
+    // i.e. you can also change properties for existing parameters
+    // (the following code assumes parameter 'myfloat' already exists)
+    params["myfloat"].setRange(0, 100);
+    params["myfloat"].set(50);
+    params["myfloat"].setIncrement(5);
+    params["myfloat"].setClamp(true);
+    
+    
+    
+    // of course daisy chaining the methods still work
+    params["myfloat"].setRange(0, 1000).set(50).setIncrement(10).setSnap(false).setClamp(true);
+    
+    
+    
+    
+    
+    
+    //--------------------------------------------------------------
+#pragma mark NAMED INDEXES
+    // NamedIndex's are a list of strings / options. Basically the data for a dropdownbox, listbox, or radio options
+    // There are a few different ways of creating them, all giving identical results
+    
+    // Option 1: this is one way of adding a named-index parameter (using variable argument lists)
     params.addNamedIndex("animals").setLabels(4, "cow", "camel", "dolphin", "monkey");
     
-    // this is one way of adding a named-index parameter (using a traditional C-array of strings)
-    string options1[] = {"january", "february", "march", "april", "may"};
-    params.addNamedIndex("month").setLabels(5, options1);
+    
+    
+    // Option 2: this is one way of adding a named-index parameter (using a traditional C-array of strings)
+    string options2[] = {"january", "february", "march", "april", "may"};
+    params.addNamedIndex("month").setLabels(5, options2);
+    
+    
     
     // and another (using stl::vector of strings)
-    vector<string> options2;
-    options2.push_back("monday");
-    options2.push_back("tuesday");
-    options2.push_back("wednesday");
-    options2.push_back("thursday");
-    options2.push_back("friday");
-    params.addNamedIndex("days").setLabels(options2);
+    vector<string> options3;
+    options3.push_back("monday");
+    options3.push_back("tuesday");
+    options3.push_back("wednesday");
+    options3.push_back("thursday");
+    options3.push_back("friday");
+    params.addNamedIndex("days").setLabels(options3);
+    
     
     
     // you can change the mode of the NamedIndex
     params.addNamedIndex("size").setLabels(5, "small", "medium", "large", "extra large", "mega").setMode(msa::ControlFreak::ParameterNamedIndex::kDropdown);
     params.addNamedIndex("color").setLabels(3, "red", "green", "blue").setMode(msa::ControlFreak::ParameterNamedIndex::kList);
     params.addNamedIndex("sex").setLabels(3, "male", "female", "other").setMode(msa::ControlFreak::ParameterNamedIndex::kOptions);
-}
-
-
-//--------------------------------------------------------------
-// GROUPS
-void tutorial_1e() {
-    ofLogNotice() << "TUTORIAL 1e";
-    
-    // you can create Groups inside ParameterGroups
-    // any parameter added after startGroup(....) and before corresponding endGroup() will be created in that group
-    params.startGroup("particles"); // now this becomes the active group for following Parameters
-    params.addBool("enabled");  // 1st Parameter in this Group
-    params.addInt("count");     // 2nd Parameter in this Group
-    params.addFloat("size");    // 3rd Parameter in this Group
-    params.endGroup();          // any future Parameters will now be outside this group, back in the root
+    // this doesn't actually affect how the Parameter works at all, it's just info for when you add it to a GUI
 
     
-    // You can even create Groups inside Groups inside Groups .... (until you run out of memory)
-}
-
-
-//--------------------------------------------------------------
-void tutorial_1f() {
-    ofLogNotice() << "TUTORIAL 1f";
+    
+    
+    
+    
+    // access data from named index
+    // to get the selected index, use the [] operator as you would to get the value out of an int, bool or float Parameter:
+    int selectedIndex = params["animals"];  // returns 0-based index of selected item
+    
+    
+    
+    // to get the selected item label involves a tiny bit more work:
+    // params["animals"] returns a normal msa::ControlFreak::Parameter, not a msa::ControlFreak::ParameterNamedIndex
+    // so to access msa::ControlFreak::ParameterNamedIndex specific methods, you need to type-cast it
+    msa::ControlFreak::ParameterNamedIndex &p = (msa::ControlFreak::ParameterNamedIndex&)params["animals"];
+    string selectedLabel1 = p.getSelectedLabel();
+    
+    
+    
+    // actually the ParameterGroup has a get<>() template method to return a correctly type-cast Parameter
+    string selectedLabel2 = params.get<msa::ControlFreak::ParameterNamedIndex>("animals");
+    
+    
+    
+    
+    
+    
+    //--------------------------------------------------------------
+#pragma mark GROUPS
+    // you can nest ParameterGroups inside ParameterGroups
+    // any parameter added after startGroup(....) and before the corresponding endGroup() will be created in that group
+    params.addFloat("rootvar");       // this goes in the root of params
+    params.startGroup("particles"); // create a group called 'particles', now this becomes the active group for following Parameters
+        params.addBool("enabled");  // 1st Parameter in the ParameterGroup 'particles'
+        params.addInt("count");     // 2nd Parameter in the ParameterGroup 'particles'
+        params.addFloat("size");    // 3rd Parameter in the ParameterGroup 'particles'
+    params.endGroup();          // finish the group
+    params.addFloat("rootvar2");  // this goes back in the root of params
 
     
-    // this shows some how the clamping and snapping works
-    // actually in msa::ControlFreak::gui, you can click on each slider to customize and enable/disable it's snap and clamp properties
-    params.startGroup("Snap'n'Clamp");
-    {
-        params.startGroup("floats");
-        {
-            params.addFloat("no clamp, no snap").setRange(0, 5).setIncrement(0.1);
-            params.addFloat("yes clamp, no snap").setRange(0, 5).setIncrement(0.1).setClamp(true);
-            params.addFloat("yes clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(true).setSnap(true);
-            params.addFloat("no clamp, yes snap").setRange(0, 5).setIncrement(0.1).setClamp(false).setSnap(true);
-        }
-        params.endGroup();
-        
-        params.startGroup("ints");
-        {
-            params.addInt("no clamp, no snap").setRange(0, 100).setIncrement(5);
-            params.addInt("yes clamp, no snap").setRange(0, 100).setIncrement(5).setClamp(true);
-            params.addInt("yes clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(true).setSnap(true);
-            params.addInt("no clamp, yes snap").setRange(0, 100).setIncrement(5).setClamp(false).setSnap(true);
-        }
-        params.endGroup();
-    }
-    params.endGroup();
-}
-
-
-//--------------------------------------------------------------
-void tutorial_1g() {
-    ofLogNotice() << "TUTORIAL 1g";
     
+    
+    
+    
+    //--------------------------------------------------------------
+#pragma mark NESTED GROUPS
     // You can even create Groups inside Groups inside Groups .... (until you run out of memory)
     // Parameter names MUST be unique ONLY within the groups they are in
     // (the { } curly braces are not needed. I'm only using that to help with the code indenting to help visualize the structure in xcode)
-
     params.startGroup("vision");
     {
         params.addBool("enabled");  // note that this parameter is called 'enabled'
@@ -297,49 +257,300 @@ void tutorial_1g() {
         params.endGroup();	// optical flow
     }
     params.endGroup();	// vision
-    
-    
-    
-    // ACCESSING PARAMETERS IN A GROUP
-    
-    // Option1: List full path (my favorite way)
-    params["vision.enabled"] = true;
-    params["vision.pre-processing.blur.iterations"] = 3;
 
     
-    // Option2: The above is almost identical to the following, the long-winded way, access each parameter from the group it's in
+    
+    
+    
+    
+    //--------------------------------------------------------------
+#pragma mark ACCESSING PARAMETERS IN A GROUP
+    // Option 1: List full path (my favorite way)
+    params["vision.enabled"] = true;
+    params["vision.pre-processing.blur.iterations"] = 3;
+    
+    
+    
+    // Option 2: The above is almost identical to the following, the long-winded way, access each parameter from the group it's in
     // I never use this way
     params.getGroup("vision").get("enabled") = true;
     params.getGroup("vision").getGroup("pre-processing").getGroup("blur").get("iterations") = 1;
     
     
-    // Option3: Cache groups. if you are going to access lots of the same parameters from the same group, it makes sense to cache it in a variable
-    msa::ControlFreak::ParameterGroup &gVisionPreBlur = params.getGroup("vision.pre-processing.blur");
-    gVisionPreBlur["enabled"] = true;
-    gVisionPreBlur["kernelSize"] = 7;
-    gVisionPreBlur["iterations"] = 17;
+    
+    // Option 3: Cache groups. if you are going to access lots of the same parameters from the same group, it makes sense to cache it in a variable
+    msa::ControlFreak::ParameterGroup &visionPreBlurGroup = params.getGroup("vision.pre-processing.blur");
+    visionPreBlurGroup["enabled"] = true;
+    visionPreBlurGroup["kernelSize"] = 7;
+    visionPreBlurGroup["iterations"] = 17;
+
+    
+    
+    
+    
+    
+    //--------------------------------------------------------------
+#pragma mark CHECKING IF A PARAMETER HAS CHANGED
+    // A very easy way to see if a value of a Parameter has changed is to use the hasChanged method
+    
+    // e.g.
+    // in App::setup() let's create an integer Parameter for number of particles
+    params.addInt("particle count").setRange(0, 1000000);
+    
+    // in App::update() check to see if this value has changed, if it has, reallocate particle array
+    msa::ControlFreak::update();        // more on this below
+    if(params["particle count"].hasChanged()) {
+        // code to reallocate particle array with the new particle count
+    }
+    
+    // NOTE:
+    // for the above to work, you need to call msa::ControlFreak::update() in your app's update() function
+    // I may remove this requirement and register the msa::ControlFreak::update() method to be called automatically every frame, I haven't decided yet
+    
+    
+    
+    
+    
+    
+    //--------------------------------------------------------------
+#pragma mark CHECKING IF ANY PARAMETER IN A GROUP HAS CHANGED
+    // Sometimes you need to check if ANY Parameter in a group has changed
+    // then you can just use the hasChanged() method on the group
+    
+    // e.g.
+    // in App::setup() let's create a bunch of initialization parameters
+    params.startGroup("fbo init parameters");
+    {
+        params.addInt("width").setRange(0, 1000);
+        params.addInt("height").setRange(0, 1000);
+        params.addNamedIndex("type").setLabels(3, "RGB", "RGBA","RGBA16F", "RGBA32F");
+        params.addInt("numSamples").setRange(0, 8);
+    } params.endGroup();
+    
+    if(params["fbo init parameters"].hasChanged()) {
+        // code to reallocate fbo with the new init parameters
+    }
+    
+    
+    
+    
+    
+    
+    //--------------------------------------------------------------
+#pragma mark TRACKING VARIABLES
+    // by default ControlFreak keeps track of all values internally, i.e. you don't need to pass it a variable (as you did in ofxSimpleGuiToo)
+    // however if you like that functionality, you can also assign an external variable, which is kept track of and kept in sync, at no performance cost
+    // ControlFreak simply points it's internal data pointer to the external variable (instead of an internal one), so they share the same memory
+    // (the following code assumes parameter 'myfloat' already exists)
+    
+    float var1 = 0;
+    params["myfloat"].trackVariable(&var1); // params['myfloat'] and var1 are now internally using the same memory storage
+    
+    
+    
+    // modify variable 'var1' and 'mytestvar' will also be instantly updated
+    var1 = 15;
+    ofLogNotice() << " var1 : " << var1 << ", params['myfloat'] : " << (float)params["myfloat"];
+    
+    
+    
+    // or modify parameter 'myfloat' and the variable 'var1' will be instantly updated
+    params["myfloat"] = 25;
+    ofLogNotice() << " var1 : " << var1 << ", params['myfloat'] : " << (float)params["myfloat"];
+    
+    
+    
+    // so all clamping, snapping etc. constraints apply to var1 as well
+    params["myfloat"].setRange(0, 50).setClamp(true).setIncrement(5).setSnap(true);
+    params["myfloat"] = 33;     // will snap to 35, and var1 will also be affected
+    ofLogNotice() << " var1 : " << var1 << ", params['myfloat'] : " << (float)params["myfloat"];
+
+    
+    
+    
+    
+    
+    //--------------------------------------------------------------
+#pragma mark PRESETS: SAVING AND LOADING ALL VALUES IN A GROUP
+    // you can save and load values in a parameter group
+    
+    // this will save / load the values to the default file in the default folder: data/ofxMSAControlFreak/[name of group]/default.xml
+    // i.e. data/ofxMSAControlFreak/tutorial/default.xml    (remember we gave 'params' a name of 'tutorial' at the very start of this tutorial)
+    // any folders will be created as nessecary
+    params.saveXmlValues();
+    params.loadXmlValues();
+    
+    
+    
+    // this will save / load the values to the specified filename in the default folder: data/ofxMSAControlFreak/[name of group]/[name of file].xml
+    // i.e. data/ofxMSAControlFreak/tutorial/bestsettings.xml    (remember we gave 'params' a name of 'tutorial' at the very start of this tutorial)
+    // any folders will be created as nessecary
+    params.saveXmlValues("bestsettings");
+    params.loadXmlValues("bestsettings");
+    
+    
+    
+    // this will save / load the values to the specified filename at the specified relative path (relative to the data folder)
+    // i.e. data/mypath/bestsettings.xml
+    params.saveXmlValues("mypath/bestsettings");
+    params.loadXmlValues("mypath/bestsettings");
+    
+    
+    
+    // this will save / load the values to the specified filename at the specified absolute path
+    // i.e. /mypath/bestsettings.xml
+    params.saveXmlValues("/mypath/bestsettings");
+    params.loadXmlValues("/mypath/bestsettings");
+
+    
+    
+    
+    
+    
+    //--------------------------------------------------------------
+#pragma mark PRESETS: SAVING AND LOADING ALL VALUES IN A SUB-GROUP
+    // remember that any Group you create with startGroup()/endGroup(), is a ParameterGroup just like your root (i.e. params)
+    // so the same methods will apply
+    // i.e. you can save and load values for just a sub-group
+    
+    // this will save / load the values to the default file in the default folder: data/ofxMSAControlFreak/[full path of group]/default.xml
+    // the full path of the group, is analagous to a file path, just list all of the parents starting at the root
+    // ie. data/ofxMSAControlFreak/tutorial/vision/default.xml
+    // any folders will be created as nessecary
+    params.getGroup("vision").saveXmlValues();
+    params.getGroup("vision").loadXmlValues();
+    
+    
+    
+    // ie. data/ofxMSAControlFreak/tutorial/vision/pre-processing/blur/default.xml
+    // any folders will be created as nessecary
+    params.getGroup("vision.pre-processing.blur").saveXmlValues();
+    params.getGroup("vision.pre-processing.blur").loadXmlValues();
+
+    
+    
+    // the rest of the rules of default filenames and paths are identical to saving / loading the root
+
+    // this will save / load the values to the specified filename in the default folder
+    // i.e. data/ofxMSAControlFreak/tutorial/vision/bestsettings.xml
+    // any folders will be created as nessecary
+    params.getGroup("vision").saveXmlValues("bestsettings");
+    params.getGroup("vision").loadXmlValues("bestsettings");
+    
+    
+    
+    // this will save / load the values to the specified filename at the specified (relative) path
+    // i.e. data/mypath/bestsettings.xml
+    params.getGroup("vision").saveXmlValues("mypath/bestsettings");
+    params.getGroup("vision").loadXmlValues("mypath/bestsettings");
+    
+    
+    
+    // this will save / load the values to the specified filename at the specified (absolute) path
+    // i.e. /mypath/bestsettings.xml
+    params.getGroup("vision").saveXmlValues("/mypath/bestsettings");
+    params.getGroup("vision").loadXmlValues("/mypath/bestsettings");
+    
+    
+    
+    
+    
+    
+    //--------------------------------------------------------------
+#pragma mark SCHEMA: SAVING AND LOADING SCHEMA
+    // you can also save and load the schema of parameters, this is the whole structure and properties of the ParameterGroup, including
+    // what parameters there are, what are their types, what are their ranges, snap/clamp enable states,
+    // what are the labels for any NamedIndices, what groups are there etc.
+    // basically everything you wrote with code in creating and setting up the ParameterGroup, stored in an XML
+    // this can be used to re-construct the ParameterGroup (and related GUI) by simply loading this XML, perhaps even on a different computer
+    // or modify the XML by hand (or by other means), and load in runtime to rebuild your ParameterGroup (and related GUI)
+
+    
+    
+    // the rules of default paths and filenames is identical to saveXmlValues() and loadXmlValues() except for schemas, '-schema' is added to the default filename
+    // i.e. this will save / load schema from data/ofxMSAControlFreak/[name of group]/default-schema.xml
+    params.saveXmlSchema();
+    params.loadXmlSchema();
+    
+    
+
+    
+    
+    
+    //--------------------------------------------------------------
+#pragma mark (ADVANCED) ERROR HANDLING
+    
+    // Parameter names used must be unique!
+    // trying to add a Parameter with a name that already exists will throw an exception
+    // (initially I made it fail silently and just return the existing Parameter, but I found an exception made it much simpler to debug)
+    params.addFloat("a test var");
+//    params.addInt("a test var");    // if this is uncommented, it will throw an exception
+    
+    
+    
+    
+    
+    
+    // to avoid the exception and manage this at runtime, you can use try / catch
+    try {
+        params.addInt("a test var");
+    } catch (invalid_argument e) {
+        cout << e.what() << endl;
+    }
+    
+    
+    
+    // Accessing a parameter which doesn't excist will throw an exception
+    float fspeed;
+//    fspeed = params["speed"];      // if this is uncommented, it will throw an exception
+    
+    
+    
+    // to avoid the exception and manage this at runtime, you have two options
+    // Option 1: use try / catch
+    try {
+        fspeed = params["speed"];
+    } catch (invalid_argument e) {
+        cout << e.what() << endl;
+    }
+    
+    
+    
+    // Option 2: use the getPtr() method to get a pointer to the Parameter (instead of a reference), and check against null
+    if(params.getPtr("speed") != NULL) {    // if 'speed' doesn't exist, this will be NULL
+        fspeed = params["speed"];       // ... and this code won't run
+    } else {
+        fspeed = 0;
+    }
+    
+    
+    
+    // a slightly more efficient way of doing the above is to look for the 'speed' parameter only once:
+    msa::ControlFreak::Parameter *pspeed = params.getPtr("speed");
+    if(pspeed != NULL) {
+        fspeed = pspeed->value();
+    } else {
+        fspeed = 0;
+    }
+
+
 }
 
 
 //--------------------------------------------------------------
 // A PRACTICAL EXAMPLE
-void tutorial_2() {
-    ofLogNotice() << "TUTORIAL 2";
+void tutorial2() {
+
+    // pages are just like groups. In fact they are groups, with a flag indicating that it should be considered a new page in the GUI
+    params.startPage("shapes");
     
-    
-    // tabs are just like groups. In fact they are groups, with a flag indicating that it should be considered a new tab
-    params.startPage("boxes");
-    
-    // the above is the same as doing this
-    //    params.startGroup("boxes").setMode(msa::ControlFreak::ParameterGroup::kTab);
+    // the above is the same as writing
+    //    params.startGroup("shapes").setMode(msa::ControlFreak::ParameterGroup::kTab);
     
     
     params.addInt("count").setRange(0, 100).setClamp(true);
-    
     params.addFloat("speed").setRange(0, 2).setClamp(true);
-    
-    params.addFloat("a slider");
-    
+
     params.startGroup("max size");
     {
         params.addFloat("width").setClamp(true);
@@ -360,7 +571,10 @@ void tutorial_2() {
         params.addInt("b").setRange(0, 255).setClamp(true);
         params.addBang("randomize");
     } params.endGroup();
+    
+    params.addNamedIndex("type").setLabels(3, "rectangle", "triangle", "circle");
 }
+
 
 //--------------------------------------------------------------
 void testApp::setup(){
@@ -368,20 +582,10 @@ void testApp::setup(){
     ofBackground(0, 0, 0);
 	ofSetVerticalSync(true);
     
-    // optionally, set the display name for your parameter group
-    // this is also the default folder for the xml files
-    params.setName("tutorial");
-    
-
     // fill our parameters
-    tutorial_1a();
-    tutorial_1b();
-    tutorial_1c();
-    tutorial_1d();
-    tutorial_1e();
-    tutorial_1f();
+    tutorial();
     
-    tutorial_2();
+    tutorial2();
 
     
     // load default values for all parameters
@@ -389,27 +593,27 @@ void testApp::setup(){
 
     
     // link the parameters to the gui. The GUI will constuct all the nessecary controls and link each one to the relevant parameters
-//    gui.addParameter(params);
     gui.addPage(params);
     
     // default keys are: space (toggle show/hide), numbers (jump to that page in the gui), '[]' (next page / prev page)
 	gui.setDefaultKeys(true);
     
-//    gui.enableAllEvents();
-  
-    // if you don't like all the automatic update/draw/mouse/keyboard events being called, you can disableAutoEvents for the gui
+
+    // by default all events (update, draw, mouse events, keyboard events etc) are sent to the GUI automatically
+    // if you don't like this, you can disableAutoEvents for the gui
     // but if you do, you need to make sure you call the gui update/draw/mouse/keyboard events manually
-    // automatic events are enabled by default
+    //    gui.enableAllEvents();    // this is the default
 //    gui.disableAllEvents();
     
-    gui.setPage(2);
+    gui.setPage(2); // lets open the gui to page 2
 }
 
 
 //--------------------------------------------------------------
 void testApp::update() {
     
-    // this needs to be called for some things to work such as syncing to external controllers (midi etc), checking for changes, snapping / clamping etc.
+    // this needs to be called once per frame for some things to work...
+    // such as syncing to external controllers (midi etc), checking for changes, snapping / clamping etc.
     msa::ControlFreak::update();
     
     // if you've disabled events for the gui, then you need to manually call this
@@ -417,44 +621,69 @@ void testApp::update() {
 //     gui.update();
 }
 
+
+
 //--------------------------------------------------------------
 void testApp::draw() {
     
     // draw something random and colorful
     ofSetRectMode(OF_RECTMODE_CENTER);
-    static float t = 0;
     
-    t += (float)params["boxes.speed"] * 0.1;
-    if(params["boxes.background color.randomize"]) {
-        params["boxes.background color.r"].setRandom(); // sets a random number between it's min and max
-        params["boxes.background color.g"].setRandom(); // sets a random number between it's min and max
-        params["boxes.background color.b"].setRandom(); // sets a random number between it's min and max
+    // if user clicked on 'randomize' button (bang), choose a new color
+    // we don't need to change for hasChanged() because a bang will only be true for one frame anyway
+    if(params["shapes.background color.randomize"]) {
+        params["shapes.background color.r"].setRandom(); // sets a random number between the Parameter's min and max
+        params["shapes.background color.g"].setRandom(); // sets a random number between the Parameter's min and max
+        params["shapes.background color.b"].setRandom(); // sets a random number between the Parameter's min and max
     }
     
-    ofBackground(params["boxes.background color.r"], params["boxes.background color.g"], params["boxes.background color.b"]);
+    // set the background color
+    ofBackground(params["shapes.background color.r"], params["shapes.background color.g"], params["shapes.background color.b"]);
     
-    float maxsizew = (float)params["boxes.max size.width"] * ofGetWidth();
-    float maxsizeh = (float)params["boxes.max size.height"] * ofGetHeight();
     
-    float spreadw = (float)params["boxes.spread.width"] * ofGetWidth();
-    float spreadh = (float)params["boxes.spread.height"] * ofGetHeight();
+    // since we will be doing a for-loop with possibly many thousands of iterations per frame...
+    // it makes sense to cache the value of these parameters
+    float maxsizew = (float)params["shapes.max size.width"] * ofGetWidth();
+    float maxsizeh = (float)params["shapes.max size.height"] * ofGetHeight();
     
-    if(params["boxes.a slider"].hasChanged()) {
-        ofLogNotice() << "'boxes.a slider' has changed";
-    }
+    float spreadw = (float)params["shapes.spread.width"] * ofGetWidth();
+    float spreadh = (float)params["shapes.spread.height"] * ofGetHeight();
+    
+    int shapetype = params["shapes.type"];
+    
+    // this is our timer
+    static float mytimer = 0;
+    mytimer += (float)params["shapes.speed"] * 0.1;
 
-
-    int numBoxes = params["boxes.count"];
-    for(int i=0; i<numBoxes; i++) {
-        float f = t*0.4 + 34.7324 + i * 258.60293;
+    int numshapes = params["shapes.count"];
+    for(int i=0; i<numshapes; i++) {
+        
+        // just some fancy math to make a bunch of stuff move around on screen
+        float f = mytimer*0.4 + 34.7324 + i * 258.60293;
         ofSetColor(ofNoise(f+92.8274)*255, ofNoise(f+8723.34576)*255, ofNoise(f+4768.976)*255);
         ofPushMatrix();
         ofTranslate(ofGetWidth()/2, ofGetHeight()/2);
         ofTranslate(ofSignedNoise(f+7682.28476)*spreadw, ofSignedNoise(f+283.525)*spreadh);
         ofRotate(ofSignedNoise(f*0.3+193.56259)*360);
-        ofRect(0, 0, ofSignedNoise(f*0.4+9273.442)*maxsizew, ofSignedNoise(f*0.4+18363.5652)*maxsizeh);
+        ofScale(ofSignedNoise(f*0.4+9273.442)*maxsizew, ofSignedNoise(f*0.4+18363.5652)*maxsizeh);
+        
+        // draw the shape depending on what is selected in the GUI (linked to the ParameterNamedIndex)
+        switch(shapetype) {
+            case 0:
+                ofRect(0, 0, 1, 1);
+                break;
+                
+            case 1:
+                ofTriangle(0, -0.33, -0.33, 0.66, 0.33, 0.66);
+                break;
+
+            case 2:
+                ofCircle(0, 0, 0.5);
+                break;
+        }
         ofPopMatrix();
     }
+    
     ofSetColor(255, 255, 255);
     ofDrawBitmapString(ofToString(ofGetFrameRate()), ofGetWidth()-100, 30);
 
@@ -464,6 +693,8 @@ void testApp::draw() {
 //     gui.draw();
 }
 
+
+//--------------------------------------------------------------
 void testApp::exit() {
     // if you've disabled events for the gui, then you need to manually call this
     // if you have gui events enabled (default), then it's unnessecary
