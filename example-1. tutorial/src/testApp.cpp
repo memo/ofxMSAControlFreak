@@ -479,10 +479,10 @@ void testApp::setup() {
 #pragma mark PRESETS: SAVING AND LOADING ALL VALUES IN A SUB-GROUP
     // remember that any Group you create with startGroup()/endGroup(), is a ParameterGroup just like your root (i.e. params)
     // so the same methods will apply
-    // i.e. you can save and load values for just a sub-group
+    // i.e. you can save and load values for any sub-group, or even a sub-group of a sub-group etc.
     
     // this will save / load the values to the default file in the default folder: data/ofxMSAControlFreak/[full path of group]/default.xml
-    // the full path of the group, is analagous to a file path, just list all of the parents starting at the root
+    // the full path of the group is analagous to a file path, just list all of the parents starting at the root
     // ie. data/ofxMSAControlFreak/tutorial/vision/default.xml
     // any folders will be created as nessecary
     params.getGroup("vision").saveXmlValues();
@@ -490,7 +490,7 @@ void testApp::setup() {
     
     
     
-    // ie. data/ofxMSAControlFreak/tutorial/vision/pre-processing/blur/default.xml
+    // data/ofxMSAControlFreak/tutorial/vision/pre-processing/blur/default.xml
     // any folders will be created as nessecary
     params.getGroup("vision.pre-processing.blur").saveXmlValues();
     params.getGroup("vision.pre-processing.blur").loadXmlValues();
