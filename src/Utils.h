@@ -14,7 +14,7 @@
 using namespace std;
 
 namespace msa {
-	namespace ControlFreak {
+	namespace controlfreak {
         
         void setPathDivider(char divider = '.');
         char getPathDivider();

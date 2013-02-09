@@ -10,7 +10,7 @@
 
 
 namespace msa {
-    namespace ControlFreak {
+    namespace controlfreak {
         
         void update() {
             Master::instance().update();

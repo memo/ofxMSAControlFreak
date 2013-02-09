@@ -3,7 +3,7 @@
 //#include "ofxMSAControlFreak/src/ParameterComplexValueT.h"
 
 namespace msa {
-    namespace ControlFreak {
+    namespace controlfreak {
      
 //        class ParameterVec3f : public ParameterComplexValueT<ofVec3f> {
 //        public:

@@ -10,7 +10,7 @@
 //#include "Poco/DynamicAny.h"
 //
 //namespace msa {
-//	namespace ControlFreak {
+//	namespace controlfreak {
 //
 //        template <typename T>
 //        class ValueContainerT;

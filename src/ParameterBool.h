@@ -10,7 +10,7 @@
 #include "ofxMSAControlFreak/src/Parameter.h"
 
 namespace msa {
-    namespace ControlFreak {
+    namespace controlfreak {
         
         class ParameterBool : public Parameter {
         public:

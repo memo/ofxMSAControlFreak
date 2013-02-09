@@ -18,7 +18,7 @@
 
 
 namespace msa {
-	namespace ControlFreak {
+	namespace controlfreak {
         
         class Parameter;
         
@@ -324,7 +324,7 @@ namespace msa {
         //--------------------------------------------------------------
         template<typename T>
         ParameterNumberValueT<T>& ParameterNumberValueT<T>::trackVariable(void *pv) {
-            //            ofLogVerbose() << "msa::ControlFreak::ParameterNumberValueT<T>::trackVariable: " <<  getPath() << " " << pv;
+            //            ofLogVerbose() << "msa::controlfreak::ParameterNumberValueT<T>::trackVariable: " <<  getPath() << " " << pv;
             _pvalue = pv ? (T*)pv : &_value;
             return *this;
         }
@@ -338,7 +338,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         //        //		ParameterNumberValueT<T>& ParameterNumberValueT<T>::addler(Controller *controller) {
-        //            ofLogVerbose() << "msa::ControlFreak::ParameterNumberValueT<T>::addler: " <<  getPath() << " " << controller;
+        //            ofLogVerbose() << "msa::controlfreak::ParameterNumberValueT<T>::addler: " <<  getPath() << " " << controller;
         ////			controller->setParam(this);
         //			controller->updateController();
         //			_controllers.push_back(controller);
@@ -385,7 +385,7 @@ namespace msa {
         //--------------------------------------------------------------
         template<typename T>
         void ParameterNumberValueT<T>::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterNumberValueT<T>::writeToXml: " << _parameter->getPath();
+			ofLogVerbose() << "msa::controlfreak::ParameterNumberValueT<T>::writeToXml: " << _parameter->getPath();
 
 //            Parameter::writeToXml(xml, bFullSchema);  // IMPORTANT: always start with parents write to xml
             xml.addAttribute(_parameter->_xmlTag, "value", *_pvalue, _parameter->_xmlTagId);
@@ -401,7 +401,7 @@ namespace msa {
         //--------------------------------------------------------------
         template<typename T>
         void ParameterNumberValueT<T>::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterNumberValueT<T>::readFromXml: " << _parameter->getPath();
+			ofLogVerbose() << "msa::controlfreak::ParameterNumberValueT<T>::readFromXml: " << _parameter->getPath();
             //            Parameter::readFromXml(xml, bFullSchema);
             set(xml.getAttribute(_parameter->_xmlTag, "value", T(), _parameter->_xmlTagId));
             if(bFullSchema) {

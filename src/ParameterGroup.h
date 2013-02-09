@@ -12,7 +12,7 @@
 #include "ofxMSAOrderedPointerMap/src/ofxMSAOrderedPointerMap.h"
 
 namespace msa {
-    namespace ControlFreak {
+    namespace controlfreak {
         
         class ParameterInt;
         class ParameterFloat;
@@ -178,13 +178,13 @@ namespace msa {
         ParameterType* ParameterGroup::getPtr(string path) const {
             Parameter* p = getPtr(path);
             if(!p) {
-                ofLogError() << "msa::ControlFreak::ParameterGroup::get<ParameterType>: Could not FIND parameter " << path << " in group " << getPath();
+                ofLogError() << "msa::controlfreak::ParameterGroup::get<ParameterType>: Could not FIND parameter " << path << " in group " << getPath();
                 return NULL;
             }
             
             ParameterType *tp = dynamic_cast<ParameterType*>(p);
             if(!tp) {
-                ofLogError() << "msa::ControlFreak::ParameterGroup::get<ParameterType>: Could not CONVERT parameter " << path << " in group " << getPath();
+                ofLogError() << "msa::controlfreak::ParameterGroup::get<ParameterType>: Could not CONVERT parameter " << path << " in group " << getPath();
                 return NULL;
             }
             

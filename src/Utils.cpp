@@ -11,7 +11,7 @@
 #include "ofxMSAControlFreak/src/ofxMSAControlFreak.h"
 
 namespace msa {
-	namespace ControlFreak {
+	namespace controlfreak {
         
         
         static char _pathDivider = '.';

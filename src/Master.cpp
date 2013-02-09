@@ -9,7 +9,7 @@
 #include "ofxMSAControlFreak/src/ofxMSAControlFreak.h"
 
 namespace msa {
-    namespace ControlFreak {
+    namespace controlfreak {
         
         Master* Master::_instance = NULL;
         

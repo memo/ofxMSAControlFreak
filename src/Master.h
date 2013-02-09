@@ -12,7 +12,7 @@
 #include "ofxMSAOrderedPointerMap.h"
 
 namespace msa {
-    namespace ControlFreak {
+    namespace controlfreak {
         
         class Parameter;
         

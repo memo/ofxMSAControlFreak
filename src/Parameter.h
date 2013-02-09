@@ -13,13 +13,13 @@
 #include "ofxMSACore/src/MSACore.h"
 
 #include "ofxMSAControlFreak/src/ParameterValueI.h"
-#include "ofxMSAControlFreak/src/Controllers.h"
+//#include "ofxMSAControlFreak/src/Controllers.h"
 #include "ofxMSAControlFreak/src/Utils.h"
 
 #include "ofxXmlSettings.h"
 
 namespace msa {
-	namespace ControlFreak {
+	namespace controlfreak {
 		
 		class ParameterGroup;
         
@@ -118,11 +118,11 @@ namespace msa {
             
             //--------------------------------------------------------------
             // Controller stuff
-            void addSender(ControllerI *controller);
-            void addReceiver(ControllerI *controller);
+//            void addSender(ControllerI *controller);
+//            void addReceiver(ControllerI *controller);
             
         protected:
-            Controllers controllers;
+//            Controllers controllers;
             
             virtual void update() { if(_paramValue) _paramValue->update(); }
             

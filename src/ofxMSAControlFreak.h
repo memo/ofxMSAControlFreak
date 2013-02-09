@@ -39,7 +39,7 @@
 
 
 namespace msa {
-    namespace ControlFreak {
+    namespace controlfreak {
         
         
         // update everything

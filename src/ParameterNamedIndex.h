@@ -10,7 +10,7 @@
 
 
 namespace msa {
-	namespace ControlFreak {
+	namespace controlfreak {
 		
 		// todo: keep max, in sync with labels.size()
 		

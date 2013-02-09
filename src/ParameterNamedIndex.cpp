@@ -11,7 +11,7 @@
 
 
 namespace msa {
-	namespace ControlFreak {
+	namespace controlfreak {
 		
         //--------------------------------------------------------------
 		ParameterNamedIndex& ParameterNamedIndex::setLabels(int count, string* labels) {
@@ -89,7 +89,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         void ParameterNamedIndex::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::writeToXml: " << getPath();
+			ofLogVerbose() << "msa::controlfreak::ParameterNamedIndex::writeToXml: " << getPath();
             
             ParameterInt::writeToXml(xml, bFullSchema);  // IMPORTANT: always start with parents write to xml
             if(bFullSchema) {
@@ -104,7 +104,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         void ParameterNamedIndex::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::ControlFreak::ParameterNamedIndex::readFromXml: " << getPath();
+			ofLogVerbose() << "msa::controlfreak::ParameterNamedIndex::readFromXml: " << getPath();
             
             ParameterInt::readFromXml(xml, bFullSchema);
         }

@@ -14,7 +14,7 @@ Interface for any Parameter that has a value
 #include "Poco/Any.h"
 
 namespace msa {
-	namespace ControlFreak {
+	namespace controlfreak {
         
         typedef Poco::DynamicAny AnyValue;
         class Parameter;

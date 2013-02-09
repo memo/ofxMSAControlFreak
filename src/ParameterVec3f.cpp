@@ -10,7 +10,7 @@
 
 
 namespace msa {
-    namespace ControlFreak {
+    namespace controlfreak {
 
 //        ParameterVec3f::ParameterVec3f(string name, ParameterGroup *parent)
 //        : ParameterComplexValueT<ofVec3f>(name, parent) {

@@ -17,9 +17,9 @@
 
 #pragma mark START TUTORIAL
 
-msa::ControlFreak::ParameterGroup params;
+msa::controlfreak::ParameterGroup params;
 // Create a ParameterGroup
-// this is one of the main Classes of ControlFreak and probably the only one you'll ever need to explicitly instantiate
+// this is one of the main Classes of controlfreak and probably the only one you'll ever need to explicitly instantiate
 // i.e. almost everything is done through this
 // Parameters are NOT sliders, tickshapes, buttons etc.
 // They are just the data and properties behind all of that.
@@ -30,7 +30,7 @@ msa::ControlFreak::ParameterGroup params;
 
 
 
-msa::ControlFreak::gui::Gui gui;
+msa::controlfreak::gui::Gui gui;
 // Create a GUI
 // This is a class which can display and interact with Parameters
 // There can be many different types of gui's which can display and control Parameters
@@ -75,7 +75,7 @@ void testApp::setup() {
     
     
     
-    // params["parameter name"] actually returns a reference to a msa::ControlFreak::Parameter, not a simple number
+    // params["parameter name"] actually returns a reference to a msa::controlfreak::Parameter, not a simple number
     // so sometimes when using parameters in expressions ambiguity can occur, to avoid this use a c-style type-cast. e.g.
 //    float answer1 = params["myfloat"] * params["myint"];   // compiler is confused so this may not compile, be explicit with types:
     float answer2 = (float)params["myfloat"] *(int)params["myint"]; // this works, compiler knows exactly what to do
@@ -94,7 +94,7 @@ void testApp::setup() {
     // My personal preference is daisy chaining small methods with descriptive names, each of which do very specific things
     // with auto-complete in most modern IDEs it's very quick to write, and it aids readibility and future expansion
     
-    // creating and adding a Parameter actually returns a reference to msa::ControlFreak::Parameter
+    // creating and adding a Parameter actually returns a reference to msa::controlfreak::Parameter
     // so you can call further methods on it to change properties of that Parameter
     params.addFloat("myfloat2").set(0.7);               // set value (this is equivalent to using =)
     params.addFloat("myfloat3").setRange(-1, 1);        // set min/max values
@@ -121,8 +121,8 @@ void testApp::setup() {
     
     //--------------------------------------------------------------
 #pragma mark CHANGING PARAMETER PROPERTIES (FOR EXISTING PARAMETERS)
-    // remember that params["parameter name"] actually returns a reference to a msa::ControlFreak::Parameter, not a simple number
-    // so you can call all msa::ControlFreak::Parameter methods on it
+    // remember that params["parameter name"] actually returns a reference to a msa::controlfreak::Parameter, not a simple number
+    // so you can call all msa::controlfreak::Parameter methods on it
     // i.e. you can also change properties for existing parameters
     // (the following code assumes parameter 'myfloat' already exists)
     params["myfloat"].setRange(0, 100);
@@ -233,9 +233,9 @@ void testApp::setup() {
     
     
     // you can change the mode of the NamedIndex
-    params.addNamedIndex("size").setLabels(5, "small", "medium", "large", "extra large", "mega").setMode(msa::ControlFreak::ParameterNamedIndex::kDropdown);
-    params.addNamedIndex("color").setLabels(3, "red", "green", "blue").setMode(msa::ControlFreak::ParameterNamedIndex::kList);
-    params.addNamedIndex("sex").setLabels(3, "male", "female", "other").setMode(msa::ControlFreak::ParameterNamedIndex::kOptions);
+    params.addNamedIndex("size").setLabels(5, "small", "medium", "large", "extra large", "mega").setMode(msa::controlfreak::ParameterNamedIndex::kDropdown);
+    params.addNamedIndex("color").setLabels(3, "red", "green", "blue").setMode(msa::controlfreak::ParameterNamedIndex::kList);
+    params.addNamedIndex("sex").setLabels(3, "male", "female", "other").setMode(msa::controlfreak::ParameterNamedIndex::kOptions);
     // this doesn't actually affect how the Parameter works at all, it's just info for when you add it to a GUI
 
     
@@ -250,15 +250,15 @@ void testApp::setup() {
     
     
     // to get the selected item label involves a tiny bit more work:
-    // params["animals"] returns a normal msa::ControlFreak::Parameter, not a msa::ControlFreak::ParameterNamedIndex
-    // so to access msa::ControlFreak::ParameterNamedIndex specific methods, you need to type-cast it
-    msa::ControlFreak::ParameterNamedIndex &p = (msa::ControlFreak::ParameterNamedIndex&)params["animals"];
+    // params["animals"] returns a normal msa::controlfreak::Parameter, not a msa::controlfreak::ParameterNamedIndex
+    // so to access msa::controlfreak::ParameterNamedIndex specific methods, you need to type-cast it
+    msa::controlfreak::ParameterNamedIndex &p = (msa::controlfreak::ParameterNamedIndex&)params["animals"];
     string selectedLabel1 = p.getSelectedLabel();
     
     
     
     // actually the ParameterGroup has a get<>() template method to return a correctly type-cast Parameter
-    string selectedLabel2 = params.get<msa::ControlFreak::ParameterNamedIndex>("animals");
+    string selectedLabel2 = params.get<msa::controlfreak::ParameterNamedIndex>("animals");
     
     
     
@@ -347,7 +347,7 @@ void testApp::setup() {
     
     
     // Option 3: Cache groups. if you are going to access lots of the same parameters from the same group, it makes sense to cache it in a variable
-    msa::ControlFreak::ParameterGroup &visionPreBlurGroup = params.getGroup("vision.pre-processing.blur");
+    msa::controlfreak::ParameterGroup &visionPreBlurGroup = params.getGroup("vision.pre-processing.blur");
     visionPreBlurGroup["enabled"] = true;
     visionPreBlurGroup["kernelSize"] = 7;
     visionPreBlurGroup["iterations"] = 17;
@@ -366,14 +366,14 @@ void testApp::setup() {
     params.addInt("particle count").setRange(0, 1000000);
     
     // in App::update() check to see if this value has changed, if it has, reallocate particle array
-    msa::ControlFreak::update();        // more on this below
+    msa::controlfreak::update();        // more on this below
     if(params["particle count"].hasChanged()) {
         // code to reallocate particle array with the new particle count
     }
     
     // NOTE:
-    // for the above to work, you need to call msa::ControlFreak::update() in your app's update() function
-    // I may remove this requirement and register the msa::ControlFreak::update() method to be called automatically every frame, I haven't decided yet
+    // for the above to work, you need to call msa::controlfreak::update() in your app's update() function
+    // I may remove this requirement and register the msa::controlfreak::update() method to be called automatically every frame, I haven't decided yet
     
     
     
@@ -406,9 +406,9 @@ void testApp::setup() {
     
     //--------------------------------------------------------------
 #pragma mark TRACKING VARIABLES
-    // by default ControlFreak keeps track of all values internally, i.e. you don't need to pass it a variable (as you did in ofxSimpleGuiToo)
+    // by default controlfreak keeps track of all values internally, i.e. you don't need to pass it a variable (as you did in ofxSimpleGuiToo)
     // however if you like that functionality, you can also assign an external variable, which is kept track of and kept in sync, at no performance cost
-    // ControlFreak simply points it's internal data pointer to the external variable (instead of an internal one), so they share the same memory
+    // controlfreak simply points it's internal data pointer to the external variable (instead of an internal one), so they share the same memory
     // (the following code assumes parameter 'myfloat' already exists)
     
     float var1 = 0;
@@ -442,7 +442,7 @@ void testApp::setup() {
 #pragma mark ADDING SENDERS AND RECEIVERS
     // a 'Sender' is a controller which is sent when the parameter is changed.
     // e.g.
-//    params["myfloat"].addSender(new msa::ControlFreak::MidiController); 
+//    params["myfloat"].addSender(new msa::controlfreak::MidiController); 
     
     
     //--------------------------------------------------------------
@@ -601,7 +601,7 @@ void testApp::setup() {
     
     
     // a slightly more efficient way of doing the above is to look for the 'speed' parameter only once:
-    msa::ControlFreak::Parameter *pspeed = params.getPtr("speed");
+    msa::controlfreak::Parameter *pspeed = params.getPtr("speed");
     if(pspeed != NULL) {
         fspeed = pspeed->value();
     } else {
@@ -635,7 +635,7 @@ void testApp::setup() {
 void testApp::update() {
     // this needs to be called once per frame for some things to work...
     // such as syncing to external controllers (midi etc), checking for changes, snapping / clamping etc.
-    msa::ControlFreak::update();
+    msa::controlfreak::update();
     
     // if you've disabled events for the gui, then you need to manually call this
     // if you have gui events enabled (default), then it's unnessecary
