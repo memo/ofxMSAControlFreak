@@ -91,7 +91,7 @@ void testApp::setup() {
     // I'm not a big fan of long lists of arguments to functions or methods.
     // e.g. params.addFloat("myfloat", 0, 100, 50, 5, true, false);
     // It's difficult to read, you have no idea what is what, adding more options in the future gets quite confusing and generally it's quite error prone
-    // My personal preference is daisy chaining small methods with descriptive names, each of which do very specific things
+    // My personal preference is daisy chaining small methods with descriptive names, each of which do very specific things.
     // with auto-complete in most modern IDEs it's very quick to write, and it aids readibility and future expansion
     
     // creating and adding a Parameter actually returns a reference to msa::controlfreak::Parameter
