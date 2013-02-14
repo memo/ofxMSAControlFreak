@@ -2,31 +2,32 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxMSAControlFreak/src/Parameter.h"
 
 namespace msa {
 	namespace controlfreak {
-		
-		class Parameter;
-		
+
+        //--------------------------------------------------------------
+        // an individual Controller which controls a parameter (either a sender or receiver)
         class ControllerBase {
         public:
-            class Channel {
-            public:
-                //--------------------------------------------------------------
-                Channel(Parameter *param, bool bOnlyUpdateOnChange):_param(param), _bOnlyUpdateOnChange(bOnlyUpdateOnChange) {}
-                virtual ~Channel() {}
-                virtual void update() = 0;
-            protected:
-                Parameter	*_param;
-                bool        _bOnlyUpdateOnChange;
-            };
+            Parameter	*param;
+            bool        bOnlyUpdateOnChange;
             
-            
-            virtual ~ControllerBase();
-            void add(Channel *channel);
+            ControllerBase(Parameter *param, bool bOnlyUpdateOnChange);
+            bool shouldUpdate();
+        };
+        
+        
+        //--------------------------------------------------------------
+		// A base class for something which can control a bunch of parameters
+        class ControllerManagerBase {
+        public:
+            virtual ~ControllerManagerBase();
+            void add(ControllerBase *controller);
 
         protected:
-            vector<Channel*> channels;
+            vector<ControllerBase*> controllers;
 
             
         };

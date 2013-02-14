@@ -6,24 +6,37 @@
 //
 //
 
-#include "ControllerBase.h"
-
+#include "ofxMSAControlFreak/src/ofxMSAControlFreak.h"
 
 namespace msa {
 	namespace controlfreak {
 
+        
+        //--------------------------------------------------------------
+        ControllerBase::ControllerBase(Parameter *param, bool bOnlyUpdateOnChange) : param(param), bOnlyUpdateOnChange(bOnlyUpdateOnChange) {
+        }
+        
+        //            virtual ~ControllerBase() {}
+        
+        //--------------------------------------------------------------
+        bool ControllerBase::shouldUpdate() {
+            return param && (param->hasChanged() || !bOnlyUpdateOnChange);
+        }
+        
 
         //--------------------------------------------------------------
-        ControllerBase::~ControllerBase() {
-            for(int i=0; i<channels.size(); i++) {
-                delete channels[i];
+        //--------------------------------------------------------------
+        //--------------------------------------------------------------
+        ControllerManagerBase::~ControllerManagerBase() {
+            for(int i=0; i<controllers.size(); i++) {
+                delete controllers[i];
             }
         }
         
         
         //--------------------------------------------------------------
-        void ControllerBase::add(Channel *channel) {
-            channels.push_back(channel);
+        void ControllerManagerBase::add(ControllerBase *controller) {
+            controllers.push_back(controller);
         }
         
 
