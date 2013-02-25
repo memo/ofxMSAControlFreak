@@ -1,3 +1,15 @@
+//                                      __
+//     ____ ___  ___  ____ ___  ____   / /__   __
+//    / __ `__ \/ _ \/ __ `__ \/ __ \ / __/ | / /
+//   / / / / / /  __/ / / / / / /_/ // /_ | |/ /
+//  /_/ /_/ /_/\___/_/ /_/ /_/\____(_)__/ |___/
+//
+//
+//  Created by Memo Akten, www.memo.tv
+//
+//  ofxMSAControlFreak
+//
+
 /*
  
  A parameter group, contains other parameters, including other groups (can go infinitely deep)

@@ -1,9 +1,13 @@
+//                                      __
+//     ____ ___  ___  ____ ___  ____   / /__   __
+//    / __ `__ \/ _ \/ __ `__ \/ __ \ / __/ | / /
+//   / / / / / /  __/ / / / / / /_/ // /_ | |/ /
+//  /_/ /_/ /_/\___/_/ /_/ /_/\____(_)__/ |___/
 //
-//  ofxMSAControlFreak.cpp
-//  ofxMSAControlFreak example
 //
-//  Created by Memo Akten on 27/01/2013.
+//  Created by Memo Akten, www.memo.tv
 //
+//  ofxMSAControlFreak
 //
 
 #include "ofxMSAControlFreak.h"

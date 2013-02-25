@@ -1,11 +1,14 @@
-/*
- *  MSAControlFreeParameter.cpp
- *  MSA demo msalibs2
- *
- *  Created by Memo Akten on 07/11/2010.
- *  Copyright 2010 MSA Visuals Ltd. All rights reserved.
- *
- */
+//                                      __
+//     ____ ___  ___  ____ ___  ____   / /__   __
+//    / __ `__ \/ _ \/ __ `__ \/ __ \ / __/ | / /
+//   / / / / / /  __/ / / / / / /_/ // /_ | |/ /
+//  /_/ /_/ /_/\___/_/ /_/ /_/\____(_)__/ |___/
+//
+//
+//  Created by Memo Akten, www.memo.tv
+//
+//  ofxMSAControlFreak
+//
 
 
 #include "ofxMSAControlFreak/src/ofxMSAControlFreak.h"
