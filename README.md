@@ -14,6 +14,7 @@ The Mega Super Awesome Visuals Company
 
 Installation
 ------------
+add '../../../addons' to your project's 'header search path'
 
 Dependencies
 ------------
