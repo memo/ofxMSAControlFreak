@@ -49,6 +49,7 @@ namespace msa {
         //--------------------------------------------------------------
         ParameterGroup& ParameterGroup::setMode(Mode mode) {
             _mode = mode;
+            return *this;
         }
 
         //--------------------------------------------------------------
@@ -59,11 +60,13 @@ namespace msa {
         //--------------------------------------------------------------
         ParameterGroup& ParameterGroup::open() {
             _bOpen = true;
+            return *this;
         }
 
         //--------------------------------------------------------------
         ParameterGroup& ParameterGroup::close() {
             _bOpen = false;
+            return *this;
         }
 
         
