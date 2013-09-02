@@ -54,6 +54,10 @@ namespace msa {
             // these are just states (i.e. data), they don't actually affect functionality of the parametergroup, only used when added to a GUI
             ParameterGroup& setMode(Mode mode);
             Mode getMode() const;
+            
+            // conveniance methods for above move changing
+            ParameterGroup& makePage();
+            ParameterGroup& makeGroup();
 
             // open, close, get open state
             // these are just states (i.e. data), they don't actually affect functionality of the parametergroup, only used when added to a GUI

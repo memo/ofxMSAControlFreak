@@ -20,7 +20,7 @@ namespace msa {
         : Parameter(name, parent) {
             clear();
             _bOpen = true;
-            setMode(kPage);
+            makeGroup();
             _params.setOwnsObjects(false);
 //            ofLogVerbose() << "msa::controlfreak::ParameterGroup::ParameterGroup: " <<  getPath();
         }
@@ -57,6 +57,18 @@ namespace msa {
             return _mode;
         }
         
+        //--------------------------------------------------------------
+        ParameterGroup& ParameterGroup::makePage() {
+            setMode(kPage);
+            return *this;
+        }
+        
+        //--------------------------------------------------------------
+        ParameterGroup& ParameterGroup::makeGroup() {
+            setMode(kGroup);
+            return *this;
+        }
+
         //--------------------------------------------------------------
         ParameterGroup& ParameterGroup::open() {
             _bOpen = true;
@@ -116,7 +128,7 @@ namespace msa {
         //--------------------------------------------------------------
 		ParameterGroup& ParameterGroup::startGroup(string name) {
             ParameterGroup* g = static_cast<ParameterGroup*>(&add(new ParameterGroup(name, _groupStack.top())));
-            g->setMode(kGroup);
+            g->makeGroup();
             _groupStack.push(g);
             return *g;
 		}
@@ -128,7 +140,7 @@ namespace msa {
         
         //--------------------------------------------------------------
 		ParameterGroup& ParameterGroup::startPage(string name) {
-            startGroup(name).setMode(kPage);
+            startGroup(name).makePage();
         }
         
         //--------------------------------------------------------------
