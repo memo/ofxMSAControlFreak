@@ -128,7 +128,7 @@ namespace msa {
             
             
             // returns true if any of it's sub parameters (recursively) have changed
-            bool hasChanged();
+            bool hasChanged(int dir=0);
             
             
             //---- Saving/loading from XML -----------------------

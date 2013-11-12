@@ -60,7 +60,7 @@ namespace msa {
             
             
             // whether the value changed this frame or not
-            bool hasChanged();
+            bool hasChanged(int dir=0);
 
             // clear the changed flag (if you want to programmatically change the value, but don't want to trigger anything else)
             void clearChanged();
@@ -198,8 +198,14 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-        bool ParameterNumberValueT<T>::hasChanged() {
-            return _hasChanged;
+        bool ParameterNumberValueT<T>::hasChanged(int dir) {
+//            if(dir == 0) {
+                return _hasChanged;
+//            } else if(dir > 0) {
+//                return *_pvalue > _oldValue;
+//            } else {
+//                return *_pvalue < _oldValue;
+//            }
         }
         
         //--------------------------------------------------------------

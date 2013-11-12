@@ -255,10 +255,10 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-        bool ParameterGroup::hasChanged() {
+        bool ParameterGroup::hasChanged(int dir) {
             for(int i=0; i<_params.size(); i++) {
                 Parameter &p = _params[i];
-                if(p.hasChanged()) return true;
+                if(p.hasChanged(dir)) return true;
             }
             return false;
         }

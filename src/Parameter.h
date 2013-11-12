@@ -78,7 +78,7 @@ namespace msa {
 			virtual AnyValue oldValue() const { if(_paramValue) return _paramValue->oldValue(); }
             
             // whether the value changed this frame or not
-            virtual bool hasChanged() { if(_paramValue) return _paramValue->hasChanged(); }
+            virtual bool hasChanged(int dir=0) { if(_paramValue) return _paramValue->hasChanged(dir); }
 
             // clear the changed flag (if you want to programmatically change the value, but don't want to trigger anything else)
             virtual void clearChanged() { if(_paramValue) _paramValue->clearChanged(); }

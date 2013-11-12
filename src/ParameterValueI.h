@@ -46,7 +46,8 @@ namespace msa {
 			virtual AnyValue oldValue() const = 0;
             
             // whether the value changed this frame or not
-            virtual bool hasChanged() = 0;
+            // 'dir' specifies direction of change to check for. 0: any direction, +ve: rising, -ve: dropping
+            virtual bool hasChanged(int dir=0) = 0;
             
             // clear the changed flag (if you want to programmatically change the value, but don't want to trigger anything else)
             virtual void clearChanged() = 0;
