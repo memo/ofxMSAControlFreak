@@ -75,10 +75,6 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update() {
-    // this needs to be called once per frame for some things to work...
-    // such as syncing to external controllers (midi etc), checking for changes, snapping / clamping etc.
-    msa::controlfreak::update();
-    
     // if you've disabled events for the gui, then you need to manually call this
     // if you have gui events enabled (default), then it's unnessecary
     //     gui.update();

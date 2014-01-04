@@ -11,14 +11,3 @@
 //
 
 #include "ofxMSAControlFreak.h"
-
-
-namespace msa {
-    namespace controlfreak {
-        
-        void update() {
-            Master::instance().update();
-        }
-        
-    }
-}

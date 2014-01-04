@@ -44,9 +44,7 @@
 
 namespace msa {
     namespace controlfreak {
-        
-        
-        // update everything
-        void update();
+
+//        void update();    // no longer need to call this, called automagically
     }
 }

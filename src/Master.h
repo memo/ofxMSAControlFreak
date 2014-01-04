@@ -41,7 +41,7 @@ namespace msa {
 
             void add(Parameter* p);
             void erase(Parameter *p);
-            void update();
+            void update(ofEventArgs &e);
             
             // is this dodgey? a map using the pointers address as key? so i can find the parameter quickly to erase and remove?
             msa::OrderedPointerMap<Parameter*, Parameter> _parameters;

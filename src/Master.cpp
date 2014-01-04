@@ -21,6 +21,7 @@ namespace msa {
         //--------------------------------------------------------------
         Master::Master() {
             cout << "Master";
+            ofAddListener(ofEvents().update, this, &Master::update);
         }
         
         //--------------------------------------------------------------
@@ -40,7 +41,7 @@ namespace msa {
         }
 
         //--------------------------------------------------------------
-        void Master::update() {
+        void Master::update(ofEventArgs &e) {
             for(int i=0; i<_parameters.size(); i++) {
                 Parameter &p = _parameters[i];
                 p.update();
