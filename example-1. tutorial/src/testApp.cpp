@@ -17,8 +17,9 @@
 
 #pragma mark START TUTORIAL
 
-msa::controlfreak::ParameterGroup params;
 // Create a ParameterGroup
+msa::controlfreak::ParameterGroup params;
+
 // this is one of the main Classes of controlfreak and probably the only one you'll ever need to explicitly instantiate
 // i.e. almost everything is done through this
 // Parameters are NOT sliders, tickshapes, buttons etc.
@@ -29,9 +30,9 @@ msa::controlfreak::ParameterGroup params;
 
 
 
-
-msa::controlfreak::gui::Gui gui;
 // Create a GUI
+msa::controlfreak::gui::Gui gui;
+
 // This is a class which can display and interact with Parameters
 // There can be many different types of gui's which can display and control Parameters
 // This particular one is an opengl gui very similar to ofxSimpleGuiToo. I also have a native Cocoa one etc.
@@ -47,11 +48,10 @@ void testApp::setup() {
     //--------------------------------------------------------------
 #pragma mark BASIC USAGE
     
-    // optionally, set the display name for your parameter group
+    // set the display name for your parameter group
     // this is also the default folder for preset xml files (SO REMEMBER IT FOR WHEN WE COME TO PRESETS)
     params.setName("tutorial");
-    
-    
+
     
     // creating basic parameters
     params.addFloat("myfloat");  // create a float Parameter: can be any real number
@@ -284,9 +284,9 @@ void testApp::setup() {
     
     //--------------------------------------------------------------
 #pragma mark NESTED GROUPS
-    // You can even create Groups inside Groups inside Groups .... (until you run out of memory)
+    // You can even create Groups inside Groups inside Groups ....
     // Parameter names MUST be unique ONLY within the groups they are in
-    // (the { } curly braces are not needed. I'm only using that to help with the code indenting to help visualize the structure in xcode)
+    // (the { } curly braces are not needed. I'm only using that to automate the code indenting to help visualize the structure in xcode)
     params.startGroup("vision");
     {
         params.addBool("enabled");  // note that this parameter is called 'enabled'
