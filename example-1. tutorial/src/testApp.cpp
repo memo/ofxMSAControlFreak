@@ -366,7 +366,6 @@ void testApp::setup() {
     params.addInt("particle count").setRange(0, 1000000);
     
     // in App::update() check to see if this value has changed, if it has, reallocate particle array
-    msa::controlfreak::update();        // more on this below
     if(params["particle count"].hasChanged()) {
         // code to reallocate particle array with the new particle count
     }
@@ -633,10 +632,6 @@ void testApp::setup() {
 
 //--------------------------------------------------------------
 void testApp::update() {
-    // this needs to be called once per frame for some things to work...
-    // such as syncing to external controllers (midi etc), checking for changes, snapping / clamping etc.
-    msa::controlfreak::update();
-    
     // if you've disabled events for the gui, then you need to manually call this
     // if you have gui events enabled (default), then it's unnessecary
 //     gui.update();
