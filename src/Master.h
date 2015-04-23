@@ -21,13 +21,15 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxMSAOrderedPointerMap.h"
+#include "ofxMSAOrderedPointerMap/src/ofxMSAOrderedPointerMap.h"
+#include "ofxMSAControlFreak/src/Controller.h"
 
 namespace msa {
     namespace controlfreak {
         
         class Parameter;
-        class Controller;
+//        class Controller;
+//        class ControllerPtr;
         
         class Master {
         private:
@@ -49,7 +51,7 @@ namespace msa {
             // is this dodgey? a map using the pointers address as key? so i can find the parameter quickly to erase and remove?
             msa::OrderedPointerMap<Parameter*, Parameter> _parameters;
             
-            vector<Controller*> _controllers;
+            vector<ControllerPtr> _controllers;
             
             static Master& instance();
             static Master* _instance;

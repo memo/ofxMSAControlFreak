@@ -40,13 +40,15 @@
 #include "ofxMSAControlFreak/src/ParameterNamedIndex.h"
 #include "ofxMSAControlFreak/src/ParameterGroup.h"
 #include "ofxMSAControlFreak/src/ParameterVec3f.h"
-#include "ofxMSAControlFreak/src/Utils.h"
 #include "ofxMSAControlFreak/src/Controller.h"
 
 
 namespace msa {
     namespace controlfreak {
-//        void addController(ofxOscReceiver &oscReceiver);
-//        void update();    // no longer need to call this, called automagically
+
+        void setPathDivider(char divider = '.');
+        char getPathDivider();
+
+    
     }
 }

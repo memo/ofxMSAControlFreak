@@ -43,7 +43,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         void Master::addController(Controller *c) {
-            
+            _controllers.push_back(ControllerPtr(c));
         }
 
 

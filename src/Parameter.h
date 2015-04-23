@@ -25,8 +25,7 @@
 #include "ofxMSACore/src/MSACore.h"
 
 #include "ofxMSAControlFreak/src/ParameterValueI.h"
-//#include "ofxMSAControlFreak/src/Controllers.h"
-#include "ofxMSAControlFreak/src/Utils.h"
+#include "ofxMSAControlFreak/src/Controller.h"
 
 #include "ofxXmlSettings.h"
 

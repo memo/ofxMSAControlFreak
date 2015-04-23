@@ -21,6 +21,9 @@ namespace msa {
 
         //--------------------------------------------------------------
         // an individual Controller which controls a parameter (either a sender or receiver)
+        class Controller;
+        typedef shared_ptr<Controller> ControllerPtr;
+        
         class Controller {
         public:
             Parameter	*param;
