@@ -41,12 +41,12 @@
 #include "ofxMSAControlFreak/src/ParameterGroup.h"
 #include "ofxMSAControlFreak/src/ParameterVec3f.h"
 #include "ofxMSAControlFreak/src/Utils.h"
-#include "ofxMSAControlFreak/src/ControllerBase.h"
+#include "ofxMSAControlFreak/src/Controller.h"
 
 
 namespace msa {
     namespace controlfreak {
-
+//        void addController(ofxOscReceiver &oscReceiver);
 //        void update();    // no longer need to call this, called automagically
     }
 }

@@ -27,6 +27,7 @@ namespace msa {
     namespace controlfreak {
         
         class Parameter;
+        class Controller;
         
         class Master {
         private:
@@ -37,16 +38,21 @@ namespace msa {
             Master();
             ~Master();
             
-            static Master& instance();
-
             void add(Parameter* p);
             void erase(Parameter *p);
             void update(ofEventArgs &e);
             
+            
+            void addController(Controller *c);
+
+            
             // is this dodgey? a map using the pointers address as key? so i can find the parameter quickly to erase and remove?
             msa::OrderedPointerMap<Parameter*, Parameter> _parameters;
-            static Master* _instance;
             
+            vector<Controller*> _controllers;
+            
+            static Master& instance();
+            static Master* _instance;
         };
     }
 }

@@ -13,6 +13,7 @@
 
 #include "ofxMSAControlFreak/src/ofxMSAControlFreak.h"
 
+
 namespace msa {
     namespace controlfreak {
         
@@ -39,6 +40,12 @@ namespace msa {
         void Master::erase(Parameter *p) {
             _parameters.erase(p);
         }
+        
+        //--------------------------------------------------------------
+        void Master::addController(Controller *c) {
+            
+        }
+
 
         //--------------------------------------------------------------
         void Master::update(ofEventArgs &e) {

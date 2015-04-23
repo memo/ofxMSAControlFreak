@@ -11,3 +11,11 @@
 //
 
 #include "ofxMSAControlFreak.h"
+
+
+namespace msa {
+    namespace controlfreak {
+        
+        
+    }
+}
