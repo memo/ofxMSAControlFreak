@@ -22,7 +22,7 @@
 
 #include "ofMain.h"
 #include "ofxMSAOrderedPointerMap/src/ofxMSAOrderedPointerMap.h"
-#include "ofxMSAControlFreak/src/Controller.h"
+//#include "ofxMSAControlFreak/src/Controller.h"
 
 namespace msa {
     namespace controlfreak {
@@ -45,13 +45,13 @@ namespace msa {
             void update(ofEventArgs &e);
             
             
-            void addController(Controller *c);
+//            void addController(Controller *c);
 
             
             // is this dodgey? a map using the pointers address as key? so i can find the parameter quickly to erase and remove?
             msa::OrderedPointerMap<Parameter*, Parameter> _parameters;
             
-            vector<ControllerPtr> _controllers;
+//            vector<ControllerPtr> _controllers;
             
             static Master& instance();
             static Master* _instance;

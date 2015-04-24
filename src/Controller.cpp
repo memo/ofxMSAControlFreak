@@ -18,15 +18,15 @@ namespace msa {
 
         
         //--------------------------------------------------------------
-        Controller::Controller(Parameter *param, bool bOnlyUpdateOnChange) : param(param), bOnlyUpdateOnChange(bOnlyUpdateOnChange) {
-        }
-        
-        //            virtual ~Controller() {}
-        
-        //--------------------------------------------------------------
-        bool Controller::shouldUpdate() {
-            return param && (param->hasChanged() || !bOnlyUpdateOnChange);
-        }
+//        Controller::Controller(Parameter *param, bool bOnlyUpdateOnChange) : param(param), bOnlyUpdateOnChange(bOnlyUpdateOnChange) {
+//        }
+//        
+//        //            virtual ~Controller() {}
+//        
+//        //--------------------------------------------------------------
+//        bool Controller::shouldUpdate() {
+//            return param && (param->hasChanged() || !bOnlyUpdateOnChange);
+//        }
         
 
         //--------------------------------------------------------------
