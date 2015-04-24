@@ -24,25 +24,26 @@
 
 #include "ofxMSACore/src/MSACore.h"
 
-#include "ofxMSAControlFreak/src/ParameterValueI.h"
-#include "ofxMSAControlFreak/src/Controller.h"
-
 #include "ofxXmlSettings.h"
+
+#include "Poco/DynamicAny.h"
+#include "Poco/Any.h"
 
 namespace msa {
 	namespace controlfreak {
+        
+        typedef Poco::DynamicAny AnyValue;
+        class Parameter;
 		
 		class ParameterGroup;
         
-		class Parameter : public ParameterValueI {
+		class Parameter {
 		public:
 
 			friend class ParameterGroup;
             friend class Master;
-            template<typename T>
-            friend class ParameterNumberValueT;
             
-			Parameter(string name, ParameterGroup *parent = NULL, ParameterValueI *pv = NULL);
+			Parameter(string name, ParameterGroup *parent = NULL);
 			virtual ~Parameter();
             
             Parameter& setName(string s);
@@ -58,10 +59,6 @@ namespace msa {
 			string getTypeName() const;
             
             
-            ParameterValueI* getParamValue();
-            
-            
-
             //--------------------------------------------------------------
             // set and get value
             // operators for assigning and casting
@@ -70,92 +67,82 @@ namespace msa {
 			
 
             //--------------------------------------------------------------
-            // from ParameterValueI
+//            virtual void setParameter(Parameter *p) {}
             
-            virtual ParameterValueI& set(AnyValue v) { if(_paramValue) return _paramValue->set(v); }
-			virtual AnyValue value() const { if(_paramValue) return _paramValue->value(); }
-			virtual AnyValue oldValue() const { if(_paramValue) return _paramValue->oldValue(); }
+            virtual Parameter& set(AnyValue v) {}
+            virtual AnyValue value() const {}
+            virtual AnyValue oldValue() const {}
             
             // whether the value changed this frame or not
-            virtual bool hasChanged(int dir=0) { if(_paramValue) return _paramValue->hasChanged(dir); }
-
+            // 'dir' specifies direction of change to check for. 0: any direction, +ve: rising, -ve: dropping
+            virtual bool hasChanged(int dir=0) {}
+            
             // clear the changed flag (if you want to programmatically change the value, but don't want to trigger anything else)
-            virtual void clearChanged() { if(_paramValue) _paramValue->clearChanged(); }
-
+            virtual void clearChanged() {}
+            
             // set min/max range values
-			virtual ParameterValueI& setRange(AnyValue vmin, AnyValue vmax) { if(_paramValue) return _paramValue->setRange(vmin, vmax); }
-			virtual AnyValue getMin() const { if(_paramValue) return _paramValue->getMin(); }
-			virtual AnyValue getMax() const { if(_paramValue) return _paramValue->getMax(); }
-			virtual AnyValue getRangeLength() const { if(_paramValue) return _paramValue->getRangeLength(); }
-
+            virtual Parameter& setRange(AnyValue vmin, AnyValue vmax) {}
+            virtual AnyValue getMin() const {}
+            virtual AnyValue getMax() const {}
+            virtual AnyValue getRangeLength() const {}
+            
             // set and get whether clamping to range is enabled
-			virtual ParameterValueI& setClamp(bool b) { if(_paramValue) return _paramValue->setClamp(b); }
-            virtual bool& getClamp() { if(_paramValue) return _paramValue->getClamp(); }
+            virtual Parameter& setClamp(bool b) {}
+            virtual bool& getClamp() {}
             
             // set and get whether snapping is enabled.
             // if enabled, value is snapped to the closest increment (as set by setIncrement())
-            virtual ParameterValueI& setSnap(bool b) { if(_paramValue) return _paramValue->setSnap(b); }
-            virtual bool& getSnap() { if(_paramValue) return _paramValue->getSnap(); }
+            virtual Parameter& setSnap(bool b) {}
+            virtual bool& getSnap() {}
             
             // set and get increment amount, which snapping snaps to
             // if snapping is disabled, sliders still use this value when using keyboard up/down or inc/dec
-            virtual ParameterValueI& setIncrement(AnyValue inc) { if(_paramValue) return _paramValue->setIncrement(inc); }
-            virtual AnyValue getIncrement() const { if(_paramValue) return _paramValue->getIncrement(); }
+            virtual Parameter& setIncrement(AnyValue inc) {}
+            virtual AnyValue getIncrement() const {}
             
             
             // increase or decrease by increment amount
-            virtual ParameterValueI& inc(AnyValue amount) { if(_paramValue) return _paramValue->inc(amount); }
-            virtual ParameterValueI& dec(AnyValue amount) { if(_paramValue) return _paramValue->dec(amount); }
+            virtual Parameter& inc(AnyValue amount) {}
+            virtual Parameter& dec(AnyValue amount) {}
             
             // set and get as 0...1 values normalized to min/max range
-			virtual ParameterValueI& setNormalized(float norm) { if(_paramValue) return _paramValue->setNormalized(norm); }
-			virtual float getNormalized(bool bClamp = false) const { if(_paramValue) return _paramValue->getNormalized(bClamp); }
+            virtual Parameter& setNormalized(float norm) {}
+            virtual float getNormalized(bool bClamp = false) const {}
             
             // set and get mapped to a new range
-            virtual ParameterValueI& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) { if(_paramValue) return _paramValue->setMappedFrom(v, inputMin, inputMax); }
-            virtual AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const  { if(_paramValue) return _paramValue->getMappedTo(newMin, newMax, bClamp); }
+            virtual Parameter& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) {}
+            virtual AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const {}
             
             
             // set to a random value between min, max range
-            virtual ParameterValueI& setRandom() { if(_paramValue) return _paramValue->setRandom(); }
+            virtual Parameter& setRandom() {}
             
             
             // OPTIONAL
             // track variables and keep values in sync (send NULL to clear)
-            virtual ParameterValueI& trackVariable(void *pv) { if(_paramValue) return _paramValue->trackVariable(pv); }
-            virtual void* getTrackedVariable() { if(_paramValue) return _paramValue->getTrackedVariable(); }
-            
-            
-            
-            //--------------------------------------------------------------
-            // Controller stuff
-//            void addSender(ControllerI *controller);
-//            void addReceiver(ControllerI *controller);
+            virtual Parameter& trackVariable(void *pv) {}
+            virtual void* getTrackedVariable() {}
+
             
         protected:
-//            Controllers controllers;
-            
-            virtual void update() { if(_paramValue) _paramValue->update(); }
-            
-            virtual void clamp() { if(_paramValue) _paramValue->clamp(); }
-            virtual void snap() { if(_paramValue) _paramValue->snap(); }
-            
-            string              _xmlTag;
-            int                 _xmlTagId;
-            
-            void setParent(ParameterGroup *parent);
+            virtual void update() {}
+
+            // override these functions to implement clamping and snapping for any type
+            virtual void clamp() {}
+            virtual void snap() {}
             
             virtual void writeToXml(ofxXmlSettings &xml, bool bFullSchema);
             virtual void readFromXml(ofxXmlSettings &xml, bool bFullSchema);
+            
+            void setParent(ParameterGroup *parent);
+
+            string              _xmlTag;
+            int                 _xmlTagId;
             
         private:
 			string				_name;
             string              _tooltip;
 			ParameterGroup		*_pparent;
-            ParameterValueI*   _paramValue;
-			
-            
-            
 		};
 		
 	}

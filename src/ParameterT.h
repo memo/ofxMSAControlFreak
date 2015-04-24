@@ -36,12 +36,10 @@ namespace msa {
         
         
 		template <typename T>
-		class ParameterNumberValueT : public ParameterValueI {
+		class ParameterT : public Parameter {
 		public:
             
-            friend class Parameter;
-            
-            ParameterNumberValueT(T v = T());
+            ParameterT(string name, ParameterGroup *parent = NULL, T v = T());
             
 			// set and get value
             // operators for assigning and casting
@@ -50,76 +48,76 @@ namespace msa {
 			
 
             //--------------------------------------------------------------
-            // from ParameterValueI
+            // from Parameter
             
-            void setParameter(Parameter *p);
+//            void setParameter(Parameter *p) override;
             
-            ParameterNumberValueT<T>& set(AnyValue v);
-			AnyValue value() const;
-			AnyValue oldValue() const;
+            Parameter& set(AnyValue v) override;
+			AnyValue value() const override;
+			AnyValue oldValue() const override;
             
             
             // whether the value changed this frame or not
-            bool hasChanged(int dir=0);
+            // 'dir' specifies direction of change to check for. 0: any direction, +ve: rising, -ve: dropping
+            bool hasChanged(int dir=0) override;
 
             // clear the changed flag (if you want to programmatically change the value, but don't want to trigger anything else)
-            void clearChanged();
+            void clearChanged() override;
             
             // set min/max range values
-			ParameterNumberValueT<T>& setRange(AnyValue vmin, AnyValue vmax);
-			AnyValue getMin() const;
-			AnyValue getMax() const;
-            AnyValue getRangeLength() const;
-
+			Parameter& setRange(AnyValue vmin, AnyValue vmax) override;
+			AnyValue getMin() const override;
+			AnyValue getMax() const override;
+            AnyValue getRangeLength() const override;
             
             // set and get whether clamping to range is enabled
-			ParameterNumberValueT<T>& setClamp(bool b);
-            bool& getClamp();
+			Parameter& setClamp(bool b) override;
+            bool& getClamp() override;
             
             // set and get whether snapping is enabled.
             // if enabled, value is snapped to the closest increment (as set by setIncrement())
-            ParameterNumberValueT<T>& setSnap(bool b);
-            bool& getSnap();
+            Parameter& setSnap(bool b) override;
+            bool& getSnap() override;
             
             // set and get increment amount, which snapping snaps to
             // if snapping is disabled, sliders still use this value when using keyboard up/down or inc/dec
-            ParameterNumberValueT<T>& setIncrement(AnyValue inc);
-            AnyValue getIncrement() const;
+            Parameter& setIncrement(AnyValue inc) override;
+            AnyValue getIncrement() const override;
             
             
             // increase or decrease by increment amount
-            ParameterNumberValueT<T>& inc(AnyValue amount);
-            ParameterNumberValueT<T>& dec(AnyValue amount);
+            Parameter& inc(AnyValue amount) override;
+            Parameter& dec(AnyValue amount) override;
             
             // set and get as 0...1 values normalized to min/max range
-			ParameterNumberValueT<T>& setNormalized(float norm);
-			float getNormalized(bool bClamp = false) const;
+			Parameter& setNormalized(float norm) override;
+			float getNormalized(bool bClamp = false) const override;
             
             // set and get mapped to a new range
-            ParameterNumberValueT<T>& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax);
-            AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const;
+            Parameter& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) override;
+            AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const override;
             
             
             // set to a random value between min, max range
-            ParameterNumberValueT<T>& setRandom();
+            Parameter& setRandom() override;
             
             
             // OPTIONAL
             // track variables and keep values in sync (send NULL to clear)
-            ParameterNumberValueT<T>& trackVariable(void *pv);
-            virtual void* getTrackedVariable();
+            Parameter& trackVariable(void *pv) override;
+            void* getTrackedVariable() override;
 
             
-            virtual void update();
-
         protected:
         
+            void update() override;
+
             // override these functions to implement clamping and snapping for any type
-            virtual void clamp();
-            virtual void snap();
+            void clamp() override;
+            void snap() override;
             
-            virtual void writeToXml(ofxXmlSettings &xml, bool bFullSchema);
-            virtual void readFromXml(ofxXmlSettings &xml, bool bFullSchema);
+            void writeToXml(ofxXmlSettings &xml, bool bFullSchema) override;
+            void readFromXml(ofxXmlSettings &xml, bool bFullSchema) override;
             
             
             // this actually changes the value
@@ -129,7 +127,7 @@ namespace msa {
             
 
 		private:
-            Parameter   *_parameter;
+//            Parameter   *_parameter;
             
             // pointer to externally stored variable. if set to NULL, points to internal member
             T   *_pvalue;
@@ -151,7 +149,8 @@ namespace msa {
         //--------------------------------------------------------------
         //--------------------------------------------------------------
         template<typename T>
-        ParameterNumberValueT<T>::ParameterNumberValueT(T v) {
+        ParameterT<T>::ParameterT(string name, ParameterGroup *parent, T v):
+        Parameter(name, parent) {
             trackVariable(NULL);
             setIncrement(T(1));
             setClamp(true);
@@ -161,14 +160,14 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-        template<typename T>
-        void ParameterNumberValueT<T>::setParameter(Parameter *p) {
-            _parameter = p;
-        }
+//        template<typename T>
+//        void ParameterT<T>::setParameter(Parameter *p) {
+//            _parameter = p;
+//        }
 
         //--------------------------------------------------------------
         template<typename T>
-        ParameterNumberValueT<T>& ParameterNumberValueT<T>::set(AnyValue v) {
+        Parameter& ParameterT<T>::set(AnyValue v) {
             _setValue(v);
             if(_doClamp) clamp();
             if(_doSnap) snap();
@@ -180,25 +179,25 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-        void ParameterNumberValueT<T>::_setValue(AnyValue v) {
+        void ParameterT<T>::_setValue(AnyValue v) {
             *_pvalue = v;
 		}
         
         //--------------------------------------------------------------
         template<typename T>
-		AnyValue ParameterNumberValueT<T>::value() const {
+		AnyValue ParameterT<T>::value() const {
 			return *_pvalue;
 		}
         
         //--------------------------------------------------------------
         template<typename T>
-		AnyValue ParameterNumberValueT<T>::oldValue() const {
+		AnyValue ParameterT<T>::oldValue() const {
 			return _oldValue;
 		}
         
         //--------------------------------------------------------------
         template<typename T>
-        bool ParameterNumberValueT<T>::hasChanged(int dir) {
+        bool ParameterT<T>::hasChanged(int dir) {
 //            if(dir == 0) {
                 return _hasChanged;
 //            } else if(dir > 0) {
@@ -210,7 +209,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-        void ParameterNumberValueT<T>::clearChanged() {
+        void ParameterT<T>::clearChanged() {
             _oldValue = *_pvalue;
             _hasChanged = false;
         }
@@ -218,7 +217,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-		ParameterNumberValueT<T>& ParameterNumberValueT<T>::setRange(AnyValue vmin, AnyValue vmax) {
+		Parameter& ParameterT<T>::setRange(AnyValue vmin, AnyValue vmax) {
             _min = vmin;
             _max = vmax;
             
@@ -228,25 +227,25 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-		AnyValue ParameterNumberValueT<T>::getMin() const {
+		AnyValue ParameterT<T>::getMin() const {
 			return _min;
 		}
 		
         //--------------------------------------------------------------
         template<typename T>
-		AnyValue ParameterNumberValueT<T>::getMax() const {
+		AnyValue ParameterT<T>::getMax() const {
 			return _max;
 		}
         
         //--------------------------------------------------------------
         template<typename T>
-		AnyValue ParameterNumberValueT<T>::getRangeLength() const {
+		AnyValue ParameterT<T>::getRangeLength() const {
 			return _max - _min;
 		}
 
         //--------------------------------------------------------------
         template<typename T>
-		ParameterNumberValueT<T>& ParameterNumberValueT<T>::setClamp(bool b) {
+		Parameter& ParameterT<T>::setClamp(bool b) {
 			_doClamp = b;
 			if(_doClamp) clamp();
             return *this;
@@ -254,13 +253,13 @@ namespace msa {
 		
         //--------------------------------------------------------------
         template<typename T>
-		bool& ParameterNumberValueT<T>::getClamp() {
+		bool& ParameterT<T>::getClamp() {
 			return _doClamp;
 		}
         
         //--------------------------------------------------------------
         template<typename T>
-        ParameterNumberValueT<T>& ParameterNumberValueT<T>::setSnap(bool b) {
+        Parameter& ParameterT<T>::setSnap(bool b) {
             _doSnap = b;
 			if(_doSnap) snap();
             return *this;
@@ -268,34 +267,34 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-        bool& ParameterNumberValueT<T>::getSnap() {
+        bool& ParameterT<T>::getSnap() {
             return _doSnap;
         }
         
         //--------------------------------------------------------------
         template<typename T>
-		ParameterNumberValueT<T>& ParameterNumberValueT<T>::setIncrement(AnyValue inc) {
+		Parameter& ParameterT<T>::setIncrement(AnyValue inc) {
             _inc = inc;
             return *this;
         }
         
         //--------------------------------------------------------------
         template<typename T>
-		AnyValue ParameterNumberValueT<T>::getIncrement() const {
+		AnyValue ParameterT<T>::getIncrement() const {
             return _inc;
         }
         
         
         //--------------------------------------------------------------
         template<typename T>
-		ParameterNumberValueT<T>& ParameterNumberValueT<T>::inc(AnyValue amount) {
+		Parameter& ParameterT<T>::inc(AnyValue amount) {
             set(*_pvalue + _inc * amount);
             return *this;
         }
         
         //--------------------------------------------------------------
         template<typename T>
-		ParameterNumberValueT<T>& ParameterNumberValueT<T>::dec(AnyValue amount) {
+		Parameter& ParameterT<T>::dec(AnyValue amount) {
             set(*_pvalue - _inc * amount);
             return *this;
         }
@@ -303,21 +302,21 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-		ParameterNumberValueT<T>& ParameterNumberValueT<T>::setNormalized(float norm) {
+		Parameter& ParameterT<T>::setNormalized(float norm) {
 			setMappedFrom(norm, 0, 1);
             return *this;
 		}
 		
         //--------------------------------------------------------------
         template<typename T>
-        float ParameterNumberValueT<T>::getNormalized(bool bClamp) const {
+        float ParameterT<T>::getNormalized(bool bClamp) const {
 			return getMappedTo(0, 1, bClamp);
 		}
 		
         
         //--------------------------------------------------------------
         template<typename T>
-		ParameterNumberValueT<T>& ParameterNumberValueT<T>::setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) {
+		Parameter& ParameterT<T>::setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) {
 			set(ofMap(v, inputMin, inputMax, _min, _max));
             //            set(  ((v - inputMin) / (inputMax - inputMin) * (_max - _min) + _min)  );
             return *this;
@@ -325,7 +324,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
         template<typename T>
-		AnyValue ParameterNumberValueT<T>::getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp) const {
+		AnyValue ParameterT<T>::getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp) const {
 			return ofMap(*_pvalue, _min, _max, newMin, newMax, bClamp);
             //            return ((*_pvalue - _min) / (_max - _min) * (newMax - newMin) + newMin);
 		}
@@ -334,15 +333,15 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-        ParameterNumberValueT<T>& ParameterNumberValueT<T>::setRandom() {
+        Parameter& ParameterT<T>::setRandom() {
             set(ofRandom(_min, _max));
             return *this;
         }
         
         //--------------------------------------------------------------
         template<typename T>
-        ParameterNumberValueT<T>& ParameterNumberValueT<T>::trackVariable(void *pv) {
-            //            ofLogVerbose() << "msa::controlfreak::ParameterNumberValueT<T>::trackVariable: " <<  getPath() << " " << pv;
+        Parameter& ParameterT<T>::trackVariable(void *pv) {
+            //            ofLogVerbose() << "msa::controlfreak::ParameterT<T>::trackVariable: " <<  getPath() << " " << pv;
             _pvalue = pv ? (T*)pv : &_value;
             return *this;
         }
@@ -350,13 +349,13 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-        void* ParameterNumberValueT<T>::getTrackedVariable() {
+        void* ParameterT<T>::getTrackedVariable() {
             return _pvalue;
         }
         
         //--------------------------------------------------------------
-        //        //		ParameterNumberValueT<T>& ParameterNumberValueT<T>::addler(Controller *controller) {
-        //            ofLogVerbose() << "msa::controlfreak::ParameterNumberValueT<T>::addler: " <<  getPath() << " " << controller;
+        //        //		Parameter& ParameterT<T>::addler(Controller *controller) {
+        //            ofLogVerbose() << "msa::controlfreak::ParameterT<T>::addler: " <<  getPath() << " " << controller;
         ////			controller->setParam(this);
         //			controller->updateController();
         //			_controllers.push_back(controller);
@@ -365,18 +364,18 @@ namespace msa {
         //
         //
         //        //--------------------------------------------------------------
-        //        //		void ParameterNumberValueT<T>::updateControllers() {
+        //        //		void ParameterT<T>::updateControllers() {
         //			for(int i=0; i<_controllers.size(); i++) _controllers[i]->updateController();
         //		}
 		
-		//		void ParameterNumberValueT<T>::checkValueHasChanged() {
+		//		void ParameterT<T>::checkValueHasChanged() {
 		//			for(int i=0; i<_controllers.size(); i++) _controllers[i]->checkValueHasChanged();
 		//		}
         
 		
         //--------------------------------------------------------------
         template<typename T>
-        void ParameterNumberValueT<T>::update() {
+        void ParameterT<T>::update() {
             if(_doClamp) clamp();
             if(_doSnap) snap();
             _hasChanged = (*_pvalue != _oldValue);
@@ -388,13 +387,13 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-        void ParameterNumberValueT<T>::clamp() {
+        void ParameterT<T>::clamp() {
             _setValue( *_pvalue < _min ? _min : *_pvalue > _max ? _max : *_pvalue );
         }
         
         //--------------------------------------------------------------
         template<typename T>
-        void ParameterNumberValueT<T>::snap() {
+        void ParameterT<T>::snap() {
             //            float inv = 1.0f / _inc;
             int ival = round((*_pvalue - _min) / _inc);
             _setValue(_min + (ival * _inc) );
@@ -402,32 +401,32 @@ namespace msa {
         
         //--------------------------------------------------------------
         template<typename T>
-        void ParameterNumberValueT<T>::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::controlfreak::ParameterNumberValueT<T>::writeToXml: " << _parameter->getPath();
+        void ParameterT<T>::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
+			ofLogVerbose() << "msa::controlfreak::ParameterT<T>::writeToXml: " << getPath();
 
-//            Parameter::writeToXml(xml, bFullSchema);  // IMPORTANT: always start with parents write to xml
-            xml.addAttribute(_parameter->_xmlTag, "value", *_pvalue, _parameter->_xmlTagId);
+            Parameter::writeToXml(xml, bFullSchema);  // IMPORTANT: always start with parents write to xml
+            xml.addAttribute(_xmlTag, "value", *_pvalue, _xmlTagId);
             if(bFullSchema) {
-                xml.addAttribute(_parameter->_xmlTag, "min", _min, _parameter->_xmlTagId);
-                xml.addAttribute(_parameter->_xmlTag, "max", _max, _parameter->_xmlTagId);
-                xml.addAttribute(_parameter->_xmlTag, "doClamp", getClamp(), _parameter->_xmlTagId);
-                xml.addAttribute(_parameter->_xmlTag, "inc", _inc, _parameter->_xmlTagId);
-                xml.addAttribute(_parameter->_xmlTag, "doSnap", getSnap(), _parameter->_xmlTagId);
+                xml.addAttribute(_xmlTag, "min", _min, _xmlTagId);
+                xml.addAttribute(_xmlTag, "max", _max, _xmlTagId);
+                xml.addAttribute(_xmlTag, "doClamp", getClamp(), _xmlTagId);
+                xml.addAttribute(_xmlTag, "inc", _inc, _xmlTagId);
+                xml.addAttribute(_xmlTag, "doSnap", getSnap(), _xmlTagId);
             }
         }
         
         //--------------------------------------------------------------
         template<typename T>
-        void ParameterNumberValueT<T>::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::controlfreak::ParameterNumberValueT<T>::readFromXml: " << _parameter->getPath();
-            //            Parameter::readFromXml(xml, bFullSchema);
-            set(xml.getAttribute(_parameter->_xmlTag, "value", T(), _parameter->_xmlTagId));
+        void ParameterT<T>::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
+			ofLogVerbose() << "msa::controlfreak::ParameterT<T>::readFromXml: " << getPath();
+            Parameter::readFromXml(xml, bFullSchema);
+            set(xml.getAttribute(_xmlTag, "value", T(), _xmlTagId));
             if(bFullSchema) {
-                setRange(xml.getAttribute(_parameter->_xmlTag, "min", _min, _parameter->_xmlTagId), 
-                         xml.getAttribute(_parameter->_xmlTag, "max", _max, _parameter->_xmlTagId));
-                setIncrement(xml.getAttribute(_parameter->_xmlTag, "inc", _inc, _parameter->_xmlTagId));
-                setClamp(xml.getAttribute(_parameter->_xmlTag, "doClamp", getClamp(), _parameter->_xmlTagId));
-                setSnap(xml.getAttribute(_parameter->_xmlTag, "doSnap", getSnap(), _parameter->_xmlTagId));
+                setRange(xml.getAttribute(_xmlTag, "min", _min, _xmlTagId), 
+                         xml.getAttribute(_xmlTag, "max", _max, _xmlTagId));
+                setIncrement(xml.getAttribute(_xmlTag, "inc", _inc, _xmlTagId));
+                setClamp(xml.getAttribute(_xmlTag, "doClamp", getClamp(), _xmlTagId));
+                setSnap(xml.getAttribute(_xmlTag, "doSnap", getSnap(), _xmlTagId));
             }
         }
         

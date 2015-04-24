@@ -13,12 +13,12 @@
 #pragma once
 
 
-#include "ofxMSAControlFreak/src/Parameter.h"
+#include "ofxMSAControlFreak/src/ParameterT.h"
 
 namespace msa {
     namespace controlfreak {
         
-        class ParameterBool : public Parameter {
+        class ParameterBool : public ParameterT<bool> {
         public:
             //--------------------------------------------------------------
             enum Mode {
@@ -29,7 +29,7 @@ namespace msa {
             
             //--------------------------------------------------------------
             ParameterBool(string name, ParameterGroup *parent = NULL)
-            : Parameter(name, parent, new ParameterNumberValueT<bool>()) { setRange(0, 1); setIncrement(1); setMode(kToggle); }
+            : ParameterT<bool>(name, parent) { setRange(0, 1); setIncrement(1); setMode(kToggle); }
             
             template <typename T> T operator=(const T & v) { set(v); }
 			template <typename T> operator T() const { return value(); }

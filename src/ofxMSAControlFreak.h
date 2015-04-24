@@ -33,13 +33,12 @@
 
 #include "ofxMSAControlFreak/src/Master.h"
 #include "ofxMSAControlFreak/src/Parameter.h"
-#include "ofxMSAControlFreak/src/ParameterNumberValueT.h"
+#include "ofxMSAControlFreak/src/ParameterT.h"
 #include "ofxMSAControlFreak/src/ParameterBool.h"
 #include "ofxMSAControlFreak/src/ParameterInt.h"
 #include "ofxMSAControlFreak/src/ParameterFloat.h"
 #include "ofxMSAControlFreak/src/ParameterNamedIndex.h"
 #include "ofxMSAControlFreak/src/ParameterGroup.h"
-#include "ofxMSAControlFreak/src/ParameterVec3f.h"
 #include "ofxMSAControlFreak/src/Controller.h"
 
 

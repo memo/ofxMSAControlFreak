@@ -13,15 +13,15 @@
 #pragma once
 
 
-#include "ofxMSAControlFreak/src/Parameter.h"
+#include "ofxMSAControlFreak/src/ParameterT.h"
 
 namespace msa {
     namespace controlfreak {
         
-        class ParameterInt : public Parameter {
+        class ParameterInt : public ParameterT<int> {
         public:
             ParameterInt(string name, ParameterGroup *parent = NULL)
-            : Parameter(name, parent, new ParameterNumberValueT<int>()) { setRange(0, 100); setIncrement(1); }
+            : ParameterT<int>(name, parent) { setRange(0, 100); setIncrement(1); }
             
             template <typename T> T operator=(const T & v) { set(v); }
 			template <typename T> operator T() const { return value(); }

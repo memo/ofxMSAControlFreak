@@ -13,18 +13,15 @@
 
 #include "ofxMSAControlFreak/src/ofxMSAControlFreak.h"
 
+
 namespace msa {
 	namespace controlfreak {
 
         
         //--------------------------------------------------------------
-        Parameter::Parameter(string name, ParameterGroup *parent, ParameterValueI *pv)
+        Parameter::Parameter(string name, ParameterGroup *parent)
         : _pparent(parent), _name(name) {
-            _paramValue = pv;
-            if(pv) {
-                _paramValue->setParameter(this);
-            }
-                
+            
             _xmlTag = "Parameter";
             _xmlTagId = 0;
             
@@ -36,7 +33,7 @@ namespace msa {
         //--------------------------------------------------------------
         Parameter::~Parameter() {
             ofLogVerbose() << "msa::controlfreak::Parameter::~Parameter(): " << getPath();
-            if(_paramValue) delete _paramValue;   // TODO
+//            if(_paramValue) delete _paramValue;   // TODO
         }
         
         
@@ -65,7 +62,7 @@ namespace msa {
 
         //--------------------------------------------------------------
 		string Parameter::getPath() const {
-			return _pparent ? _pparent->getPath() + getPathDivider() + _name : _name;
+			return _pparent ? (_pparent->getPath() + getPathDivider() + _name) : _name;
 		}
 		
         //--------------------------------------------------------------
@@ -85,9 +82,9 @@ namespace msa {
 		}
 
         //--------------------------------------------------------------
-        ParameterValueI* Parameter::getParamValue() {
-            return _paramValue;
-        }
+//        ParameterValueI* Parameter::getParamValue() {
+//            return _paramValue;
+//        }
 
         //--------------------------------------------------------------
         void Parameter::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
@@ -96,7 +93,7 @@ namespace msa {
             _xmlTagId = xml.addTag(_xmlTag);
             xml.addAttribute(_xmlTag, "type", getTypeName(), _xmlTagId);
             xml.addAttribute(_xmlTag, "name", getName(), _xmlTagId);
-            if(_paramValue) _paramValue->writeToXml(xml, bFullSchema);
+//            if(_paramValue) _paramValue->writeToXml(xml, bFullSchema);
 
             if(bFullSchema) {
                 xml.addAttribute(_xmlTag, "path", getPath(), _xmlTagId);
@@ -109,7 +106,7 @@ namespace msa {
         void Parameter::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
 			ofLogVerbose() << "msa::controlfreak::Parameter::readFromXml: " << getPath();
             
-            if(_paramValue) _paramValue->readFromXml(xml, bFullSchema);
+//            if(_paramValue) _paramValue->readFromXml(xml, bFullSchema);
             if(bFullSchema) {
                 setTooltip(xml.getAttribute(_xmlTag, "tooltip", "", _xmlTagId));
             }
