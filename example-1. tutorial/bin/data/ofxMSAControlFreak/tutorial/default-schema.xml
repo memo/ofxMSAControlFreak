@@ -1,0 +1,104 @@
+<ofxMSAControlFreak version="1.000000000" bFullSchema="1">
+    <Parameter type="N3msa12controlfreak14ParameterGroupE" name="tutorial" path="tutorial" tooltip="">
+        <Parameter type="N3msa12controlfreak14ParameterFloatE" name="myfloat" value="35.000000000" min="0.000000000" max="50.000000000" doClamp="1" inc="5.000000000" doSnap="1" path="tutorial.myfloat" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak12ParameterIntE" name="myint" value="7" min="0" max="100" doClamp="1" inc="1" doSnap="0" path="tutorial.myint" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak13ParameterBoolE" name="mybool" value="1" min="0" max="1" doClamp="1" inc="1" doSnap="0" path="tutorial.mybool" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak13ParameterBoolE" name="mybang" value="1" min="0" max="1" doClamp="1" inc="1" doSnap="0" path="tutorial.mybang" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterFloatE" name="myfloat2" value="0.699999988" min="0.000000000" max="1.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="tutorial.myfloat2" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterFloatE" name="myfloat3" value="0.000000000" min="-1.000000000" max="1.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="tutorial.myfloat3" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterFloatE" name="myfloat4" value="1.000000000" min="0.000000000" max="1.000000000" doClamp="1" inc="0.200000003" doSnap="0" path="tutorial.myfloat4" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterFloatE" name="myfloat5" value="1.000000000" min="0.000000000" max="1.000000000" doClamp="1" inc="0.010000000" doSnap="1" path="tutorial.myfloat5" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterFloatE" name="myfloat6" value="1.000000000" min="0.000000000" max="1.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="tutorial.myfloat6" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterFloatE" name="myfloat7" value="0.000000000" min="0.000000000" max="50.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="tutorial.myfloat7" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak12ParameterIntE" name="myint2" value="30" min="0" max="100" doClamp="1" inc="5" doSnap="1" path="tutorial.myint2" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterFloatE" name="myfloat8" value="0.000000000" min="0.000000000" max="1.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="tutorial.myfloat8" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak12ParameterIntE" name="myint3" value="0" min="0" max="100" doClamp="0" inc="1" doSnap="0" path="tutorial.myint3" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterFloatE" name="unclamped float" value="150.000000000" min="0.000000000" max="100.000000000" doClamp="0" inc="0.010000000" doSnap="0" path="tutorial.unclamped float" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak19ParameterNamedIndexE" name="animals" value="4" min="0" max="4" doClamp="1" inc="1" doSnap="0" path="tutorial.animals" tooltip="" selectedLabel="">
+            <label0>cow</label0>
+            <label1>camel</label1>
+            <label2>dolphin</label2>
+            <label3>monkey</label3>
+        </Parameter>
+        <Parameter type="N3msa12controlfreak19ParameterNamedIndexE" name="month" value="5" min="0" max="5" doClamp="1" inc="1" doSnap="0" path="tutorial.month" tooltip="" selectedLabel="">
+            <label0>january</label0>
+            <label1>february</label1>
+            <label2>march</label2>
+            <label3>april</label3>
+            <label4>may</label4>
+        </Parameter>
+        <Parameter type="N3msa12controlfreak19ParameterNamedIndexE" name="days" value="5" min="0" max="5" doClamp="1" inc="1" doSnap="0" path="tutorial.days" tooltip="" selectedLabel="">
+            <label0>monday</label0>
+            <label1>tuesday</label1>
+            <label2>wednesday</label2>
+            <label3>thursday</label3>
+            <label4>friday</label4>
+        </Parameter>
+        <Parameter type="N3msa12controlfreak19ParameterNamedIndexE" name="size" value="5" min="0" max="5" doClamp="1" inc="1" doSnap="0" path="tutorial.size" tooltip="" selectedLabel="">
+            <label0>small</label0>
+            <label1>medium</label1>
+            <label2>large</label2>
+            <label3>extra large</label3>
+            <label4>mega</label4>
+        </Parameter>
+        <Parameter type="N3msa12controlfreak19ParameterNamedIndexE" name="color" value="3" min="0" max="3" doClamp="1" inc="1" doSnap="0" path="tutorial.color" tooltip="" selectedLabel="">
+            <label0>red</label0>
+            <label1>green</label1>
+            <label2>blue</label2>
+        </Parameter>
+        <Parameter type="N3msa12controlfreak19ParameterNamedIndexE" name="sex" value="3" min="0" max="3" doClamp="1" inc="1" doSnap="0" path="tutorial.sex" tooltip="" selectedLabel="">
+            <label0>male</label0>
+            <label1>female</label1>
+            <label2>other</label2>
+        </Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterFloatE" name="rootvar" value="0.000000000" min="0.000000000" max="1.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="tutorial.rootvar" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterGroupE" name="particles" path="tutorial.particles" tooltip="">
+            <Parameter type="N3msa12controlfreak13ParameterBoolE" name="enabled" value="0" min="0" max="1" doClamp="1" inc="1" doSnap="0" path="tutorial.particles.enabled" tooltip=""></Parameter>
+            <Parameter type="N3msa12controlfreak12ParameterIntE" name="count" value="100" min="0" max="100" doClamp="1" inc="1" doSnap="0" path="tutorial.particles.count" tooltip=""></Parameter>
+            <Parameter type="N3msa12controlfreak14ParameterFloatE" name="size" value="1.000000000" min="0.000000000" max="1.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="tutorial.particles.size" tooltip=""></Parameter>
+        </Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterFloatE" name="rootvar2" value="1.000000000" min="0.000000000" max="1.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="tutorial.rootvar2" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterGroupE" name="vision" path="tutorial.vision" tooltip="">
+            <Parameter type="N3msa12controlfreak13ParameterBoolE" name="enabled" value="1" min="0" max="1" doClamp="1" inc="1" doSnap="0" path="tutorial.vision.enabled" tooltip=""></Parameter>
+            <Parameter type="N3msa12controlfreak14ParameterFloatE" name="brightness" value="1.000000000" min="0.000000000" max="100.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="tutorial.vision.brightness" tooltip=""></Parameter>
+            <Parameter type="N3msa12controlfreak14ParameterFloatE" name="contrast" value="1.000000000" min="-100.000000000" max="100.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="tutorial.vision.contrast" tooltip=""></Parameter>
+            <Parameter type="N3msa12controlfreak13ParameterBoolE" name="flip x" value="1" min="0" max="1" doClamp="1" inc="1" doSnap="0" path="tutorial.vision.flip x" tooltip=""></Parameter>
+            <Parameter type="N3msa12controlfreak13ParameterBoolE" name="flip y" value="0" min="0" max="1" doClamp="1" inc="1" doSnap="0" path="tutorial.vision.flip y" tooltip=""></Parameter>
+            <Parameter type="N3msa12controlfreak13ParameterBoolE" name="reset" value="1" min="0" max="1" doClamp="1" inc="1" doSnap="0" path="tutorial.vision.reset" tooltip=""></Parameter>
+            <Parameter type="N3msa12controlfreak14ParameterGroupE" name="pre-processing" path="tutorial.vision.pre-processing" tooltip="">
+                <Parameter type="N3msa12controlfreak14ParameterGroupE" name="blur" path="tutorial.vision.pre-processing.blur" tooltip="">
+                    <Parameter type="N3msa12controlfreak13ParameterBoolE" name="enabled" value="1" min="0" max="1" doClamp="1" inc="1" doSnap="0" path="tutorial.vision.pre-processing.blur.enabled" tooltip=""></Parameter>
+                    <Parameter type="N3msa12controlfreak12ParameterIntE" name="kernelSize" value="7" min="3" max="11" doClamp="1" inc="2" doSnap="0" path="tutorial.vision.pre-processing.blur.kernelSize" tooltip=""></Parameter>
+                    <Parameter type="N3msa12controlfreak12ParameterIntE" name="iterations" value="17" min="1" max="20" doClamp="1" inc="1" doSnap="0" path="tutorial.vision.pre-processing.blur.iterations" tooltip=""></Parameter>
+                </Parameter>
+                <Parameter type="N3msa12controlfreak14ParameterGroupE" name="median" path="tutorial.vision.pre-processing.median" tooltip="">
+                    <Parameter type="N3msa12controlfreak13ParameterBoolE" name="enabled" value="1" min="0" max="1" doClamp="1" inc="1" doSnap="0" path="tutorial.vision.pre-processing.median.enabled" tooltip=""></Parameter>
+                    <Parameter type="N3msa12controlfreak12ParameterIntE" name="kernelSize" value="3" min="3" max="11" doClamp="1" inc="2" doSnap="0" path="tutorial.vision.pre-processing.median.kernelSize" tooltip=""></Parameter>
+                    <Parameter type="N3msa12controlfreak12ParameterIntE" name="iterations" value="20" min="1" max="20" doClamp="1" inc="1" doSnap="0" path="tutorial.vision.pre-processing.median.iterations" tooltip=""></Parameter>
+                </Parameter>
+            </Parameter>
+            <Parameter type="N3msa12controlfreak14ParameterGroupE" name="optical flow" path="tutorial.vision.optical flow" tooltip="">
+                <Parameter type="N3msa12controlfreak13ParameterBoolE" name="enabled" value="1" min="0" max="1" doClamp="1" inc="1" doSnap="0" path="tutorial.vision.optical flow.enabled" tooltip=""></Parameter>
+                <Parameter type="N3msa12controlfreak19ParameterNamedIndexE" name="method" value="3" min="0" max="3" doClamp="1" inc="1" doSnap="0" path="tutorial.vision.optical flow.method" tooltip="" selectedLabel="">
+                    <label0>Lucas-Kanade</label0>
+                    <label1>Horn–Schunck</label1>
+                    <label2>Buxton–Buxton</label2>
+                </Parameter>
+                <Parameter type="N3msa12controlfreak14ParameterFloatE" name="velMult" value="0.000000000" min="0.000000000" max="10.000000000" doClamp="1" inc="0.010000000" doSnap="0" path="tutorial.vision.optical flow.velMult" tooltip=""></Parameter>
+                <Parameter type="N3msa12controlfreak12ParameterIntE" name="windowSize" value="11" min="1" max="11" doClamp="1" inc="2" doSnap="0" path="tutorial.vision.optical flow.windowSize" tooltip=""></Parameter>
+            </Parameter>
+        </Parameter>
+        <Parameter type="N3msa12controlfreak12ParameterIntE" name="particle count" value="100" min="0" max="1000000" doClamp="1" inc="1" doSnap="0" path="tutorial.particle count" tooltip=""></Parameter>
+        <Parameter type="N3msa12controlfreak14ParameterGroupE" name="fbo init parameters" path="tutorial.fbo init parameters" tooltip="">
+            <Parameter type="N3msa12controlfreak12ParameterIntE" name="width" value="100" min="0" max="4096" doClamp="1" inc="1" doSnap="0" path="tutorial.fbo init parameters.width" tooltip=""></Parameter>
+            <Parameter type="N3msa12controlfreak12ParameterIntE" name="height" value="100" min="0" max="4096" doClamp="1" inc="1" doSnap="0" path="tutorial.fbo init parameters.height" tooltip=""></Parameter>
+            <Parameter type="N3msa12controlfreak19ParameterNamedIndexE" name="type" value="4" min="0" max="4" doClamp="1" inc="1" doSnap="0" path="tutorial.fbo init parameters.type" tooltip="" selectedLabel="">
+                <label0>RGB</label0>
+                <label1>RGBA</label1>
+                <label2>RGBA16F</label2>
+                <label3>RGBA32F</label3>
+            </Parameter>
+            <Parameter type="N3msa12controlfreak12ParameterIntE" name="numSamples" value="0" min="0" max="8" doClamp="1" inc="1" doSnap="0" path="tutorial.fbo init parameters.numSamples" tooltip=""></Parameter>
+        </Parameter>
+    </Parameter>
+</ofxMSAControlFreak>

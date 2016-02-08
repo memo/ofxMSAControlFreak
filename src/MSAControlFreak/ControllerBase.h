@@ -14,7 +14,7 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofxMSAControlFreak/src/Parameter.h"
+#include "MSAControlFreak/Parameter.h"
 
 namespace msa {
 	namespace controlfreak {

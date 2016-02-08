@@ -25,8 +25,8 @@
 #include "ofMain.h"
 #include "ofxXmlSettings.h"
 
-#include "ofxMSAControlFreak/src/Parameter.h"
-//#include "ofxMSAControlFreak/src/ParameterValueI.h"
+#include "MSAControlFreak/Parameter.h"
+//#include "MSAControlFreak/ParameterValueI.h"
 
 
 namespace msa {

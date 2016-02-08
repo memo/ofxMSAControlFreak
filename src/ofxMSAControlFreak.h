@@ -31,22 +31,15 @@
 
 #pragma once
 
-#include "ofxMSAControlFreak/src/Master.h"
-#include "ofxMSAControlFreak/src/Parameter.h"
-#include "ofxMSAControlFreak/src/ParameterNumberValueT.h"
-#include "ofxMSAControlFreak/src/ParameterBool.h"
-#include "ofxMSAControlFreak/src/ParameterInt.h"
-#include "ofxMSAControlFreak/src/ParameterFloat.h"
-#include "ofxMSAControlFreak/src/ParameterNamedIndex.h"
-#include "ofxMSAControlFreak/src/ParameterGroup.h"
-#include "ofxMSAControlFreak/src/ParameterVec3f.h"
-#include "ofxMSAControlFreak/src/Utils.h"
-#include "ofxMSAControlFreak/src/ControllerBase.h"
+#include "MSAControlFreak/Master.h"
+#include "MSAControlFreak/Parameter.h"
+#include "MSAControlFreak/ParameterNumberValueT.h"
+#include "MSAControlFreak/ParameterBool.h"
+#include "MSAControlFreak/ParameterInt.h"
+#include "MSAControlFreak/ParameterFloat.h"
+#include "MSAControlFreak/ParameterNamedIndex.h"
+#include "MSAControlFreak/ParameterGroup.h"
+#include "MSAControlFreak/ParameterVec3f.h"
+#include "MSAControlFreak/Utils.h"
+#include "MSAControlFreak/ControllerBase.h"
 
-
-namespace msa {
-    namespace controlfreak {
-
-//        void update();    // no longer need to call this, called automagically
-    }
-}

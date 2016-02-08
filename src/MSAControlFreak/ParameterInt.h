@@ -13,16 +13,16 @@
 #pragma once
 
 
-#include "ofxMSAControlFreak/src/Parameter.h"
+#include "MSAControlFreak/Parameter.h"
 
 namespace msa {
     namespace controlfreak {
-
-        class ParameterFloat : public Parameter {
+        
+        class ParameterInt : public Parameter {
         public:
-            ParameterFloat(string name, ParameterGroup *parent = NULL)
-            : Parameter(name, parent, new ParameterNumberValueT<float>()) { setRange(0.0f, 1.0f); setIncrement(0.01f); }
-
+            ParameterInt(string name, ParameterGroup *parent = NULL)
+            : Parameter(name, parent, new ParameterNumberValueT<int>()) { setRange(0, 100); setIncrement(1); }
+            
             template <typename T> T operator=(const T & v) { set(v); }
 			template <typename T> operator T() const { return value(); }
         };

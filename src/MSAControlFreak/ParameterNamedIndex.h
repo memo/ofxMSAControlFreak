@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "ofxMSAControlFreak/src/ParameterInt.h"
+#include "MSAControlFreak/ParameterInt.h"
 
 
 namespace msa {

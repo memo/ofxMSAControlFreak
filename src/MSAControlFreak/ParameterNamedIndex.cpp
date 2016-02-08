@@ -10,7 +10,7 @@
 //  ofxMSAControlFreak
 //
 
-#include "ofxMSAControlFreak/src/ofxMSAControlFreak.h"
+#include "ofxMSAControlFreak.h"
 
 
 namespace msa {

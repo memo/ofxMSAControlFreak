@@ -22,11 +22,11 @@
 
 #pragma once
 
-#include "ofxMSACore/src/MSACore.h"
+#include "MSACore.h"
 
-#include "ofxMSAControlFreak/src/ParameterValueI.h"
-//#include "ofxMSAControlFreak/src/Controllers.h"
-#include "ofxMSAControlFreak/src/Utils.h"
+#include "MSAControlFreak/ParameterValueI.h"
+//#include "MSAControlFreak/Controllers.h"
+#include "MSAControlFreak/Utils.h"
 
 #include "ofxXmlSettings.h"
 
