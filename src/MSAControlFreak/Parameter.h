@@ -68,7 +68,8 @@ namespace msa {
             // operators for assigning and casting
             template<typename T> T operator=(const T & v) { set(v); }
 			template<typename T> operator T() const { return (T)value(); }
-			
+
+            template<typename T> T get() const { return (T)value(); }
 
             //--------------------------------------------------------------
             // from ParameterValueI
@@ -126,7 +127,8 @@ namespace msa {
             virtual ParameterValueI& trackVariable(void *pv) { if(_paramValue) return _paramValue->trackVariable(pv); }
             virtual void* getTrackedVariable() { if(_paramValue) return _paramValue->getTrackedVariable(); }
             
-            
+            template<typename T> T* var() { return (T*)getTrackedVariable(); }
+
             
             //--------------------------------------------------------------
             // Controller stuff
