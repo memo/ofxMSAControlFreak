@@ -154,7 +154,7 @@ namespace msa {
         ParameterNumberValueT<T>::ParameterNumberValueT(T v) {
             trackVariable(NULL);
             setIncrement(T(1));
-            setClamp(true);
+            setClamp(false);
             setSnap(false);
             set(v);
         }
