@@ -47,15 +47,16 @@ namespace msa {
             ParameterNamedIndex& setLabels(vector<string>& labels);
             ParameterNamedIndex& setLabels(int count, ...);
 			
-            int size();
-            string getLabel(int i);
-			string getSelectedLabel();
+            int size() const;
+            string getLabel(int i) const;
+            string getSelectedLabel() const;
 			vector<string>& getLabels();
+            const vector<string>& getLabels() const;
             void clearLabels();
             void addLabel(string s);
             
             ParameterNamedIndex& setMode(Mode mode);
-            Mode getMode();
+            Mode getMode() const;
 			
 		protected:
             Mode _mode;

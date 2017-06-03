@@ -47,18 +47,18 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-        int ParameterNamedIndex::size() {
+        int ParameterNamedIndex::size() const {
             return _labels.size();
         }
         
 
         //--------------------------------------------------------------
-		string ParameterNamedIndex::getSelectedLabel() {
+        string ParameterNamedIndex::getSelectedLabel() const {
 			return getLabel(value());
 		}
 		
         //--------------------------------------------------------------
-        string ParameterNamedIndex::getLabel(int i) {
+        string ParameterNamedIndex::getLabel(int i) const {
             return _labels.size() && i >= 0 && i < size() ? _labels[i] : "";
         }
 
@@ -66,7 +66,13 @@ namespace msa {
 		vector<string>& ParameterNamedIndex::getLabels() {
 			return _labels;
 		}
-		
+
+        //--------------------------------------------------------------
+        const vector<string>& ParameterNamedIndex::getLabels() const {
+            return _labels;
+        }
+
+
         //--------------------------------------------------------------
         void ParameterNamedIndex::clearLabels() {
             _labels.clear();
@@ -85,7 +91,7 @@ namespace msa {
         }
         
         //--------------------------------------------------------------
-        ParameterNamedIndex::Mode ParameterNamedIndex::getMode() {
+        ParameterNamedIndex::Mode ParameterNamedIndex::getMode() const {
             return _mode;
         }
         
