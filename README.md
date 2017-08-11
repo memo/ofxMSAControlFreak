@@ -18,7 +18,7 @@ The main motivation is to be able to create, manipulate, save and load parameter
 
 4. Allow a hierarchy where actions (save / load / display / send / receive etc) can be applied to the entire parameter group, or sub groups. Different modules can have parameters, and they can be joined or treated individually.
 
-To see how to use it see the [tutorial](https://github.com/memo/ofxMSAControlFreak/blob/master/src/ofxMSAControlFreakTutorial.h)
+See the [tutorial](https://github.com/memo/ofxMSAControlFreak/blob/master/src/ofxMSAControlFreakTutorial.h) for details.
 
 
 Installation
