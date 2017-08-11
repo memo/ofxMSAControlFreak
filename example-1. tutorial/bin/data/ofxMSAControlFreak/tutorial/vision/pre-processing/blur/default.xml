@@ -1,7 +1,0 @@
-<ofxMSAControlFreak version="1.000000000" bFullSchema="0">
-    <Parameter type="N3msa12controlfreak14ParameterGroupE" name="blur">
-        <Parameter type="N3msa12controlfreak13ParameterBoolE" name="enabled" value="1"></Parameter>
-        <Parameter type="N3msa12controlfreak12ParameterIntE" name="kernelSize" value="7"></Parameter>
-        <Parameter type="N3msa12controlfreak12ParameterIntE" name="iterations" value="17"></Parameter>
-    </Parameter>
-</ofxMSAControlFreak>
