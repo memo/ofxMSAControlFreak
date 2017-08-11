@@ -23,8 +23,6 @@
  - presets don't load if you change the name of the parameter group in code (think of a way for that to work)
  - implement smoothing (for floats)
  - wrap up controllers (midi, osc, dmx etc).
- - dynamically update GUI when adding or removing parameters
- 
  */
 
 

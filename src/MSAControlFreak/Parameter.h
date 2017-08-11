@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "MSACore.h"
+//#include "MSACore.h"
 
 #include "MSAControlFreak/ParameterValueI.h"
 //#include "MSAControlFreak/Controllers.h"
@@ -66,7 +66,7 @@ namespace msa {
             //--------------------------------------------------------------
             // set and get value
             // operators for assigning and casting
-            template<typename T> T operator=(const T & v) { set(v); }
+            template<typename T> T operator=(const T & v) { return set(v).value(); }
 			template<typename T> operator T() const { return (T)value(); }
 
             template<typename T> T get() const { return (T)value(); }

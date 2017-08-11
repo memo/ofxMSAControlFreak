@@ -10,7 +10,7 @@
 //  ofxMSAControlFreak
 //
 
-#include "ofxMSAControlFreak.h"
+#include "ofxMSAControlFreak/src/ofxMSAControlFreak.h"
 
 namespace msa {
     namespace controlfreak {
@@ -120,9 +120,9 @@ namespace msa {
         
         
         //--------------------------------------------------------------
-        ParameterVec3f& ParameterGroup::addVec3f(string name) {
-//			return (ParameterVec3f&) add(new ParameterVec3f(name, _groupStack.top()));
-        }
+        //ParameterVec3f& ParameterGroup::addVec3f(string name) {
+			//return (ParameterVec3f&) add(new ParameterVec3f(name, _groupStack.top()));
+        //}
         
         
         //--------------------------------------------------------------
@@ -140,7 +140,7 @@ namespace msa {
         
         //--------------------------------------------------------------
 		ParameterGroup& ParameterGroup::startPage(string name) {
-            startGroup(name).makePage();
+            return startGroup(name).makePage();
         }
         
         //--------------------------------------------------------------
@@ -392,12 +392,12 @@ namespace msa {
         
         //--------------------------------------------------------------
         bool ParameterGroup::saveXml(int slot, bool bOnlyValues) {
-            saveXml(getPresetForSlot(slot), bOnlyValues);
+            return saveXml(getPresetForSlot(slot), bOnlyValues);
         }
         
         //--------------------------------------------------------------
         bool ParameterGroup::loadXml(int slot, bool bOnlyValues) {
-            loadXml(getPresetForSlot(slot), bOnlyValues);
+            return loadXml(getPresetForSlot(slot), bOnlyValues);
         }
 
         //--------------------------------------------------------------
