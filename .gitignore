@@ -1,140 +1,70 @@
 #########################
-# openFrameworks patterns
+# core examples
 #########################
 
-# build files
-openFrameworks.a
-openFrameworksDebug.a
-openFrameworksUniversal.a
-libs/openFrameworksCompiled/lib/*/*
-!libs/openFrameworksCompiled/lib/*/.gitkeep
-
-# apothecary
-scripts/apothecary/build
-
-# rule to avoid non-official addons going into git
-# see addons/.gitignore
-addons/*
-
-# rule to avoid non-official apps going into git
-# see apps/.gitignore
-apps/*
-
-# also, see examples/.gitignore
-
-#########################
-# general
-#########################
-
-[Bb]uild/
-[Oo]bj/
-*.o
-examples/**/[Dd]ebug*/
-examples/**/[Rr]elease*/
-examples/**/gcc-debug/
-examples/**/gcc-release/
-tests/**/[Dd]ebug*/
-tests/**/[Rr]elease*/
-tests/**/gcc-debug/
-tests/**/gcc-release/
-*.mode*
-*.app/
-*.pyc
-.svn/
-*.log
-*.cpp.eep
-*.cpp.elf
-*.cpp.hex
+*/bin/*
+!*/bin/data/
 
 #########################
 # IDE
 #########################
 
 # XCode
-*.pbxuser
-*.perspective
-*.perspectivev3
-*.mode1v3
-*.mode2v3
-# XCode 4
-xcuserdata
-*.xcworkspace
+*.xcodeproj
+Project.xcconfig
+openFrameworks-Info.plist
+ofxiOS-Info.plist
+ofxiOS_Prefix.pch
+Default*.png
+Icon*.png
 
 # Code::Blocks
-*.depend
-*.layout
+*.cbp
+*.workspace
 
 # Visual Studio
-*.sdf
-*.opensdf
-*.suo
-*.pdb
-*.ilk
-*.aps
-ipch/
+# *.sln
+# *.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
+icon.rc
+.vs
+*/obj/*
 
 # Eclipse
-.metadata
-local.properties
-.externalToolBuilders
-
-# Android Studio
-.idea
-.gradle
-gradle
-gradlew
-gradlew.bat
+.cproject
+.project
+.settings/
 
 # QtCreator
+# *.qbs
 *.qbs.user
+*.pro
 *.pro.user
-*.pri
-
 
 #########################
 # operating system
 #########################
 
 # Linux
-*~
-# KDE
-.directory
-.AppleDouble
-
-# OSX
-.DS_Store
-*.swp
-*~.nib
-# Thumbnails
-._*
-
-# Windows
-# Windows image file caches
-Thumbs.db
-# Folder config file
-Desktop.ini
+# /*/*/Makefile
+# /*/*/config.make
+# Leave Android files in until project generation works
+# !/android/*/Makefile
+# !/android/*/config.make
 
 # Android
-.csettings
-/libs/openFrameworksCompiled/project/android/paths.make
+android/*/test link
+android/*/gen
+android/*/res/raw
+libOFAndroidApp*.so
+gdbserver
+gdb.setup
+libneondetection.so
+Application.mk
+Android.mk
 
-# Android Studio
-*.iml
-
-#########################
-# miscellaneous
-#########################
-
-.mailmap
-
-# Tensorflow specific
-build*
-*.so
-*.ini
-*/bin/*.
-*/bin/example-*
-*/bin/*/training_data/*
-*.ckpt
-*.pb
-*.data
-checkpoint
+!android/*/.cproject
+!android/*/.project
+!android/*/.settings
+!android/*/.settings/*
