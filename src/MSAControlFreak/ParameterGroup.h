@@ -21,7 +21,7 @@
 #pragma once
 
 #include "MSAControlFreak/Parameter.h"
-#include "ofxMSAOrderedPointerMap/src/ofxMSAOrderedPointerMap.h"
+#include "ofxMSAOrderedPointerMap.h"
 
 namespace msa {
     namespace controlfreak {
