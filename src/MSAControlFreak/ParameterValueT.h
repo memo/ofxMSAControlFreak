@@ -207,7 +207,7 @@ namespace msa {
         //--------------------------------------------------------------
         template<typename T>
         ParameterValueT<T>& ParameterValueT<T>::trackVariable(void *pv) {
-            //            ofLogVerbose() << "msa::controlfreak::ParameterValueT<T>::trackVariable: " <<  getPath() << " " << pv;
+            //            ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::ParameterValueT<T>::trackVariable: " <<  getPath() << " " << pv;
             _pvalue = pv ? (T*)pv : &_value;
             return *this;
         }
@@ -231,7 +231,7 @@ namespace msa {
         //--------------------------------------------------------------
         template<typename T>
         void ParameterValueT<T>::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::controlfreak::ParameterValueT<T>::writeToXml: " << _parameter->getPath();
+			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::ParameterValueT<T>::writeToXml: " << _parameter->getPath();
             
             //            Parameter::writeToXml(xml, bFullSchema);  // IMPORTANT: always start with parents write to xml
             xml.addAttribute(_parameter->_xmlTag, "value", *_pvalue, _parameter->_xmlTagId);
@@ -240,7 +240,7 @@ namespace msa {
         //--------------------------------------------------------------
         template<typename T>
         void ParameterValueT<T>::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::controlfreak::ParameterValueT<T>::readFromXml: " << _parameter->getPath();
+			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::ParameterValueT<T>::readFromXml: " << _parameter->getPath();
             //            Parameter::readFromXml(xml, bFullSchema);
             set(xml.getAttribute(_parameter->_xmlTag, "value", T(), _parameter->_xmlTagId));
         }

@@ -194,13 +194,13 @@ namespace msa {
         ParameterType* ParameterGroup::getPtr(string path) const {
             Parameter* p = getPtr(path);
             if(!p) {
-                ofLogError() << "msa::controlfreak::ParameterGroup::get<ParameterType>: Could not FIND parameter " << path << " in group " << getPath();
+                ofLogError("ofxMSAControlFreak") << "msa::controlfreak::ParameterGroup::get<ParameterType>: Could not FIND parameter " << path << " in group " << getPath();
                 return NULL;
             }
             
             ParameterType *tp = dynamic_cast<ParameterType*>(p);
             if(!tp) {
-                ofLogError() << "msa::controlfreak::ParameterGroup::get<ParameterType>: Could not CONVERT parameter " << path << " in group " << getPath();
+                ofLogError("ofxMSAControlFreak") << "msa::controlfreak::ParameterGroup::get<ParameterType>: Could not CONVERT parameter " << path << " in group " << getPath();
                 return NULL;
             }
             

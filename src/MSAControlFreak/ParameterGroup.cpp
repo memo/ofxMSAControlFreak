@@ -22,13 +22,13 @@ namespace msa {
             _bOpen = true;
             makeGroup();
             _params.setOwnsObjects(false);
-//            ofLogVerbose() << "msa::controlfreak::ParameterGroup::ParameterGroup: " <<  getPath();
+//            ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::ParameterGroup::ParameterGroup: " <<  getPath();
         }
 
         
         //--------------------------------------------------------------
 		ParameterGroup::~ParameterGroup() {
-            ofLogVerbose() << "msa::controlfreak::ParameterGroup::~ParameterGroup: " <<  getPath();
+            ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::ParameterGroup::~ParameterGroup: " <<  getPath();
             clear();    // TODO: bug if you add an existing (i.e. on the stack) parameter, since it tries to be deleted. 
 		}
         
@@ -150,7 +150,7 @@ namespace msa {
         
         //--------------------------------------------------------------
 		Parameter& ParameterGroup::add(Parameter* param) {
-			ofLogVerbose() << "msa::controlfreak::ParameterGroup::add: " << param->getPath();
+			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::ParameterGroup::add: " << param->getPath();
 			
             ParameterGroup *currentGroup = _groupStack.top();
             if(currentGroup == this) {
@@ -159,7 +159,7 @@ namespace msa {
 //                    delete param;
                     Master::instance().erase(param);
                     string s = "msa::controlfreak::ParameterGroup::add: parameter [" + param->getPath() + "] already exists";
-                    ofLogError() << s;
+                    ofLogError("ofxMSAControlFreak") << s;
                     throw invalid_argument(s);
                 }
                 
@@ -193,7 +193,7 @@ namespace msa {
             Parameter *p = getPtr(path);
             if(p == NULL) {
                 string s = "msa::controlfreak::get: parameter [" + path + "] doesn't exist";
-                ofLogError() << s;
+                ofLogError("ofxMSAControlFreak") << s;
                 throw invalid_argument(s);
             }
 
@@ -221,7 +221,7 @@ namespace msa {
                 
                 // if parameter doesn't exist, return NULL with error
                 if(!_params.exists(path)) {
-                    ofLogError() << "msa::controlfreak::ParameterGroup::get: [" + path + "] does not exist in Group: " + getPath();
+                    ofLogError("ofxMSAControlFreak") << "msa::controlfreak::ParameterGroup::get: [" + path + "] does not exist in Group: " + getPath();
                     return NULL;
                 }
                 
@@ -369,7 +369,7 @@ namespace msa {
             ofxXmlSettings xml;
             bool b = xml.loadFile(getFullFilepath(filename, bFullSchema));
             if(!b) {
-                ofLogError() << "msa::controlfreak::ParameterGroup::loadXml: file not found " << filename;
+                ofLogError("ofxMSAControlFreak") << "msa::controlfreak::ParameterGroup::loadXml: file not found " << filename;
                 return false;
             }
             
@@ -410,7 +410,7 @@ namespace msa {
 
         //--------------------------------------------------------------
         void ParameterGroup::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::controlfreak::ParameterGroup::writeToXml: " << getPath();
+			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::ParameterGroup::writeToXml: " << getPath();
             
             Parameter::writeToXml(xml, bFullSchema);
             xml.pushTag(_xmlTag, _xmlTagId);
@@ -426,12 +426,12 @@ namespace msa {
         // TODO: if xml contains more panels, only load panel which is relevant. if xml contains less panels, only load panels which exist
         //--------------------------------------------------------------
         void ParameterGroup::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::controlfreak::ParameterGroup::readFromXml: " << getPath() << " pushLevel: " << xml.getPushLevel();
+			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::ParameterGroup::readFromXml: " << getPath() << " pushLevel: " << xml.getPushLevel();
             
             Parameter::readFromXml(xml, bFullSchema);
             string s = xml.getAttribute(_xmlTag, "name", "", _xmlTagId);
             if(s != getName()) {
-                ofLogError() << "msa::controlfreak::ParameterGroup::readFromXml: trying to load '" << s << "' into ParameterGroup '" << getPath() << "'";
+                ofLogError("ofxMSAControlFreak") << "msa::controlfreak::ParameterGroup::readFromXml: trying to load '" << s << "' into ParameterGroup '" << getPath() << "'";
                 return;
             }
             xml.pushTag(_xmlTag, _xmlTagId);

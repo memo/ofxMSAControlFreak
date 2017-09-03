@@ -20,7 +20,7 @@
 ////            friend class AnyValue;
 //            
 //            virtual ~ValueContainerI() {
-//                ofLogVerbose() << "~ValueContainerI()";
+//                ofLogVerbose("ofxMSAControlFreak") << "~ValueContainerI()";
 //            }
 //            
 //            template <typename T> T operator=(const T &v) { setFromContainer(ValueContainerT<T>(v)); }
@@ -31,11 +31,11 @@
 //            
 //        protected:
 //            virtual void setFromContainer(const ValueContainerI& vci) {
-//                ofLogVerbose() << "ValueContainerI::setFromContainer";
+//                ofLogVerbose("ofxMSAControlFreak") << "ValueContainerI::setFromContainer";
 //            };
 //            
 //            virtual ValueContainerI getFromContainer() const {
-//                ofLogVerbose() << "ValueContainerI::getFromContainer";
+//                ofLogVerbose("ofxMSAControlFreak") << "ValueContainerI::getFromContainer";
 //            };
 //        };
 //        
@@ -46,7 +46,7 @@
 //        public:
 //            ValueContainerT() {}
 //            ValueContainerT(const T &v):_value(v) {
-//                ofLogVerbose() << "ValueContainerT::ValueContainerT(T) " << v;
+//                ofLogVerbose("ofxMSAControlFreak") << "ValueContainerT::ValueContainerT(T) " << v;
 //            }
 //            
 //            T operator=(const T & v) { set(v); }
@@ -66,12 +66,12 @@
 //            
 //        protected:
 //            void setFromContainer(const ValueContainerI& vci) {
-//                ofLogVerbose() << "ValueContainerT::setFromContainer";
+//                ofLogVerbose("ofxMSAControlFreak") << "ValueContainerT::setFromContainer";
 //                _value = (T)vci;//.getFromContainer();
 //            }
 //            
 //            ValueContainerI getFromContainer() const {
-//                ofLogVerbose() << "ValueContainerT::getFromContainer";
+//                ofLogVerbose("ofxMSAControlFreak") << "ValueContainerT::getFromContainer";
 //                return ValueContainerT<T>(_value);
 //            }
 //            
@@ -86,14 +86,14 @@
 //        public:
 //            AnyValue(ValueContainerI *vc = NULL):_valueContainer(ValueContainerIRef(vc)) {}
 //            ~AnyValue() {
-////                ofLogVerbose() << "~AnyValue()";
+////                ofLogVerbose("ofxMSAControlFreak") << "~AnyValue()";
 //            }
 //            
 //            template <typename T> T operator=(const T &v) { set(v); }
 //            template <typename T> operator T() const { return get<T>(); }
 //            
 //            template <typename T> void set(const T &v) {
-//                ofLogVerbose() << "AnyValue::set(T) " << v;
+//                ofLogVerbose("ofxMSAControlFreak") << "AnyValue::set(T) " << v;
 //                checkValueContainer<T>();
 ////                _valueContainer->setFromContainer(ValueContainerT<T>(v));
 ////                assert(_valueContainer);
@@ -105,7 +105,7 @@
 //            }
 //            
 //            template <typename T> T get() const {
-//                ofLogVerbose() << "(T) AnyValue::get";
+//                ofLogVerbose("ofxMSAControlFreak") << "(T) AnyValue::get";
 ////                checkValueContainer<T>();
 //                assert(_valueContainer);
 ////                return any;

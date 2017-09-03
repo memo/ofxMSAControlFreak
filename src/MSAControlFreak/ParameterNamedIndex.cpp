@@ -98,7 +98,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         void ParameterNamedIndex::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::controlfreak::ParameterNamedIndex::writeToXml: " << getPath();
+			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::ParameterNamedIndex::writeToXml: " << getPath();
             
             ParameterInt::writeToXml(xml, bFullSchema);  // IMPORTANT: always start with parents write to xml
             if(bFullSchema) {
@@ -113,7 +113,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         void ParameterNamedIndex::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::controlfreak::ParameterNamedIndex::readFromXml: " << getPath();
+			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::ParameterNamedIndex::readFromXml: " << getPath();
             
             ParameterInt::readFromXml(xml, bFullSchema);
         }

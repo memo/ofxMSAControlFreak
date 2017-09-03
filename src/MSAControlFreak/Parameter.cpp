@@ -30,19 +30,19 @@ namespace msa {
             
             Master::instance().add(this);
             
-//            ofLogVerbose() << "msa::controlfreak::Parameter::Parameter: " <<  getPath();
+//            ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::Parameter: " <<  getPath();
         }
 		
         //--------------------------------------------------------------
         Parameter::~Parameter() {
-            ofLogVerbose() << "msa::controlfreak::Parameter::~Parameter(): " << getPath();
+            ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::~Parameter(): " << getPath();
             if(_paramValue) delete _paramValue;   // TODO
         }
         
         
         //--------------------------------------------------------------
 		Parameter& Parameter::setName(string s) {
-//			ofLogVerbose() << "msa::controlfreak::Parameter::setName: " << s;
+//			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::setName: " << s;
             _name = s;
             return *this;
 		}
@@ -70,7 +70,7 @@ namespace msa {
 		
         //--------------------------------------------------------------
         void Parameter::setParent(ParameterGroup *parent) {
-			ofLogVerbose() << "msa::controlfreak::Parameter::setParent: '" << getPath() << "' to '" << (parent ? parent->getName(): "NULL") << "'";
+			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::setParent: '" << getPath() << "' to '" << (parent ? parent->getName(): "NULL") << "'";
             _pparent = parent;
         }
         
@@ -91,7 +91,7 @@ namespace msa {
 
         //--------------------------------------------------------------
         void Parameter::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::controlfreak::Parameter::writeToXml: " << getPath();
+			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::writeToXml: " << getPath();
 
             _xmlTagId = xml.addTag(_xmlTag);
             xml.addAttribute(_xmlTag, "type", getTypeName(), _xmlTagId);
@@ -107,7 +107,7 @@ namespace msa {
         
         //--------------------------------------------------------------
         void Parameter::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose() << "msa::controlfreak::Parameter::readFromXml: " << getPath();
+			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::readFromXml: " << getPath();
             
             if(_paramValue) _paramValue->readFromXml(xml, bFullSchema);
             if(bFullSchema) {
