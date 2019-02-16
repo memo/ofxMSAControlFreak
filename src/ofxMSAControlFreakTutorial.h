@@ -26,11 +26,12 @@ class TutorialModule {
 public:
 
     // Declare a ParameterGroup
+    msa::controlfreak::ParameterGroup params;
     // This is the main Class of MSAControlFreak and the only one you'll ever need to explicitly instantiate
     // It will contain a bunch of Parameters (and other ParameterGroups) and almost everything is done through this.
     // Parameters are NOT sliders, tickboxes, buttons etc. They are just the data and properties behind all of that.
     // To display them, you need a GUI wrapper. Any GUI could work with such a minimal wrapper
-    msa::controlfreak::ParameterGroup params;
+
 
     // just some vars
     vector<ofVec2f> particle_pos;

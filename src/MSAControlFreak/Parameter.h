@@ -74,58 +74,58 @@ namespace msa {
             //--------------------------------------------------------------
             // from ParameterValueI
             
-            virtual ParameterValueI& set(AnyValue v) { if(_paramValue) return _paramValue->set(v); }
-			virtual AnyValue value() const { if(_paramValue) return _paramValue->value(); }
-			virtual AnyValue oldValue() const { if(_paramValue) return _paramValue->oldValue(); }
+            virtual ParameterValueI& set(AnyValue v) { return _paramValue->set(v); }
+            virtual AnyValue value() const { return _paramValue->value(); }
+            virtual AnyValue oldValue() const { return _paramValue->oldValue(); }
             
             // whether the value changed this frame or not
-            virtual bool hasChanged(int dir=0) { if(_paramValue) return _paramValue->hasChanged(dir); }
+            virtual bool hasChanged(int dir=0) { return _paramValue->hasChanged(dir); }
 
             // clear the changed flag (if you want to programmatically change the value, but don't want to trigger anything else)
-            virtual void clearChanged() { if(_paramValue) _paramValue->clearChanged(); }
+            virtual void clearChanged() { _paramValue->clearChanged(); }
 
             // set min/max range values
-			virtual ParameterValueI& setRange(AnyValue vmin, AnyValue vmax) { if(_paramValue) return _paramValue->setRange(vmin, vmax); }
-			virtual AnyValue getMin() const { if(_paramValue) return _paramValue->getMin(); }
-			virtual AnyValue getMax() const { if(_paramValue) return _paramValue->getMax(); }
-			virtual AnyValue getRangeLength() const { if(_paramValue) return _paramValue->getRangeLength(); }
+            virtual ParameterValueI& setRange(AnyValue vmin, AnyValue vmax) { return _paramValue->setRange(vmin, vmax); }
+            virtual AnyValue getMin() const { return _paramValue->getMin(); }
+            virtual AnyValue getMax() const { return _paramValue->getMax(); }
+            virtual AnyValue getRangeLength() const { return _paramValue->getRangeLength(); }
 
             // set and get whether clamping to range is enabled
-			virtual ParameterValueI& setClamp(bool b) { if(_paramValue) return _paramValue->setClamp(b); }
-            virtual bool& getClamp() { if(_paramValue) return _paramValue->getClamp(); }
+            virtual ParameterValueI& setClamp(bool b) { return _paramValue->setClamp(b); }
+            virtual bool& getClamp() { return _paramValue->getClamp(); }
             
             // set and get whether snapping is enabled.
             // if enabled, value is snapped to the closest increment (as set by setIncrement())
-            virtual ParameterValueI& setSnap(bool b) { if(_paramValue) return _paramValue->setSnap(b); }
-            virtual bool& getSnap() { if(_paramValue) return _paramValue->getSnap(); }
+            virtual ParameterValueI& setSnap(bool b) { return _paramValue->setSnap(b); }
+            virtual bool& getSnap() { return _paramValue->getSnap(); }
             
             // set and get increment amount, which snapping snaps to
             // if snapping is disabled, sliders still use this value when using keyboard up/down or inc/dec
-            virtual ParameterValueI& setIncrement(AnyValue inc) { if(_paramValue) return _paramValue->setIncrement(inc); }
-            virtual AnyValue getIncrement() const { if(_paramValue) return _paramValue->getIncrement(); }
+            virtual ParameterValueI& setIncrement(AnyValue inc) { return _paramValue->setIncrement(inc); }
+            virtual AnyValue getIncrement() const { return _paramValue->getIncrement(); }
             
             
             // increase or decrease by increment amount
-            virtual ParameterValueI& inc(AnyValue amount) { if(_paramValue) return _paramValue->inc(amount); }
-            virtual ParameterValueI& dec(AnyValue amount) { if(_paramValue) return _paramValue->dec(amount); }
+            virtual ParameterValueI& inc(AnyValue amount) { return _paramValue->inc(amount); }
+            virtual ParameterValueI& dec(AnyValue amount) { return _paramValue->dec(amount); }
             
             // set and get as 0...1 values normalized to min/max range
-			virtual ParameterValueI& setNormalized(float norm) { if(_paramValue) return _paramValue->setNormalized(norm); }
-			virtual float getNormalized(bool bClamp = false) const { if(_paramValue) return _paramValue->getNormalized(bClamp); }
+            virtual ParameterValueI& setNormalized(float norm) { return _paramValue->setNormalized(norm); }
+            virtual float getNormalized(bool bClamp = false) const { return _paramValue->getNormalized(bClamp); }
             
             // set and get mapped to a new range
-            virtual ParameterValueI& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) { if(_paramValue) return _paramValue->setMappedFrom(v, inputMin, inputMax); }
-            virtual AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const  { if(_paramValue) return _paramValue->getMappedTo(newMin, newMax, bClamp); }
+            virtual ParameterValueI& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) { return _paramValue->setMappedFrom(v, inputMin, inputMax); }
+            virtual AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const  { return _paramValue->getMappedTo(newMin, newMax, bClamp); }
             
             
             // set to a random value between min, max range
-            virtual ParameterValueI& setRandom() { if(_paramValue) return _paramValue->setRandom(); }
+            virtual ParameterValueI& setRandom() { return _paramValue->setRandom(); }
             
             
             // OPTIONAL
             // track variables and keep values in sync (send NULL to clear)
-            virtual ParameterValueI& trackVariable(void *pv) { if(_paramValue) return _paramValue->trackVariable(pv); }
-            virtual void* getTrackedVariable() { if(_paramValue) return _paramValue->getTrackedVariable(); }
+            virtual ParameterValueI& trackVariable(void *pv) { return _paramValue->trackVariable(pv); }
+            virtual void* getTrackedVariable() { return _paramValue->getTrackedVariable(); }
             
             template<typename T> T* var() { return (T*)getTrackedVariable(); }
 
@@ -141,7 +141,7 @@ namespace msa {
             virtual void update() { if(_paramValue) _paramValue->update(); }
             
             virtual void clamp() { if(_paramValue) _paramValue->clamp(); }
-            virtual void snap() { if(_paramValue) _paramValue->snap(); }
+            virtual void snap() {  if(_paramValue) _paramValue->snap(); }
             
             string              _xmlTag;
             int                 _xmlTagId;

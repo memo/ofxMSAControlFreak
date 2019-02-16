@@ -1,9 +1,149 @@
 #########################
+# openFrameworks patterns
+#########################
+
+# build files
+openFrameworks.a
+openFrameworksDebug.a
+openFrameworksUniversal.a
+libs/openFrameworksCompiled/lib/*/*
+!libs/openFrameworksCompiled/lib/*/.gitkeep
+
+# apothecary
+scripts/apothecary
+
+# rule to avoid non-official addons going into git
+# see addons/.gitignore
+addons/*
+
+# rule to avoid non-official apps going into git
+# see apps/.gitignore
+apps/*
+
+# rule to ignore compiled / downloaded libs
+/libs/*
+!/libs/openFrameworks
+!/libs/openFrameworksCompiled
+
+# also, see examples/.gitignore
+
+#########################
+# general
+#########################
+
+[Bb]uild/
+[Oo]bj/
+*.o
+examples/**/[Dd]ebug*/
+examples/**/[Rr]elease*/
+examples/**/gcc-debug/
+examples/**/gcc-release/
+tests/**/[Dd]ebug*/
+tests/**/[Rr]elease*/
+tests/**/gcc-debug/
+tests/**/gcc-release/
+*.mode*
+*.app/
+*.pyc
+.svn/
+*.log
+*.cpp.eep
+*.cpp.elf
+*.cpp.hex
+
+#########################
+# IDE
+#########################
+
+# XCode
+*.pbxuser
+*.perspective
+*.perspectivev3
+*.mode1v3
+*.mode2v3
+# XCode 4
+xcuserdata
+*.xcworkspace
+
+# Code::Blocks
+*.depend
+*.layout
+
+# Visual Studio
+*.sdf
+*.opensdf
+*.suo
+*.pdb
+*.ilk
+*.aps
+ipch/
+**/.vs/*
+
+# Eclipse
+.metadata
+local.properties
+.externalToolBuilders
+
+# Android Studio
+.idea
+.gradle
+gradle
+gradlew
+gradlew.bat
+
+# QtCreator
+*.qbs.user
+*.pro.user
+*.pri
+
+
+#########################
+# operating system
+#########################
+
+# Linux
+*~
+# KDE
+.directory
+.AppleDouble
+
+# OSX
+.DS_Store
+*.swp
+*~.nib
+# Thumbnails
+._*
+examples/ios/**/mediaAssets
+
+# Windows
+# Windows image file caches
+Thumbs.db
+# Folder config file
+Desktop.ini
+
+# Android
+.csettings
+/libs/openFrameworksCompiled/project/android/paths.make
+
+# Android Studio
+*.iml
+
+#########################
+# miscellaneous
+#########################
+
+.mailmap
+/apps*/
+
+#########################
 # core examples
 #########################
 
-*/bin/*
-!*/bin/data/
+bin/*
+!bin/data/
+
+**/bin/*
+!**/bin/data/
 
 #########################
 # IDE
@@ -15,12 +155,12 @@ Project.xcconfig
 openFrameworks-Info.plist
 ofxiOS-Info.plist
 ofxiOS_Prefix.pch
-Default*.png
-Icon*.png
+*/*/Default*.png
+*/*/Icon*.png
 
 # Code::Blocks
-*.cbp
-*.workspace
+# *.cbp
+# *.workspace
 
 # Visual Studio
 # *.sln
@@ -28,8 +168,6 @@ Icon*.png
 *.vcxproj.user
 *.vcxproj.filters
 icon.rc
-.vs
-*/obj/*
 
 # Eclipse
 .cproject
@@ -38,21 +176,21 @@ icon.rc
 
 # QtCreator
 # *.qbs
-*.qbs.user
+*.qbs.user*
 *.pro
 *.pro.user
-build-*
+qtc_Desktop_*
 
 #########################
 # operating system
 #########################
 
 # Linux
-# /*/*/Makefile
-# /*/*/config.make
+# Makefile
+# config.make
 # Leave Android files in until project generation works
-# !/android/*/Makefile
-# !/android/*/config.make
+!/android/*/Makefile
+!/android/*/config.make
 
 # Android
 android/*/test link
