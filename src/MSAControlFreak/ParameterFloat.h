@@ -16,16 +16,16 @@
 #include "MSAControlFreak/Parameter.h"
 
 namespace msa {
-    namespace controlfreak {
+namespace controlfreak {
 
-        class ParameterFloat : public Parameter {
-        public:
-            ParameterFloat(string name, ParameterGroup *parent = NULL)
-            : Parameter(name, parent, new ParameterNumberValueT<float>()) { setRange(0.0f, 1.0f); setIncrement(0.01f); }
+class ParameterFloat : public Parameter {
+public:
+    ParameterFloat(string name, ParameterGroup *parent = NULL)
+        : Parameter(name, parent, new ParameterNumberValueT<float>()) { setRange(0.0f, 1.0f); setIncrement(0.01f); }
 
-            template <typename T> T operator=(const T & v) { set(v); }
-			template <typename T> operator T() const { return value(); }
-        };
-        
-    }
+    template <typename T> T operator=(const T & v) { set(v); }
+    template <typename T> operator T() const { return value(); }
+};
+
+}
 }

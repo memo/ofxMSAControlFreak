@@ -14,48 +14,48 @@
 #include "ofxMSAControlFreak.h"
 
 namespace msa {
-    namespace controlfreak {
-        
-        Master* Master::_instance = NULL;
-        
-        //--------------------------------------------------------------
-        Master::Master() {
-            cout << "Master";
-            ofAddListener(ofEvents().update, this, &Master::update);
-        }
-        
-        //--------------------------------------------------------------
-        Master::~Master() {
-            cout << "~Master";
-            if(_instance) delete _instance;
-        }
-        
-        //--------------------------------------------------------------
-        void Master::add(Parameter *p) {
-            _parameters.push_back(p, p);
-        }
-        
-        //--------------------------------------------------------------
-        void Master::erase(Parameter *p) {
-            _parameters.erase(p);
-        }
+namespace controlfreak {
 
-        //--------------------------------------------------------------
-        void Master::update(ofEventArgs &e) {
-            for(int i=0; i<_parameters.size(); i++) {
-                Parameter &p = _parameters[i];
-                p.update();
-            }
-        }
+Master* Master::_instance = NULL;
 
-        //--------------------------------------------------------------
-        Master& Master::instance() {
-            if(_instance == NULL) _instance = new Master();
-            return *_instance;
-        }
-        
-        //--------------------------------------------------------------
-        
-        
+//--------------------------------------------------------------
+Master::Master() {
+    cout << "Master";
+    ofAddListener(ofEvents().update, this, &Master::update);
+}
+
+//--------------------------------------------------------------
+Master::~Master() {
+    cout << "~Master";
+    if(_instance) delete _instance;
+}
+
+//--------------------------------------------------------------
+void Master::add(Parameter *p) {
+    _parameters.push_back(p, p);
+}
+
+//--------------------------------------------------------------
+void Master::erase(Parameter *p) {
+    _parameters.erase(p);
+}
+
+//--------------------------------------------------------------
+void Master::update(ofEventArgs &e) {
+    for(int i=0; i<_parameters.size(); i++) {
+        Parameter &p = _parameters[i];
+        p.update();
     }
+}
+
+//--------------------------------------------------------------
+Master& Master::instance() {
+    if(_instance == NULL) _instance = new Master();
+    return *_instance;
+}
+
+//--------------------------------------------------------------
+
+
+}
 }

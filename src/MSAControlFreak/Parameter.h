@@ -11,7 +11,7 @@
 //
 
 /*
- 
+
  Individual parameter or group / container
  Base class for all Parameters
  
@@ -31,135 +31,135 @@
 #include "ofxXmlSettings.h"
 
 namespace msa {
-	namespace controlfreak {
-		
-		class ParameterGroup;
-        
-		class Parameter : public ParameterValueI {
-		public:
+namespace controlfreak {
 
-			friend class ParameterGroup;
-            friend class Master;
-            template<typename T>
-            friend class ParameterNumberValueT;
-            
-			Parameter(string name, ParameterGroup *parent = NULL, ParameterValueI *pv = NULL);
-			virtual ~Parameter();
-            
-            Parameter& setName(string s);
-			string getName() const;
-            
-            Parameter& setTooltip(string s);
-            string getTooltip() const;
-            
-			string getPath() const;        // return path (including parents)
+class ParameterGroup;
 
-            ParameterGroup* getParent() const;
-            
-			string getTypeName() const;
-            
-            
-            ParameterValueI* getParamValue();
-            
-            
+class Parameter : public ParameterValueI {
+public:
 
-            //--------------------------------------------------------------
-            // set and get value
-            // operators for assigning and casting
-            template<typename T> T operator=(const T & v) { return set(v).value(); }
-			template<typename T> operator T() const { return (T)value(); }
+    friend class ParameterGroup;
+    friend class Master;
+    template<typename T>
+    friend class ParameterNumberValueT;
 
-            template<typename T> T get() const { return (T)value(); }
+    Parameter(string name, ParameterGroup *parent = NULL, ParameterValueI *pv = NULL);
+    virtual ~Parameter();
 
-            //--------------------------------------------------------------
-            // from ParameterValueI
-            
-            virtual ParameterValueI& set(AnyValue v) { return _paramValue->set(v); }
-            virtual AnyValue value() const { return _paramValue->value(); }
-            virtual AnyValue oldValue() const { return _paramValue->oldValue(); }
-            
-            // whether the value changed this frame or not
-            virtual bool hasChanged(int dir=0) { return _paramValue->hasChanged(dir); }
+    Parameter& setName(string s);
+    string getName() const;
 
-            // clear the changed flag (if you want to programmatically change the value, but don't want to trigger anything else)
-            virtual void clearChanged() { _paramValue->clearChanged(); }
+    Parameter& setTooltip(string s);
+    string getTooltip() const;
 
-            // set min/max range values
-            virtual ParameterValueI& setRange(AnyValue vmin, AnyValue vmax) { return _paramValue->setRange(vmin, vmax); }
-            virtual AnyValue getMin() const { return _paramValue->getMin(); }
-            virtual AnyValue getMax() const { return _paramValue->getMax(); }
-            virtual AnyValue getRangeLength() const { return _paramValue->getRangeLength(); }
+    string getPath() const;        // return path (including parents)
 
-            // set and get whether clamping to range is enabled
-            virtual ParameterValueI& setClamp(bool b) { return _paramValue->setClamp(b); }
-            virtual bool& getClamp() { return _paramValue->getClamp(); }
-            
-            // set and get whether snapping is enabled.
-            // if enabled, value is snapped to the closest increment (as set by setIncrement())
-            virtual ParameterValueI& setSnap(bool b) { return _paramValue->setSnap(b); }
-            virtual bool& getSnap() { return _paramValue->getSnap(); }
-            
-            // set and get increment amount, which snapping snaps to
-            // if snapping is disabled, sliders still use this value when using keyboard up/down or inc/dec
-            virtual ParameterValueI& setIncrement(AnyValue inc) { return _paramValue->setIncrement(inc); }
-            virtual AnyValue getIncrement() const { return _paramValue->getIncrement(); }
-            
-            
-            // increase or decrease by increment amount
-            virtual ParameterValueI& inc(AnyValue amount) { return _paramValue->inc(amount); }
-            virtual ParameterValueI& dec(AnyValue amount) { return _paramValue->dec(amount); }
-            
-            // set and get as 0...1 values normalized to min/max range
-            virtual ParameterValueI& setNormalized(float norm) { return _paramValue->setNormalized(norm); }
-            virtual float getNormalized(bool bClamp = false) const { return _paramValue->getNormalized(bClamp); }
-            
-            // set and get mapped to a new range
-            virtual ParameterValueI& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) { return _paramValue->setMappedFrom(v, inputMin, inputMax); }
-            virtual AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const  { return _paramValue->getMappedTo(newMin, newMax, bClamp); }
-            
-            
-            // set to a random value between min, max range
-            virtual ParameterValueI& setRandom() { return _paramValue->setRandom(); }
-            
-            
-            // OPTIONAL
-            // track variables and keep values in sync (send NULL to clear)
-            virtual ParameterValueI& trackVariable(void *pv) { return _paramValue->trackVariable(pv); }
-            virtual void* getTrackedVariable() { return _paramValue->getTrackedVariable(); }
-            
-            template<typename T> T* var() { return (T*)getTrackedVariable(); }
+    ParameterGroup* getParent() const;
 
-            
-            //--------------------------------------------------------------
-            // Controller stuff
-//            void addSender(ControllerI *controller);
-//            void addReceiver(ControllerI *controller);
-            
-        protected:
-//            Controllers controllers;
-            
-            virtual void update() { if(_paramValue) _paramValue->update(); }
-            
-            virtual void clamp() { if(_paramValue) _paramValue->clamp(); }
-            virtual void snap() {  if(_paramValue) _paramValue->snap(); }
-            
-            string              _xmlTag;
-            int                 _xmlTagId;
-            
-            void setParent(ParameterGroup *parent);
-            
-            virtual void writeToXml(ofxXmlSettings &xml, bool bFullSchema);
-            virtual void readFromXml(ofxXmlSettings &xml, bool bFullSchema);
-            
-        private:
-			string				_name;
-            string              _tooltip;
-			ParameterGroup		*_pparent;
-            ParameterValueI*   _paramValue;
-			
-            
-            
-		};
-		
-	}
+    string getTypeName() const;
+
+
+    ParameterValueI* getParamValue();
+
+
+
+    //--------------------------------------------------------------
+    // set and get value
+    // operators for assigning and casting
+    template<typename T> T operator=(const T & v) { return set(v).value(); }
+    template<typename T> operator T() const { return (T)value(); }
+
+    template<typename T> T get() const { return (T)value(); }
+
+    //--------------------------------------------------------------
+    // from ParameterValueI
+
+    virtual ParameterValueI& set(AnyValue v) { return _paramValue->set(v); }
+    virtual AnyValue value() const { return _paramValue->value(); }
+    virtual AnyValue oldValue() const { return _paramValue->oldValue(); }
+
+    // whether the value changed this frame or not
+    virtual bool hasChanged(int dir=0) { return _paramValue->hasChanged(dir); }
+
+    // clear the changed flag (if you want to programmatically change the value, but don't want to trigger anything else)
+    virtual void clearChanged() { _paramValue->clearChanged(); }
+
+    // set min/max range values
+    virtual ParameterValueI& setRange(AnyValue vmin, AnyValue vmax) { return _paramValue->setRange(vmin, vmax); }
+    virtual AnyValue getMin() const { return _paramValue->getMin(); }
+    virtual AnyValue getMax() const { return _paramValue->getMax(); }
+    virtual AnyValue getRangeLength() const { return _paramValue->getRangeLength(); }
+
+    // set and get whether clamping to range is enabled
+    virtual ParameterValueI& setClamp(bool b) { return _paramValue->setClamp(b); }
+    virtual bool& getClamp() { return _paramValue->getClamp(); }
+
+    // set and get whether snapping is enabled.
+    // if enabled, value is snapped to the closest increment (as set by setIncrement())
+    virtual ParameterValueI& setSnap(bool b) { return _paramValue->setSnap(b); }
+    virtual bool& getSnap() { return _paramValue->getSnap(); }
+
+    // set and get increment amount, which snapping snaps to
+    // if snapping is disabled, sliders still use this value when using keyboard up/down or inc/dec
+    virtual ParameterValueI& setIncrement(AnyValue inc) { return _paramValue->setIncrement(inc); }
+    virtual AnyValue getIncrement() const { return _paramValue->getIncrement(); }
+
+
+    // increase or decrease by increment amount
+    virtual ParameterValueI& inc(AnyValue amount) { return _paramValue->inc(amount); }
+    virtual ParameterValueI& dec(AnyValue amount) { return _paramValue->dec(amount); }
+
+    // set and get as 0...1 values normalized to min/max range
+    virtual ParameterValueI& setNormalized(float norm) { return _paramValue->setNormalized(norm); }
+    virtual float getNormalized(bool bClamp = false) const { return _paramValue->getNormalized(bClamp); }
+
+    // set and get mapped to a new range
+    virtual ParameterValueI& setMappedFrom(AnyValue v, AnyValue inputMin, AnyValue inputMax) { return _paramValue->setMappedFrom(v, inputMin, inputMax); }
+    virtual AnyValue getMappedTo(AnyValue newMin, AnyValue newMax, bool bClamp = false) const  { return _paramValue->getMappedTo(newMin, newMax, bClamp); }
+
+
+    // set to a random value between min, max range
+    virtual ParameterValueI& setRandom() { return _paramValue->setRandom(); }
+
+
+    // OPTIONAL
+    // track variables and keep values in sync (send NULL to clear)
+    virtual ParameterValueI& trackVariable(void *pv) { return _paramValue->trackVariable(pv); }
+    virtual void* getTrackedVariable() { return _paramValue->getTrackedVariable(); }
+
+    template<typename T> T* var() { return (T*)getTrackedVariable(); }
+
+
+    //--------------------------------------------------------------
+    // Controller stuff
+    //            void addSender(ControllerI *controller);
+    //            void addReceiver(ControllerI *controller);
+
+protected:
+    //            Controllers controllers;
+
+    virtual void update() { if(_paramValue) _paramValue->update(); }
+
+    virtual void clamp() { if(_paramValue) _paramValue->clamp(); }
+    virtual void snap() {  if(_paramValue) _paramValue->snap(); }
+
+    string              _xmlTag;
+    int                 _xmlTagId;
+
+    void setParent(ParameterGroup *parent);
+
+    virtual void writeToXml(ofxXmlSettings &xml, bool bFullSchema);
+    virtual void readFromXml(ofxXmlSettings &xml, bool bFullSchema);
+
+private:
+    string				_name;
+    string              _tooltip;
+    ParameterGroup		*_pparent;
+    ParameterValueI*   _paramValue;
+
+
+
+};
+
+}
 }

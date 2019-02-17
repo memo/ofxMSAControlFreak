@@ -14,108 +14,108 @@
 #include "ofxMSAControlFreak.h"
 
 namespace msa {
-	namespace controlfreak {
+namespace controlfreak {
 
-        
-        //--------------------------------------------------------------
-        Parameter::Parameter(string name, ParameterGroup *parent, ParameterValueI *pv)
-        : _pparent(parent), _name(name) {
-            _paramValue = pv;
-            if(pv) {
-                _paramValue->setParameter(this);
-            }
-                
-            _xmlTag = "Parameter";
-            _xmlTagId = 0;
-            
-            Master::instance().add(this);
-            
-//            ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::Parameter: " <<  getPath();
-        }
-		
-        //--------------------------------------------------------------
-        Parameter::~Parameter() {
-            ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::~Parameter(): " << getPath();
-            if(_paramValue) delete _paramValue;   // TODO
-        }
-        
-        
-        //--------------------------------------------------------------
-		Parameter& Parameter::setName(string s) {
-//			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::setName: " << s;
-            _name = s;
-            return *this;
-		}
-        
-        //--------------------------------------------------------------
-		string Parameter::getName() const {
-			return _name;
-		}
-        
-        //--------------------------------------------------------------
-        Parameter& Parameter::setTooltip(string s) {
-            _tooltip = s;
-            return *this;
-        }
-        
-        //--------------------------------------------------------------
-        string Parameter::getTooltip() const {
-            return _tooltip;
-        }
 
-        //--------------------------------------------------------------
-		string Parameter::getPath() const {
-			return _pparent ? _pparent->getPath() + getPathDivider() + _name : _name;
-		}
-		
-        //--------------------------------------------------------------
-        void Parameter::setParent(ParameterGroup *parent) {
-			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::setParent: '" << getPath() << "' to '" << (parent ? parent->getName(): "NULL") << "'";
-            _pparent = parent;
-        }
-        
-        //--------------------------------------------------------------
-        ParameterGroup* Parameter::getParent() const {
-            return _pparent;
-        }
+//--------------------------------------------------------------
+Parameter::Parameter(string name, ParameterGroup *parent, ParameterValueI *pv)
+    : _pparent(parent), _name(name) {
+    _paramValue = pv;
+    if(pv) {
+        _paramValue->setParameter(this);
+    }
 
-        //--------------------------------------------------------------
-		string Parameter::getTypeName() const {
-			return typeid(*this).name();
-		}
+    _xmlTag = "Parameter";
+    _xmlTagId = 0;
 
-        //--------------------------------------------------------------
-        ParameterValueI* Parameter::getParamValue() {
-            return _paramValue;
-        }
+    Master::instance().add(this);
 
-        //--------------------------------------------------------------
-        void Parameter::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::writeToXml: " << getPath();
+    //            ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::Parameter: " <<  getPath();
+}
 
-            _xmlTagId = xml.addTag(_xmlTag);
-            xml.addAttribute(_xmlTag, "type", getTypeName(), _xmlTagId);
-            xml.addAttribute(_xmlTag, "name", getName(), _xmlTagId);
-            if(_paramValue) _paramValue->writeToXml(xml, bFullSchema);
+//--------------------------------------------------------------
+Parameter::~Parameter() {
+    ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::~Parameter(): " << getPath();
+    if(_paramValue) delete _paramValue;   // TODO
+}
 
-            if(bFullSchema) {
-                xml.addAttribute(_xmlTag, "path", getPath(), _xmlTagId);
-                xml.addAttribute(_xmlTag, "tooltip", getTooltip(), _xmlTagId);
-                //            xml.addAttribute(_xmlTag, "parent", _pparent ? _pparent->getName(): "none", _xmlTagId);
-            }
-        }
-        
-        //--------------------------------------------------------------
-        void Parameter::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
-			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::readFromXml: " << getPath();
-            
-            if(_paramValue) _paramValue->readFromXml(xml, bFullSchema);
-            if(bFullSchema) {
-                setTooltip(xml.getAttribute(_xmlTag, "tooltip", "", _xmlTagId));
-            }
-        }
-        
-        //--------------------------------------------------------------
+
+//--------------------------------------------------------------
+Parameter& Parameter::setName(string s) {
+    //			ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::setName: " << s;
+    _name = s;
+    return *this;
+}
+
+//--------------------------------------------------------------
+string Parameter::getName() const {
+    return _name;
+}
+
+//--------------------------------------------------------------
+Parameter& Parameter::setTooltip(string s) {
+    _tooltip = s;
+    return *this;
+}
+
+//--------------------------------------------------------------
+string Parameter::getTooltip() const {
+    return _tooltip;
+}
+
+//--------------------------------------------------------------
+string Parameter::getPath() const {
+    return _pparent ? _pparent->getPath() + getPathDivider() + _name : _name;
+}
+
+//--------------------------------------------------------------
+void Parameter::setParent(ParameterGroup *parent) {
+    ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::setParent: '" << getPath() << "' to '" << (parent ? parent->getName(): "NULL") << "'";
+    _pparent = parent;
+}
+
+//--------------------------------------------------------------
+ParameterGroup* Parameter::getParent() const {
+    return _pparent;
+}
+
+//--------------------------------------------------------------
+string Parameter::getTypeName() const {
+    return typeid(*this).name();
+}
+
+//--------------------------------------------------------------
+ParameterValueI* Parameter::getParamValue() {
+    return _paramValue;
+}
+
+//--------------------------------------------------------------
+void Parameter::writeToXml(ofxXmlSettings &xml, bool bFullSchema) {
+    ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::writeToXml: " << getPath();
+
+    _xmlTagId = xml.addTag(_xmlTag);
+    xml.addAttribute(_xmlTag, "type", getTypeName(), _xmlTagId);
+    xml.addAttribute(_xmlTag, "name", getName(), _xmlTagId);
+    if(_paramValue) _paramValue->writeToXml(xml, bFullSchema);
+
+    if(bFullSchema) {
+        xml.addAttribute(_xmlTag, "path", getPath(), _xmlTagId);
+        xml.addAttribute(_xmlTag, "tooltip", getTooltip(), _xmlTagId);
+        //            xml.addAttribute(_xmlTag, "parent", _pparent ? _pparent->getName(): "none", _xmlTagId);
+    }
+}
+
+//--------------------------------------------------------------
+void Parameter::readFromXml(ofxXmlSettings &xml, bool bFullSchema) {
+    ofLogVerbose("ofxMSAControlFreak") << "msa::controlfreak::Parameter::readFromXml: " << getPath();
+
+    if(_paramValue) _paramValue->readFromXml(xml, bFullSchema);
+    if(bFullSchema) {
+        setTooltip(xml.getAttribute(_xmlTag, "tooltip", "", _xmlTagId));
+    }
+}
+
+//--------------------------------------------------------------
 //        // Controller stuff
 //        void Parameter::addSender(ControllerI *controller) {
 //            controllers.addSender(controller);
@@ -128,6 +128,6 @@ namespace msa {
 //            controller->setParam(this);
 //        }
 
- 
-	}
+
+}
 }

@@ -11,8 +11,8 @@
 //
 
 /*
- 
- 
+
+
  TODO:
  
  - implement curve types to sliders
@@ -38,6 +38,8 @@
 #include "MSAControlFreak/ParameterNamedIndex.h"
 #include "MSAControlFreak/ParameterGroup.h"
 #include "MSAControlFreak/ParameterVec3f.h"
+#include "MSAControlFreak/ParameterColorf32.h"
+#include "MSAControlFreak/ParameterColoru8.h"
 #include "MSAControlFreak/Utils.h"
 #include "MSAControlFreak/ControllerBase.h"
 

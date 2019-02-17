@@ -15,19 +15,20 @@
 //#include "ofxMSAControlFreak/src/ParameterComplexValueT.h"
 
 namespace msa {
-    namespace controlfreak {
-     
-//        class ParameterVec3f : public ParameterComplexValueT<ofVec3f> {
-//        public:
-////            friend class ParameterGroup;
-//            
-//            ParameterVec3f(string name, ParameterGroup *parent);
-//            
-//            virtual ParameterNumberValueT<ofVec3f>& setValueVariable(ofVec3f *pv);
-//            virtual ParameterNumberValueT<ofVec3f>& setRangeVariables(ofVec3f *pmin, ofVec3f *pmax);
-//            virtual ParameterNumberValueT<ofVec3f>& setIncrementVariable(ofVec3f *pinc);
-//
-//        };
-        
+namespace controlfreak {
+
+class ParameterVec3f : public ParameterGroup {
+public:
+    ParameterVec3f(string name, ParameterGroup *parent = NULL)
+        : ParameterGroup(name, parent) {
+        addFloat("x").setRange(0, 1);
+        addFloat("y").setRange(0, 1);
+        addFloat("z").setRange(0, 1);
+
     }
+
+    ofVec3f operator=(const ofVec3f & v) { get("x").set(v.x); get("y").set(v.y); get("z").set(v.z); return v; }
+    operator ofVec3f() const { return ofVec3f(get("x").value(), get("y").value(), get("z").value()); }
+};
+}
 }

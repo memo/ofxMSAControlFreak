@@ -14,20 +14,20 @@
 #include "ofxMSAControlFreak.h"
 
 namespace msa {
-	namespace controlfreak {
-        
-        
-        static char _pathDivider = '.';
-        
-        //--------------------------------------------------------------
-        void setPathDivider(char divider) {
-            _pathDivider = divider;
-        }
-        
-        //--------------------------------------------------------------
-        char getPathDivider() {
-            return _pathDivider;
-        }
-        
-    }
+namespace controlfreak {
+
+
+static char _pathDivider = '.';
+
+//--------------------------------------------------------------
+void setPathDivider(char divider) {
+    _pathDivider = divider;
+}
+
+//--------------------------------------------------------------
+char getPathDivider() {
+    return _pathDivider;
+}
+
+}
 }

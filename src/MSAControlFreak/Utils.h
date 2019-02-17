@@ -17,10 +17,10 @@
 using namespace std;
 
 namespace msa {
-	namespace controlfreak {
-        
-        void setPathDivider(char divider = '.');
-        char getPathDivider();
+namespace controlfreak {
 
-	}
+void setPathDivider(char divider = '.');
+char getPathDivider();
+
+}
 }

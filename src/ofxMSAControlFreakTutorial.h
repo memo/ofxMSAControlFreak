@@ -127,11 +127,12 @@ public:
         params.addFloat("radius").setRange(1, 30).set(10);      // 3rd Parameter in the ParameterGroup 'particles'
         params.endGroup();                                      // close the group
 
-        params.startGroup("bgcolor");                           // create a group called 'bgcolor', now this becomes the active group for following Parameters
-        params.addInt("red").setRange(0, 255).setRandom();      // initialise with random value in the parameter's range
-        params.addInt("green").setRange(0, 255).setRandom();    // initialise with random value in the parameter's range
-        params.addInt("blue").setRange(0, 255).setRandom();     // initialise with random value in the parameter's range
-        params.endGroup();                                      // close the group
+        params.addColoru8("bgColor");                           // this is a compound parameter (internally, a group is created)
+//        params.startGroup("bgcolor");                           // create a group called 'bgcolor', now this becomes the active group for following Parameters
+//        params.addInt("red").setRange(0, 255).setRandom();      // initialise with random value in the parameter's range
+//        params.addInt("green").setRange(0, 255).setRandom();    // initialise with random value in the parameter's range
+//        params.addInt("blue").setRange(0, 255).setRandom();     // initialise with random value in the parameter's range
+//        params.endGroup();                                      // close the group
 
 
 
@@ -435,9 +436,11 @@ public:
         // Sometimes you need to check if ANY Parameter in a whole group has changed
         // then you can just use the hasChanged() method on the entire group
         // e.g. if any of the background colors have changed, change the background color
-        if (params["bgcolor"].hasChanged()) {
+        if (params["bgColor"].hasChanged()) {
             ofLogNotice() << "Changing background color";
-            ofBackground(params["bgcolor.red"], params["bgcolor.green"], params["bgcolor.blue"]);
+//            ofBackground(params["bgcolor.red"], params["bgcolor.green"], params["bgcolor.blue"]);
+            ofColor bgColor = params.get<msa::controlfreak::ParameterColoru8>("bgColor");
+            ofBackground(bgColor);
         }
 
 
