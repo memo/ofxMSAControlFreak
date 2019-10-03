@@ -154,7 +154,7 @@ template<typename T>
 ParameterNumberValueT<T>::ParameterNumberValueT(T v) {
     trackVariable(NULL);
     setIncrement(T(1));
-    setClamp(false);
+    setClamp(true);
     setSnap(false);
     set(v);
 }
