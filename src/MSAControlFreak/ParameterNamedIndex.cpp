@@ -17,7 +17,7 @@ namespace msa {
 namespace controlfreak {
 
 //--------------------------------------------------------------
-ParameterNamedIndex& ParameterNamedIndex::setLabels(int count, string* labels) {
+ParameterNamedIndex& ParameterNamedIndex::setLabels(int count, const string* labels) {
     _labels.clear();
     for(int i=0; i<count; i++) _labels.push_back(labels[i]);
     setRange(0, _labels.size());
@@ -25,7 +25,7 @@ ParameterNamedIndex& ParameterNamedIndex::setLabels(int count, string* labels) {
 }
 
 //--------------------------------------------------------------
-ParameterNamedIndex& ParameterNamedIndex::setLabels(vector<string>& labels) {
+ParameterNamedIndex& ParameterNamedIndex::setLabels(const vector<string>& labels) {
     _labels.clear();
     _labels = labels;
     setRange(0, _labels.size());

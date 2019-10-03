@@ -43,8 +43,8 @@ public:
     template <typename T> T operator=(const T & v) { set(v); }
     template <typename T> operator T() const { return value(); }
 
-    ParameterNamedIndex& setLabels(int count, string* labels);
-    ParameterNamedIndex& setLabels(vector<string>& labels);
+    ParameterNamedIndex& setLabels(int count, const string* labels);
+    ParameterNamedIndex& setLabels(const vector<string>& labels);
     ParameterNamedIndex& setLabels(int count, ...);
 
     int size() const;
