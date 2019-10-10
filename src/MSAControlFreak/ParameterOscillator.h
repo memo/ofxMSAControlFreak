@@ -53,14 +53,14 @@ namespace msa {
 					return ofLerp(get("mmin"), get("mmax"), v);
 				}
 				else {
-					return 1;
+					return targetParam != NULL ? targetParam->value() : 0;
 				}
 			}
 
 			virtual void update() override {
 				// TODO: how to manage time?
-				if (targetParam) {
-					float time = ofGetElapsedTimef();
+				if (targetParam && get("enabled").value()) {
+					float time = Master::instance().getTime();
 					float newValue = value(time);
 					targetParam->set(newValue);
 				}

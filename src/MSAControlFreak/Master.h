@@ -29,15 +29,22 @@ namespace controlfreak {
 class Parameter;
 
 class Master {
+public:
+	// a bit hacky to do this here? set global time
+	void setTime(float t) { currentTime = t; }
+	float getTime() { return currentTime >= 0 ? currentTime : ofGetElapsedTimef(); }
+
+	static Master& instance();
+
 private:
+	float currentTime=-1;
+
     friend class Parameter;
     friend class ParameterGroup;
     friend void update();
 
     Master();
     ~Master();
-
-    static Master& instance();
 
     void add(Parameter* p);
     void erase(Parameter *p);
