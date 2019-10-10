@@ -27,7 +27,8 @@ public:
 
     }
 
-    ofVec3f operator=(const ofVec3f & v) { get("x").set(v.x); get("y").set(v.y); get("z").set(v.z); return v; }
+	ParameterVec3f& set(const ofVec3f & v) { get("x").set(v.x); get("y").set(v.y); get("z").set(v.z); return *this; }
+	ofVec3f operator=(const ofVec3f & v) { set(v); return v; }
     operator ofVec3f() const { return ofVec3f(get("x").value(), get("y").value(), get("z").value()); }
 };
 }

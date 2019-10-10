@@ -27,7 +27,8 @@ public:
         addFloat("a").setRange(0, 1);
     }
 
-    ofFloatColor operator=(const ofFloatColor & v) { get("r").set(v.r); get("g").set(v.g); get("b").set(v.b); get("a").set(v.a); return v; }
+	ParameterColorf32& set(const ofFloatColor & v) { get("r").set(v.r); get("g").set(v.g); get("b").set(v.b); get("a").set(v.a); return *this; }
+	ofFloatColor operator=(const ofFloatColor & v) { set(v); return v; }
     operator ofFloatColor() const { return ofFloatColor(get("r").value(), get("g").value(), get("b").value(), get("a").value()); }
 };
 }

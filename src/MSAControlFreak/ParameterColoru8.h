@@ -27,7 +27,8 @@ public:
         addInt("a").setRange(0, 255);
     }
 
-    ofColor operator=(const ofColor & v) { get("r").set(v.r); get("g").set(v.g); get("b").set(v.b); get("a").set(v.a); return v; }
+	ParameterColoru8 set(const ofColor & v) { get("r").set(v.r); get("g").set(v.g); get("b").set(v.b); get("a").set(v.a); return *this; }
+	ofColor operator=(const ofColor & v) { set(v); return v; }
     operator ofColor() const { return ofColor(get("r").value(), get("g").value(), get("b").value(), get("a").value()); }
 };
 }
