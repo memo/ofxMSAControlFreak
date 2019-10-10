@@ -131,6 +131,22 @@ public:
     template <typename ParameterType> ParameterType* getPtr(string path) const;
 
 
+	//---- Accessing Special (compound) parameters -----------------------
+	ofFloatColor getColorf32(string path) const {
+		auto& pg = getGroup(path);
+		return ofFloatColor(pg["r"], pg["g"], pg["b"], pg["a"]);
+	}
+
+	ofColor getColoru8(string path) const {
+		auto& pg = getGroup(path);
+		return ofColor(pg["r"], pg["g"], pg["b"], pg["a"]);
+	}
+
+	ofVec3f getVec3f(string path) const {
+		auto& pg = getGroup(path);
+		return ofVec3f(pg["x"], pg["y"], pg["z"]);
+	}
+
     // returns true if any of it's sub parameters (recursively) have changed
     bool hasChanged(int dir=0);
 
