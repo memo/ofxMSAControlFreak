@@ -33,6 +33,7 @@ class ParameterNamedIndex;
 class ParameterVec3f;
 class ParameterColorf32;
 class ParameterColoru8;
+class ParameterOscillator;
 
 class ParameterGroup : public Parameter {
 public:
@@ -82,6 +83,7 @@ public:
     //            Parameter& addVec4(string name);
     ParameterColoru8& addColoru8(string name);
     ParameterColorf32& addColorf32(string name);
+	ParameterOscillator& addOscillator(string name, Parameter* targetParam=NULL);
 
     // create a group. groups can be nested in other groups (infinitely deep)
     ParameterGroup& startGroup(string name);

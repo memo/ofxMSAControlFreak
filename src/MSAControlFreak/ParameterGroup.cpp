@@ -137,6 +137,11 @@ ParameterColorf32& ParameterGroup::addColorf32(string name) {
 }
 
 //--------------------------------------------------------------
+ParameterOscillator& ParameterGroup::addOscillator(string name, Parameter* targetParam) {
+	return (ParameterOscillator&)add(new ParameterOscillator(name, _groupStack.top(), targetParam));
+}
+
+//--------------------------------------------------------------
 ParameterGroup& ParameterGroup::startGroup(string name) {
     ParameterGroup* g = static_cast<ParameterGroup*>(&add(new ParameterGroup(name, _groupStack.top())));
     g->makeGroup();

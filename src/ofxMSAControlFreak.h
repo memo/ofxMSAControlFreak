@@ -40,6 +40,7 @@
 #include "MSAControlFreak/ParameterVec3f.h"
 #include "MSAControlFreak/ParameterColorf32.h"
 #include "MSAControlFreak/ParameterColoru8.h"
+#include "MSAControlFreak/ParameterOscillator.h"
 #include "MSAControlFreak/Utils.h"
 #include "MSAControlFreak/ControllerBase.h"
 

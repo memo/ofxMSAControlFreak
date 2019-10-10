@@ -15,21 +15,21 @@
 //#include "ofxMSAControlFreak/src/ParameterComplexValueT.h"
 
 namespace msa {
-namespace controlfreak {
+	namespace controlfreak {
 
-class ParameterVec3f : public ParameterGroup {
-public:
-    ParameterVec3f(string name, ParameterGroup *parent = NULL)
-        : ParameterGroup(name, parent) {
-        addFloat("x").setRange(0, 1);
-        addFloat("y").setRange(0, 1);
-        addFloat("z").setRange(0, 1);
+		class ParameterVec3f : public ParameterGroup {
+		public:
+			ParameterVec3f(string name, ParameterGroup *parent = NULL)
+				: ParameterGroup(name, parent) {
+				addFloat("x").setRange(0, 1);
+				addFloat("y").setRange(0, 1);
+				addFloat("z").setRange(0, 1);
 
-    }
+			}
 
-	ParameterVec3f& set(const ofVec3f & v) { get("x").set(v.x); get("y").set(v.y); get("z").set(v.z); return *this; }
-	ofVec3f operator=(const ofVec3f & v) { set(v); return v; }
-    operator ofVec3f() const { return ofVec3f(get("x").value(), get("y").value(), get("z").value()); }
-};
-}
+			ParameterVec3f& set(const ofVec3f & v) { get("x").set(v.x); get("y").set(v.y); get("z").set(v.z); return *this; }
+			ofVec3f operator=(const ofVec3f & v) { set(v); return v; }
+			operator ofVec3f() const { return ofVec3f(get("x").value(), get("y").value(), get("z").value()); }
+		};
+	}
 }

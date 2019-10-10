@@ -15,21 +15,21 @@
 //#include "ofxMSAControlFreak/src/ParameterComplexValueT.h"
 
 namespace msa {
-namespace controlfreak {
+	namespace controlfreak {
 
-class ParameterColoru8 : public ParameterGroup {
-public:
-    ParameterColoru8(string name, ParameterGroup *parent = NULL)
-        : ParameterGroup(name, parent) {
-        addInt("r").setRange(0, 255);
-        addInt("g").setRange(0, 255);
-        addInt("b").setRange(0, 255);
-        addInt("a").setRange(0, 255);
-    }
+		class ParameterColoru8 : public ParameterGroup {
+		public:
+			ParameterColoru8(string name, ParameterGroup *parent = NULL)
+				: ParameterGroup(name, parent) {
+				addInt("r").setRange(0, 255);
+				addInt("g").setRange(0, 255);
+				addInt("b").setRange(0, 255);
+				addInt("a").setRange(0, 255);
+			}
 
-	ParameterColoru8 set(const ofColor & v) { get("r").set(v.r); get("g").set(v.g); get("b").set(v.b); get("a").set(v.a); return *this; }
-	ofColor operator=(const ofColor & v) { set(v); return v; }
-    operator ofColor() const { return ofColor(get("r").value(), get("g").value(), get("b").value(), get("a").value()); }
-};
-}
+			ParameterColoru8 set(const ofColor & v) { get("r").set(v.r); get("g").set(v.g); get("b").set(v.b); get("a").set(v.a); return *this; }
+			ofColor operator=(const ofColor & v) { set(v); return v; }
+			operator ofColor() const { return ofColor(get("r").value(), get("g").value(), get("b").value(), get("a").value()); }
+		};
+	}
 }
